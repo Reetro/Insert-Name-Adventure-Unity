@@ -10,10 +10,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheck = null;
     [SerializeField] float checkRadius = 0.5f;
     public LayerMask whatIsGround;
-
+ 
 
     Rigidbody2D myRigidbody = null;
-    BoxCollider2D myCollision = null;
     Animator myAnimator = null;
 
     bool isFacingRight = true;
@@ -23,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        myCollision = GetComponent<BoxCollider2D>();
         myAnimator = GetComponent<Animator>();
     }
 
@@ -64,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        
+        myAnimator.SetTrigger("Jump");
+        myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
     }
 }
