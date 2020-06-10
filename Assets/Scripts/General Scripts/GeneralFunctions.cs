@@ -19,7 +19,7 @@ public class GeneralFunctions
             return false;
         }
     }
-
+    // Checks to see if the given number is negative
     public static bool IsNumberNegative(float number)
     {
         Debug.Log(number);
@@ -33,7 +33,7 @@ public class GeneralFunctions
             return false;
         }
     }
-
+    // Will rotate the objective the opposite way it's currently facing
     public static void FlipObject(GameObject objectToFlip)
     {
         Vector3 scaler = objectToFlip.transform.localScale;
