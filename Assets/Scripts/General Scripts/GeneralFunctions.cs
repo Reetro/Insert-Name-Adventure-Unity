@@ -33,4 +33,11 @@ public class GeneralFunctions
             return false;
         }
     }
+
+    public static void FlipObject(GameObject objectToFlip)
+    {
+        Vector3 scaler = objectToFlip.transform.localScale;
+        scaler.x *= -1;
+        objectToFlip.transform.localScale = scaler;
+    }
 }

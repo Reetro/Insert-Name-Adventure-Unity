@@ -3,64 +3,67 @@
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Running Settings")]
-    [SerializeField] float runSpeed = 2f;
+    [SerializeField] float runSpeed = 8f;
 
     [Header("Jump Settings")]
     [SerializeField] float jumpForce = 10f;
+    [SerializeField] Transform groundCheck = null;
+    [SerializeField] float checkRadius = 0.5f;
+    public LayerMask whatIsGround;
+
 
     Rigidbody2D myRigidbody = null;
     BoxCollider2D myCollision = null;
     Animator myAnimator = null;
 
     bool isFacingRight = true;
+    private float moveInput = 0f;
+    private bool isGrounded;
 
-    void Start()
+    private void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollision = GetComponent<BoxCollider2D>();
         myAnimator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+
         MovePlayer();
-        Jump();
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            Jump();
+        }
     }
 
     private void MovePlayer()
     {
-        float controlThrow = Input.GetAxis("Horizontal");
-        float moveSpeed = controlThrow * runSpeed;
-        Vector2 playerVelocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+        moveInput = Input.GetAxis("Horizontal");
 
-        myRigidbody.velocity = playerVelocity;
+        myRigidbody.velocity = new Vector2(moveInput * runSpeed, 0f);
 
-        if (controlThrow < 0 && isFacingRight)
+        if (!isFacingRight && moveInput > 0)
         {
-            FlipSprite();
+            isFacingRight = !isFacingRight;
+            GeneralFunctions.FlipObject(gameObject);
         }
-        if (controlThrow > 0 && !isFacingRight)
+        else if (isFacingRight && moveInput < 0)
         {
-            FlipSprite();
-        }    
+            isFacingRight = !isFacingRight;
+            GeneralFunctions.FlipObject(gameObject);
+        }
 
         myAnimator.SetBool("Running", GeneralFunctions.IsObjectMovingHorizontaly(gameObject));
-        Debug.Log(GeneralFunctions.IsObjectMovingHorizontaly(gameObject));
     }
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && myCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
-        {
-            myAnimator.SetTrigger("Jump");
-
-            // Todo Redo jump code
-        }
-    }
-
-    private void FlipSprite()
-    {
-        isFacingRight = !isFacingRight;
-        transform.Rotate(Vector3.up * 180);
+        
     }
 }
