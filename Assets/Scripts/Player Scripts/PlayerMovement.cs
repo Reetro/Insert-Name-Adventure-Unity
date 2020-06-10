@@ -8,40 +8,56 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] float jumpForce = 10f;
 
-    Rigidbody2D _rigidbody = null;
-    BoxCollider2D _myCollision = null;
+    Rigidbody2D myRigidbody = null;
+    BoxCollider2D myCollision = null;
+    Animator myAnimator = null;
 
-    float horizontalAxis = 0f;
+    bool isFacingRight = true;
 
     void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _myCollision = GetComponent<BoxCollider2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myCollision = GetComponent<BoxCollider2D>();
+        myAnimator = GetComponent<Animator>();
     }
 
     void Update()
     {
         MovePlayer();
         Jump();
-
-        if (GeneralFunctions.IsObjectMovingHorizontaly(gameObject))
-        {
-            GeneralFunctions.FlipSprite(gameObject, horizontalAxis);
-        }
     }
 
     private void MovePlayer()
     {
-        horizontalAxis = Input.GetAxis("Horizontal");
+        float controlThrow = Input.GetAxis("Horizontal");
+        float moveSpeed = controlThrow * runSpeed;
+        Vector2 playerVelocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
 
-        transform.position += new Vector3(horizontalAxis, 0f, 0f) * Time.deltaTime * runSpeed;
+        myRigidbody.velocity = playerVelocity;
+
+        if (controlThrow < 0 && isFacingRight)
+        {
+            FlipSprite();
+        }
+        if (controlThrow > 0 && !isFacingRight)
+        {
+            FlipSprite();
+        }    
+
+        myAnimator.SetBool("Running", GeneralFunctions.IsObjectMovingHorizontaly(gameObject));
     }
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && _myCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (Input.GetButtonDown("Jump") && myCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
-            _rigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            myRigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
+    }
+
+    private void FlipSprite()
+    {
+        isFacingRight = !isFacingRight;
+        transform.Rotate(Vector3.up * 180);
     }
 }
