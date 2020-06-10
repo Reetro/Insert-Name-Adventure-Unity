@@ -45,13 +45,16 @@ public class PlayerMovement : MonoBehaviour
         }    
 
         myAnimator.SetBool("Running", GeneralFunctions.IsObjectMovingHorizontaly(gameObject));
+        Debug.Log(GeneralFunctions.IsObjectMovingHorizontaly(gameObject));
     }
 
     private void Jump()
     {
         if (Input.GetButtonDown("Jump") && myCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
-            myRigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            myAnimator.SetTrigger("Jump");
+
+            // Todo Redo jump code
         }
     }
 
