@@ -19,10 +19,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        myAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+            myAnimator.SetBool("IsJumping", true);
         }
     }
 
@@ -30,5 +32,10 @@ public class PlayerController : MonoBehaviour
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump, true);
         jump = false;
+    }
+
+    public void OnLanding()
+    {
+        myAnimator.SetBool("IsJumping", false);
     }
 }
