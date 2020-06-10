@@ -26,8 +26,6 @@ public class PlayerController : MonoBehaviour
             jump = true;
             myAnimator.SetBool("IsJumping", true);
         }
-
-        LookatMouse();
     }
 
     private void FixedUpdate()
@@ -39,19 +37,5 @@ public class PlayerController : MonoBehaviour
     public void OnLanding()
     {
         myAnimator.SetBool("IsJumping", false);
-    }
-
-    private void LookatMouse()
-    {
-        Vector3 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (mousepos.x < transform.position.x)
-        {
-            transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
-        }
     }
 }

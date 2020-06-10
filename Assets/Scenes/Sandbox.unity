@@ -938,24 +938,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1908042763}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1635639790 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4066560135074363130, guid: cc246d770541c064c815f693d2e76fd1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1908042763}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1635639793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1635639790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 387e65e04f4ea274386c1174856a8f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1674431261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1068,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1847705472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4237933460914409920, guid: b360f316f90685243b9df870c009e880,
+    type: 3}
+  m_PrefabInstance: {fileID: 7026414974160567894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &1847705475
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847705472}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1001 &1908042763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1093,10 +1102,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 733678012, guid: cc246d770541c064c815f693d2e76fd1, type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4157925456995496915, guid: cc246d770541c064c815f693d2e76fd1,
         type: 3}
       propertyPath: m_Name
@@ -1229,7 +1234,7 @@ PrefabInstance:
     - target: {fileID: 4237933460471830928, guid: b360f316f90685243b9df870c009e880,
         type: 3}
       propertyPath: m_BindingMode
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4237933460471830928, guid: b360f316f90685243b9df870c009e880,
         type: 3}
@@ -1244,7 +1249,7 @@ PrefabInstance:
     - target: {fileID: 4237933460471830928, guid: b360f316f90685243b9df870c009e880,
         type: 3}
       propertyPath: m_XDamping
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4237933460914409920, guid: b360f316f90685243b9df870c009e880,
         type: 3}

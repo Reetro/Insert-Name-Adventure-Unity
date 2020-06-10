@@ -3,8 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
-{   
+{
+    [SerializeField] PlayerController player = null;
+
     void Update()
+    {
+        RotateGunToMouse();
+        RotatePlayer();
+    }
+
+    private void RotatePlayer()
+    {
+        Vector3 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (mousepos.x < transform.position.x)
+        {
+            player.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
+        }
+        else
+        {
+            player.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
+        }
+    }
+
+    private void RotateGunToMouse()
     {
         Vector3 mousePos = Input.mousePosition;
         Vector3 gunPos = Camera.main.WorldToScreenPoint(transform.position);
