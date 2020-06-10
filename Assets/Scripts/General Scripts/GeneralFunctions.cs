@@ -33,7 +33,7 @@ public class GeneralFunctions
             return false;
         }
     }
-    // Will rotate the objective the opposite way it's currently facing
+    // Will rotate the object the opposite way it's currently facing
     public static void FlipObject(GameObject objectToFlip)
     {
         Vector3 scaler = objectToFlip.transform.localScale;
