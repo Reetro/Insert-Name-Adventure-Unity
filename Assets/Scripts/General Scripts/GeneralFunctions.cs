@@ -36,8 +36,6 @@ public class GeneralFunctions
     // Will rotate the object the opposite way it's currently facing
     public static void FlipObject(GameObject objectToFlip)
     {
-        Vector3 scaler = objectToFlip.transform.localScale;
-        scaler.x *= -1;
-        objectToFlip.transform.localScale = scaler;
+        objectToFlip.transform.Rotate(0f, 180f, 0f);
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerGun : MonoBehaviour
 {
     [SerializeField] PlayerController player = null;
+    public Transform fireLocation = null;
+    public LineRenderer lineRender = null;
+    [SerializeField] float gunRange = 10f;
 
     void Update()
     {
@@ -12,11 +15,25 @@ public class PlayerGun : MonoBehaviour
         RotatePlayer();
     }
 
+    public void FireGun()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(fireLocation.position, fireLocation.rotation.eulerAngles);
+
+        if (hitInfo)
+        {
+            Debug.Log(hitInfo.collider.name);
+
+            Debug.DrawLine(fireLocation.position, hitInfo.point, Color.green, 2.4f);
+        }
+        else
+        {
+            
+        }
+    }
+
     private void RotatePlayer()
     {
-        Vector3 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (mousepos.x < transform.position.x)
+        if (MouseLeftOrRight())
         {
             player.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
         }
@@ -35,15 +52,28 @@ public class PlayerGun : MonoBehaviour
         mousePos.y = mousePos.y - gunPos.y;
         float gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
-        bool leftOrRight = Camera.main.ScreenToWorldPoint(Input.mousePosition).x < transform.position.x;
-
-        if (leftOrRight)
+        if (MouseLeftOrRight())
         {
             transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
         }
         else
         {
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
+        }
+    }
+
+    private bool MouseLeftOrRight()
+    {
+        var playerScreenPoint = Camera.main.WorldToScreenPoint(player.transform.position);
+        float mouseX = Input.mousePosition.x;
+
+        if (mouseX < playerScreenPoint.x)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

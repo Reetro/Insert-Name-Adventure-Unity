@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
+    [SerializeField] PlayerGun currentGun = null;
 
     float horizontalMove = 0f;
     bool jump = false;
@@ -25,6 +26,11 @@ public class PlayerController : MonoBehaviour
         {
             jump = true;
             myAnimator.SetBool("IsJumping", true);
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            currentGun.FireGun();
         }
     }
 
