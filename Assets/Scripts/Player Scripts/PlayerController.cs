@@ -34,9 +34,14 @@ public class PlayerController : MonoBehaviour
             currentGun.FireGun();
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            GetComponent<HealthComponent>().ProccessDamage(1);
+            GetComponent<HealthComponent>().ProccessDamage(1.5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            GetComponent<HealthComponent>().AddHealth(1.5f);
         }
     }
 

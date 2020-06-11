@@ -29,6 +29,11 @@ public class HealthComponent : MonoBehaviour
     public void AddHealth(float amountToAdd)
     {
         currentHealth = Mathf.Clamp(currentHealth + amountToAdd, 0, maxHealth);
+
+        if (healthBar)
+        {
+            healthBar.SetHealth(currentHealth);
+        }
     }
 
     public void ProccessDamage(float damage)
