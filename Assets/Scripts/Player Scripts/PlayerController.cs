@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
         {
             currentGun.FireGun();
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            GetComponent<HealthComponent>().ProccessDamage(1);
+        }
     }
 
     private void FixedUpdate()
@@ -39,6 +44,11 @@ public class PlayerController : MonoBehaviour
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
         jump = false;
     }
+
+    public void OnDeath()
+    {
+        Debug.Log("you dead");
+    }    
 
     public void OnLanding()
     {

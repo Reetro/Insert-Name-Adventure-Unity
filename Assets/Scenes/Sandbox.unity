@@ -1068,33 +1068,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1847705472 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4237933460914409920, guid: b360f316f90685243b9df870c009e880,
-    type: 3}
-  m_PrefabInstance: {fileID: 7026414974160567894}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &1847705475
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847705472}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1001 &1908042763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1102,6 +1075,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1635639793, guid: cc246d770541c064c815f693d2e76fd1, type: 3}
+      propertyPath: debugGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1635639793, guid: cc246d770541c064c815f693d2e76fd1, type: 3}
+      propertyPath: m_WhatCanIHit.m_Bits
+      value: 311
+      objectReference: {fileID: 0}
     - target: {fileID: 4157925456995496915, guid: cc246d770541c064c815f693d2e76fd1,
         type: 3}
       propertyPath: m_Name
