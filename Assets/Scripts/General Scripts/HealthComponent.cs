@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour
 {
+    [System.Serializable]
+    public class TakeAnyDamge : UnityEvent<float> { }
+
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
 
@@ -12,6 +15,8 @@ public class HealthComponent : MonoBehaviour
     [Header("Events")]
     [Space]
     public UnityEvent OnDeath;
+    [Space]
+    public TakeAnyDamge onTakeAnyDamage;
 
     private float currentHealth = 0f;
     private bool isDead = false;
@@ -39,6 +44,8 @@ public class HealthComponent : MonoBehaviour
     public void ProccessDamage(float damage)
     {
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+
+        onTakeAnyDamage.Invoke(damage);
 
         if (healthBar)
         {

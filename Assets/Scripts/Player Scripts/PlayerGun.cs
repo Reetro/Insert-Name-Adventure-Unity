@@ -7,11 +7,14 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] PlayerController controller = null;
 
     [Header("Gun Settings")]
+    [SerializeField] float gunRange = 10f;
+    [SerializeField] float laserUpTime = 2f;
+    [SerializeField] float gunDamage = 3.5f;
+
+    [Header("Config Settings")]
+    public LayerMask m_WhatCanIHit;
     public Transform fireLocation = null;
     public LineRenderer lineRender = null;
-    [SerializeField] float gunRange = 10f;
-    public LayerMask m_WhatCanIHit;
-    [SerializeField] float laserUpTime = 2f;
 
     [Header("Debug Settings")]
     [SerializeField] bool debugGun = false;
@@ -35,6 +38,7 @@ public class PlayerGun : MonoBehaviour
             Debug.DrawRay(fireLocation.position, fireDirection * gunRange, Color.red, debugLineDuration);
         }
 
+        // Fire gun ray cast from given fire locations
         RaycastHit2D hit2D = Physics2D.Raycast(fireLocation.position, fireLocation.TransformDirection(fireDirection), gunRange, m_WhatCanIHit);
         
         if (hit2D)
@@ -44,6 +48,15 @@ public class PlayerGun : MonoBehaviour
                 Debug.Log(hit2D.collider.name);
             }
 
+            // see if hit object can be damaged
+            var healtComp = hit2D.transform.GetComponent<HealthComponent>();
+
+            if (healtComp)
+            {
+                healtComp.ProccessDamage(gunDamage);
+            }
+
+            // Draw laser
             lineRender.SetPosition(0, fireLocation.position);
             lineRender.SetPosition(1, hit2D.point);
         }
@@ -51,16 +64,20 @@ public class PlayerGun : MonoBehaviour
         {
             Vector3 newFireDirection = fireDirection;
 
+            // Get trace end point
             var endPoint = fireLocation.position + newFireDirection * gunRange;
 
+            // Draw laser
             lineRender.SetPosition(0, fireLocation.position);
             lineRender.SetPosition(1, endPoint);
         }
 
+        // Show laser
         lineRender.enabled = true;
 
         yield return new WaitForSeconds(laserUpTime);
 
+        // hide laser
         lineRender.enabled = false;
         lineRender.positionCount = 0;
     }

@@ -68,11 +68,9 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1034153695
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: -1
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -256,13 +254,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 5065280756885518072}
-  fireLocation: {fileID: 3046961054608351218}
-  lineRender: {fileID: 1643401585}
   gunRange: 1
+  laserUpTime: 0.02
+  gunDamage: 3.5
   m_WhatCanIHit:
     serializedVersion: 2
-    m_Bits: 311
-  laserUpTime: 0.02
+    m_Bits: 1335
+  fireLocation: {fileID: 3046961054608351218}
+  lineRender: {fileID: 1643401585}
   debugGun: 0
   debugLineDuration: 2
 --- !u!1 &4157925455522904728
