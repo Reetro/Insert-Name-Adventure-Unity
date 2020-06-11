@@ -11,6 +11,7 @@ public class PlayerGun : MonoBehaviour
     public LineRenderer lineRender = null;
     [SerializeField] float gunRange = 10f;
     public LayerMask m_WhatCanIHit;
+    [SerializeField] float laserUpTime = 2f;
 
     [Header("Debug Settings")]
     [SerializeField] bool debugGun = false;
@@ -24,9 +25,10 @@ public class PlayerGun : MonoBehaviour
         RotatePlayer();
     }
 
-    public void FireGun()
+    public IEnumerator FireGun()
     {
         var fireDirection = GeneralFunctions.GetDirectionVector2D(gunAngle);
+        lineRender.positionCount = 2;
 
         if (debugGun)
         {
@@ -41,7 +43,26 @@ public class PlayerGun : MonoBehaviour
             {
                 Debug.Log(hit2D.collider.name);
             }
+
+            lineRender.SetPosition(0, fireLocation.position);
+            lineRender.SetPosition(1, hit2D.point);
         }
+        else
+        {
+            Vector3 newFireDirection = fireDirection;
+
+            var endPoint = fireLocation.position + newFireDirection * gunRange;
+
+            lineRender.SetPosition(0, fireLocation.position);
+            lineRender.SetPosition(1, endPoint);
+        }
+
+        lineRender.enabled = true;
+
+        yield return new WaitForSeconds(laserUpTime);
+
+        lineRender.enabled = false;
+        lineRender.positionCount = 0;
     }
 
     private void RotatePlayer()

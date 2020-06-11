@@ -9,12 +9,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField] TextMeshProUGUI maxHealthText = null;
     [SerializeField] TextMeshProUGUI currentHealthText = null;
 
-    Slider slider = null;
-
-    private void Start()
-    {
-        slider = GetComponent<Slider>();
-    }
+    public Slider slider = null;
 
     public void SetMaxHealth(float maxHealth)
     {
