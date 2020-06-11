@@ -22,8 +22,6 @@ public class GeneralFunctions
     // Checks to see if the given number is negative
     public static bool IsNumberNegative(float number)
     {
-        Debug.Log(number);
-
         if (number < 0)
         {
             return true;

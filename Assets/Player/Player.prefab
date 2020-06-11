@@ -467,8 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71772957482177c42b4bb43758ae7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 40
   currentGun: {fileID: 1635639793}
+  runSpeed: 40
 --- !u!114 &1364893853460561661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,7 +514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 10
+  maxHealth: 10
+  healthBar: {fileID: 0}
   OnDeath:
     m_PersistentCalls:
       m_Calls:

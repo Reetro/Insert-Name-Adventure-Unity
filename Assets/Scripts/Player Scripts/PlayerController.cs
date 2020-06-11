@@ -2,9 +2,10 @@
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] PlayerGun currentGun = null;
+
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
-    [SerializeField] PlayerGun currentGun = null;
 
     float horizontalMove = 0f;
     bool jump = false;
@@ -47,7 +48,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnDeath()
     {
-        Debug.Log("you dead");
+        // TODO Setup check point system and add a restart button
+
     }    
 
     public void OnLanding()
