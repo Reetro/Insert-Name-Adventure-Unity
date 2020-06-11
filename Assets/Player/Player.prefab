@@ -128,10 +128,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387e65e04f4ea274386c1174856a8f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 5065280756885518072}
+  controller: {fileID: 5065280756885518072}
   fireLocation: {fileID: 3046961054608351218}
   lineRender: {fileID: 1181931414083739067}
-  gunRange: 10
+  gunRange: 1
+  m_WhatCanIHit:
+    serializedVersion: 2
+    m_Bits: 279
+  debugGun: 0
+  debugLineDuration: 2
 --- !u!1 &4157925455522904728
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +677,31 @@ PrefabInstance:
     - target: {fileID: 5112922053825882276, guid: 81ec59779d541484fb8f9888b9f8a6c7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5144490224683057987, guid: 81ec59779d541484fb8f9888b9f8a6c7,
+        type: 3}
+      propertyPath: m_Positions.Array.data[0].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5144490224683057987, guid: 81ec59779d541484fb8f9888b9f8a6c7,
+        type: 3}
+      propertyPath: m_Positions.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5144490224683057987, guid: 81ec59779d541484fb8f9888b9f8a6c7,
+        type: 3}
+      propertyPath: m_Positions.Array.data[0].z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5144490224683057987, guid: 81ec59779d541484fb8f9888b9f8a6c7,
+        type: 3}
+      propertyPath: m_Positions.Array.data[1].x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5144490224683057987, guid: 81ec59779d541484fb8f9888b9f8a6c7,
+        type: 3}
+      propertyPath: m_Positions.Array.data[1].y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

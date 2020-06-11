@@ -38,4 +38,9 @@ public class GeneralFunctions
     {
         objectToFlip.transform.Rotate(0f, 180f, 0f);
     }
+    // Gets the directional vector of an angle 
+    public static Vector2 GetDirectionVector2D(float angle)
+    {
+        return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+    }
 }

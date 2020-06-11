@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
 {
-    [SerializeField] PlayerController player = null;
+    [SerializeField] PlayerController controller = null;
+
+    [Header("Gun Settings")]
     public Transform fireLocation = null;
     public LineRenderer lineRender = null;
     [SerializeField] float gunRange = 10f;
+    public LayerMask m_WhatCanIHit;
+
+    [Header("Debug Settings")]
+    [SerializeField] bool debugGun = false;
+    [SerializeField] float debugLineDuration = 2f;
+
+    float gunAngle = 0f;
 
     void Update()
     {
@@ -17,17 +26,21 @@ public class PlayerGun : MonoBehaviour
 
     public void FireGun()
     {
-        RaycastHit2D hitInfo = Physics2D.Raycast(fireLocation.position, fireLocation.rotation.eulerAngles);
+        var fireDirection = GeneralFunctions.GetDirectionVector2D(gunAngle);
 
-        if (hitInfo)
+        if (debugGun)
         {
-            Debug.Log(hitInfo.collider.name);
-
-            Debug.DrawLine(fireLocation.position, hitInfo.point, Color.green, 2.4f);
+            Debug.DrawRay(fireLocation.position, fireDirection * gunRange, Color.red, debugLineDuration);
         }
-        else
+
+        RaycastHit2D hit2D = Physics2D.Raycast(fireLocation.position, fireLocation.TransformDirection(fireDirection), gunRange, m_WhatCanIHit);
+        
+        if (hit2D)
         {
-            
+            if (debugGun)
+            {
+                Debug.Log(hit2D.collider.name);
+            }
         }
     }
 
@@ -35,11 +48,11 @@ public class PlayerGun : MonoBehaviour
     {
         if (MouseLeftOrRight())
         {
-            player.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
+            controller.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
         }
         else
         {
-            player.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
+            controller.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
         }
     }
 
@@ -50,7 +63,7 @@ public class PlayerGun : MonoBehaviour
 
         mousePos.x = mousePos.x - gunPos.x;
         mousePos.y = mousePos.y - gunPos.y;
-        float gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
         if (MouseLeftOrRight())
         {
@@ -64,7 +77,7 @@ public class PlayerGun : MonoBehaviour
 
     private bool MouseLeftOrRight()
     {
-        var playerScreenPoint = Camera.main.WorldToScreenPoint(player.transform.position);
+        var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);
         float mouseX = Input.mousePosition.x;
 
         if (mouseX < playerScreenPoint.x)
