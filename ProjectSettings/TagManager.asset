@@ -53,3 +53,6 @@ TagManager:
   - name: Lasers
     uniqueID: 3260813601
     locked: 0
+  - name: Damage Text
+    uniqueID: 3142916489
+    locked: 0

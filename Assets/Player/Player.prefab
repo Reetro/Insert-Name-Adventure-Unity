@@ -262,7 +262,7 @@ MonoBehaviour:
     m_Bits: 1335
   fireLocation: {fileID: 3046961054608351218}
   lineRender: {fileID: 1643401585}
-  debugGun: 0
+  debugGun: 1
   debugLineDuration: 2
 --- !u!1 &4157925455522904728
 GameObject:
@@ -643,6 +643,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  combatTextSpeed: 4
+  combatTextUpTime: 0.5
   healthBar: {fileID: 0}
   OnDeath:
     m_PersistentCalls:
@@ -658,6 +660,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4157925457032491714
 GameObject:
   m_ObjectHideFlags: 0

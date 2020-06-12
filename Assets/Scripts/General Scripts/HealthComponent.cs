@@ -8,6 +8,8 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
+    [SerializeField] float combatTextSpeed = 4f;
+    [SerializeField] float combatTextUpTime = 0.5f;
 
     [Header("Health Bar Settings")]
     [SerializeField] HealthBar healthBar = null;
@@ -23,6 +25,7 @@ public class HealthComponent : MonoBehaviour
 
     void Start()
     {
+        isDead = false;
         currentHealth = maxHealth;
 
         if (healthBar)
@@ -44,6 +47,8 @@ public class HealthComponent : MonoBehaviour
     public void ProccessDamage(float damage)
     {
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+
+        DamageText.CreateDamageText(damage, transform.localPosition, combatTextSpeed, combatTextUpTime);
 
         onTakeAnyDamage.Invoke(damage);
 

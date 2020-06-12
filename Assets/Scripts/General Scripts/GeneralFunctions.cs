@@ -22,14 +22,7 @@ public class GeneralFunctions
     // Checks to see if the given number is negative
     public static bool IsNumberNegative(float number)
     {
-        if (number < 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return number < 0;
     }
     // Will rotate the object the opposite way it's currently facing
     public static void FlipObject(GameObject objectToFlip)
@@ -37,8 +30,18 @@ public class GeneralFunctions
         objectToFlip.transform.Rotate(0f, 180f, 0f);
     }
     // Gets the directional vector of an angle 
-    public static Vector2 GetDirectionVector2D(float angle)
+    public static Vector2 GetDirectionVector2DFromAngle(float angle)
     {
         return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+    }
+    // Get the distance between to vectors
+    public static Vector2 GetDistanceBetweenVectors(Vector2 vector1, Vector2 vector2)
+    {
+        return vector1 - vector2;
+    }
+    
+    public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
+    {
+        return position1 - position2.normalized;
     }
 }

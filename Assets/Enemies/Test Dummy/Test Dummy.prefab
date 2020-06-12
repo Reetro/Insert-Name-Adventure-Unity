@@ -98,6 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  damageText: {fileID: 527034318886874728, guid: 556210a3c20aa5b49850bb739f810649,
+    type: 3}
   healthBar: {fileID: 0}
   OnDeath:
     m_PersistentCalls:

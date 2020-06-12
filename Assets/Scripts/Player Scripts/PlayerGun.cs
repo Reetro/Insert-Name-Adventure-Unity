@@ -31,7 +31,7 @@ public class PlayerGun : MonoBehaviour
 
     public void FireGun()
     {
-        var fireDirection = GeneralFunctions.GetDirectionVector2D(gunAngle);
+        var fireDirection = GeneralFunctions.GetDirectionVector2DFromAngle(gunAngle);
 
         if (debugGun)
         {
