@@ -21,7 +21,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        myAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
+        myAnimator.SetFloat("Speed", horizontalMove);
+
+        if (horizontalMove == 0)
+        {
+            myAnimator.SetBool("Idle", true);
+        }
+        else
+        {
+            myAnimator.SetBool("Idle", false);
+        }
         
         if (Input.GetButtonDown("Jump"))
         {
