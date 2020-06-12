@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-           StartCoroutine(currentGun.FireGun());
+            currentGun.FireGun();
         }
 
         if (Input.GetKeyDown(KeyCode.J))

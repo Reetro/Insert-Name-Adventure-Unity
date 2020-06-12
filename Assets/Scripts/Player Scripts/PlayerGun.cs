@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
@@ -28,10 +29,9 @@ public class PlayerGun : MonoBehaviour
         RotatePlayer();
     }
 
-    public IEnumerator FireGun()
+    public void FireGun()
     {
         var fireDirection = GeneralFunctions.GetDirectionVector2D(gunAngle);
-        lineRender.positionCount = 2;
 
         if (debugGun)
         {
@@ -39,26 +39,62 @@ public class PlayerGun : MonoBehaviour
         }
 
         // Fire gun ray cast from given fire locations
-        RaycastHit2D hit2D = Physics2D.Raycast(fireLocation.position, fireLocation.TransformDirection(fireDirection), gunRange, m_WhatCanIHit);
-        
-        if (hit2D)
+        RaycastHit2D[] hitObjects = Physics2D.RaycastAll(fireLocation.position, fireLocation.TransformDirection(fireDirection), gunRange, m_WhatCanIHit);
+
+        var lastIndex = hitObjects.Length - 1;
+
+        if (hitObjects.Length > 0)
         {
-            if (debugGun)
+            for (int Index = 0; Index < hitObjects.Length; Index++)
             {
-                Debug.Log(hit2D.collider.name);
+                if (Index == lastIndex)
+                {
+                    if (hitObjects[lastIndex])
+                    {
+                        var healthComp = hitObjects[0].transform.GetComponent<HealthComponent>();
+
+                        if (healthComp)
+                        {
+                            healthComp.ProccessDamage(gunDamage);
+                        }
+
+                        if (debugGun)
+                        {
+                            Debug.Log("Hit: " + hitObjects[lastIndex].collider.name);
+                        }
+
+                        // Spawn laser
+                        StartCoroutine(DrawLaser(fireLocation.position, hitObjects[lastIndex].point));
+                    }
+                    else
+                    {
+                        Vector3 newFireDirection = fireDirection;
+
+                        // Get trace end point
+                        var endPoint = fireLocation.position + newFireDirection * gunRange;
+
+                        // Spawn laser
+                        StartCoroutine(DrawLaser(fireLocation.position, endPoint));
+                    }
+                }
+                else
+                {
+                    if (hitObjects[Index])
+                    {
+                        var healthComp = hitObjects[0].transform.GetComponent<HealthComponent>();
+
+                        if (healthComp)
+                        {
+                            healthComp.ProccessDamage(gunDamage);
+                        }
+
+                        if (debugGun)
+                        {
+                            Debug.Log("Hit: " + hitObjects[Index].collider.name);
+                        }
+                    }
+                }
             }
-
-            // see if hit object can be damaged
-            var healtComp = hit2D.transform.GetComponent<HealthComponent>();
-
-            if (healtComp)
-            {
-                healtComp.ProccessDamage(gunDamage);
-            }
-
-            // Draw laser
-            lineRender.SetPosition(0, fireLocation.position);
-            lineRender.SetPosition(1, hit2D.point);
         }
         else
         {
@@ -67,10 +103,17 @@ public class PlayerGun : MonoBehaviour
             // Get trace end point
             var endPoint = fireLocation.position + newFireDirection * gunRange;
 
-            // Draw laser
-            lineRender.SetPosition(0, fireLocation.position);
-            lineRender.SetPosition(1, endPoint);
+            // Spawn laser
+            StartCoroutine(DrawLaser(fireLocation.position, endPoint));
         }
+    }
+
+    private IEnumerator DrawLaser(Vector3 startPoint, Vector3 endPoint)
+    {
+        lineRender.positionCount = 2;
+
+        lineRender.SetPosition(0, startPoint);
+        lineRender.SetPosition(1, endPoint);
 
         // Show laser
         lineRender.enabled = true;
@@ -118,13 +161,6 @@ public class PlayerGun : MonoBehaviour
         var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);
         float mouseX = Input.mousePosition.x;
 
-        if (mouseX < playerScreenPoint.x)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return mouseX < playerScreenPoint.x ? true : false;
     }
 }
