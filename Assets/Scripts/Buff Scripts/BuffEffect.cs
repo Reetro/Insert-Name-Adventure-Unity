@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BuffEffect : MonoBehaviour
 {
@@ -28,24 +26,35 @@ public class BuffEffect : MonoBehaviour
 
     public virtual void OnBuffEnd()
     {
-        auraManager.RemoveBuff(this);
+        auraManager.RemoveBuff(gameObject, this);
     }
 
     private void Update()
     {
         if (buffIsRuning)
         {
-            duration -= Time.deltaTime;
-
-            if (duration <= 0)
+            if (duration > 0)
             {
-                OnBuffEnd();
+                duration -= Time.deltaTime;
+                ApplyBuffEffect(buffAmount);
             }
             else
             {
-                ApplyBuffEffect(buffAmount);
+                buffIsRuning = false;
+                duration = 0;
+                OnBuffEnd();
             }
         }
+    }
+
+    public ScriptableBuff GetBuff()
+    {
+        return buff;
+    }
+
+    public bool GetBuffRunning()
+    {
+        return buffIsRuning;
     }
 
     public float GetDuration()

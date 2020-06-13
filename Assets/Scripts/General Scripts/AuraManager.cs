@@ -6,7 +6,7 @@ public class AuraManager : MonoBehaviour
 {
     public BuffIcon iconPrefab;
 
-    private List<BuffEffect> currentBuffs = null;
+    private List<BuffEffect> currentBuffs = new List<BuffEffect>();
     private GameObject currentTarget = null;
     private bool iconWasMade = false;
 
@@ -18,7 +18,9 @@ public class AuraManager : MonoBehaviour
 
         buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply);
 
-        //currentBuffs.Add(buff);
+        Debug.Log(buff);
+
+        currentBuffs.Add(buff);
 
         // TODO create a start buff function that actually apply buff effects to selected target
 
@@ -39,11 +41,11 @@ public class AuraManager : MonoBehaviour
         iconWasMade = true;
     }
 
-    public void RemoveBuff(BuffEffect buffEffect)
+    public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
     {
-        //currentBuffs.Remove(buffEffect);
+        currentBuffs.Remove(effect);
 
-        Destroy(buffEffect);
+        Destroy(buffEffectObject);
     }
 
     public List<BuffEffect> GetCurrentBuffs()
