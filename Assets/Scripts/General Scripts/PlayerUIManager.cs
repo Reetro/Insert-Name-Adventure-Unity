@@ -9,8 +9,10 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] GridLayoutGroup buffGridLayoutGroup = null;
     [SerializeField] GridLayoutGroup debuffGridLayoutGroup = null;
     [SerializeField] BuffIcon buffIconPrefab = null;
+    [SerializeField] DebuffIcon debuffIconPrefab = null;
 
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
+    private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
 
     public BuffIcon AddBuffIcon(ScriptableBuff buff)
     {
@@ -22,9 +24,26 @@ public class PlayerUIManager : MonoBehaviour
         return icon;
     }
 
-    public void RemoveIcon(BuffIcon iconToRemove)
+    public void RemoveBuffIcon(BuffIcon iconToRemove)
     {
         buffIcons.Remove(iconToRemove);
+
+        Destroy(iconToRemove.gameObject);
+    }
+
+    public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff)
+    {
+        DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
+        debuffIcons.Add(icon);
+
+        icon.StartCooldown(debuff);
+
+        return icon;
+    }
+
+    public void RemoveDebuffIcon(DebuffIcon iconToRemove)
+    {
+        debuffIcons.Remove(iconToRemove);
 
         Destroy(iconToRemove.gameObject);
     }

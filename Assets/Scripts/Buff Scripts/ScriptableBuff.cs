@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Buff", menuName = "Create New Buff")]
 public class ScriptableBuff : ScriptableObject

@@ -256,6 +256,8 @@ MonoBehaviour:
   debuffGridLayoutGroup: {fileID: 5879304285437803037}
   buffIconPrefab: {fileID: 4993373258369533981, guid: 719b901d72439f14ab08ed45fe5136fa,
     type: 3}
+  debuffIconPrefab: {fileID: 6851637741438254873, guid: d9c304060597d2f42ac990c838bf16bc,
+    type: 3}
 --- !u!1 &8175054866665928326
 GameObject:
   m_ObjectHideFlags: 0

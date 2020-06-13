@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     CharacterController2D controller = null;
 
     public ScriptableBuff buffToApply = null;
+    public ScriptableDebuff debuffToApply = null;
 
     private void Start()
     {
@@ -59,6 +60,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.N))
         {
             GetComponent<AuraManager>().ApplyBuff(gameObject, buffToApply, true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GetComponent<AuraManager>().ApplyDebuff(gameObject, debuffToApply, true);
         }
     }
 

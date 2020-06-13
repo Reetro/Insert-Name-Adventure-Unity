@@ -6,26 +6,30 @@ public class BuffEffect : MonoBehaviour
     private float buffAmount = 0f;
     private AuraManager auraManager = null;
     private ScriptableBuff buff = null;
-    protected BuffIcon buffIcon = null;
+    private GameObject target = null;
+
+    protected BuffIcon icon = null;
 
     private bool buffIsRuning = false;
-    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon)
+    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target)
     {
         this.duration = duration;
         this.buffAmount = buffAmount;
         this.auraManager = auraManager;
         this.buff = buff;
-        buffIcon = icon;
+        this.icon = icon;
+        this.target = target;
 
         buffIsRuning = true;
     }
 
-    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff)
+    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target)
     {
         this.duration = duration;
         this.buffAmount = buffAmount;
         this.auraManager = auraManager;
         this.buff = buff;
+        this.target = target;
 
         buffIsRuning = true;
     }
@@ -38,9 +42,9 @@ public class BuffEffect : MonoBehaviour
 
     public virtual void OnBuffEnd()
     {
-        if (buffIcon)
+        if (icon)
         {
-            auraManager.RemoveBuff(gameObject, this, buffIcon);
+            auraManager.RemoveBuff(gameObject, this, icon);
         }
         else
         {
@@ -64,6 +68,11 @@ public class BuffEffect : MonoBehaviour
                 OnBuffEnd();
             }
         }
+    }
+
+    public GameObject GetTarget()
+    {
+        return target;
     }
 
     public ScriptableBuff GetBuff()
