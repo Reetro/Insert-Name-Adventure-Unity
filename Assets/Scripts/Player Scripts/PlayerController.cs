@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     Animator myAnimator = null;
     CharacterController2D controller = null;
 
+    public ScriptableBuff buffToApply = null;
+
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
@@ -52,6 +54,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             GetComponent<HealthComponent>().AddHealth(1.5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            GetComponent<AuraManager>().ApplyBuff(gameObject, buffToApply, false);
         }
     }
 

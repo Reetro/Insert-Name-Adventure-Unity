@@ -16,4 +16,6 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform damgeText;
+
+    public PlayerUIManager playerUIManager;
 }

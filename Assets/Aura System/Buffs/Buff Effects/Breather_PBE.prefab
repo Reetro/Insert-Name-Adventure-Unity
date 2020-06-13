@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2342052356953070516
+--- !u!1 &6841687236850863055
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3987591123011306920}
-  - component: {fileID: 7571590025965504494}
+  - component: {fileID: 507928799963593404}
+  - component: {fileID: 2832589897876261140}
   m_Layer: 0
-  m_Name: GameAssetLoader
+  m_Name: Breather_PBE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3987591123011306920
+--- !u!4 &507928799963593404
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2342052356953070516}
+  m_GameObject: {fileID: 6841687236850863055}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0097609, y: 1.6366862, z: -83.6075}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7571590025965504494
+--- !u!114 &2832589897876261140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2342052356953070516}
+  m_GameObject: {fileID: 6841687236850863055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 902619323d917ad4aadbfd53a023ae8a, type: 3}
+  m_Script: {fileID: 11500000, guid: e8b550ddb292eb84abfa2fb51f4ed367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damgeText: {fileID: 1682482932993874278, guid: 556210a3c20aa5b49850bb739f810649,
-    type: 3}
-  auraManager: {fileID: 1950898467056045271, guid: 489bab88ad08b70469cd4c73cd03b306,
-    type: 3}
-  buffIcon: {fileID: 5038645610625884843, guid: 719b901d72439f14ab08ed45fe5136fa,
-    type: 3}
