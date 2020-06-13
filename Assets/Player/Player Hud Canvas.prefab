@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 7, y: -4.974121}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 412.38867, y: 140.49683}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5636609340420415703
 CanvasRenderer:
@@ -65,8 +65,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 20, y: 20}
-  m_Spacing: {x: 0.5, y: 0.5}
+  m_CellSize: {x: 50, y: 50}
+  m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &8175054866649225385
@@ -183,6 +183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buffGridLayoutGroup: {fileID: 6803118266977838659}
+  buffIconPrefab: {fileID: 4993373258369533981, guid: 719b901d72439f14ab08ed45fe5136fa,
+    type: 3}
 --- !u!1 &8175054866665928326
 GameObject:
   m_ObjectHideFlags: 0

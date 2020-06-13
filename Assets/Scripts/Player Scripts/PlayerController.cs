@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.N))
         {
-            GetComponent<AuraManager>().ApplyBuff(gameObject, buffToApply, false);
+            GetComponent<AuraManager>().ApplyBuff(gameObject, buffToApply, true);
         }
     }
 

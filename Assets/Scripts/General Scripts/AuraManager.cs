@@ -8,7 +8,12 @@ public class AuraManager : MonoBehaviour
 
     private List<BuffEffect> currentBuffs = new List<BuffEffect>();
     private GameObject currentTarget = null;
-    private bool iconWasMade = false;
+    private PlayerUIManager playerUIManager = null;
+
+    private void Start()
+    {
+        playerUIManager = FindObjectOfType<PlayerUIManager>();
+    }
 
     public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
@@ -16,29 +21,39 @@ public class AuraManager : MonoBehaviour
 
         BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity) as BuffEffect;
 
-        buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply);
+        if (createIcon)
+        {
+            var buffIcon = CreateBuffIcon(buffToApply);
 
-        Debug.Log(buff);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon);
+        }
+        else
+        {
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply);
+        }
 
         currentBuffs.Add(buff);
-
-        // TODO create a start buff function that actually apply buff effects to selected target
-
-        //if (createIcon)
-        //{
-        //    CreateBuffIcon(buffToApply);
-        //}
     }
 
-    private void CreateBuffIcon(ScriptableBuff buff)
+    private BuffIcon CreateBuffIcon(ScriptableBuff buff)
     {
-        BuffIcon icon = Instantiate(iconPrefab, transform.parent);
+        return playerUIManager.AddBuffIcon(buff);
+    }
 
-        icon.Initialize(buff);
+    public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
+    {
+        currentBuffs.Remove(effect);
 
-        GameAssets.instance.playerUIManager.AddBuffIcon(icon);
+        if (iconToRemove)
+        {
+            playerUIManager.RemoveIcon(iconToRemove);
+        }
+        else
+        {
+            Debug.LogError("Failed to remove "  + buffEffectObject.name + "buff Icon is invalid");
+        }
 
-        iconWasMade = true;
+        Destroy(buffEffectObject);
     }
 
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)

@@ -7,9 +7,25 @@ using UnityEngine.UI;
 public class PlayerUIManager : MonoBehaviour
 {
     [SerializeField] GridLayoutGroup buffGridLayoutGroup = null;
+    [SerializeField] BuffIcon buffIconPrefab = null;
 
-    public void AddBuffIcon(BuffIcon buffIcon)
+    private List<BuffIcon> buffIcons = new List<BuffIcon>();
+
+    public BuffIcon AddBuffIcon(ScriptableBuff buff)
     {
+        BuffIcon icon = Instantiate(buffIconPrefab, transform.position, Quaternion.identity);
+        icon.transform.SetParent(buffGridLayoutGroup.transform);
+        buffIcons.Add(icon);
 
+        icon.StartCooldown(buff);
+
+        return icon;
+    }
+
+    public void RemoveIcon(BuffIcon iconToRemove)
+    {
+        buffIcons.Remove(iconToRemove);
+
+        Destroy(iconToRemove.gameObject);
     }
 }

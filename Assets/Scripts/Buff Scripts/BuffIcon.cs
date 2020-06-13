@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BuffIcon : MonoBehaviour
 {
     [SerializeField] private Image durationImage = null;
     [SerializeField] private Image icon = null;
+    private ScriptableBuff buff = null;
 
-    public ScriptableBuff buff { get; private set; }
-
-    public void Initialize(ScriptableBuff buff)
+    public void StartCooldown(ScriptableBuff buff)
     {
         this.buff = buff;
-        icon.sprite = buff.artwork;
-        durationImage.fillAmount = 0;
+        icon.sprite = this.buff.artwork;
+        durationImage.fillAmount = 1;
     }
 
     void Update()

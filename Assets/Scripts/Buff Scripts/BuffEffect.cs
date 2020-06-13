@@ -6,8 +6,20 @@ public class BuffEffect : MonoBehaviour
     private float buffAmount = 0f;
     private AuraManager auraManager = null;
     private ScriptableBuff buff = null;
+    protected BuffIcon buffIcon = null;
 
     private bool buffIsRuning = false;
+    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon)
+    {
+        this.duration = duration;
+        this.buffAmount = buffAmount;
+        this.auraManager = auraManager;
+        this.buff = buff;
+        buffIcon = icon;
+
+        buffIsRuning = true;
+    }
+
     public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff)
     {
         this.duration = duration;
@@ -26,7 +38,14 @@ public class BuffEffect : MonoBehaviour
 
     public virtual void OnBuffEnd()
     {
-        auraManager.RemoveBuff(gameObject, this);
+        if (buffIcon)
+        {
+            auraManager.RemoveBuff(gameObject, this, buffIcon);
+        }
+        else
+        {
+            auraManager.RemoveBuff(gameObject, this);
+        }
     }
 
     private void Update()
