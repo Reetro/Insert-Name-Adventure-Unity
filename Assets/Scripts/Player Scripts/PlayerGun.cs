@@ -22,6 +22,8 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] float debugLineDuration = 2f;
 
     float gunAngle = 0f;
+    Vector3 fireRotation;
+    Vector2 fireDirection;
 
     void Update()
     {
@@ -31,15 +33,8 @@ public class PlayerGun : MonoBehaviour
 
     public void FireGun()
     {
-        var fireDirection = GeneralFunctions.GetDirectionVector2DFromAngle(gunAngle);
-
-        if (debugGun)
-        {
-            Debug.DrawRay(fireLocation.position, fireDirection * gunRange, Color.red, debugLineDuration);
-        }
-
         // Fire gun ray cast from given fire locations
-        RaycastHit2D[] hitObjects = Physics2D.RaycastAll(fireLocation.position, fireLocation.TransformDirection(fireDirection), gunRange, m_WhatCanIHit);
+        RaycastHit2D[] hitObjects = Physics2D.RaycastAll(fireLocation.position, fireRotation, gunRange, m_WhatCanIHit);
 
         var lastIndex = hitObjects.Length - 1;
 
@@ -47,6 +42,11 @@ public class PlayerGun : MonoBehaviour
         {
             for (int Index = 0; Index < hitObjects.Length; Index++)
             {
+                Vector3 newFireDirection = fireRotation;
+
+                // Get trace end point
+                var endPoint = fireLocation.position + newFireDirection * gunRange;
+
                 if (Index == lastIndex)
                 {
                     if (hitObjects[lastIndex])
@@ -64,14 +64,11 @@ public class PlayerGun : MonoBehaviour
                         }
 
                         // Spawn laser
-                        StartCoroutine(DrawLaser(fireLocation.position, hitObjects[lastIndex].point));
+                        StartCoroutine(DrawLaser(fireLocation.position, endPoint));
                     }
                     else
                     {
-                        Vector3 newFireDirection = fireDirection;
-
-                        // Get trace end point
-                        var endPoint = fireLocation.position + newFireDirection * gunRange;
+                        
 
                         // Spawn laser
                         StartCoroutine(DrawLaser(fireLocation.position, endPoint));
@@ -146,13 +143,19 @@ public class PlayerGun : MonoBehaviour
         mousePos.y = mousePos.y - gunPos.y;
         gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
+        fireDirection = GeneralFunctions.GetDirectionVector2DFromAngle(gunAngle);
+
         if (MouseLeftOrRight())
         {
             transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
+
+            fireRotation = fireLocation.TransformDirection(fireDirection) * -1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
+
+            fireRotation = fireLocation.TransformDirection(fireDirection);
         }
     }
 
