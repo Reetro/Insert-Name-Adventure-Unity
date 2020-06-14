@@ -19,7 +19,6 @@ public class PlayerGun : MonoBehaviour
 
     [Header("Debug Settings")]
     [SerializeField] bool debugGun = false;
-    [SerializeField] float debugLineDuration = 2f;
 
     float gunAngle = 0f;
     Vector3 fireRotation;
@@ -68,8 +67,6 @@ public class PlayerGun : MonoBehaviour
                     }
                     else
                     {
-                        
-
                         // Spawn laser
                         StartCoroutine(DrawLaser(fireLocation.position, endPoint));
                     }
