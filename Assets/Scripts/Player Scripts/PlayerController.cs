@@ -12,9 +12,6 @@ public class PlayerController : MonoBehaviour
     Animator myAnimator = null;
     CharacterController2D controller = null;
 
-    public ScriptableBuff buffToApply = null;
-    public ScriptableDebuff debuffToApply = null;
-
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
@@ -45,26 +42,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             currentGun.FireGun();
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GetComponent<HealthComponent>().ProccessDamage(1.5f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GetComponent<HealthComponent>().AddHealth(1.5f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            GetComponent<AuraManager>().ApplyBuff(gameObject, buffToApply, true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            GetComponent<AuraManager>().ApplyDebuff(gameObject, debuffToApply, true);
         }
     }
 
