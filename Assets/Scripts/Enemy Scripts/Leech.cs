@@ -6,25 +6,45 @@ public class Leech : MonoBehaviour
 
     [Header("Leech Movement Settings")]
     [SerializeField] float leechFlySpeed = 20f;
+    [SerializeField] float amountToAddToY = 0.005f;
 
-    private float moveDirection = 0f;
+    private Rigidbody2D myRigidbody2D = null;
+    private Animator myAnimator = null;
+    private Transform player = null;
+    private HealthComponent myHealth = null;
+
     private void Start()
     {
-        
+        myRigidbody2D = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponent<Animator>();
+        myHealth = GetComponent<HealthComponent>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
-
     private void Update()
     {
-        moveDirection = GetMoveDirection() * leechFlySpeed;
+        if (!myHealth.GetIsDead())
+        {
+            controller.LookAtTarget(player);
+
+            controller.AddToLeechY(transform, amountToAddToY);
+        }
     }
 
     private void FixedUpdate()
     {
-        
+        if (!myHealth.GetIsDead())
+        {
+            controller.MoveAITowards(player, myRigidbody2D, leechFlySpeed);
+        }
     }
 
-    private float GetMoveDirection()
+    public void OnDeath()
     {
-        return 0;
+        myAnimator.SetBool("IsDead", true);
+    }
+
+    public void OnDeathAnimationEnd()
+    {
+        Destroy(gameObject);
     }
 }

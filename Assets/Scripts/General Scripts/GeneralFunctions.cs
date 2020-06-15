@@ -37,7 +37,7 @@ public class GeneralFunctions
     {
         return vector1 - vector2;
     }
-    
+    // Gets the directional vector of 2 vectors 
     public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
     {
         return position1 - position2.normalized;

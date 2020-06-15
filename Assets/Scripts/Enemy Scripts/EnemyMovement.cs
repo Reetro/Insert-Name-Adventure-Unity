@@ -1,18 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    bool facingRight = false;
+
+    public void MoveAITowards(Transform target, Rigidbody2D rigidbody, float speed)
     {
-        
+        var direction = target.position - transform.position;
+
+        rigidbody.AddRelativeForce(direction.normalized * speed, ForceMode2D.Force);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LookAtTarget(Transform target)
     {
-        
+        if (target.position.x < transform.position.x && !facingRight)
+        {
+            facingRight = !facingRight;
+
+            GeneralFunctions.FlipObject(gameObject);
+        }
+        if (target.position.x > transform.position.x && facingRight)
+        {
+            facingRight = !facingRight;
+
+            GeneralFunctions.FlipObject(gameObject);
+        }
+    }
+
+    public void AddToLeechY(Transform leechTransfrom, float amountToAdd)
+    {
+        var temp = leechTransfrom.position;
+
+        temp.y += amountToAdd;
+
+        leechTransfrom.position = temp;
     }
 }

@@ -121,12 +121,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.3
   m_Material: {fileID: 6200000, guid: a900dc08f66b6e74b9c44a510f03a9af, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!61 &5653861939190943893
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,13 +165,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 3
   combatTextSpeed: 4
   combatTextUpTime: 0.5
   healthBar: {fileID: 0}
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5195909725976671376}
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onTakeAnyDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -188,7 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1521109787677265170}
-  leechFlySpeed: 20
+  leechFlySpeed: 6
+  amountToAddToY: 0.005
 --- !u!114 &1521109787677265170
 MonoBehaviour:
   m_ObjectHideFlags: 0
