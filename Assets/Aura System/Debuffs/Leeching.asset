@@ -19,7 +19,8 @@ MonoBehaviour:
     type: 3}
   ticks: 55
   useTicks: 0
-  refresh: 1
-  stack: 0
+  refresh: 0
+  stack: 1
   occurrence: 0.5
+  damage: 0.8
   debuffType: 0

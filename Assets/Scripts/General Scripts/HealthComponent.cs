@@ -46,21 +46,24 @@ public class HealthComponent : MonoBehaviour
 
     public void ProccessDamage(float damage)
     {
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-
-        DamageText.CreateDamageText(damage, transform.localPosition, combatTextSpeed, combatTextUpTime);
-
-        onTakeAnyDamage.Invoke(damage);
-
-        if (healthBar)
+        if (!isDead)
         {
-            healthBar.SetHealth(currentHealth);
-        }
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
-        if (currentHealth <= 0)
-        {
-            isDead = true;
-            OnDeath.Invoke();
+            DamageText.CreateDamageText(damage, transform.localPosition, combatTextSpeed, combatTextUpTime);
+
+            onTakeAnyDamage.Invoke(damage);
+
+            if (healthBar)
+            {
+                healthBar.SetHealth(currentHealth);
+            }
+
+            if (currentHealth <= 0)
+            {
+                isDead = true;
+                OnDeath.Invoke();
+            }
         }
     }
 

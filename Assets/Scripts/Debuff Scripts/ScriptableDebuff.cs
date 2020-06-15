@@ -29,6 +29,9 @@ public class ScriptableDebuff : ScriptableObject
     [Tooltip("How often the debuff effect is fired off")]
     public float occurrence;
 
+    [Tooltip("Amount of damage to apply to player")]
+    public float damage;
+
     public enum DebuffType 
     {
         Leeching,

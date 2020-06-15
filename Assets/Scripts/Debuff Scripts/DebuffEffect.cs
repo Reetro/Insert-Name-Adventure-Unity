@@ -11,6 +11,7 @@ public class DebuffEffect : MonoBehaviour
     public int stackCount = 1;
     private float defaultTickCount = 0f;
     private float maxTicks = 99999f;
+    private float damage = 0f;
     private HealthComponent targetHealth = null;
 
     protected DebuffIcon icon = null;
@@ -32,6 +33,7 @@ public class DebuffEffect : MonoBehaviour
             scriptedDebuff = debuff;
             this.icon = icon;
             shouldTick = useTicks;
+            damage = debuff.damage;
 
             firstRun = true;
 
@@ -85,6 +87,7 @@ public class DebuffEffect : MonoBehaviour
             this.auraManger = auraManger;
             scriptedDebuff = debuff;
             shouldTick = useTick;
+            damage = debuff.damage;
 
             targetHealth = target.GetComponent<HealthComponent>();
 
@@ -268,6 +271,11 @@ public class DebuffEffect : MonoBehaviour
     public bool GetIsActive()
     {
         return isActive;
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 
     public HealthComponent GetTargetHealthComponent()

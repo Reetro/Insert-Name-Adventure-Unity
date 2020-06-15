@@ -26,7 +26,7 @@ public class HealthBar : MonoBehaviour
     {
         slider.value = health;
 
-        currentHealthText.text = health.ToString();
+        currentHealthText.text = health.ToString("F1");
 
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
