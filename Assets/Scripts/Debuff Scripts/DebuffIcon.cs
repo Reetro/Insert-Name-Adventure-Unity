@@ -46,6 +46,11 @@ public class DebuffIcon : MonoBehaviour
         }
     }
 
+    public void ResetFill()
+    {
+        durationImage.fillAmount = 1;
+    }
+
     void Update()
     {
         if (hasFillAmount)

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class DebuffEffect : MonoBehaviour
 {
-    public float ticks = 0;
+    private float ticks = 0;
     private float occurrence = 0;
-    private AuraManager auraManger = null;
+    private AuraManager auraManager = null;
     private ScriptableDebuff scriptedDebuff = null;
     private GameObject target = null;
-    public int stackCount = 1;
+    private int stackCount = 1;
     private float defaultTickCount = 0f;
     private float maxTicks = 99999f;
     private float damage = 0f;
@@ -20,16 +20,16 @@ public class DebuffEffect : MonoBehaviour
     private bool shouldTick = true;
     private bool isActive = false;
 
-    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManger, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, bool useTicks, bool refresh, bool stack)
+    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, bool useTicks, bool refresh, bool stack)
     {
-        isActive = isDebuffTypeActive(auraManger, debuff);
+        isActive = isDebuffTypeActive(auraManager, debuff);
 
         if (!isActive)
         {
             this.ticks = ticks;
             defaultTickCount = ticks;
             this.occurrence = occurrence;
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
             this.icon = icon;
             shouldTick = useTicks;
@@ -49,7 +49,7 @@ public class DebuffEffect : MonoBehaviour
         }
         else if (refresh)
         {
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
             this.icon = icon;
 
@@ -64,27 +64,27 @@ public class DebuffEffect : MonoBehaviour
                 Debug.Log(defaultTickCount);
             }
 
-            RefreshDebuff(true, auraManger, debuff);
+            RefreshDebuff(true, auraManager, debuff);
         }
         else if (stack)
         {
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
             this.icon = icon;
 
-            UpdateStack(true, auraManger, scriptedDebuff);
+            UpdateStack(true, auraManager, scriptedDebuff);
         }
     }
 
-    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManger, ScriptableDebuff debuff, GameObject target, bool useTick, bool refresh, bool stack)
+    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, bool useTick, bool refresh, bool stack)
     {
-        isActive = isDebuffTypeActive(auraManger, debuff);
+        isActive = isDebuffTypeActive(auraManager, debuff);
 
         if (!isActive)
         {
             this.ticks = ticks;
             this.occurrence = occurrence;
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
             shouldTick = useTick;
             damage = debuff.damage;
@@ -103,17 +103,17 @@ public class DebuffEffect : MonoBehaviour
         }
         else if (refresh)
         {
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
             
-            RefreshDebuff(false, auraManger, debuff);
+            RefreshDebuff(false, auraManager, debuff);
         }
         else if (stack)
         {
-            this.auraManger = auraManger;
+            this.auraManager = auraManager;
             scriptedDebuff = debuff;
 
-            UpdateStack(false, auraManger, scriptedDebuff);
+            UpdateStack(false, auraManager, scriptedDebuff);
         }
     }
 
@@ -150,11 +150,11 @@ public class DebuffEffect : MonoBehaviour
     {
         if (icon)
         {
-            auraManger.RemoveDebuff(gameObject, this, icon);
+            auraManager.RemoveDebuff(gameObject, this, icon);
         }
         else
         {
-            auraManger.RemoveDebuff(gameObject, this);
+            auraManager.RemoveDebuff(gameObject, this);
         }
     }
 
@@ -185,11 +185,11 @@ public class DebuffEffect : MonoBehaviour
             {
                 localDebuff.icon.UpdateStackCount(localDebuff.stackCount);
 
-                auraManger.RemoveDebuff(gameObject, this, icon);
+                auraManager.RemoveDebuff(gameObject, this, icon);
             }
             else
             {
-                auraManger.RemoveDebuff(gameObject, this);
+                auraManager.RemoveDebuff(gameObject, this);
             }
         }
         else
@@ -208,6 +208,8 @@ public class DebuffEffect : MonoBehaviour
 
             if (useIcon)
             {
+                localDebuff.icon.ResetFill();
+
                 auraManager.RemoveDebuff(gameObject, this, icon);
             }
             else
@@ -255,7 +257,7 @@ public class DebuffEffect : MonoBehaviour
 
     public AuraManager GetAuraManager()
     {
-        return auraManger;
+        return auraManager;
     }
 
     public ScriptableDebuff GetDebuff()

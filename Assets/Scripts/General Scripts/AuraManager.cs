@@ -13,7 +13,7 @@ public class AuraManager : MonoBehaviour
         playerUIManager = FindObjectOfType<PlayerUIManager>();
     }
 
-    public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon, bool refresh, bool stack)
     {
         BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity) as BuffEffect;
 
@@ -21,14 +21,45 @@ public class AuraManager : MonoBehaviour
         {
             var buffIcon = CreateBuffIcon(buffToApply);
 
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, stack, refresh);
         }
         else
         {
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, stack, refresh);
         }
 
         currentBuffs.Add(buff);
+    }
+
+    public BuffEffect FindBuffOfType(ScriptableBuff buff)
+    {
+        if (buff)
+        {
+            BuffEffect foundBuff = null;
+
+            foreach (BuffEffect buffEffect in currentBuffs)
+            {
+                var type = buffEffect.GetBuff().buffEffect;
+
+                if (type == buff.buffEffect)
+                {
+                    foundBuff = buffEffect;
+                    break;
+                }
+                else
+                {
+                    foundBuff = null;
+                    continue;
+                }
+            }
+
+            return foundBuff;
+        }
+        else
+        {
+            Debug.LogError("Was unable to find buff type on " + gameObject.name + "buff was invalid");
+            return null;
+        }
     }
 
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
@@ -114,7 +145,7 @@ public class AuraManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Was unable to check debuff type on " + gameObject.name + "debuff was invalid");
+            Debug.LogError("Was unable to find debuff type on " + gameObject.name + "debuff was invalid");
             return null;
         }
     }
