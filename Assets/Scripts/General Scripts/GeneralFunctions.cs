@@ -42,4 +42,21 @@ public class GeneralFunctions
     {
         return position1 - position2.normalized;
     }
+
+    // Rotate rigid body to a specified point at a specified speed
+    public static void RotateRigidBody(Vector2 target, Rigidbody2D rigidBody, float speed, GameObject gameObject)
+    {
+        Vector2 direction = (Vector2)target - rigidBody.position;
+
+        direction.Normalize();
+
+        float rotateAmount = Vector3.Cross(direction, gameObject.transform.up).z;
+
+        rigidBody.angularVelocity = rotateAmount * speed;
+    }
+    // Checks to see if position 1 is above position 2
+    public static bool IsObjectAbove(Vector2 position1, Vector2 position2)
+    {
+        return (position1.normalized.y >= position2.normalized.y) ? true : false;
+    }
 }

@@ -17,7 +17,7 @@ TagManager:
   - Player
   - Enemy
   - Background
-  - 
+  - Projectile
   - 
   - 
   - 
@@ -53,7 +53,7 @@ TagManager:
   - name: Enemy
     uniqueID: 1098385431
     locked: 0
-  - name: Lasers
+  - name: Projectile
     uniqueID: 3260813601
     locked: 0
   - name: Damage Text

@@ -5,7 +5,7 @@ public class Leech : MonoBehaviour
     [SerializeField] EnemyMovement controller = null;
 
     [Header("Leech Movement Settings")]
-    [SerializeField] float leechFlySpeed = 20f;
+    [SerializeField] float leechFlySpeed = 4f;
     [SerializeField] float amountToAddToY = 0.005f;
 
     private Rigidbody2D myRigidbody2D = null;
