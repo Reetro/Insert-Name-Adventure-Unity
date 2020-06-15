@@ -3,7 +3,6 @@
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerGun currentGun = null;
-    [SerializeField] ScriptableDebuff debuff = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -43,13 +42,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             currentGun.FireGun();
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            var auraManager = GetComponent<AuraManager>();
-
-            auraManager.ApplyDebuff(gameObject, debuff, true);
         }
     }
 
