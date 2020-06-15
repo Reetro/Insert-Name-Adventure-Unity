@@ -31,12 +31,12 @@ public class PlayerUIManager : MonoBehaviour
         Destroy(iconToRemove.gameObject);
     }
 
-    public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff)
+    public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
     {
         DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
         debuffIcons.Add(icon);
 
-        icon.StartCooldown(debuff);
+        icon.StartCooldown(debuff, hasFillAmount, useTick);
 
         return icon;
     }

@@ -60,13 +60,13 @@ public class AuraManager : MonoBehaviour
 
         if (createIcon)
         {
-            var debuffIcon = CreateDebuffIcon(debuffToApply);
+            var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
 
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target);
+            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target,  debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
         }
         else
         {
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target);
+            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
         }
 
         currentDebuffs.Add(debuff);
@@ -84,6 +84,39 @@ public class AuraManager : MonoBehaviour
         {
             Debug.LogError("Failed to remove " + debuffEffectObject.name + "debuff Icon is invalid");
         }
+
+        Destroy(debuffEffectObject);
+    }
+
+    public DebuffEffect FindDebuffOtype(ScriptableDebuff debuff)
+    {
+        if (debuff)
+        {
+            DebuffEffect foundDebuff = null;
+
+            foreach (DebuffEffect debuffEffect in currentDebuffs)
+            {
+                var type = debuffEffect.GetDebuff().debuffType;
+
+                if (type == debuff.debuffType)
+                {
+                    foundDebuff = debuffEffect;
+                    break;
+                }
+                else
+                {
+                    foundDebuff = null;
+                    continue;
+                }
+            }
+
+            return foundDebuff;
+        }
+        else
+        {
+            Debug.LogError("Was unable to check debuff type on " + gameObject.name + "debuff was invalid");
+            return null;
+        }
     }
 
     public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
@@ -98,9 +131,9 @@ public class AuraManager : MonoBehaviour
         return playerUIManager.AddBuffIcon(buff);
     }
 
-    private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff)
+    private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
     {
-        return playerUIManager.AddDebuffIcon(debuff);
+        return playerUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
     }
 
     public List<BuffEffect> GetCurrentBuffs()

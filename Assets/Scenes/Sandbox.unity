@@ -5642,6 +5642,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5065280756885518072, guid: cc246d770541c064c815f693d2e76fd1,
+        type: 3}
+      propertyPath: debuff
+      value: 
+      objectReference: {fileID: 11400000, guid: e3130148d21bae74aa3433411e803538,
+        type: 2}
     - target: {fileID: 6037561768107980108, guid: cc246d770541c064c815f693d2e76fd1,
         type: 3}
       propertyPath: healthBar
