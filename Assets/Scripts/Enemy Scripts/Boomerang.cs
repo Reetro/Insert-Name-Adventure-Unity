@@ -3,7 +3,7 @@
 public class Boomerang : ProjectileMovement
 {
     private Shaman currentShaman = null;
-    private int currentHitCount = 1;
+    private int currentHitCount = 0;
     private int maxHitsBeforeTeleport = 0;
 
     protected override void Start()
@@ -35,7 +35,7 @@ public class Boomerang : ProjectileMovement
             {
                 TeleportShaman(collision.contacts[0].point);
 
-                currentHitCount = 1;
+                currentHitCount = 0;
             }
         }
     }
