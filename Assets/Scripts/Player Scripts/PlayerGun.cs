@@ -5,24 +5,16 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
 {
-    [SerializeField] PlayerController controller = null;
-
     [Header("Gun Settings")]
-    [SerializeField] float gunRange = 10f;
-    [SerializeField] float laserUpTime = 2f;
-    [SerializeField] float gunDamage = 3.5f;
+    [SerializeField] private float laserUpTime = 0.02f;
+    [SerializeField] private float gunDamage = 3.5f;
 
     [Header("Config Settings")]
-    public LayerMask m_WhatCanIHit;
-    public Transform fireLocation = null;
-    public LineRenderer lineRender = null;
+    [SerializeField] private HitBox hitBoxToSpawn = null;
+    [SerializeField] private Transform gunFireLocation = null;
+    [SerializeField] private PlayerController controller = null;
 
-    [Header("Debug Settings")]
-    [SerializeField] bool debugGun = false;
-
-    float gunAngle = 0f;
-    Vector3 fireRotation;
-    Vector2 fireDirection;
+    private float gunAngle = 0f;
 
     void Update()
     {
@@ -32,105 +24,9 @@ public class PlayerGun : MonoBehaviour
 
     public void FireGun()
     {
-        // Fire gun ray cast from given fire locations
-        RaycastHit2D[] hitObjects = Physics2D.RaycastAll(fireLocation.position, fireRotation, gunRange, m_WhatCanIHit);
+        HitBox gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation) as HitBox;
 
-        var lastIndex = hitObjects.Length - 1;
-
-        if (hitObjects.Length > 0)
-        {
-            for (int Index = 0; Index < hitObjects.Length; Index++)
-            {
-                Vector3 newFireDirection = fireRotation;
-
-                // Get trace end point
-                var endPoint = fireLocation.position + newFireDirection * gunRange;
-
-                if (Index == lastIndex)
-                {
-                    if (hitObjects[lastIndex])
-                    {
-                        var healthComp = hitObjects[0].transform.GetComponent<HealthComponent>();
-
-                        if (healthComp)
-                        {
-                            healthComp.ProccessDamage(gunDamage);
-                        }
-
-                        var hitTag = hitObjects[0].transform.tag;
-
-                        if (hitTag == "Leech Egg")
-                        {
-                            hitObjects[0].transform.GetComponent<LeechEggCold>().SpawnLeech();
-                        }
-
-                        if (debugGun)
-                        {
-                            Debug.Log("Hit: " + hitObjects[lastIndex].collider.name);
-                        }
-
-                        // Spawn laser
-                        StartCoroutine(DrawLaser(fireLocation.position, endPoint));
-                    }
-                    else
-                    {
-                        // Spawn laser
-                        StartCoroutine(DrawLaser(fireLocation.position, endPoint));
-                    }
-                }
-                else
-                {
-                    if (hitObjects[Index])
-                    {
-                        var healthComp = hitObjects[Index].transform.GetComponent<HealthComponent>();
-
-                        if (healthComp)
-                        {
-                            healthComp.ProccessDamage(gunDamage);
-                        }
-
-                        var hitTag = hitObjects[Index].transform.tag;
-
-                        if (hitTag == "Leech Egg")
-                        {
-                            hitObjects[Index].transform.GetComponent<LeechEggCold>().SpawnLeech();
-                        }
-
-                        if (debugGun)
-                        {
-                            Debug.Log("Hit: " + hitObjects[Index].collider.name);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            Vector3 newFireDirection = fireDirection;
-
-            // Get trace end point
-            var endPoint = fireLocation.position + newFireDirection * gunRange;
-
-            // Spawn laser
-            StartCoroutine(DrawLaser(fireLocation.position, endPoint));
-        }
-    }
-
-    private IEnumerator DrawLaser(Vector3 startPoint, Vector3 endPoint)
-    {
-        lineRender.positionCount = 2;
-
-        lineRender.SetPosition(0, startPoint);
-        lineRender.SetPosition(1, endPoint);
-
-        // Show laser
-        lineRender.enabled = true;
-
-        yield return new WaitForSeconds(laserUpTime);
-
-        // hide laser
-        lineRender.enabled = false;
-        lineRender.positionCount = 0;
+        gunHit.ConstructBox(gunDamage, laserUpTime, false);
     }
 
     private void RotatePlayer()
@@ -154,19 +50,13 @@ public class PlayerGun : MonoBehaviour
         mousePos.y = mousePos.y - gunPos.y;
         gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
-        fireDirection = GeneralFunctions.GetDirectionVector2DFromAngle(gunAngle);
-
         if (MouseLeftOrRight())
         {
             transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
-
-            fireRotation = fireLocation.TransformDirection(fireDirection) * -1;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
-
-            fireRotation = fireLocation.TransformDirection(fireDirection);
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle)); 
         }
     }
 
