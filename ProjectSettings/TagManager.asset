@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Leech Egg
+  - Shaman
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Enemy
   - Background
   - Projectile
-  - 
+  - Enemy Projectile
   - 
   - 
   - 
@@ -56,6 +57,9 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 3260813601
+    locked: 0
+  - name: Enemy Projectiles
+    uniqueID: 3026690997
     locked: 0
   - name: Damage Text
     uniqueID: 3142916489

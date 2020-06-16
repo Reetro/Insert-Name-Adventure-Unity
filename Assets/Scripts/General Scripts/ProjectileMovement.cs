@@ -4,47 +4,73 @@
 public class ProjectileMovement : MonoBehaviour
 {
     private Rigidbody2D myRigidbody = null;
-    private float moveSpeed = 4f;
+    private float currentMoveSpeed = 4f;
+    private Vector2 currentVelocity;
 
     private Vector2 launchDirection;
-    private bool canFire = false;
-    private float damage = 1f;
+    protected bool canFire = false;
+    protected float damage = 1f;
+
+    public bool destroyOnImpact = true;
+
+    protected virtual void Start()
+    {
+        myRigidbody = GetComponent<Rigidbody2D>();
+    }
 
     public virtual void ConstructProjectile(float moveSpeed, float damage, Vector2 launchDirection)
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
-
         this.damage = damage;
-        this.moveSpeed = moveSpeed;
-
+        currentMoveSpeed = moveSpeed;
         this.launchDirection = launchDirection;
 
         canFire = true;
     }
 
-    private void FixedUpdate()
+    public void UpdateDirection(Vector2 newDirection)
     {
+        launchDirection = newDirection;
+    }
+
+    public Vector2 GetCurrentVelocity()
+    {
+        return currentVelocity;
+    }
+
+    public Rigidbody2D GetRigidbody2D()
+    {
+        return myRigidbody;
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        currentVelocity = myRigidbody.velocity;
+
         if (canFire)
         {
-            myRigidbody.velocity = launchDirection.normalized * moveSpeed * Time.fixedDeltaTime;
+            myRigidbody.velocity = launchDirection.normalized * currentMoveSpeed * Time.fixedDeltaTime;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var hitTag = collision.transform.tag;
-
-        if (hitTag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             HealthComponent healtComp = collision.transform.GetComponent<HealthComponent>();
 
             healtComp.ProccessDamage(damage);
 
-            Destroy(gameObject);
+            if (destroyOnImpact)
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {
-            Destroy(gameObject);
+            if (destroyOnImpact)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

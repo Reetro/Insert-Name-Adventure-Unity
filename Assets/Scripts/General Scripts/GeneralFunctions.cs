@@ -59,4 +59,12 @@ public class GeneralFunctions
     {
         return (position1.normalized.y >= position2.normalized.y) ? true : false;
     }
+    public static void LookAt2D(Vector2 currentLocation, Vector2 LookAt, GameObject objectToRotate)
+    {
+        var dir = currentLocation - LookAt;
+
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        objectToRotate.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
 }
