@@ -57,6 +57,13 @@ public class PlayerGun : MonoBehaviour
                             healthComp.ProccessDamage(gunDamage);
                         }
 
+                        var hitTag = hitObjects[0].transform.tag;
+
+                        if (hitTag == "Leech Egg")
+                        {
+                            hitObjects[0].transform.GetComponent<LeechEggCold>().SpawnLeech();
+                        }
+
                         if (debugGun)
                         {
                             Debug.Log("Hit: " + hitObjects[lastIndex].collider.name);
@@ -75,11 +82,18 @@ public class PlayerGun : MonoBehaviour
                 {
                     if (hitObjects[Index])
                     {
-                        var healthComp = hitObjects[0].transform.GetComponent<HealthComponent>();
+                        var healthComp = hitObjects[Index].transform.GetComponent<HealthComponent>();
 
                         if (healthComp)
                         {
                             healthComp.ProccessDamage(gunDamage);
+                        }
+
+                        var hitTag = hitObjects[Index].transform.tag;
+
+                        if (hitTag == "Leech Egg")
+                        {
+                            hitObjects[Index].transform.GetComponent<LeechEggCold>().SpawnLeech();
                         }
 
                         if (debugGun)
