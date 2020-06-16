@@ -30,7 +30,9 @@ public class LeechShooter : MonoBehaviour
             {
                 ProjectileMovement bulllet = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity) as ProjectileMovement;
 
-                bulllet.ConstructProjectile(projectileSpeed, projectileDamage);
+                Vector2 launchDirection = playerTransform.position - transform.position;
+
+                bulllet.ConstructProjectile(projectileSpeed, projectileDamage, launchDirection);
             }
         }
     }
