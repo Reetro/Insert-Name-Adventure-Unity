@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileMovement : MonoBehaviour
 {
     private Rigidbody2D myRigidbody = null;
-    private float currentMoveSpeed = 4f;
+    private float currentMoveSpeed = 400f;
     private Vector2 currentVelocity;
 
     private Vector2 launchDirection;
     protected bool canFire = false;
     protected float damage = 1f;
 
-    public bool destroyOnImpact = true;
+    [Header("Events")]
+    [Space]
+    public UnityEvent OnImpact;
 
     protected virtual void Start()
     {
@@ -52,6 +55,11 @@ public class ProjectileMovement : MonoBehaviour
         }
     }
 
+    public void OnProjectileImpact()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -60,17 +68,11 @@ public class ProjectileMovement : MonoBehaviour
 
             healtComp.ProccessDamage(damage);
 
-            if (destroyOnImpact)
-            {
-                Destroy(gameObject);
-            }
+            OnImpact.Invoke();
         }
         else
         {
-            if (destroyOnImpact)
-            {
-                Destroy(gameObject);
-            }
+            OnImpact.Invoke();
         }
     }
 }

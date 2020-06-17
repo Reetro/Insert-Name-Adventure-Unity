@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(EnemyMovement), typeof(HealthComponent))]
 public class Leech : MonoBehaviour
 {
     [SerializeField] EnemyMovement controller = null;

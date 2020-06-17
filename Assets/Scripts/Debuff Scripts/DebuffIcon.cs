@@ -34,15 +34,18 @@ public class DebuffIcon : MonoBehaviour
 
     public void UpdateStackCount(int stackCount)
     {
-        if (stackCount > 1)
+        if (stackText)
         {
-            stackText.enabled = true;
+            if (stackCount > 1)
+            {
+                stackText.enabled = true;
 
-            stackText.text = stackCount.ToString();
-        }
-        else
-        {
-            stackText.enabled = false;
+                stackText.text = stackCount.ToString();
+            }
+            else
+            {
+                stackText.enabled = false;
+            }
         }
     }
 
