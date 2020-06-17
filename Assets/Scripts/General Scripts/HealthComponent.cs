@@ -67,6 +67,12 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
+    public void SetHealth(float value)
+    {
+        currentHealth = value;
+        maxHealth = value;
+    }
+
     public float GetCurrentHealth()
     {
         return currentHealth;

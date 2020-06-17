@@ -67,4 +67,25 @@ public class GeneralFunctions
 
         objectToRotate.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
+    // Spawns a leech and attaches it to the given transform then applies the leeching debuff to player
+    public static AttachedLeech SpawnLeechAttach(AuraManager auraManager, AttachedLeech attachedLeech, Transform transform, float health,  GameObject player)
+    {
+        AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
+
+        localLeech.transform.parent = transform;
+
+        localLeech.OnLeechSpawn(health, auraManager, player);
+
+        return localLeech;
+    }
+    // Finds a point to attach a leech to by look for the point by tag
+    public static Transform GetLeechAttachPointByTag(string tag)
+    {
+        return GameObject.FindGameObjectWithTag(tag).transform;
+    }
+    // Checks to see if leech is already attached on the given tag
+    public static bool CanLeechAttach(string tag)
+    {
+        return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
+    }
 }
