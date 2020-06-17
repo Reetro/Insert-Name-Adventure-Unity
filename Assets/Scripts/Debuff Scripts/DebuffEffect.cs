@@ -72,7 +72,7 @@ public class DebuffEffect : MonoBehaviour
             scriptedDebuff = debuff;
             this.icon = icon;
 
-            UpdateStack(true, auraManager, scriptedDebuff);
+            AddToStack(true, auraManager, scriptedDebuff);
         }
     }
 
@@ -113,7 +113,7 @@ public class DebuffEffect : MonoBehaviour
             this.auraManager = auraManager;
             scriptedDebuff = debuff;
 
-            UpdateStack(false, auraManager, scriptedDebuff);
+            AddToStack(false, auraManager, scriptedDebuff);
         }
     }
 
@@ -173,7 +173,7 @@ public class DebuffEffect : MonoBehaviour
         }
     }
 
-    private void UpdateStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
+    private void AddToStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
         if (auraManager)
         {
@@ -194,7 +194,38 @@ public class DebuffEffect : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Was unable to update debuff stack on " + gameObject.name + "aura manager was invalid");
+            Debug.LogError("Was unable to add debuff stack on " + gameObject.name + "aura manager was invalid");
+        }
+    }
+
+    public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
+    {
+        if (auraManager)
+        {
+            var localDebuff = auraManager.FindDebuffOtype(scriptableDebuff);
+
+            localDebuff.stackCount--;
+
+            if (useIcon)
+            {
+                localDebuff.icon.UpdateStackCount(localDebuff.stackCount);
+            }
+
+            if (localDebuff.stackCount <= 0)
+            {
+                if (useIcon)
+                {
+                    auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff, localDebuff.icon);
+                }
+                else
+                {
+                    auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Was unable to remove debuff stack on " + gameObject.name + "aura manager was invalid");
         }
     }
 
