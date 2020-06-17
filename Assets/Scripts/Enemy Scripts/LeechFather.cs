@@ -1,19 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class LeechFather : LeechMother
+public class LeechFather : EnemyShooter
 {
-    protected override IEnumerator Shoot()
+    protected override void Shoot()
     {
-        while (!GetHealthComponent().GetIsDead())
-        {
-            yield return new WaitForSecondsRealtime(GetShootInterval());
+        ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;
 
-            ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;
+        Vector2 launchDirection = gameObject.transform.TransformDirection(GetFirePoint().position);
 
-            Vector2 launchDirection = gameObject.transform.TransformDirection(GetFirePoint().position);
-
-            bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
-        }
+        bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
     }
 }

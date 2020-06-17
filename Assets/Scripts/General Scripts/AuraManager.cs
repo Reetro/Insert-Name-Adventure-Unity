@@ -64,7 +64,12 @@ public class AuraManager : MonoBehaviour
 
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
     {
-        currentBuffs.Remove(effect);
+        if (buffEffectObject)
+        {
+            Destroy(buffEffectObject);
+
+            currentBuffs.Remove(effect);
+        }
 
         if (iconToRemove)
         {
@@ -74,15 +79,16 @@ public class AuraManager : MonoBehaviour
         {
             Debug.LogError("Failed to remove "  + buffEffectObject.name + "buff Icon is invalid");
         }
-
-        Destroy(buffEffectObject);
     }
 
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
     {
-        currentBuffs.Remove(effect);
+        if (buffEffectObject)
+        {
+            Destroy(buffEffectObject);
 
-        Destroy(buffEffectObject);
+            currentBuffs.Remove(effect);
+        }
     }
 
     public void ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
@@ -105,7 +111,12 @@ public class AuraManager : MonoBehaviour
 
     public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
     {
-        currentDebuffs.Remove(effect);
+        if (debuffEffectObject)
+        {
+            Destroy(debuffEffectObject);
+
+            currentDebuffs.Remove(effect);
+        }
 
         if (iconToRemove)
         {
@@ -115,8 +126,16 @@ public class AuraManager : MonoBehaviour
         {
             Debug.LogError("Failed to remove " + debuffEffectObject.name + "debuff Icon is invalid");
         }
+    }
 
-        Destroy(debuffEffectObject);
+    public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
+    {
+        if (debuffEffectObject)
+        {
+            Destroy(debuffEffectObject);
+
+            currentDebuffs.Remove(effect);
+        }
     }
 
     public DebuffEffect FindDebuffOtype(ScriptableDebuff debuff)
@@ -150,12 +169,6 @@ public class AuraManager : MonoBehaviour
         }
     }
 
-    public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
-    {
-        currentDebuffs.Remove(effect);
-
-        Destroy(debuffEffectObject);
-    }
 
     private BuffIcon CreateBuffIcon(ScriptableBuff buff)
     {
@@ -171,6 +184,11 @@ public class AuraManager : MonoBehaviour
     {
         return currentBuffs;
     }
+
+    public PlayerUIManager GetUIManager()
+    {
+        return playerUIManager;
+    }    
 
     public List<DebuffEffect> GetCurrentDebuffs()
     {

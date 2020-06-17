@@ -215,11 +215,29 @@ public class DebuffEffect : MonoBehaviour
             {
                 if (useIcon)
                 {
-                    auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff, localDebuff.icon);
+                    if (localDebuff)
+                    {
+                        auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff, localDebuff.icon);
+                    }
+                    else
+                    {
+                        var iconToRemove = auraManager.GetUIManager().FindDebuffIconByType(scriptableDebuff);
+
+                        auraManager.GetUIManager().RemoveDebuffIcon(iconToRemove);
+                    }
                 }
                 else
                 {
-                    auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff);
+                    if (localDebuff)
+                    {
+                        auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff);
+                    }
+                    else
+                    {
+                        var iconToRemove = auraManager.GetUIManager().FindDebuffIconByType(scriptableDebuff);
+
+                        auraManager.GetUIManager().RemoveDebuffIcon(iconToRemove);
+                    }
                 }
             }
         }

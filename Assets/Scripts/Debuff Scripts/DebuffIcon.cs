@@ -15,6 +15,11 @@ public class DebuffIcon : MonoBehaviour
         UpdateStackCount(1);
     }
 
+    public ScriptableDebuff GetDebuff()
+    {
+        return debuff;
+    }
+
     public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
     {
         this.debuff = debuff;

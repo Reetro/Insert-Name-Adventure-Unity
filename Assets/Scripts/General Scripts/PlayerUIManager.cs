@@ -47,4 +47,24 @@ public class PlayerUIManager : MonoBehaviour
 
         Destroy(iconToRemove.gameObject);
     }
+
+    public DebuffIcon FindDebuffIconByType(ScriptableDebuff debuff)
+    {
+        DebuffIcon localIcon = null;
+
+        foreach (DebuffIcon icon in debuffIcons)
+        {
+            if (icon.GetDebuff().debuffType == debuff.debuffType)
+            {
+                localIcon = icon;
+                break;
+            }
+            else
+            {
+                localIcon = null;
+                continue;
+            }
+        }
+        return localIcon;
+    }
 }

@@ -42,12 +42,12 @@ GameObject:
   - component: {fileID: 8627691463657521393}
   - component: {fileID: 8627691463657521395}
   - component: {fileID: 8627691463657521405}
-  - component: {fileID: 1654693346}
+  - component: {fileID: 5899286072162422531}
+  - component: {fileID: 8627691463657521404}
   - component: {fileID: 8627691463657521402}
   - component: {fileID: 8627691463657521403}
   - component: {fileID: 8627691463657521406}
   - component: {fileID: 8627691463657521407}
-  - component: {fileID: 8627691463657521404}
   m_Layer: 10
   m_Name: Leech Mother
   m_TagString: Untagged
@@ -154,7 +154,7 @@ MonoBehaviour:
   controller: {fileID: 8627691463657521402}
   leechFlySpeed: 2
   amountToAddToY: 0.003
---- !u!114 &1654693346
+--- !u!114 &5899286072162422531
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8627691463657521400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bc36d179b173a644b131b6b48951d73, type: 3}
+  m_Script: {fileID: 11500000, guid: 354c0b4e35ccce84781fee4423c06a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 8857225106022265615, guid: c0c51ddd683319c4c8eb82cf56e0163c,
@@ -172,6 +172,39 @@ MonoBehaviour:
   projectileSpeed: 400
   projectileDamage: 1
   firePoint: {fileID: 3267386186718289769}
+--- !u!114 &8627691463657521404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8627691463657521400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  combatTextSpeed: 4
+  combatTextUpTime: 0.5
+  healthBar: {fileID: 0}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8627691463657521405}
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8627691463657521402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,36 +276,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7884606, y: 1.5944935}
   m_EdgeRadius: 0
---- !u!114 &8627691463657521404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8627691463657521400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  combatTextSpeed: 4
-  combatTextUpTime: 0.5
-  healthBar: {fileID: 0}
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8627691463657521405}
-        m_MethodName: OnDeath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTakeAnyDamage:
-    m_PersistentCalls:
-      m_Calls: []
