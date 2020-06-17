@@ -201,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1521109787677265170}
   leechFlySpeed: 4
-  amountToAddToY: 0.005
+  amountToAddToY: 0.006
 --- !u!114 &1521109787677265170
 MonoBehaviour:
   m_ObjectHideFlags: 0
