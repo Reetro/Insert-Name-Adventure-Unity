@@ -10,6 +10,7 @@ TagManager:
   - Leech Collision Top
   - Leech Collision Left
   - Leech Collision Right
+  - Level Loader
   layers:
   - Default
   - TransparentFX
