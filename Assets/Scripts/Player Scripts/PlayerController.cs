@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
+    [SerializeField] GameObject playerState = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController2D>();
 
         SpawnLeechCollision();
+        SpawnPlayerState();
     }
 
     private void Update()
@@ -68,5 +70,15 @@ public class PlayerController : MonoBehaviour
     private void SpawnLeechCollision()
     {
         Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
+    }
+
+    private void SpawnPlayerState()
+    {
+        var playerStateCount = FindObjectsOfType<PlayerState>().Length;
+
+        if (playerStateCount <= 0)
+        {
+            Instantiate(playerState, new Vector2(1000, 1000), Quaternion.identity);
+        }
     }
 }

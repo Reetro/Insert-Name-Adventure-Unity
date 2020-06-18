@@ -10,11 +10,13 @@ public class HealthBar : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentHealthText = null;
 
     public Slider slider = null;
+    private static float lastMax = 0;
 
     public void SetMaxHealth(float maxHealth)
     {
         slider.maxValue = maxHealth;
         slider.value = maxHealth;
+        lastMax = maxHealth;
 
         maxHealthText.text = maxHealth.ToString();
         currentHealthText.text = maxHealth.ToString();
@@ -25,9 +27,17 @@ public class HealthBar : MonoBehaviour
     public void SetHealth(float health)
     {
         slider.value = health;
+        slider.maxValue = lastMax;
 
-        currentHealthText.text = health.ToString("F1");
-
+        if (slider.value < slider.maxValue)
+        {
+            currentHealthText.text = health.ToString("F1");
+        }
+        else
+        {
+            currentHealthText.text = health.ToString();
+        }
+        
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 }
