@@ -3,6 +3,7 @@
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerGun currentGun = null;
+    [SerializeField] GameObject leechCollision = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -16,6 +17,8 @@ public class PlayerController : MonoBehaviour
     {
         myAnimator = GetComponent<Animator>();
         controller = GetComponent<CharacterController2D>();
+
+        SpawnLeechCollision();
     }
 
     private void Update()
@@ -60,5 +63,10 @@ public class PlayerController : MonoBehaviour
     public void OnLanding()
     {
         myAnimator.SetBool("IsJumping", false);
+    }
+
+    private void SpawnLeechCollision()
+    {
+        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
     }
 }
