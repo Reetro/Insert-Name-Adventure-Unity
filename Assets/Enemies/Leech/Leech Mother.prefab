@@ -110,7 +110,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e06f52b567927c8429a16a1cc43495f8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.2799039, g: 0.3396702, b: 0.8018868, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -153,7 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8627691463657521402}
   leechFlySpeed: 2
-  amountToAddToY: 0.003
+  randomAmountToAddToYmin: 0.005
+  randomAmountToAddToYmax: 0.007
 --- !u!114 &5899286072162422531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +170,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8857225106022265615, guid: c0c51ddd683319c4c8eb82cf56e0163c,
     type: 3}
   shootIntervale: 2
-  projectileSpeed: 400
+  projectileSpeed: 200
   projectileDamage: 1
   firePoint: {fileID: 3267386186718289769}
 --- !u!114 &8627691463657521404
