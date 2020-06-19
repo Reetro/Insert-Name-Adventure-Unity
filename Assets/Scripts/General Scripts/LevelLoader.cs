@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadCheckpoint()
     {
+        playerState.ResetHealthToMax();
         StartCoroutine(LoadLevel(playerState.GetCheckpointIndex()));
     }
 
