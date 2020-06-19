@@ -11,6 +11,8 @@ public class LeechMother : EnemyShooter
             Vector2 launchDirection = GetPlayerTransform().position - transform.position;
 
             bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
+
+            print(GeneralFunctions.IsObjectAbove(GetPlayerTransform().position, transform.position));
         }
     }
 }
