@@ -88,6 +88,21 @@ public class GeneralFunctions
     {
         return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
     }
+    // Checks to see if leech that is trying to attach to player is current dead
+    public static bool IsLeechDead(GameObject leech)
+    {
+        var leechHelthComp = leech.GetComponent<HealthComponent>();
+
+        if (leechHelthComp)
+        {
+            return leechHelthComp.GetIsDead();
+        }
+        else
+        {
+            Debug.LogError("Failed to check leech " + leech.name.ToString() + " did not have a health component");
+            return false;
+        }
+    }
     // Calls the construct health component on the given game object
     public static void ConstructHPComponent(GameObject gameObject)
     {
@@ -115,6 +130,16 @@ public class GeneralFunctions
         {
             Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
         }
+    }
+    // Pauses the game
+    public static void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
 
+    // Resumes the game
+    public static void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }
