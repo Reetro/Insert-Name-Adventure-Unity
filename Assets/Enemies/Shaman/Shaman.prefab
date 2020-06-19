@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8871505594260596120}
   - component: {fileID: 4121440442643295366}
   - component: {fileID: 974195502854416268}
+  - component: {fileID: 2099811738}
   - component: {fileID: 6801750043143621378}
   - component: {fileID: 3474771729472559561}
   m_Layer: 10
@@ -99,8 +100,43 @@ MonoBehaviour:
   boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
     type: 3}
   maxHitsBeforeTeleport: 2
-  boomerangSpeed: 300
+  boomerangSpeed: 500
   boomerangDamage: 1
+  boomerangMinRandomFactor: 300
+  boomerangMaxRandomFactor: 600
+--- !u!114 &2099811738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367770904653533427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 6
+  combatTextSpeed: 4
+  combatTextUpTime: 0.5
+  healthBar: {fileID: 0}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 974195502854416268}
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &6801750043143621378
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -139,7 +175,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

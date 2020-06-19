@@ -6,8 +6,6 @@ public class Boomerang : ProjectileMovement
     private int currentHitCount = 0;
     private int maxHitsBeforeTeleport = 0;
 
-    const float speedLoss = 0;
-
     protected override void Start()
     {
         base.Start();
@@ -21,15 +19,13 @@ public class Boomerang : ProjectileMovement
 
         Vector2 newDirection = Vector2.Reflect(GetCurrentVelocity(), _wallNormal);
 
-        print(_wallNormal);
-
         UpdateDirection(newDirection);
 
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<HealthComponent>().ProccessDamage(damage);
 
-            DestroyBoomerang();
+            DestroyBoomerang(true);
         }
         else if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Shaman"))
         {
@@ -53,11 +49,14 @@ public class Boomerang : ProjectileMovement
         currentShaman.GetRigidbody2D().velocity = new Vector2(0, 0);
     }
 
-    public void DestroyBoomerang()
+    public void DestroyBoomerang(bool throwBoomerang)
     {
         if (currentShaman)
         {
-            currentShaman.ThrowBoomerang();
+            if (throwBoomerang)
+            {
+                currentShaman.ThrowBoomerang();
+            }
 
             Destroy(gameObject);
         }

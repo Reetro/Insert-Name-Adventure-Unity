@@ -21,7 +21,7 @@ public class HealthComponent : MonoBehaviour
     [Space]
     public TakeAnyDamge onTakeAnyDamage;
 
-    public float currentHealth = 0f;
+    private float currentHealth = 0f;
     private bool isDead = false;
     private PlayerState playerState = null;
 
