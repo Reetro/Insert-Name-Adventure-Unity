@@ -100,7 +100,7 @@ MonoBehaviour:
   boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
     type: 3}
   maxHitsBeforeTeleport: 2
-  boomerangSpeed: 500
+  boomerangSpeed: 600
   boomerangDamage: 1
   boomerangMinRandomFactor: 300
   boomerangMaxRandomFactor: 600
