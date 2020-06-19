@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour
 {
+    public float healAmount = 3f;
+
     private PlayerState playerState = null;
     private int currentLevelIndex = 0;
 
@@ -17,6 +19,8 @@ public class Checkpoint : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerState.SetCheckpointIndex(currentLevelIndex);
+
+            GeneralFunctions.HealTarget(collision.gameObject, healAmount);
         }
     }
 }

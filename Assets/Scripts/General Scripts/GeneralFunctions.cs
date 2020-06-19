@@ -99,7 +99,22 @@ public class GeneralFunctions
         }
         else
         {
-            Debug.LogError("Failed to construct Health Component on " + gameObject.name.ToString() + "does not have a health component");
+            Debug.LogError("Failed to construct Health Component on " + gameObject.name.ToString() + " does not have a health component");
         }
+    }
+    // Gets the targets health component then heals target
+    public static void HealTarget(GameObject target, float amount)
+    {
+        var health = target.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.AddHealth(amount);
+        }
+        else
+        {
+            Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
+        }
+
     }
 }
