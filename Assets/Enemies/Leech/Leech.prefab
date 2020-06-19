@@ -121,7 +121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1521109787677265170}
   leechFlySpeed: 4
-  amountToAddToY: 0.006
+  randomAmountToAddToYmin: 0.005
+  randomAmountToAddToYmax: 0.007
 --- !u!114 &1521109787677265170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +162,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.3
+  m_GravityScale: 0.2
   m_Material: {fileID: 6200000, guid: a900dc08f66b6e74b9c44a510f03a9af, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1

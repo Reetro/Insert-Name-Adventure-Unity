@@ -7,7 +7,8 @@ public class Leech : MonoBehaviour
 
     [Header("Leech Movement Settings")]
     [SerializeField] float leechFlySpeed = 4f;
-    [SerializeField] float amountToAddToY = 0.005f;
+    [SerializeField] float randomAmountToAddToYmin = 0.005f;
+    [SerializeField] float randomAmountToAddToYmax = 0.007f;
 
     private Rigidbody2D myRigidbody2D = null;
     private Animator myAnimator = null;
@@ -27,7 +28,9 @@ public class Leech : MonoBehaviour
         {
             controller.LookAtTarget(player);
 
-            controller.AddToLeechY(transform, amountToAddToY);
+            var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
+
+            controller.AddToLeechY(transform, amountToAddToY.y);
         }
     }
 

@@ -142,4 +142,26 @@ public class GeneralFunctions
     {
         Time.timeScale = 1;
     }
+    // Creates random Vector 2 coordinates
+    public static Vector2 CreateRandomVector2(float minX, float maxX, float minY, float maxY)
+    {
+        var randomX = Random.Range(minX, maxX);
+        var randomY = Random.Range(minY, maxY);
+
+        return new Vector2(randomX, randomY);
+    }
+    // Creates a random Vector 2 but only on the Y axis
+    public static Vector2 CreateRandomVector2OnlyY(float minY, float maxY)
+    {
+        var randomY = Random.Range(minY, maxY);
+
+        return new Vector2(0, randomY);
+    }
+    // Creates a random Vector 2 but only on the X axis
+    public static Vector2 CreateRandomVector2OnlyX(float minX, float maxX)
+    {
+        var randomX = Random.Range(minX, maxX);
+
+        return new Vector2(randomX, 0);
+    }
 }
