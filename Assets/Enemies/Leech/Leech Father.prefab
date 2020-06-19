@@ -139,8 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 3176053394345364465, guid: 223182f1a7babee4e99a490e2265a87d,
     type: 3}
-  shootIntervale: 2
-  projectileSpeed: 200
+  shootIntervale: 6
+  projectileSpeed: 400
   projectileDamage: 1
   firePoint: {fileID: 3714164943448757548}
 --- !u!114 &2772496834163594380
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 9
   combatTextSpeed: 4
   combatTextUpTime: 0.5
   healthBar: {fileID: 0}

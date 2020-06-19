@@ -4,9 +4,6 @@ public class LeechMother : EnemyShooter
 {
     protected override void Shoot()
     {
-
-        print(GeneralFunctions.IsObjectAbove(GetPlayerTransform().position, transform.position));
-
         if (!GeneralFunctions.IsObjectAbove(GetPlayerTransform().position, transform.position))
         {
             ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;

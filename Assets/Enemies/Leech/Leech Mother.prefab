@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8627691463657521402}
-  leechFlySpeed: 2
+  leechFlySpeed: 3
   randomAmountToAddToYmin: 0.005
   randomAmountToAddToYmax: 0.007
 --- !u!114 &5899286072162422531
@@ -170,7 +170,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8857225106022265615, guid: c0c51ddd683319c4c8eb82cf56e0163c,
     type: 3}
   shootIntervale: 2
-  projectileSpeed: 200
+  projectileSpeed: 500
   projectileDamage: 1
   firePoint: {fileID: 3267386186718289769}
 --- !u!114 &8627691463657521404
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 6
   combatTextSpeed: 4
   combatTextUpTime: 0.5
   healthBar: {fileID: 0}
@@ -245,7 +245,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.5
+  m_GravityScale: 0.4
   m_Material: {fileID: 6200000, guid: a900dc08f66b6e74b9c44a510f03a9af, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
