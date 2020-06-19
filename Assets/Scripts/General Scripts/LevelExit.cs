@@ -13,7 +13,12 @@ public class LevelExit : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            levelLoader.LoadNextLevel();
+            var healthComp = collision.gameObject.GetComponent<HealthComponent>();
+
+            if (!healthComp.GetIsDead())
+            {
+                levelLoader.LoadNextLevel();
+            }
         }
     }
 }

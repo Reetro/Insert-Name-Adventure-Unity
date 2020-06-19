@@ -88,4 +88,18 @@ public class GeneralFunctions
     {
         return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
     }
+    // Calls the construct health component on the given game object
+    public static void ConstructHPComponent(GameObject gameObject)
+    {
+        var health = gameObject.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.ConstructHealthComponent();
+        }
+        else
+        {
+            Debug.LogError("Failed to construct Health Component on " + gameObject.name.ToString() + "does not have a health component");
+        }
+    }
 }

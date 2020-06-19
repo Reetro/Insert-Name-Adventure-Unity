@@ -20,6 +20,8 @@ public class Shaman : MonoBehaviour
         ThrowBoomerang();
 
         myRigidbody = GetComponent<Rigidbody2D>();
+
+        GeneralFunctions.ConstructHPComponent(gameObject);
     }
 
     public void ThrowBoomerang()

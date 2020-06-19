@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
+    [SerializeField] PlayerUIManager uiManager = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -13,11 +14,13 @@ public class PlayerController : MonoBehaviour
     bool jump = false;
     Animator myAnimator = null;
     CharacterController2D controller = null;
+    HealthComponent myHealthComp = null;
 
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
         controller = GetComponent<CharacterController2D>();
+        myHealthComp = GetComponent<HealthComponent>();
 
         SpawnLeechCollision();
         SpawnPlayerState();
@@ -25,28 +28,31 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        if (!myHealthComp.GetIsDead())
+        {
+            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-        myAnimator.SetFloat("Speed", horizontalMove);
+            myAnimator.SetFloat("Speed", horizontalMove);
 
-        if (horizontalMove == 0)
-        {
-            myAnimator.SetBool("Idle", true);
-        }
-        else
-        {
-            myAnimator.SetBool("Idle", false);
-        }
-        
-        if (Input.GetButtonDown("Jump"))
-        {
-            jump = true;
-            myAnimator.SetBool("IsJumping", true);
-        }
+            if (horizontalMove == 0)
+            {
+                myAnimator.SetBool("Idle", true);
+            }
+            else
+            {
+                myAnimator.SetBool("Idle", false);
+            }
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            currentGun.FireGun();
+            if (Input.GetButtonDown("Jump"))
+            {
+                jump = true;
+                myAnimator.SetBool("IsJumping", true);
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                currentGun.FireGun();
+            }
         }
     }
 
@@ -58,8 +64,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDeath()
     {
-        // TODO Setup check point system and add a restart button
-
+        uiManager.ShowDeathUI();
     }    
 
     public void OnLanding()
@@ -80,5 +85,14 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(playerState, new Vector2(1000, 1000), Quaternion.identity);
         }
+
+        var checkpoint = FindObjectOfType<Checkpoint>();
+
+        if (checkpoint)
+        {
+            checkpoint.ConstructCheckpoint();
+        }
+
+        myHealthComp.FindPlayerState();
     }
 }

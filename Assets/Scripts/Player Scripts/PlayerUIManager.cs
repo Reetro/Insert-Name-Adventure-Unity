@@ -1,18 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.UI;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    [Header("Aura System UI Elements")]
     [SerializeField] GridLayoutGroup buffGridLayoutGroup = null;
     [SerializeField] GridLayoutGroup debuffGridLayoutGroup = null;
     [SerializeField] BuffIcon buffIconPrefab = null;
     [SerializeField] DebuffIcon debuffIconPrefab = null;
 
+    [Header("GameOver UI Elements")]
+    [SerializeField] Button loadCheckpointBTN = null;
+    [SerializeField] TextMeshProUGUI gameOverText = null;
+
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
     private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
+
+    private void Start()
+    {
+        HideDeathUI();
+    }
 
     public BuffIcon AddBuffIcon(ScriptableBuff buff)
     {
@@ -66,5 +75,17 @@ public class PlayerUIManager : MonoBehaviour
             }
         }
         return localIcon;
+    }
+
+    public void HideDeathUI()
+    {
+        loadCheckpointBTN.gameObject.SetActive(false);
+        gameOverText.gameObject.SetActive(false);
+    }
+
+    public void ShowDeathUI()
+    {
+        loadCheckpointBTN.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(true);
     }
 }

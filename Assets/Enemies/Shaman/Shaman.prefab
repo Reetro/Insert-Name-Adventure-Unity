@@ -101,7 +101,7 @@ MonoBehaviour:
     type: 3}
   maxHitsBeforeTeleport: 2
   boomerangSpeed: 600
-  boomerangDamage: 1
+  boomerangDamage: 9
   boomerangMinRandomFactor: 300
   boomerangMaxRandomFactor: 600
 --- !u!114 &2099811738

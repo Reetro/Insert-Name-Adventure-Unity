@@ -9,6 +9,8 @@ public class AttachedLeech : MonoBehaviour
     
     public void OnLeechSpawn(float health, AuraManager auraManager, GameObject player)
     {
+        GeneralFunctions.ConstructHPComponent(gameObject);
+
         leechHealthComp.SetHealth(health);
 
         auraManager.ApplyDebuff(player, leechingDebuff, true);

@@ -27,14 +27,12 @@ public class HealthComponent : MonoBehaviour
 
     private static bool setMaxhealth = false;
 
-    void Start()
+    public void ConstructHealthComponent()
     {
         isDead = false;
 
         if (IsOnPlayer())
         {
-            playerState = FindObjectOfType<PlayerState>();
-
             if (!setMaxhealth)
             {
                 currentHealth = maxHealth;
@@ -155,6 +153,13 @@ public class HealthComponent : MonoBehaviour
     public bool GetIsDead()
     {
         return isDead;
+    }
+
+    public void FindPlayerState()
+    {
+        playerState = FindObjectOfType<PlayerState>();
+
+        ConstructHealthComponent();
     }
 
     private void UpdatePlayerState()

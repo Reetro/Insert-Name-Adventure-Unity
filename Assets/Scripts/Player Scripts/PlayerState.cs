@@ -5,6 +5,7 @@ public class PlayerState : MonoBehaviour
 {
     public static float currentHealth = 0f;
     public static float maxHealth = 0f;
+    public static int checkpointIndex = 0;
 
     public PlayerController player = null;
     public HealthBar playerHPBar = null;
@@ -21,6 +22,16 @@ public class PlayerState : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void SetCheckpointIndex(int index)
+    {
+        checkpointIndex = index;
+    }
+
+    public int GetCheckpointIndex()
+    {
+        return checkpointIndex;
     }
 
     public void SetPlayerHealth()

@@ -17,6 +17,8 @@ public class EnemyShooter : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         healthComp = GetComponent<HealthComponent>();
 
+        GeneralFunctions.ConstructHPComponent(gameObject);
+
         StartCoroutine(ShootInterval());
     }
 

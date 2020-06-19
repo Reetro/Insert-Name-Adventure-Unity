@@ -8,6 +8,8 @@ public class TestDummy : MonoBehaviour
     private void Start()
     {
         healthComp = GetComponent<HealthComponent>();
+
+        GeneralFunctions.ConstructHPComponent(gameObject);
     }
 
     public void OnTakeDamage(float damage)

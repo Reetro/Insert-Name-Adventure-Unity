@@ -9,6 +9,11 @@ public class LevelLoader : MonoBehaviour
 
     public PlayerState playerState = null;
 
+    public void LoadCheckpoint()
+    {
+        StartCoroutine(LoadLevel(playerState.GetCheckpointIndex()));
+    }
+
     public void LoadNextLevel()
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
