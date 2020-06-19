@@ -6,6 +6,8 @@ public class Boomerang : ProjectileMovement
     private int currentHitCount = 0;
     private int maxHitsBeforeTeleport = 0;
 
+    const float speedLoss = 0;
+
     protected override void Start()
     {
         base.Start();
@@ -18,6 +20,8 @@ public class Boomerang : ProjectileMovement
         Vector2 _wallNormal = collision.contacts[0].normal;
 
         Vector2 newDirection = Vector2.Reflect(GetCurrentVelocity(), _wallNormal);
+
+        print(_wallNormal);
 
         UpdateDirection(newDirection);
 
