@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -77,7 +78,37 @@ public class PlayerGun : MonoBehaviour
             }
             else
             {
+                float deadzone = 0.25f;
+                Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
 
+                if (stickInput.magnitude < deadzone)
+                {
+                    stickInput = Vector2.zero;
+                }
+                else
+                {
+                    stickInput = stickInput.normalized * ((stickInput.magnitude - deadzone) / (1 - deadzone));
+                }
+
+                print(stickInput);
+
+                if (stickInput.sqrMagnitude >= 1)
+                {
+                    gunAngle = Mathf.Atan2(stickInput.x, stickInput.y) * Mathf.Rad2Deg;
+
+                    if (stickInput.y < 0)
+                    {
+                        transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
+
+                        controller.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
+                    }
+                    else
+                    {
+                        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
+
+                        controller.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
+                    }
+                }
             }
         }
     }
