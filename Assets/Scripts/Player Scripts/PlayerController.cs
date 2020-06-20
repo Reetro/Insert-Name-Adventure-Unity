@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!myHealthComp.GetIsDead())
         {
-            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+            horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
 
             myAnimator.SetFloat("Speed", horizontalMove);
 
@@ -43,13 +44,18 @@ public class PlayerController : MonoBehaviour
                 myAnimator.SetBool("Idle", false);
             }
 
-            if (Input.GetButtonDown("Jump"))
+            if (CrossPlatformInputManager.GetButtonDown("Jump"))
             {
                 jump = true;
                 myAnimator.SetBool("IsJumping", true);
             }
 
-            if (Input.GetButtonDown("Fire1"))
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            {
+                currentGun.FireGun();
+            }
+
+            if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
             {
                 currentGun.FireGun();
             }

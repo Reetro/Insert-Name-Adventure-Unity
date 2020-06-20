@@ -287,6 +287,56 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1524736126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1524736127}
+  - component: {fileID: 808364043074665031}
+  m_Layer: 9
+  m_Name: Gamepad Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1524736127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524736126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4157925456995496925}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &808364043074665031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524736126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09be017620beb7d4c9b262262bec2633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerGun: {fileID: 1635639793}
+  playstationController: 0
+  xboxController: 0
+  keyboard: 0
+  currentControllers: []
+  controllerCheckTimer: 2
+  controllerCheckTimerOG: 2
 --- !u!1 &1901471234
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,6 +833,7 @@ Transform:
   - {fileID: 8175054867327023310}
   - {fileID: 8366195110403335461}
   - {fileID: 11190291079233953}
+  - {fileID: 1524736127}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1285,6 +1336,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 810cb8a1a1673dc499604e17bf965620, type: 3}
+--- !u!224 &8175054867327023310 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8175054866649225397, guid: 810cb8a1a1673dc499604e17bf965620,
+    type: 3}
+  m_PrefabInstance: {fileID: 732848251}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1691144311 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1331867660, guid: 810cb8a1a1673dc499604e17bf965620,
@@ -1309,12 +1366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839d9fd923e33ef4c9371aac5ea6f9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &8175054867327023310 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8175054866649225397, guid: 810cb8a1a1673dc499604e17bf965620,
-    type: 3}
-  m_PrefabInstance: {fileID: 732848251}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &169122922364978079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1469,12 +1520,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b369c67555f8249a9be31a2a880d85, type: 3}
---- !u!224 &1201614001105091756 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
-    type: 3}
-  m_PrefabInstance: {fileID: 169122922364978079}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &198862918234902953 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 43444606176809526, guid: 61b369c67555f8249a9be31a2a880d85,
@@ -1487,6 +1532,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1201614001105091756 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
+    type: 3}
+  m_PrefabInstance: {fileID: 169122922364978079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5764512617583056404 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5595566173434107275, guid: 61b369c67555f8249a9be31a2a880d85,
