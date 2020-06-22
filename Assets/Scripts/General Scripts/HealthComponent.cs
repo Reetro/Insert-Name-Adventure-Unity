@@ -9,11 +9,17 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
-    [SerializeField] float combatTextSpeed = 4f;
-    [SerializeField] float combatTextUpTime = 0.5f;
 
     [Header("Health Bar Settings")]
     [SerializeField] HealthBar healthBar = null;
+
+    [Header("Combat Text Settings")]
+    [SerializeField] [Range(0.01f, 1f)] float combatTextSpeed = 0.01f;
+    [SerializeField] float combatTextUpTime = 0.5f;
+    [SerializeField] float combatRandomVectorMinX = -0.5f;
+    [SerializeField] float combatRandomVectorMaxX = 1f;
+    [SerializeField] float combatRandomVectorMinY = -0.5f;
+    [SerializeField] float combatRandomVectorMaxY = 1f;
 
     [Header("Events")]
     [Space]
@@ -91,7 +97,7 @@ public class HealthComponent : MonoBehaviour
         {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
-            DamageText.CreateDamageText(damage, transform.localPosition, combatTextSpeed, combatTextUpTime);
+            DamageText.CreateDamageText(damage, transform.position, combatTextSpeed, combatTextUpTime, combatRandomVectorMinX, combatRandomVectorMaxX, combatRandomVectorMinY, combatRandomVectorMaxY);
 
             onTakeAnyDamage.Invoke(damage);
 

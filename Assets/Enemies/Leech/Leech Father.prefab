@@ -156,9 +156,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 9
-  combatTextSpeed: 4
-  combatTextUpTime: 0.5
   healthBar: {fileID: 0}
+  combatTextSpeed: 0.01
+  combatTextUpTime: 0.5
+  combatRandomVectorMinX: -0.5
+  combatRandomVectorMaxX: 10
+  combatRandomVectorMinY: -0.5
+  combatRandomVectorMaxY: 10
   OnDeath:
     m_PersistentCalls:
       m_Calls:
