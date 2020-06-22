@@ -45,6 +45,8 @@ public class LeechMovement : MonoBehaviour
     public void OnDeath()
     {
         myAnimator.SetBool("IsDead", true);
+
+        controller.StopMovement(myRigidbody2D);
     }
 
     public void OnDeathAnimationEnd()

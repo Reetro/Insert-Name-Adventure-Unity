@@ -36,4 +36,12 @@ public class EnemyMovement : MonoBehaviour
 
         leechTransfrom.position = temp;
     }
+
+    public void StopMovement(Rigidbody2D rigidbody)
+    {
+        rigidbody.angularVelocity = 0;
+        rigidbody.velocity = Vector2.zero;
+
+        rigidbody.Sleep();
+    }
 }
