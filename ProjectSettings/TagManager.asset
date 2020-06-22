@@ -11,6 +11,7 @@ TagManager:
   - Leech Collision Left
   - Leech Collision Right
   - Level Loader
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Projectile
   - Enemy Projectile
   - Attached Leech
-  - 
+  - Leech Collision
   - 
   - 
   - 
@@ -48,8 +49,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Projectile
+    uniqueID: 3260813601
+    locked: 0
   - name: Background
     uniqueID: 2834131259
+    locked: 0
+  - name: Enemy Projectiles
+    uniqueID: 3026690997
     locked: 0
   - name: Player
     uniqueID: 3646169679
@@ -59,12 +66,6 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 1098385431
-    locked: 0
-  - name: Projectile
-    uniqueID: 3260813601
-    locked: 0
-  - name: Enemy Projectiles
-    uniqueID: 3026690997
     locked: 0
   - name: Damage Text
     uniqueID: 3142916489

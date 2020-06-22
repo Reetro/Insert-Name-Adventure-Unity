@@ -10,7 +10,6 @@ public class HitBox : MonoBehaviour
   
     private List<Collider2D> colliders = new List<Collider2D>();
     public List<Collider2D> GetColliders() { return colliders; }
-
     public virtual void ConstructBox(float damage, float despawnTime, bool hitPlayer, bool shouldDespawn)
     {
         this.damage = damage;
@@ -32,32 +31,74 @@ public class HitBox : MonoBehaviour
 
     private void DamageAllActors()
     {
-        foreach (Collider2D collider2D in colliders)
-        {
-            if (hitPlayer)
-            {
-                var healthComp = collider2D.gameObject.GetComponent<HealthComponent>();
+        var destroy = false;
 
-                if (healthComp)
+        for (int index = 0; index < colliders.Count; index++)
+        {
+            if (index <= 0)
+            {
+                if (colliders[index].gameObject.CompareTag("Ground"))
                 {
-                    healthComp.ProccessDamage(damage);
+                    destroy = true;
+                    break;
+                }
+                else
+                {
+                    if (hitPlayer)
+                    {
+                        var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
+
+                        if (healthComp)
+                        {
+                            healthComp.ProccessDamage(damage);
+                        }
+                    }
+                    else
+                    {
+                        if (!colliders[index].gameObject.CompareTag("Player"))
+                        {
+                            var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
+
+                            if (healthComp)
+                            {
+                                healthComp.ProccessDamage(damage);
+                            }
+                        }
+                    }
                 }
             }
             else
             {
-                if (!collider2D.gameObject.CompareTag("Player"))
+                if (hitPlayer)
                 {
-                    var healthComp = collider2D.gameObject.GetComponent<HealthComponent>();
+                    var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
 
                     if (healthComp)
                     {
                         healthComp.ProccessDamage(damage);
                     }
                 }
+                else
+                {
+                    if (!colliders[index].gameObject.CompareTag("Player"))
+                    {
+                        var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
+
+                        if (healthComp)
+                        {
+                            healthComp.ProccessDamage(damage);
+                        }
+                    }
+                }
             }
         }
 
         colliders.Clear();
+
+        if (destroy)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator DestroyBox()

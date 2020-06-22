@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 161756811}
   - component: {fileID: 161756812}
   - component: {fileID: 2964444270918680461}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Leech Left Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 1371305483}
   - component: {fileID: 1371305485}
   - component: {fileID: 1371305484}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Leech Right Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 8580915933323511985}
   - component: {fileID: 8580915933323511987}
   - component: {fileID: 8580915933323511986}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Leech Top Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
