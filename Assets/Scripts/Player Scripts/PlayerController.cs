@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
     public void OnDeath()
     {
         uiManager.ShowDeathUI();
+
+        controller.StopMovement();
     }    
 
     public void OnLanding()
