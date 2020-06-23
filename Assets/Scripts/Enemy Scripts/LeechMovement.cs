@@ -22,6 +22,7 @@ public class LeechMovement : MonoBehaviour
         myHealth = GetComponent<HealthComponent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
+
     private void Update()
     {
         if (!myHealth.GetIsDead())

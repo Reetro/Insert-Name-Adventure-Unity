@@ -2166,7 +2166,7 @@ GameObject:
   - component: {fileID: 1078551672}
   m_Layer: 8
   m_Name: Foreground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5428,11 +5428,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3474771729472559561, guid: e56c704d4e011d74f99d556500c5390c,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7367770904653533427, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}
       propertyPath: m_Name
@@ -5441,12 +5436,12 @@ PrefabInstance:
     - target: {fileID: 8871505594260596120, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.24297476
+      value: 3.84
       objectReference: {fileID: 0}
     - target: {fileID: 8871505594260596120, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.5338268
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8871505594260596120, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}

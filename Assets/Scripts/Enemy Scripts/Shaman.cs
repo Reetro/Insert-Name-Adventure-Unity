@@ -10,10 +10,10 @@ public class Shaman : MonoBehaviour
     [SerializeField] private float boomerangDamage = 2f;
     [SerializeField] private float boomerangMinRandomFactor = 300f;
     [SerializeField] private float boomerangMaxRandomFactor = 600f;
+    [SerializeField] private float teleportOffset = 0.5f;
 
     private Rigidbody2D myRigidbody = null;
     private Boomerang currentBoomrang = null;
-
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class Shaman : MonoBehaviour
     {
         currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation) as Boomerang;
 
-        currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport);
+        currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
 
         currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, transform.position, boomerangMinRandomFactor, boomerangMaxRandomFactor);
     }
