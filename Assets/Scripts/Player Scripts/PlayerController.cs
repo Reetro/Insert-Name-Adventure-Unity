@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
-    [SerializeField] PlayerUIManager uiManager = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
 
     float horizontalMove = 0f;
+    PlayerUIManager uiManager = null;
     bool jump = false;
     Animator myAnimator = null;
     CharacterController2D controller = null;
@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         controller = GetComponent<CharacterController2D>();
         myHealthComp = GetComponent<HealthComponent>();
+        uiManager = FindObjectOfType<PlayerUIManager>();
+
+        print(uiManager);
 
         SpawnLeechCollision();
         SpawnPlayerState();
@@ -59,6 +62,10 @@ public class PlayerController : MonoBehaviour
             {
                 currentGun.FireGun();
             }
+        }
+        else
+        {
+            myAnimator.SetBool("Idle", true);
         }
     }
 
