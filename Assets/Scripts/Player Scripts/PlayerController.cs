@@ -11,11 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float runSpeed = 40f;
 
     float horizontalMove = 0f;
-    PlayerUIManager uiManager = null;
     bool jump = false;
     Animator myAnimator = null;
     CharacterController2D controller = null;
     HealthComponent myHealthComp = null;
+    PlayerUIManager uiManager = null;
 
     private void Start()
     {
@@ -23,8 +23,6 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController2D>();
         myHealthComp = GetComponent<HealthComponent>();
         uiManager = FindObjectOfType<PlayerUIManager>();
-
-        print(uiManager);
 
         SpawnLeechCollision();
         SpawnPlayerState();
