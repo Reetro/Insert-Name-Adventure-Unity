@@ -164,4 +164,16 @@ public class GeneralFunctions
 
         return new Vector2(randomX, 0);
     }
+    // Finds all the enemies in the current scene
+    public static GameObject[] GetAllEnimesInScene()
+    {
+        var objects = GameObject.FindGameObjectsWithTag("Enemy");
+
+        return objects;
+    }
+    // Gets a given enemy object by it's id
+    public static GameObject GetEnemyByID(GameObject idObject)
+    {
+        return idObject.transform.parent.gameObject;
+    }
 }

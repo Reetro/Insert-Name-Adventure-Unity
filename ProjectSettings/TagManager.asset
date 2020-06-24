@@ -12,6 +12,7 @@ TagManager:
   - Leech Collision Right
   - Level Loader
   - Ground
+  - Enemy
   layers:
   - Default
   - TransparentFX
