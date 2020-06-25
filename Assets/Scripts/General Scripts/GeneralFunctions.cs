@@ -176,4 +176,14 @@ public class GeneralFunctions
     {
         return idObject.transform.parent.gameObject;
     }
+    // Returns the player GameObject
+    public static GameObject GetPlayerGameObject()
+    {
+        return GameObject.FindGameObjectWithTag("Player");
+    }
+    // Gets the health component from the given object
+    public static HealthComponent GetGameObjectHealthComponent(GameObject objectToGet)
+    {
+        return objectToGet.GetComponent<HealthComponent>();
+    }
 }

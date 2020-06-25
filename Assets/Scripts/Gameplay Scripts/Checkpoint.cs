@@ -3,7 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour
 {
+    [Tooltip("Amount to heal the player")]
     public float healAmount = 3f;
+    [Tooltip("The amount of health the player has to have or below to be healed")]
+    public float healThreshold = 8f;
 
     private PlayerState playerState = null;
     private int currentLevelIndex = 0;
@@ -25,9 +28,12 @@ public class Checkpoint : MonoBehaviour
             {
                 playerState.SetCheckpointIndex(currentLevelIndex);
 
-                GeneralFunctions.HealTarget(collision.gameObject, healAmount);
+                if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).GetCurrentHealth() < healThreshold)
+                {
+                    GeneralFunctions.HealTarget(collision.gameObject, healAmount);
 
-                healedPlayer = true;
+                    healedPlayer = true;
+                }
             }
         }
     }
