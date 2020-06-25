@@ -9,7 +9,7 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] private float gunCooldown = 1f;
 
     [Header("Config Settings")]
-    [SerializeField] private HitBox hitBoxToSpawn = null;
+    [SerializeField] private PlayerProjectile hitBoxToSpawn = null;
     [SerializeField] private Transform gunFireLocation = null;
     [SerializeField] private PlayerController controller = null;
     [SerializeField] private CooldownBar cooldownBar = null;
@@ -28,7 +28,7 @@ public class PlayerGun : MonoBehaviour
     {
         if (!cooldownBar.GetIsActive())
         {
-            HitBox gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation) as HitBox;
+            PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation) as PlayerProjectile;
 
             gunHit.ConstructBox(gunDamage, laserUpTime, false, true);
 
@@ -89,8 +89,6 @@ public class PlayerGun : MonoBehaviour
                 {
                     stickInput = stickInput.normalized * ((stickInput.magnitude - deadzone) / (1 - deadzone));
                 }
-
-                print(stickInput);
 
                 if (stickInput.sqrMagnitude >= 1)
                 {
