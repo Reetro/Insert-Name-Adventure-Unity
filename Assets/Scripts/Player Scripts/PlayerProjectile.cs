@@ -7,8 +7,6 @@ public class PlayerProjectile : MonoBehaviour
     private float damage = 1;
     private float despawnTime = 1;
     private bool hitPlayer = false;
-    private LineRenderer lineRenderer = null;
-    private bool touchedGround = false;
   
     private List<Collider2D> colliders = new List<Collider2D>();
     public List<Collider2D> GetColliders() { return colliders; }
@@ -19,8 +17,6 @@ public class PlayerProjectile : MonoBehaviour
         this.despawnTime = despawnTime;
         this.hitPlayer = hitPlayer;
 
-        lineRenderer = GetComponent<LineRenderer>();
-
         if (shouldDespawn)
         {
             StartCoroutine(DestroyBox());
@@ -29,32 +25,13 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(lineRenderer);
+        if (!colliders.Contains(collision)) { colliders.Add(collision); }
 
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, transform.forward * 5);
-
-            if (raycastHit2D)
-            {
-                touchedGround = true;
-
-                Destroy(gameObject);
-            }
-        }
-
-        if (!touchedGround)
-        {
-            if (!colliders.Contains(collision)) { colliders.Add(collision); }
-
-            DamageAllObjects();
-        }
+        DamageAllObjects();
     }
 
     private void DamageAllObjects()
     {
-        var destroy = false;
-
         for (int index = 0; index < colliders.Count; index++)
         {
             if (hitPlayer)
@@ -81,11 +58,6 @@ public class PlayerProjectile : MonoBehaviour
         }
 
         colliders.Clear();
-
-        if (destroy)
-        {
-            Destroy(gameObject);
-        }
     }
 
     private IEnumerator DestroyBox()

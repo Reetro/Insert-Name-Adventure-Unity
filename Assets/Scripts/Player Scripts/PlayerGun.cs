@@ -17,6 +17,7 @@ public class PlayerGun : MonoBehaviour
 
     private float gunAngle = 0f;
     private bool gamepadActive = false;
+    private bool touchingGround = false;
 
     void Update()
     {
@@ -26,9 +27,9 @@ public class PlayerGun : MonoBehaviour
 
     public void FireGun()
     {
-        if (!cooldownBar.GetIsActive())
+        if (CanGunFire())
         {
-            PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation) as PlayerProjectile;
+            PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
 
             gunHit.ConstructBox(gunDamage, laserUpTime, false, true);
 
@@ -129,6 +130,36 @@ public class PlayerGun : MonoBehaviour
 
             Cursor.lockState = CursorLockMode.None;
         }
+    }
+
+    private bool CanGunFire()
+    {
+        if (!cooldownBar.GetIsActive())
+        {
+            if (!touchingGround)
+            {
+                return true;
+            }
+            else
+            {
+                cooldownBar.StartCooldown(gunCooldown);
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        touchingGround = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        touchingGround = false;
     }
 
     private bool MouseLeftOrRight()

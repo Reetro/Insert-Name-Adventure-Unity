@@ -13,6 +13,7 @@ TagManager:
   - Level Loader
   - Ground
   - Enemy
+  - Platform
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Enemy Projectile
   - Attached Leech
   - Leech Collision
-  - 
+  - Player Gun
   - 
   - 
   - 

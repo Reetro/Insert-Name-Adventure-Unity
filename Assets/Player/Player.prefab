@@ -534,7 +534,8 @@ GameObject:
   - component: {fileID: 7335817594842804118}
   - component: {fileID: 1698111857827871570}
   - component: {fileID: 1635639793}
-  m_Layer: 0
+  - component: {fileID: 1121136768}
+  m_Layer: 16
   m_Name: Player Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,6 +631,32 @@ MonoBehaviour:
   controller: {fileID: 5065280756885518072}
   cooldownBar: {fileID: 1449529014}
   playerHealthComp: {fileID: 6037561768107980108}
+--- !u!61 &1121136768
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4066560135074363130}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 12.130732, y: 0.82357275}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 20.73, y: 4.24}
+    newSize: {x: 20.73, y: 4.2411475}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.01941, y: 2.32674}
+  m_EdgeRadius: 0
 --- !u!1 &4157925455522904728
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4157925455522904731}
   - component: {fileID: 4157925455522904730}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Player Hand Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -923,7 +950,6 @@ MonoBehaviour:
     type: 3}
   playerState: {fileID: 6849471427158766920, guid: 55e160951fd37af4ebde1c4d69f16472,
     type: 3}
-  uiManager: {fileID: 1691144311}
   runSpeed: 40
 --- !u!114 &1364893853460561661
 MonoBehaviour:
@@ -1064,7 +1090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4157925457032491725}
   - component: {fileID: 4157925457032491724}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Player Hand Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1157,7 +1183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3046961054608351218}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Fire Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1346,18 +1372,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 732848251}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1691144311 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1331867660, guid: 810cb8a1a1673dc499604e17bf965620,
-    type: 3}
-  m_PrefabInstance: {fileID: 732848251}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8ae5aedfb342d429819d7a145fbb09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8175054866876292592 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8175054867234241931, guid: 810cb8a1a1673dc499604e17bf965620,
@@ -1507,6 +1521,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.0018181816
       objectReference: {fileID: 0}
+    - target: {fileID: 3948928414183882916, guid: 61b369c67555f8249a9be31a2a880d85,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4102095481288226258, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1517,10 +1536,20 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5595566173434107275, guid: 61b369c67555f8249a9be31a2a880d85,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8035968146752299105, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
       propertyPath: m_Name
       value: Cooldown Bar Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8035968146752299105, guid: 61b369c67555f8249a9be31a2a880d85,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b369c67555f8249a9be31a2a880d85, type: 3}
