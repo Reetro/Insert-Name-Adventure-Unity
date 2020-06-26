@@ -247,23 +247,62 @@ public class GeneralFunctions
         return new Vector2(randomX, 0);
     }
     /// <summary>
-    /// Finds all the enemies in the current scene
+    /// Finds all Gameobjects on the specified layer
     /// </summary>
-    /// <returns>An array of all enemy ID objects</returns>
-    public static GameObject[] GetAllEnimesInScene()
+    /// <returns>An array of Gameobjects</returns>
+    public static GameObject[] GetAllObjectsInLayer(string layerName)
     {
-        var objects = GameObject.FindGameObjectsWithTag("Enemy");
+        var objectArray = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        var objectList = new System.Collections.Generic.List<GameObject>();
+
+        for (int i = 0; i < objectArray.Length; i++)
+        {
+            if (objectArray[i].layer == LayerMask.NameToLayer(layerName))
+            {
+                objectList.Add(objectArray[i]);
+            }
+        }
+        if (objectList.Count == 0)
+        {
+            return null;
+        }
+
+        return objectList.ToArray();
+    }
+    /// <summary>
+    /// Finds all gameplay ID scripts in scene
+    /// </summary>
+    /// <returns>An array of all gameplay ID components</returns>
+    public static GameplayObjectID[] GetAllGameplayIDObjects()
+    {
+        var objects = GameObject.FindObjectsOfType<GameplayObjectID>();
 
         return objects;
     }
     /// <summary>
-    /// Finds all the enemies in the current scene
+    /// Finds the specific GameObject with the given id in scene
     /// </summary>
-    /// <param name="idObject">the ID game object found on enemies</param>
-    /// <returns>The found enemy Gameobject</returns>
-    public static GameObject GetEnemyByID(GameObject idObject)
+    /// <param name="id">the ID found on the Gameobject</param>
+    /// <returns>The found GameObject</returns>
+    public static GameObject GetGameObjectByID(int id)
     {
-        return idObject.transform.parent.gameObject;
+        var objects = GetAllGameplayIDObjects();
+        GameObject foundObject = null;
+
+        foreach (GameplayObjectID gameObject in objects)
+        {
+            if (gameObject.GetID() == id)
+            {
+                foundObject = gameObject.gameObject;
+                break;
+            }
+            else
+            {
+                foundObject = null;
+                continue;
+            }
+        }
+        return foundObject;
     }
     /// <summary>
     ///  Returns the player GameObject

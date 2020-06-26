@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EnemyID : MonoBehaviour
+public class GameplayObjectID : MonoBehaviour
 {
     private int ID = 0;
 
@@ -10,6 +8,7 @@ public class EnemyID : MonoBehaviour
     {
         ID = GeneralFunctions.GenID();
     }
+
     public int GetID()
     {
         return ID;
