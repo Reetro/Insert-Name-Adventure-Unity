@@ -383,4 +383,11 @@ public class GeneralFunctions
     {
         return objectToTest.CompareTag("Player");
     }
+
+    public static bool IsObjectOnLayer(string layer, GameObject gameObject)
+    {
+        bool localBool = gameObject.layer == LayerMask.NameToLayer(layer);
+
+        return localBool;
+    }
 }

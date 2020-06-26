@@ -8,17 +8,25 @@ public class LeechEggCold : MonoBehaviour
     [SerializeField] private bool spawnOnGroundHit = false;
 
     private bool isOnPlatform = false;
+    private bool hasPlatformEntered = false;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (spawnOnGroundHit && !isOnPlatform)
+        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
         {
-            SpawnLeech();
+            if (hasPlatformEntered)
+            {
+                if (spawnOnGroundHit && !isOnPlatform)
+                {
+                    SpawnLeech();
+                }
+            }
         }
     }
 
     public void OnPlatformEnter()
     {
+        hasPlatformEntered = true;
         isOnPlatform = true;
     }
 
