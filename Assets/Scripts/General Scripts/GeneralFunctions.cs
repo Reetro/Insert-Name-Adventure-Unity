@@ -282,4 +282,14 @@ public class GeneralFunctions
     {
         return objectToGet.GetComponent<HealthComponent>();
     }
+    /// <summary>
+    ///  Gets the gameplay manager and generates an ID
+    /// </summary>
+    /// <returns>A random int that will be unique to this object</returns>
+    public static int GenID()
+    {
+        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
+
+        return manager.GetComponent<GameplayManager>().GenID();
+    }
 }

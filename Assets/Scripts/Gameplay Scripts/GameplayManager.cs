@@ -1,10 +1,31 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameplayManager : MonoBehaviour
 {
+    [Header("Collider settings")]
     public Collider2D[] colliders;
     public float radius = 100f;
     public LayerMask mask;
+
+    List<int> gameplayObjects = new List<int>();
+
+    public int GenID()
+    {
+        var newID = Random.Range(1, 100000);
+
+        for (int index = 0; index < gameplayObjects.Count; index++)
+        {
+            if (gameplayObjects.Contains(newID))
+            {
+                newID = Random.Range(1, 1000000);
+                break;
+            }
+        }
+
+        gameplayObjects.Add(newID);
+        return newID;
+    }
 
     public bool PreventSpawnOverlap(Vector3 spawnPosition)
     {
