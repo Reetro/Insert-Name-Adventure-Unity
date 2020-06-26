@@ -289,11 +289,11 @@ public class GeneralFunctions
         var objects = GetAllGameplayIDObjects();
         GameObject foundObject = null;
 
-        foreach (GameplayObjectID gameObject in objects)
+        foreach (GameplayObjectID currentGameObject in objects)
         {
-            if (gameObject.GetID() == id)
+            if (currentGameObject.GetID() == id)
             {
-                foundObject = gameObject.gameObject;
+                foundObject = currentGameObject.gameObject;
                 break;
             }
             else
@@ -302,6 +302,12 @@ public class GeneralFunctions
                 continue;
             }
         }
+
+        if (!foundObject)
+        {
+            Debug.LogWarning("Failed to find object by ID");
+        }
+
         return foundObject;
     }
     /// <summary>
