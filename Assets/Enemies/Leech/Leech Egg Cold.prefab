@@ -97,7 +97,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leechToSpawn: {fileID: 5653861939190943890, guid: 4d545b6f828f6924c87665ebb262a75d,
     type: 3}
+  spawnOnGroundHit: 1
 --- !u!114 &3270076711698082617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,3 +247,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c11e49f83dc6459308b91afaf9fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnPlatformEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2761777055465162608}
+        m_MethodName: OnPlatformEnter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPlatformExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2761777055465162608}
+        m_MethodName: OnPlatformExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

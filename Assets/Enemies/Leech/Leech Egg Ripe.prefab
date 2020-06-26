@@ -265,3 +265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c11e49f83dc6459308b91afaf9fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnPlatformEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlatformExit:
+    m_PersistentCalls:
+      m_Calls: []
