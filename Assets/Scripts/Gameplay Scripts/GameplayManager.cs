@@ -12,7 +12,7 @@ public class GameplayManager : MonoBehaviour
 
     public int GenID()
     {
-        var newID = Random.Range(1, 100000);
+        var newID = Random.Range(1, 1000000);
 
         for (int index = 0; index < gameplayObjects.Count; index++)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyID : MonoBehaviour
 {
-    int ID = 0;
+    private int ID = 0;
 
     void Start()
     {
