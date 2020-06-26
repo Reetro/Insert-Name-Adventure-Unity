@@ -31,7 +31,7 @@ public class PlayerGun : MonoBehaviour
         {
             PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
 
-            gunHit.ConstructBox(gunDamage, laserUpTime, false, true);
+            gunHit.ConstructBox(gunDamage, laserUpTime);
 
             cooldownBar.StartCooldown(gunCooldown);
         }

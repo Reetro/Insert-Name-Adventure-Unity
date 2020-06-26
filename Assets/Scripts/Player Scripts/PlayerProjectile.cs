@@ -6,21 +6,16 @@ public class PlayerProjectile : MonoBehaviour
 {
     private float damage = 1;
     private float despawnTime = 1;
-    private bool hitPlayer = false;
   
     private List<Collider2D> colliders = new List<Collider2D>();
     public List<Collider2D> GetColliders() { return colliders; }
 
-    public virtual void ConstructBox(float damage, float despawnTime, bool hitPlayer, bool shouldDespawn)
+    public virtual void ConstructBox(float damage, float despawnTime)
     {
         this.damage = damage;
         this.despawnTime = despawnTime;
-        this.hitPlayer = hitPlayer;
 
-        if (shouldDespawn)
-        {
-            StartCoroutine(DestroyBox());
-        }
+        StartCoroutine(DestroyBox());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,7 +29,7 @@ public class PlayerProjectile : MonoBehaviour
     {
         for (int index = 0; index < colliders.Count; index++)
         {
-            if (hitPlayer)
+            if (!colliders[index].gameObject.CompareTag("Player"))
             {
                 var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
 
@@ -42,17 +37,19 @@ public class PlayerProjectile : MonoBehaviour
                 {
                     healthComp.ProccessDamage(damage);
                 }
-            }
-            else
-            {
-                if (!colliders[index].gameObject.CompareTag("Player"))
-                {
-                    var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
 
-                    if (healthComp)
-                    {
-                        healthComp.ProccessDamage(damage);
-                    }
+                var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
+
+                if (leechEggRipe)
+                {
+                    leechEggRipe.SpawnLeech();
+                }
+
+                var leechEggCold = colliders[index].gameObject.GetComponent<LeechEggCold>();
+
+                if (leechEggCold)
+                {
+                    leechEggCold.SpawnLeech();
                 }
             }
         }
