@@ -383,7 +383,12 @@ public class GeneralFunctions
     {
         return objectToTest.CompareTag("Player");
     }
-
+    /// <summary>
+    /// Checks to see if the provided Gameobject is on the provided layer
+    /// </summary>
+    /// <param name="layer"></param>
+    /// <param name="gameObject"></param>
+    /// <returns>A bool that determines if the Gameobject was on the layer</returns>
     public static bool IsObjectOnLayer(string layer, GameObject gameObject)
     {
         bool localBool = gameObject.layer == LayerMask.NameToLayer(layer);

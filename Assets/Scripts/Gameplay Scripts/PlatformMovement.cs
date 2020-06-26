@@ -7,10 +7,10 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
-
         if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
         {
+            GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
+
             RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
 
             if (rigidbodyManager)
@@ -22,10 +22,10 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        GeneralFunctions.DetachFromParent(collision.gameObject);
-
         if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
         {
+            GeneralFunctions.DetachFromParent(collision.gameObject);
+
             RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
 
             if (rigidbodyManager)

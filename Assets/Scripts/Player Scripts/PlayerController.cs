@@ -13,14 +13,14 @@ public class PlayerController : MonoBehaviour
     float horizontalMove = 0f;
     bool jump = false;
     Animator myAnimator = null;
-    CharacterController2D controller = null;
+    PlayerMovement controller = null;
     HealthComponent myHealthComp = null;
     PlayerUIManager uiManager = null;
 
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
-        controller = GetComponent<CharacterController2D>();
+        controller = GetComponent<PlayerMovement>();
         myHealthComp = GetComponent<HealthComponent>();
         uiManager = FindObjectOfType<PlayerUIManager>();
 
