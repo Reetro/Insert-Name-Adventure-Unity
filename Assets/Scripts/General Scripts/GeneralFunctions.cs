@@ -359,13 +359,13 @@ public class GeneralFunctions
         return manager.GetComponent<GameplayManager>().GetAllIDs();
     }
     /// <summary>
-    /// Will make the given object follow the given platforms movement
+    /// Will parent the given object to provided transform
     /// </summary>
     /// <param name="platform"></param>
     /// <param name="objectToAttach"></param>
-    public static void AttachObjectToPlatform(GameObject platform, GameObject objectToAttach)
+    public static void AttachObjectToTransfrom(Transform transform, GameObject objectToAttach)
     {
-        objectToAttach.transform.parent = platform.transform;
+        objectToAttach.transform.parent = transform;
     }
     /// <summary>
     /// Will detach the given object from its parent

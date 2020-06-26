@@ -223,75 +223,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 448544637}
   parallexEffect: 0
---- !u!1001 &337391105
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.0933976
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.96844876
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2761777055465162623, guid: 1307678b96419e244b04b55a57c0a1a3,
-        type: 3}
-      propertyPath: m_Name
-      value: Leech Egg Cold
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1307678b96419e244b04b55a57c0a1a3, type: 3}
 --- !u!1 &430610857
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +421,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 448544637}
   parallexEffect: 0.8
+--- !u!1001 &698206195
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.1393003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9695697
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162618, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761777055465162623, guid: 1307678b96419e244b04b55a57c0a1a3,
+        type: 3}
+      propertyPath: m_Name
+      value: Leech Egg Cold
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1307678b96419e244b04b55a57c0a1a3, type: 3}
 --- !u!1 &817316758
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +893,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5031716042473854626, guid: de4fd999179166844b676dcc0e80752f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4fd999179166844b676dcc0e80752f, type: 3}

@@ -7,7 +7,7 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        GeneralFunctions.AttachObjectToPlatform(gameObject, collision.gameObject);
+        GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
 
         if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
         {
