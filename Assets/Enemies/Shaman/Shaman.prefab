@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6801750043143621378}
   - component: {fileID: 3474771729472559561}
   - component: {fileID: 3776732387400010628}
+  - component: {fileID: -265515689673799275}
   m_Layer: 10
   m_Name: Shaman
   m_TagString: Shaman
@@ -200,5 +201,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-265515689673799275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367770904653533427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54c11e49f83dc6459308b91afaf9fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

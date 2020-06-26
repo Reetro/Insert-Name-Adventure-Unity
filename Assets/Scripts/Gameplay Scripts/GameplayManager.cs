@@ -27,6 +27,11 @@ public class GameplayManager : MonoBehaviour
         return newID;
     }
 
+    public List<int> GetAllIDs()
+    {
+        return gameplayObjects;
+    }
+
     public bool PreventSpawnOverlap(Vector3 spawnPosition)
     {
         colliders = Physics2D.OverlapCircleAll(transform.position, radius, mask);

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2761777055465162616}
   - component: {fileID: 2761777055465162617}
   - component: {fileID: 2761777055465162608}
+  - component: {fileID: 3270076711698082617}
   m_Layer: 10
   m_Name: Leech Egg Cold
   m_TagString: Leech Egg
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1098385431
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: da5dfb6478ce57845ba2cbf9f4bd5848, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -233,3 +234,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leechToSpawn: {fileID: 5653861939190943890, guid: 4d545b6f828f6924c87665ebb262a75d,
     type: 3}
+--- !u!114 &3270076711698082617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2761777055465162623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54c11e49f83dc6459308b91afaf9fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

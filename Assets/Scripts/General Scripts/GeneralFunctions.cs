@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
+/// <summary>
+/// This is a function library that contains useful functions for gameplay management
+/// </summary>
 public class GeneralFunctions
 {
     /// <summary>
@@ -72,13 +76,20 @@ public class GeneralFunctions
     /// <param name="gameObject">Game object the rigidBody is on</param>
     public static void RotateRigidBody(Vector2 target, Rigidbody2D rigidBody, float speed, GameObject gameObject)
     {
-        Vector2 direction = (Vector2)target - rigidBody.position;
+        if (rigidBody)
+        {
+            Vector2 direction = (Vector2)target - rigidBody.position;
 
-        direction.Normalize();
+            direction.Normalize();
 
-        float rotateAmount = Vector3.Cross(direction, gameObject.transform.up).z;
+            float rotateAmount = Vector3.Cross(direction, gameObject.transform.up).z;
 
-        rigidBody.angularVelocity = rotateAmount * speed;
+            rigidBody.angularVelocity = rotateAmount * speed;
+        }
+        else
+        {
+            Debug.LogError(gameObject.ToString() + "didn't have a a Rigidbody2D was unable to rotate");
+        }
     }
     /// <summary>
     /// Checks to see if position 1 is above position 2
@@ -178,7 +189,7 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    ///  Gets the targets health component then heals target
+    ///  Gets the targets health component then heals the target
     /// </summary>
     public static void HealTarget(GameObject target, float amount)
     {
@@ -253,13 +264,13 @@ public class GeneralFunctions
     public static GameObject[] GetAllObjectsInLayer(string layerName)
     {
         var objectArray = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
-        var objectList = new System.Collections.Generic.List<GameObject>();
+        var objectList = new List<GameObject>();
 
-        for (int i = 0; i < objectArray.Length; i++)
+        for (int index = 0; index < objectArray.Length; index++)
         {
-            if (objectArray[i].layer == LayerMask.NameToLayer(layerName))
+            if (objectArray[index].layer == LayerMask.NameToLayer(layerName))
             {
-                objectList.Add(objectArray[i]);
+                objectList.Add(objectArray[index]);
             }
         }
         if (objectList.Count == 0)
@@ -336,5 +347,40 @@ public class GeneralFunctions
         var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
 
         return manager.GetComponent<GameplayManager>().GenID();
+    }
+    /// <summary>
+    /// Gets all gameplay IDs from Gameplay Manager
+    /// </summary>
+    /// <returns>A list of integers</returns>
+    public static List<int> GetAllIDs()
+    {
+        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
+
+        return manager.GetComponent<GameplayManager>().GetAllIDs();
+    }
+    /// <summary>
+    /// Will make the given object follow the given platforms movement
+    /// </summary>
+    /// <param name="platform"></param>
+    /// <param name="objectToAttach"></param>
+    public static void AttachObjectToPlatform(GameObject platform, GameObject objectToAttach)
+    {
+        objectToAttach.transform.parent = platform.transform;
+    }
+    /// <summary>
+    /// Will detach the given object from its parent
+    /// </summary>
+    /// <param name="objectToDetach"></param>
+    public static void DetachFromParent(GameObject objectToDetach)
+    {
+        objectToDetach.transform.parent = null;
+    }
+    /// <summary>
+    /// Checks to see if the given object is the player
+    /// </summary>
+    /// <param name="objectToTest"></param>
+    public static bool IsObjectPlayer(GameObject objectToTest)
+    {
+        return objectToTest.CompareTag("Player");
     }
 }

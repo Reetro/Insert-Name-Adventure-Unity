@@ -211,8 +211,6 @@ public class BuffEffect : MonoBehaviour
     public void ResetDuration()
     {
         duration = defaultDuration;
-
-        Debug.Log(duration);
     }
 
     public ScriptableBuff GetBuff()
