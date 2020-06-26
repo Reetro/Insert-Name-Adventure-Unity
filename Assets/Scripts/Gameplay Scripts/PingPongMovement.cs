@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 
-public class PingPongMovement : MonoBehaviour
+public class PingPongMovement : PlatformMovement
 {
     public Transform pos1, pos2;
-    public float speed;
-    public Transform startPos;
-
-    Vector3 nextPos;
+    private Vector3 nextPos;
 
     void Start()
     {
@@ -25,36 +22,6 @@ public class PingPongMovement : MonoBehaviour
         }
 
         transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        GeneralFunctions.AttachObjectToPlatform(gameObject, collision.gameObject);
-
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
-        {
-            RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
-
-            if (rigidbodyManager)
-            {
-                rigidbodyManager.OnPlatfromEnter();
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        GeneralFunctions.DetachFromParent(collision.gameObject);
-
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
-        {
-            RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
-
-            if (rigidbodyManager)
-            {
-                rigidbodyManager.OnPlatfromExit();
-            }
-        }
     }
 
     private void OnDrawGizmos()
