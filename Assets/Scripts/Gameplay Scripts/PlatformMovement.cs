@@ -7,7 +7,7 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
+        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
         {
             GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
 
@@ -22,7 +22,7 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject))
+        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
         {
             GeneralFunctions.DetachFromParent(collision.gameObject);
 
