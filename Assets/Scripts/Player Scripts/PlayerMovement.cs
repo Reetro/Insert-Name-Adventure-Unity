@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 				if (!wasGrounded)
 					OnLandEvent.Invoke();
 			}
+
 			if (colliders[index].gameObject.CompareTag("Platform"))
             {
 				GeneralFunctions.AttachObjectToTransfrom(colliders[index].gameObject.transform, gameObject);

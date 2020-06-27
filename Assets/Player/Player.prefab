@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 311
+    m_Bits: 131383
   m_GroundCheck: {fileID: 6664436757583238392}
   OnLandEvent:
     m_PersistentCalls:
