@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 1639896767549320161}
   - component: {fileID: 1639896767549320160}
   - component: {fileID: 6968997073007168608}
-  m_Layer: 17
-  m_Name: Platform
-  m_TagString: Platform
+  m_Layer: 8
+  m_Name: Door
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveTo: {fileID: 1954293891283514303}
+  speed: 2
 --- !u!1 &3268696082526298661
 GameObject:
   m_ObjectHideFlags: 0

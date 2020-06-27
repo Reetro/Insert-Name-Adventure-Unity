@@ -27,4 +27,12 @@ public class OneShotMovement : PlatformMovement
             canMove = false;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            canMove = true;
+        }
+    }
 }
