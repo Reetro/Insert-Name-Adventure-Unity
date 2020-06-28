@@ -12,7 +12,6 @@ public class Shaman : EnemyBase
     [SerializeField] private float boomerangMaxRandomFactor = 600f;
     [SerializeField] private float teleportOffset = 0.5f;
 
-    private Rigidbody2D myRigidbody = null;
     private Boomerang currentBoomrang = null;
 
     protected override void Start()
@@ -20,13 +19,11 @@ public class Shaman : EnemyBase
         base.Start();
 
         ThrowBoomerang();
-
-        myRigidbody = GetComponent<Rigidbody2D>();
     }
 
     public void ThrowBoomerang()
     {
-        currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation) as Boomerang;
+        currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation);
 
         currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
 
@@ -38,10 +35,5 @@ public class Shaman : EnemyBase
         currentBoomrang.DestroyBoomerang(false);
 
         Destroy(gameObject);
-    }
-
-    public Rigidbody2D GetRigidbody2D()
-    {
-        return myRigidbody;
     }
 }

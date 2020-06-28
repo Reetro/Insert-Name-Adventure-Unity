@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EnemyMovement), typeof(HealthComponent))]
+[RequireComponent(typeof(EnemyMovement))]
 public class LeechMovement : EnemyBase
 {
     [SerializeField] EnemyMovement controller = null;
@@ -10,14 +10,11 @@ public class LeechMovement : EnemyBase
     [SerializeField] float randomAmountToAddToYmin = 0.005f;
     [SerializeField] float randomAmountToAddToYmax = 0.007f;
 
-    private Rigidbody2D myRigidbody2D = null;
     private Animator myAnimator = null;
 
     protected override void Start()
     {
         base.Start();
-
-        myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
     }
 
@@ -37,7 +34,7 @@ public class LeechMovement : EnemyBase
     {
         if (!GetHealthComponent().GetIsDead())
         {
-            controller.MoveAITowards(GetPlayerTransform(), myRigidbody2D, leechFlySpeed);
+            controller.MoveAITowards(GetPlayerTransform(), GetRigidbody2D(), leechFlySpeed);
         }
     }
 
@@ -45,7 +42,7 @@ public class LeechMovement : EnemyBase
     {
         myAnimator.SetBool("IsDead", true);
 
-        controller.StopMovement(myRigidbody2D);
+        controller.StopMovement(GetRigidbody2D());
     }
 
     public void OnDeathAnimationEnd()
