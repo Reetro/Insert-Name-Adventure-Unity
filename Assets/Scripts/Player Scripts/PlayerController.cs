@@ -69,8 +69,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
-        jump = false;
+        if (!myHealthComp.GetIsDead())
+        {
+            controller.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
+            jump = false;
+        }
     }
 
     public void OnDeath()
