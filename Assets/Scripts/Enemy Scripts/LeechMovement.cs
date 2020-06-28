@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement), typeof(HealthComponent))]
-public class LeechMovement : MonoBehaviour
+public class LeechMovement : EnemyBase
 {
     [SerializeField] EnemyMovement controller = null;
 
@@ -12,22 +12,20 @@ public class LeechMovement : MonoBehaviour
 
     private Rigidbody2D myRigidbody2D = null;
     private Animator myAnimator = null;
-    private Transform player = null;
-    private HealthComponent myHealth = null;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myHealth = GetComponent<HealthComponent>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     private void Update()
     {
-        if (!myHealth.GetIsDead())
+        if (!GetHealthComponent().GetIsDead())
         {
-            controller.LookAtTarget(player);
+            controller.LookAtTarget(GetPlayerTransform());
 
             var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
 
@@ -37,9 +35,9 @@ public class LeechMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!myHealth.GetIsDead())
+        if (!GetHealthComponent().GetIsDead())
         {
-            controller.MoveAITowards(player, myRigidbody2D, leechFlySpeed);
+            controller.MoveAITowards(GetPlayerTransform(), myRigidbody2D, leechFlySpeed);
         }
     }
 

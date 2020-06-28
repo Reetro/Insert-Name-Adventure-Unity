@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Shaman : MonoBehaviour
+public class Shaman : EnemyBase
 {
     [SerializeField] private Boomerang boomerangToSpawn = null;
 
@@ -15,13 +15,13 @@ public class Shaman : MonoBehaviour
     private Rigidbody2D myRigidbody = null;
     private Boomerang currentBoomrang = null;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         ThrowBoomerang();
 
         myRigidbody = GetComponent<Rigidbody2D>();
-
-        GeneralFunctions.ConstructHPComponent(gameObject);
     }
 
     public void ThrowBoomerang()

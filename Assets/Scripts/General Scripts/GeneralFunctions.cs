@@ -42,7 +42,7 @@ public class GeneralFunctions
     ///  Gets the directional vector of an angle 
     /// </summary>
     /// <param name="angle"></param>
-    /// <returns>A vector2 that is pointing a direction</returns>
+    /// <returns>A vector2 that is pointing in a direction</returns>
     public static Vector2 GetDirectionVector2DFromAngle(float angle)
     {
         return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
@@ -62,7 +62,7 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="position1"></param>
     /// <param name="position2"></param>
-    /// <returns>A vector2 that is pointing a direction</returns>
+    /// <returns>A vector2 that is pointing in a direction</returns>
     public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
     {
         return position1 - position2.normalized;
@@ -116,7 +116,7 @@ public class GeneralFunctions
         objectToRotate.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
     /// <summary>
-    /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to player
+    /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to the player
     /// </summary>
     /// <param name="auraManager">The aura manager to spawn the leech debuff on</param>
     /// <param name="attachedLeech">The leech to attach</param>
@@ -172,7 +172,7 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Calls the construct health component on the given game object
+    /// Calls the construct health component function on the given game object
     /// </summary>
     /// <param name="gameObject">Game object with the health component</param>
     public static void ConstructHPComponent(GameObject gameObject)
@@ -359,7 +359,7 @@ public class GeneralFunctions
         return manager.GetComponent<GameplayManager>().GetAllIDs();
     }
     /// <summary>
-    /// Will parent the given object to provided transform
+    /// Will parent the given object to the provided transform
     /// </summary>
     /// <param name="platform"></param>
     /// <param name="objectToAttach"></param>

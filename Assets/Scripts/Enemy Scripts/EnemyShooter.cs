@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class EnemyShooter : MonoBehaviour
+public class EnemyShooter : EnemyBase
 {
     [SerializeField] private ProjectileMovement projectilePrefab = null;
     [SerializeField] private float shootIntervale = 2f;
@@ -9,22 +9,16 @@ public class EnemyShooter : MonoBehaviour
     [SerializeField] private float projectileDamage = 1f;
     [SerializeField] private Transform firePoint = null;
 
-    private HealthComponent healthComp = null;
-    private Transform playerTransform = null;
-
-    protected virtual void Start()
+    protected override void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        healthComp = GetComponent<HealthComponent>();
-
-        GeneralFunctions.ConstructHPComponent(gameObject);
+        base.Start();
 
         StartCoroutine(ShootInterval());
     }
 
     private IEnumerator ShootInterval()
     {
-        while (!healthComp.GetIsDead())
+        while (!GetHealthComponent().GetIsDead())
         {
             yield return new WaitForSecondsRealtime(shootIntervale);
 
@@ -61,15 +55,5 @@ public class EnemyShooter : MonoBehaviour
     public Transform GetFirePoint()
     {
         return firePoint;
-    }
-
-    public HealthComponent GetHealthComponent()
-    {
-        return healthComp;
-    }
-
-    public Transform GetPlayerTransform()
-    {
-        return playerTransform;
     }
 }
