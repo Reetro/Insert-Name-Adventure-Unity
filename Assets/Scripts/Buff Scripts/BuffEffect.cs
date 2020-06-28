@@ -12,6 +12,7 @@ public class BuffEffect : MonoBehaviour
     private HealthComponent targetHealth = null;
 
     protected BuffIcon icon = null;
+    protected GameplayObjectID idObject;
 
     private bool buffIsRuning = false;
     private bool isActive = true;
@@ -31,6 +32,7 @@ public class BuffEffect : MonoBehaviour
             this.target = target;
 
             targetHealth = target.GetComponent<HealthComponent>();
+            idObject = gameObject.AddComponent<GameplayObjectID>();
 
             buffIsRuning = true;
         }
@@ -68,6 +70,7 @@ public class BuffEffect : MonoBehaviour
             this.target = target;
 
             targetHealth = target.GetComponent<HealthComponent>();
+            idObject = gameObject.AddComponent<GameplayObjectID>();
 
             buffIsRuning = true;
         }

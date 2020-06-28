@@ -15,6 +15,7 @@ public class DebuffEffect : MonoBehaviour
     private HealthComponent targetHealth = null;
 
     protected DebuffIcon icon = null;
+    protected GameplayObjectID idObject;
 
     private bool firstRun = false;
     private bool shouldTick = true;
@@ -38,6 +39,7 @@ public class DebuffEffect : MonoBehaviour
             firstRun = true;
 
             targetHealth = target.GetComponent<HealthComponent>();
+            idObject = gameObject.AddComponent<GameplayObjectID>();
 
             if (!shouldTick)
             {
@@ -90,6 +92,7 @@ public class DebuffEffect : MonoBehaviour
             damage = debuff.damage;
 
             targetHealth = target.GetComponent<HealthComponent>();
+            idObject = gameObject.AddComponent<GameplayObjectID>();
 
             if (!shouldTick)
             {
