@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(RigidbodyManager))]
 public class LeechEggCold : MonoBehaviour
 {
     [Tooltip("The actual leech prefab to spawn")]

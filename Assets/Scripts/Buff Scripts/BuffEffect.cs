@@ -34,6 +34,8 @@ public class BuffEffect : MonoBehaviour
             targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
 
+            idObject.ConstructID();
+
             buffIsRuning = true;
         }
         else if (refresh)
@@ -71,6 +73,8 @@ public class BuffEffect : MonoBehaviour
 
             targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
+
+            idObject.ConstructID();
 
             buffIsRuning = true;
         }

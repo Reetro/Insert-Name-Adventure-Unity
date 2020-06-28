@@ -41,6 +41,8 @@ public class DebuffEffect : MonoBehaviour
             targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
 
+            idObject.ConstructID();
+
             if (!shouldTick)
             {
                 this.ticks = maxTicks;
@@ -93,6 +95,8 @@ public class DebuffEffect : MonoBehaviour
 
             targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
+
+            idObject.ConstructID();
 
             if (!shouldTick)
             {

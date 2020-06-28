@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(HealthComponent), typeof(Rigidbody2D), typeof(GameplayObjectID))]
+[RequireComponent(typeof(EnemyMovement), typeof(Animator))]
 public class EnemyBase : MonoBehaviour
 {
     private HealthComponent healthComp = null;
     private Transform playerTransform = null;
     private Rigidbody2D myRigidBody2D = null;
     private GameplayObjectID idObject = null;
+    private EnemyMovement enemyMovement = null;
+    private Animator animator = null;
 
     protected virtual void Start()
     {
@@ -14,6 +17,10 @@ public class EnemyBase : MonoBehaviour
         healthComp = GetComponent<HealthComponent>();
         myRigidBody2D = GetComponent<Rigidbody2D>();
         idObject = GetComponent<GameplayObjectID>();
+        enemyMovement = GetComponent<EnemyMovement>();
+        animator = GetComponent<Animator>();
+
+        idObject.ConstructID();
 
         GeneralFunctions.ConstructHPComponent(gameObject);
     }
@@ -43,6 +50,27 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     public int GetID()
     {
-        return idObject.GetID(); 
+        return idObject.GetID();
+    }
+    /// <summary>
+    /// Gets this Gameobjects movement component
+    /// </summary>
+    public EnemyMovement GetEnemyMovementComponent()
+    {
+        return enemyMovement;
+    }
+    /// <summary>
+    /// Get this Gameobjects animator component
+    /// </summary>
+    public Animator GetAnimatorComponent()
+    {
+        return animator;
+    }
+    /// <summary>
+    /// Make this Gameobject look towards the player
+    /// </summary>
+    public void LookAtPlayer()
+    {
+        enemyMovement.LookAtTarget(playerTransform);
     }
 }

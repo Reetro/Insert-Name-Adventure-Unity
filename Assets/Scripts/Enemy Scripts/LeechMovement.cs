@@ -1,32 +1,21 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EnemyMovement))]
 public class LeechMovement : EnemyBase
 {
-    [SerializeField] EnemyMovement controller = null;
-
     [Header("Leech Movement Settings")]
     [SerializeField] float leechFlySpeed = 4f;
     [SerializeField] float randomAmountToAddToYmin = 0.005f;
     [SerializeField] float randomAmountToAddToYmax = 0.007f;
 
-    private Animator myAnimator = null;
-
-    protected override void Start()
-    {
-        base.Start();
-        myAnimator = GetComponent<Animator>();
-    }
-
     private void Update()
     {
         if (!GetHealthComponent().GetIsDead())
         {
-            controller.LookAtTarget(GetPlayerTransform());
+            LookAtPlayer();
 
             var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
 
-            controller.AddToLeechY(transform, amountToAddToY.y);
+            GetEnemyMovementComponent().AddToLeechY(transform, amountToAddToY.y);
         }
     }
 
@@ -34,15 +23,15 @@ public class LeechMovement : EnemyBase
     {
         if (!GetHealthComponent().GetIsDead())
         {
-            controller.MoveAITowards(GetPlayerTransform(), GetRigidbody2D(), leechFlySpeed);
+            GetEnemyMovementComponent().MoveAITowards(GetPlayerTransform(), GetRigidbody2D(), leechFlySpeed);
         }
     }
 
     public void OnDeath()
     {
-        myAnimator.SetBool("IsDead", true);
+        GetAnimatorComponent().SetBool("IsDead", true);
 
-        controller.StopMovement(GetRigidbody2D());
+        GetEnemyMovementComponent().StopMovement(GetRigidbody2D());
     }
 
     public void OnDeathAnimationEnd()
