@@ -11,7 +11,7 @@ public class EnemyBase : MonoBehaviour
     private EnemyMovement enemyMovement = null;
     private Animator animator = null;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         playerTransform = GeneralFunctions.GetPlayerGameObject().transform;
         healthComp = GetComponent<HealthComponent>();
@@ -21,8 +21,7 @@ public class EnemyBase : MonoBehaviour
         animator = GetComponent<Animator>();
 
         idObject.ConstructID();
-
-        GeneralFunctions.ConstructHPComponent(gameObject);
+        healthComp.ConstructHealthComponent();
     }
     /// <summary>
     /// Get this Gameobjects health component
@@ -72,5 +71,12 @@ public class EnemyBase : MonoBehaviour
     public void LookAtPlayer()
     {
         enemyMovement.LookAtTarget(playerTransform);
+    }
+    /// <summary>
+    /// Called when the current health on health component is 0 or below
+    /// </summary>
+    public virtual void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

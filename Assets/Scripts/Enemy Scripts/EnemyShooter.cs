@@ -9,10 +9,8 @@ public class EnemyShooter : EnemyBase
     [SerializeField] private float projectileDamage = 1f;
     [SerializeField] private Transform firePoint = null;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         StartCoroutine(ShootInterval());
     }
 

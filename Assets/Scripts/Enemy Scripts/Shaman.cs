@@ -14,10 +14,8 @@ public class Shaman : EnemyBase
 
     private Boomerang currentBoomrang = null;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         ThrowBoomerang();
     }
 
@@ -30,7 +28,7 @@ public class Shaman : EnemyBase
         currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, transform.position, boomerangMinRandomFactor, boomerangMaxRandomFactor);
     }
 
-    public void OnDeath()
+    public override void OnDeath()
     {
         currentBoomrang.DestroyBoomerang(false);
 
