@@ -13,7 +13,7 @@ public class AuraManager : MonoBehaviour
         playerUIManager = FindObjectOfType<PlayerUIManager>();
     }
 
-    public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon, bool refresh, bool stack)
+    public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
         BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity) as BuffEffect;
 
@@ -21,11 +21,11 @@ public class AuraManager : MonoBehaviour
         {
             var buffIcon = CreateBuffIcon(buffToApply);
 
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, stack, refresh);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.stack, buffToApply.refresh);
         }
         else
         {
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, stack, refresh);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.stack, buffToApply.refresh);
         }
 
         currentBuffs.Add(buff);

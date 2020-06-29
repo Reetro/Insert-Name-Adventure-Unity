@@ -395,4 +395,46 @@ public class GeneralFunctions
 
         return localBool;
     }
+    /// <summary>
+    /// Apply a buff to the given target
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="buffToApply"></param>
+    /// <param name="createIcon"></param>
+    /// <param name="refresh"></param>
+    /// <param name="stack"></param>
+    public static void ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    {
+        var auraManager = target.GetComponent<AuraManager>();
+        
+        if (auraManager)
+        {
+            auraManager.ApplyBuff(target, buffToApply, createIcon);
+        }
+        else
+        {
+            Debug.LogError("Failed to apply buff to " + target.gameObject.name + " did not have a aura manager component");
+        }
+    }
+    /// <summary>
+    /// Apply a debuff to the given target
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="buffToApply"></param>
+    /// <param name="createIcon"></param>
+    /// <param name="refresh"></param>
+    /// <param name="stack"></param>
+    public static void ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
+    {
+        var auraManager = target.GetComponent<AuraManager>();
+
+        if (auraManager)
+        {
+            auraManager.ApplyDebuff(target, debuffToApply, createIcon);
+        }
+        else
+        {
+            Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
+        }
+    }
 }
