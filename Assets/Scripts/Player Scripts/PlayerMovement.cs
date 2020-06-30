@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D = null;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
+	private Vector3 defaultScale;
 
 	[Header("Events")]
 	[Space]
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
 	private void Start()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+
+		defaultScale = transform.localScale;
 	}
 
 	private void FixedUpdate()
@@ -48,15 +51,6 @@ public class PlayerMovement : MonoBehaviour
 				if (!wasGrounded)
 					OnLandEvent.Invoke();
 			}
-
-			if (colliders[index].gameObject.CompareTag("Platform"))
-            {
-				GeneralFunctions.AttachObjectToTransfrom(colliders[index].gameObject.transform, gameObject);
-			}
-			else
-            {
-				GeneralFunctions.DetachFromParent(gameObject);
-            }
 		}
 	}
 
@@ -96,8 +90,26 @@ public class PlayerMovement : MonoBehaviour
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}
+	// Attach player to a moving platform
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+		if (collision.gameObject.CompareTag("Platform"))
+        {
+            GeneralFunctions.AttachObjectToTransfrom(collision.transform, gameObject);
+        }
+    }
+	// Deattach player from a moving platform when they jump off
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+		if (collision.gameObject.CompareTag("Platform"))
+        {
+            GeneralFunctions.DetachFromParent(gameObject);
 
-	public void StopMovement()
+			gameObject.transform.localScale = defaultScale;
+        }
+    }
+
+    public void StopMovement()
     {
 		m_Rigidbody2D.angularVelocity = 0;
 		m_Rigidbody2D.velocity = Vector2.zero;
