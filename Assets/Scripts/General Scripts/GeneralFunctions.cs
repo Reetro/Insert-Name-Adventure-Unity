@@ -65,7 +65,9 @@ public class GeneralFunctions
     /// <returns>A vector2 that is pointing in a direction</returns>
     public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
     {
-        return position1 - position2.normalized;
+        var direction = position1 - position2;
+
+        return direction.normalized;
     }
     /// <summary>
     ///  Rotate rigid body to a specified point at a specified speed
@@ -471,6 +473,24 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
+        }
+    }
+    /// <summary>
+    /// Gets the targets rigidbody and applies force
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="force"></param>
+    public static void ApplyKnockback(GameObject target, Vector2 force)
+    {
+        var rigidbody2D = target.GetComponent<Rigidbody2D>();
+
+        if (rigidbody2D)
+        {
+            rigidbody2D.AddForce(force);
+        }
+        else
+        {
+            Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
         }
     }
 }
