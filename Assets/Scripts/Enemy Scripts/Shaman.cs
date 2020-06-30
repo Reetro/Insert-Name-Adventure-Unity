@@ -30,7 +30,10 @@ public class Shaman : EnemyBase
 
     public override void OnDeath()
     {
-        currentBoomrang.DestroyBoomerang(false);
+        if (currentBoomrang)
+        {
+            currentBoomrang.DestroyBoomerang(false);
+        }
 
         Destroy(gameObject);
     }

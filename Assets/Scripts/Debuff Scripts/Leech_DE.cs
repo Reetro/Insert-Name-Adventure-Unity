@@ -8,7 +8,7 @@ public class Leech_DE : DebuffEffect
 
         if (targetHealth)
         {
-            targetHealth.ProccessDamage(GetDamage());
+            targetHealth.ProccessDamage(GetDamage(), true);
         }
         else
         {

@@ -22,8 +22,10 @@ public class PingPongMovement : PlatformMovement
         transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             if (transform.position.x > oldPosition || transform.position.x < oldPosition)

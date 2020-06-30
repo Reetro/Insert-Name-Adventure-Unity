@@ -90,13 +90,16 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
-    public void ProccessDamage(float damage)
+    public void ProccessDamage(float damage, bool showDamageText)
     {
         if (!isDead)
         {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
-            DamageText.CreateDamageText(damage, transform.position, combatTextSpeed, combatTextUpTime, combatRandomVectorMinX, combatRandomVectorMaxX, combatRandomVectorMinY, combatRandomVectorMaxY);
+            if (showDamageText)
+            {
+                DamageText.CreateDamageText(damage, transform.position, combatTextSpeed, combatTextUpTime, combatRandomVectorMinX, combatRandomVectorMaxX, combatRandomVectorMinY, combatRandomVectorMaxY);
+            }
 
             onTakeAnyDamage.Invoke(damage);
 

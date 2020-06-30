@@ -205,6 +205,42 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    ///  Gets the targets health component then damages the target
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="amount"></param>
+    /// <param name="showText"></param>
+    public static void DamageTarget(GameObject target, float amount, bool showText)
+    {
+        var health = target.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.ProccessDamage(amount, showText);
+        }
+        else
+        {
+            Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+        }
+    }
+    /// <summary>
+    /// Will instantly kill the given target
+    /// </summary>
+    /// <param name="target"></param>
+    public static void KillTarget(GameObject target)
+    {
+        var health = target.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.ProccessDamage(1000000, false);
+        }
+        else
+        {
+            Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
+        }
+    }
+    /// <summary>
     /// Pauses the game
     /// </summary>
     public static void PauseGame()

@@ -20,8 +20,10 @@ public class OneShotMovement : PlatformMovement
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             canMove = false;

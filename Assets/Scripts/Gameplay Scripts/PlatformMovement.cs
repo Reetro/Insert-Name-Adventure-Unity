@@ -34,4 +34,30 @@ public class PlatformMovement : MonoBehaviour
             }
         }
     }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+        {
+            var enemy = collision.gameObject.GetComponent<EnemyMovement>();
+
+            if (enemy.TouchingGround())
+            {
+                GeneralFunctions.KillTarget(collision.gameObject);
+            }
+        }
+    }
+
+    protected virtual void OnTriggerStay2D(Collider2D collision)
+    {
+        if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+        {
+            var enemy = collision.gameObject.GetComponent<EnemyMovement>();
+
+            if (enemy.TouchingGround())
+            {
+                GeneralFunctions.KillTarget(collision.gameObject);
+            }
+        }
+    }
 }

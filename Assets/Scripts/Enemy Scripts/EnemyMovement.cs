@@ -4,6 +4,7 @@
 public class EnemyMovement : MonoBehaviour
 {
     bool facingRight = false;
+    const float k_GroundedRadius = .3f;
 
     /// <summary>
     /// Use the provided rigidbody AddRelativeForce function to move the AI towards a transform
@@ -59,5 +60,29 @@ public class EnemyMovement : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
 
         rigidbody.Sleep();
+    }
+    /// <summary>
+    /// Checks to see if the enemy is touching the ground layer
+    /// </summary>
+    public bool TouchingGround()
+    {
+        var hitGround = false;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
+
+        for (int index = 0; index < colliders.Length; index++)
+        {
+            if (colliders[index].gameObject.CompareTag("Ground"))
+            {
+                hitGround = true;
+                break;
+            }
+            else
+            {
+                hitGround = false;
+                continue;
+            }
+        }
+        return hitGround;
     }
 }

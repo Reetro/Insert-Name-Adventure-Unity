@@ -17,7 +17,7 @@ public class Boomerang : ProjectileMovement
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<HealthComponent>().ProccessDamage(damage);
+            collision.gameObject.GetComponent<HealthComponent>().ProccessDamage(damage, true);
 
             DestroyBoomerang(true);
         }

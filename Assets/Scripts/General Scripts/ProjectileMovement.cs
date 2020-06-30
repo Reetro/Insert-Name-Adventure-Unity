@@ -102,7 +102,7 @@ public class ProjectileMovement : MonoBehaviour
         {
             HealthComponent healtComp = collision.transform.GetComponent<HealthComponent>();
 
-            healtComp.ProccessDamage(damage);
+            healtComp.ProccessDamage(damage, true);
 
             OnImpact.Invoke();
         }

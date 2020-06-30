@@ -35,7 +35,7 @@ public class PlayerProjectile : MonoBehaviour
 
                 if (healthComp)
                 {
-                    healthComp.ProccessDamage(damage);
+                    healthComp.ProccessDamage(damage, true);
                 }
 
                 var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
