@@ -243,6 +243,25 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Checks to see if the given Gameobject is currently dead
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A bool that determins if the object is dead</returns>
+    public static bool IsObjectDead(GameObject gameObject)
+    {
+        var health = gameObject.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            return health.GetIsDead();
+        }
+        else
+        {
+            Debug.LogError("Failed to check death state on " + gameObject.name.ToString() + " does not have a health component");
+            return false;
+        }
+    }
+    /// <summary>
     /// Pauses the game
     /// </summary>
     public static void PauseGame()

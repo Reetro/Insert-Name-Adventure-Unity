@@ -26,13 +26,16 @@ public class Checkpoint : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                playerState.SetCheckpointIndex(currentLevelIndex);
-
-                if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).GetCurrentHealth() < healThreshold)
+                if (!GeneralFunctions.IsObjectDead(collision.gameObject))
                 {
-                    GeneralFunctions.HealTarget(collision.gameObject, healAmount);
+                    playerState.SetCheckpointIndex(currentLevelIndex);
 
-                    healedPlayer = true;
+                    if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).GetCurrentHealth() < healThreshold)
+                    {
+                        GeneralFunctions.HealTarget(collision.gameObject, healAmount);
+
+                        healedPlayer = true;
+                    }
                 }
             }
         }
