@@ -34,7 +34,14 @@ public class PlayerController : MonoBehaviour
         {
             horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
 
-            myAnimator.SetFloat("Speed", horizontalMove);
+            if (transform.localEulerAngles.y >= 180)
+            {
+                myAnimator.SetFloat("Speed", -horizontalMove);
+            }
+            else
+            {
+                myAnimator.SetFloat("Speed", horizontalMove);
+            }
 
             if (horizontalMove == 0)
             {
