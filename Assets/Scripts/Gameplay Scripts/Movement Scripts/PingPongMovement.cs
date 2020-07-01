@@ -10,9 +10,11 @@ public class PingPongMovement : PlatformMovement
 
     void Start()
     {
-        nextPos = startPos.position;
+        nextPos = pos2.position;
 
         oldPosition = transform.position.x;
+
+        lastPos = pos1;
     }
 
     void Update()
