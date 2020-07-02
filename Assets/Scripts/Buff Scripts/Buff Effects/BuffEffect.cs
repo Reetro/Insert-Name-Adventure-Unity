@@ -55,7 +55,7 @@ public class BuffEffect : MonoBehaviour
             scriptableBuff = buff;
             this.icon = icon;
 
-            UpdateStack(true, auraManager, scriptableBuff);
+            AddToStack(true, auraManager, scriptableBuff);
         }
     }
 
@@ -94,7 +94,7 @@ public class BuffEffect : MonoBehaviour
             this.auraManager = auraManager;
             scriptableBuff = buff;
 
-            UpdateStack(false, auraManager, scriptableBuff);
+            AddToStack(false, auraManager, scriptableBuff);
         }
     }
 
@@ -194,7 +194,7 @@ public class BuffEffect : MonoBehaviour
         }    
     }
 
-    public void UpdateStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
+    public void AddToStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
         if (auraManager)
         {
@@ -216,6 +216,49 @@ public class BuffEffect : MonoBehaviour
         else
         {
             Debug.LogError("Was unable to stack buff on " + gameObject.name + "aura manager was invalid");
+        }
+    }
+
+    public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
+    {
+        if (auraManager)
+        {
+            var localBuff = auraManager.FindBuffOfType(scriptableBuff);
+
+            localBuff.stackCount--;
+
+            if (useIcon)
+            {
+                localBuff.icon.UpdateStackCount(localBuff.stackCount);
+            }
+
+            if (localBuff.stackCount <= 0)
+            {
+                if (useIcon)
+                {
+                    if (localBuff)
+                    {
+                        auraManager.RemoveBuff(localBuff.gameObject, localBuff, localBuff.icon);
+                    }
+                    else
+                    {
+                        var iconToRemove = auraManager.GetPlayerUIManager().FindBuffIconByType(scriptableBuff);
+
+                        auraManager.GetPlayerUIManager().RemoveBuffIcon(iconToRemove);
+                    }
+                }
+                else
+                {
+                    if (localBuff)
+                    {
+                        auraManager.RemoveBuff(localBuff.gameObject, localBuff);
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Was unable to remove buff stack on " + gameObject.name + "aura manager was invalid");
         }
     }
 

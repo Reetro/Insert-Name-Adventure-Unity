@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9201493524542072395}
   - component: {fileID: 5064017019300010111}
   - component: {fileID: 6851637741438254873}
+  - component: {fileID: -1454863360295872971}
   m_Layer: 5
   m_Name: Debuff
   m_TagString: Untagged
@@ -94,6 +95,18 @@ MonoBehaviour:
   icon: {fileID: 5064017019300010111}
   stackText: {fileID: 5468796260485036820}
   timer: {fileID: 2687216981566776487}
+--- !u!114 &-1454863360295872971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2386488643816730369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5025922271247628112
 GameObject:
   m_ObjectHideFlags: 0

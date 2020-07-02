@@ -14,11 +14,6 @@ public class BuffIcon : MonoBehaviour
     private float duration = 0f;
     private float defaultDuration = 0f;
 
-    public void UpdatePause()
-    {
-        canFill = !canFill;
-    }
-
     private void Start()
     {
         UpdateStackCount(1);
@@ -43,6 +38,21 @@ public class BuffIcon : MonoBehaviour
         else
         {
             timer.enabled = false;
+        }
+    }
+
+    void Update()
+    {
+        if (canFill)
+        {
+            durationImage.fillAmount -= 1 / buff.duration * Time.deltaTime;
+
+            if (timer.enabled)
+            {
+                duration -= Time.deltaTime;
+
+                UpdateTimerText();
+            }
         }
     }
 
@@ -73,18 +83,13 @@ public class BuffIcon : MonoBehaviour
         UpdateTimerText();
     }
 
-    void Update()
+    public void UpdatePause()
     {
-        if (canFill)
-        {
-            durationImage.fillAmount -= 1 / buff.duration * Time.deltaTime;
+        canFill = !canFill;
+    }
 
-            if (timer.enabled)
-            {
-                duration -= Time.deltaTime;
-
-                UpdateTimerText();
-            }
-        }
+    public ScriptableBuff GetBuff()
+    {
+        return buff;
     }
 }

@@ -19,9 +19,19 @@ public class DebuffIcon : MonoBehaviour
         UpdateStackCount(1);
     }
 
-    public ScriptableDebuff GetDebuff()
+    void Update()
     {
-        return debuff;
+        if (hasFillAmount)
+        {
+            durationImage.fillAmount -= 1 / debuff.GetTotalTime() * Time.deltaTime;
+
+            if (timer.enabled)
+            {
+                duration -= Time.deltaTime;
+
+                UpdateTimerText();
+            }
+        }
     }
 
     public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
@@ -52,11 +62,6 @@ public class DebuffIcon : MonoBehaviour
         }
     }
 
-    private void UpdateTimerText()
-    {
-        timer.text = duration.ToString("F1");
-    }
-
     public void UpdateStackCount(int stackCount)
     {
         if (stackText)
@@ -82,18 +87,13 @@ public class DebuffIcon : MonoBehaviour
         UpdateTimerText();
     }
 
-    void Update()
+    private void UpdateTimerText()
     {
-        if (hasFillAmount)
-        {
-            durationImage.fillAmount -= 1 / debuff.GetTotalTime() * Time.deltaTime;
+        timer.text = duration.ToString("F1");
+    }
 
-            if (timer.enabled)
-            {
-                duration -= Time.deltaTime;
-
-                UpdateTimerText();
-            }
-        }
+    public ScriptableDebuff GetDebuff()
+    {
+        return debuff;
     }
 }

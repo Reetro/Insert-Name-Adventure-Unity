@@ -40,6 +40,26 @@ public class PlayerUIManager : MonoBehaviour
         Destroy(iconToRemove.gameObject);
     }
 
+    public BuffIcon FindBuffIconByType(ScriptableBuff buff)
+    {
+        BuffIcon localIcon = null;
+
+        foreach (BuffIcon icon in buffIcons)
+        {
+            if (icon.GetBuff().buffType == buff.buffType)
+            {
+                localIcon = icon;
+                break;
+            }
+            else
+            {
+                localIcon = null;
+                continue;
+            }
+        }
+        return localIcon;
+    }
+
     public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
     {
         DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
