@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
-    [SerializeField] ScriptableBuff buff = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -65,13 +64,6 @@ public class PlayerController : MonoBehaviour
         if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
         {
             currentGun.FireGun();
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            var aura = GetComponent<AuraManager>();
-
-            aura.ApplyBuff(gameObject, buff, true);
         }
     }
 

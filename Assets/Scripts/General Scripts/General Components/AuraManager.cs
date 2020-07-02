@@ -247,7 +247,7 @@ public class AuraManager : MonoBehaviour
     /// <summary>
     /// Will add a buff icon to the player UI
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The created icon</returns>
     private BuffIcon CreateBuffIcon(ScriptableBuff buff)
     {
         return playerUIManager.AddBuffIcon(buff);
@@ -255,7 +255,7 @@ public class AuraManager : MonoBehaviour
     /// <summary>
     /// Will add a debuff icon to the player UI
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The created icon</returns>
     private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
     {
         return playerUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
