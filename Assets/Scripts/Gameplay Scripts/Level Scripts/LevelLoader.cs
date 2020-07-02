@@ -35,8 +35,6 @@ public class LevelLoader : MonoBehaviour
         else
         {
             SceneManager.LoadScene(0);
-
-            Debug.LogWarning("There is no next scene to load going back to start");
         }
     }
 }

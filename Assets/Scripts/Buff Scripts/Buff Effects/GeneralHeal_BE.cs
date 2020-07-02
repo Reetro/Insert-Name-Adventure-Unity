@@ -1,4 +1,4 @@
-﻿public class Breather_BE : BuffEffect
+﻿public class GeneralHeal_BE : BuffEffect
 {
     public override void ApplyBuffEffect(float buffAmount)
     {
