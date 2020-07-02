@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         uiManager = FindObjectOfType<PlayerUIManager>();
 
         SpawnLeechCollision();
-        SpawnPlayerState();
+        SetupScene();
     }
 
     private void Update()
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
         Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
     }
 
-    private void SpawnPlayerState()
+    private void SetupScene()
     {
         var playerStateCount = FindObjectsOfType<PlayerState>().Length;
 

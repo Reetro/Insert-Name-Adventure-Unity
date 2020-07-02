@@ -11,11 +11,9 @@ public class LevelExit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
         {
-            var healthComp = collision.gameObject.GetComponent<HealthComponent>();
-
-            if (!healthComp.GetIsDead())
+            if (!GeneralFunctions.IsObjectDead(collision.gameObject))
             {
                 levelLoader.LoadNextLevel();
             }

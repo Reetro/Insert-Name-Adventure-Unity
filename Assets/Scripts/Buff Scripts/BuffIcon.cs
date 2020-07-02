@@ -7,8 +7,10 @@ public class BuffIcon : MonoBehaviour
     [SerializeField] private Image durationImage = null;
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
+    [SerializeField] TextMeshProUGUI timer = null;
     private ScriptableBuff buff = null;
     private bool canFill = true;
+    private float duration = 0;
 
     public void UpdatePause()
     {
@@ -26,6 +28,24 @@ public class BuffIcon : MonoBehaviour
         icon.sprite = this.buff.artwork;
         canFill = true;
         durationImage.fillAmount = 1;
+
+        duration = buff.duration;
+
+        if (buff.duration > 0)
+        {
+            timer.enabled = true;
+
+            UpdateTimerText(duration);
+        }
+        else
+        {
+            timer.enabled = false;
+        }
+    }
+
+    private void UpdateTimerText(float currentDuration)
+    {
+        timer.text = duration.ToString("F1");
     }
 
     public void UpdateStackCount(int stackCount)
@@ -52,6 +72,13 @@ public class BuffIcon : MonoBehaviour
         if (canFill)
         {
             durationImage.fillAmount -= 1 / buff.duration * Time.deltaTime;
+
+            if (timer.enabled)
+            {
+                duration -= Time.deltaTime;
+
+                UpdateTimerText(duration);
+            }
         }
     }
 }
