@@ -8,9 +8,11 @@ public class BuffIcon : MonoBehaviour
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
     [SerializeField] TextMeshProUGUI timer = null;
+
     private ScriptableBuff buff = null;
     private bool canFill = true;
-    private float duration = 0;
+    private float duration = 0f;
+    private float defaultDuration = 0f;
 
     public void UpdatePause()
     {
@@ -30,6 +32,7 @@ public class BuffIcon : MonoBehaviour
         durationImage.fillAmount = 1;
 
         duration = buff.duration;
+        defaultDuration = duration;
 
         if (buff.duration > 0)
         {
@@ -65,6 +68,9 @@ public class BuffIcon : MonoBehaviour
     public void ResetFill()
     {
         durationImage.fillAmount = 1;
+        duration = defaultDuration;
+
+        UpdateTimerText(duration);
     }
 
     void Update()

@@ -7,8 +7,12 @@ public class DebuffIcon : MonoBehaviour
     [SerializeField] private Image durationImage = null;
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
+    [SerializeField] TextMeshProUGUI timer = null;
+
     private ScriptableDebuff debuff = null;
     bool hasFillAmount = true;
+    private float duration = 0f;
+    private float defaultDuration = 0f;
 
     private void Start()
     {
@@ -30,11 +34,27 @@ public class DebuffIcon : MonoBehaviour
         {
             durationImage.enabled = true;
             durationImage.fillAmount = 1;
+            
+            if (debuff.GetTotalTime() > 0)
+            {
+                timer.enabled = true;
+
+                duration = debuff.GetTotalTime();
+                defaultDuration = duration;
+
+                UpdateTimerText(duration);
+            }
         }
         else
         {
             durationImage.enabled = false;
+            timer.enabled = false;
         }
+    }
+
+    private void UpdateTimerText(float currentDuration)
+    {
+        timer.text = currentDuration.ToString("F1");
     }
 
     public void UpdateStackCount(int stackCount)
@@ -57,6 +77,9 @@ public class DebuffIcon : MonoBehaviour
     public void ResetFill()
     {
         durationImage.fillAmount = 1;
+        duration = defaultDuration;
+
+        UpdateTimerText(duration);
     }
 
     void Update()
@@ -64,6 +87,13 @@ public class DebuffIcon : MonoBehaviour
         if (hasFillAmount)
         {
             durationImage.fillAmount -= 1 / debuff.GetTotalTime() * Time.deltaTime;
+
+            if (timer.enabled)
+            {
+                duration -= Time.deltaTime;
+
+                UpdateTimerText(duration);
+            }
         }
     }
 }
