@@ -42,7 +42,7 @@ public class DebuffIcon : MonoBehaviour
                 duration = debuff.GetTotalTime();
                 defaultDuration = duration;
 
-                UpdateTimerText(duration);
+                UpdateTimerText();
             }
         }
         else
@@ -52,9 +52,9 @@ public class DebuffIcon : MonoBehaviour
         }
     }
 
-    private void UpdateTimerText(float currentDuration)
+    private void UpdateTimerText()
     {
-        timer.text = currentDuration.ToString("F1");
+        timer.text = duration.ToString("F1");
     }
 
     public void UpdateStackCount(int stackCount)
@@ -79,7 +79,7 @@ public class DebuffIcon : MonoBehaviour
         durationImage.fillAmount = 1;
         duration = defaultDuration;
 
-        UpdateTimerText(duration);
+        UpdateTimerText();
     }
 
     void Update()
@@ -92,7 +92,7 @@ public class DebuffIcon : MonoBehaviour
             {
                 duration -= Time.deltaTime;
 
-                UpdateTimerText(duration);
+                UpdateTimerText();
             }
         }
     }

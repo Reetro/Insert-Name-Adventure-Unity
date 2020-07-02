@@ -38,7 +38,7 @@ public class BuffIcon : MonoBehaviour
         {
             timer.enabled = true;
 
-            UpdateTimerText(duration);
+            UpdateTimerText();
         }
         else
         {
@@ -46,7 +46,7 @@ public class BuffIcon : MonoBehaviour
         }
     }
 
-    private void UpdateTimerText(float currentDuration)
+    private void UpdateTimerText()
     {
         timer.text = duration.ToString("F1");
     }
@@ -70,7 +70,7 @@ public class BuffIcon : MonoBehaviour
         durationImage.fillAmount = 1;
         duration = defaultDuration;
 
-        UpdateTimerText(duration);
+        UpdateTimerText();
     }
 
     void Update()
@@ -83,7 +83,7 @@ public class BuffIcon : MonoBehaviour
             {
                 duration -= Time.deltaTime;
 
-                UpdateTimerText(duration);
+                UpdateTimerText();
             }
         }
     }
