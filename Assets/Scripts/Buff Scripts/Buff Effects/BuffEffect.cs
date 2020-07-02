@@ -282,4 +282,9 @@ public class BuffEffect : MonoBehaviour
     {
         return visualEffect;
     }
+
+    public int GetID()
+    {
+        return idObject.GetID();
+    }
 }

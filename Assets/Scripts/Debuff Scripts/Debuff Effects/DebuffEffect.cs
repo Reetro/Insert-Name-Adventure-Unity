@@ -363,4 +363,9 @@ public class DebuffEffect : MonoBehaviour
     {
         return visualEffect;
     }
+
+    public int GetID()
+    {
+        return idObject.GetID();
+    }
 }
