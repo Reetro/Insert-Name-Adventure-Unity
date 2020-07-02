@@ -92,7 +92,7 @@ public class AuraManager : MonoBehaviour
         return foundBuff;
     }
     /// <summary>
-    /// Removes then destroy the given buff from the debuff Gameobject then removes the icon from the playerUI
+    /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
     /// </summary>
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
     {
@@ -113,7 +113,7 @@ public class AuraManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// Removes then destroy the given debuff from the buff Gameobject
+    /// Removes then destroy the given debuff from the aura manager
     /// </summary>
     public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
     {
@@ -145,7 +145,7 @@ public class AuraManager : MonoBehaviour
         currentDebuffs.Add(debuff);
     }
     /// <summary>
-    /// Removes then destroy the given debuff from the debuff Gameobject then removes the icon from the playerUI
+    /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI
     /// </summary>
     public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
     {
@@ -166,7 +166,7 @@ public class AuraManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// Removes then destroy the given debuff from the debuff Gameobject
+    /// Removes then destroy the given debuff from the aura manager
     /// </summary>
     public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
     {
