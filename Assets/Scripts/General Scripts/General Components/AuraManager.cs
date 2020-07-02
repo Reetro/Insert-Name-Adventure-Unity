@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AuraManager : MonoBehaviour
@@ -15,17 +14,17 @@ public class AuraManager : MonoBehaviour
 
     public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
-        BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity) as BuffEffect;
+        BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity);
 
         if (createIcon)
         {
             var buffIcon = CreateBuffIcon(buffToApply);
 
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.stack, buffToApply.refresh);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
         }
         else
         {
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.stack, buffToApply.refresh);
+            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
         }
 
         currentBuffs.Add(buff);
@@ -93,17 +92,17 @@ public class AuraManager : MonoBehaviour
 
     public void ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
     {
-        DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, transform.position, Quaternion.identity) as DebuffEffect;
+        DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, transform.position, Quaternion.identity);
 
         if (createIcon)
         {
             var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
 
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target,  debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
         }
         else
         {
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
         }
 
         currentDebuffs.Add(debuff);
@@ -185,7 +184,7 @@ public class AuraManager : MonoBehaviour
         return currentBuffs;
     }
 
-    public PlayerUIManager GetUIManager()
+    public PlayerUIManager GetPlayerUIManager()
     {
         return playerUIManager;
     }    

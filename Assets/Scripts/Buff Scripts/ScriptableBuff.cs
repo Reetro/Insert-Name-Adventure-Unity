@@ -22,8 +22,12 @@ public class ScriptableBuff : ScriptableObject
 
     [Tooltip("This kind of depends on the buff but an example of this might is the player's health")]
     public float buffAmount;
+
     [Tooltip("Time the buff lasts in seconds")]
     public float duration;
+
+    [Tooltip("Visual effect that is attached to target")]
+    public GameObject visualEffect;
 
     public enum BuffType
     {
@@ -31,5 +35,4 @@ public class ScriptableBuff : ScriptableObject
     };
 
     public BuffType buffType;
-
 }

@@ -9,7 +9,7 @@ public class BuffEffect : MonoBehaviour
     private AuraManager auraManager = null;
     private ScriptableBuff scriptableBuff = null;
     private GameObject target = null;
-    private HealthComponent targetHealth = null;
+    private GameObject visualEffect = null;
 
     protected BuffIcon icon = null;
     protected GameplayObjectID idObject;
@@ -17,7 +17,7 @@ public class BuffEffect : MonoBehaviour
     private bool buffIsRuning = false;
     private bool isActive = true;
 
-    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, bool stack, bool refresh)
+    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
     {
         isActive = IsBuffActive(auraManager, buff);
 
@@ -31,7 +31,8 @@ public class BuffEffect : MonoBehaviour
             this.icon = icon;
             this.target = target;
 
-            targetHealth = target.GetComponent<HealthComponent>();
+            visualEffect = SpawnVisualEffect(effect, target.transform);
+
             idObject = gameObject.AddComponent<GameplayObjectID>();
 
             idObject.ConstructID();
@@ -58,7 +59,7 @@ public class BuffEffect : MonoBehaviour
         }
     }
 
-    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, bool stack, bool refresh)
+    public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
     {
         isActive = IsBuffActive(auraManager, buff);
 
@@ -71,7 +72,8 @@ public class BuffEffect : MonoBehaviour
             scriptableBuff = buff;
             this.target = target;
 
-            targetHealth = target.GetComponent<HealthComponent>();
+            visualEffect = SpawnVisualEffect(effect, target.transform);
+
             idObject = gameObject.AddComponent<GameplayObjectID>();
 
             idObject.ConstructID();
@@ -104,6 +106,13 @@ public class BuffEffect : MonoBehaviour
 
     public virtual void OnBuffEnd()
     {
+        if (visualEffect)
+        {
+            GeneralFunctions.DetachFromParent(visualEffect);
+
+            Destroy(visualEffect);
+        }
+
         if (icon)
         {
             auraManager.RemoveBuff(gameObject, this, icon);
@@ -121,7 +130,7 @@ public class BuffEffect : MonoBehaviour
             if (duration > 0)
             {
                 duration -= Time.deltaTime;
-                ApplyBuffEffect(buffAmount);
+                ApplyBuffEffect(buffAmount * Time.deltaTime);
             }
             else
             {
@@ -210,6 +219,20 @@ public class BuffEffect : MonoBehaviour
         }
     }
 
+    private GameObject SpawnVisualEffect(GameObject effect, Transform transform)
+    {
+        if (effect)
+        {
+            var spawnedEffect = Instantiate(effect, transform);
+
+            return spawnedEffect;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public GameObject GetTarget()
     {
         return target;
@@ -255,8 +278,8 @@ public class BuffEffect : MonoBehaviour
         return auraManager;
     }
 
-    public HealthComponent GetTargetHealthComponent()
+    public GameObject GetVisualEffect()
     {
-        return targetHealth;
+        return visualEffect;
     }
 }

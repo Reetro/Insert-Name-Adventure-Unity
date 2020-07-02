@@ -32,6 +32,9 @@ public class ScriptableDebuff : ScriptableObject
     [Tooltip("Amount of damage to apply to player")]
     public float damage;
 
+    [Tooltip("Visual effect that is attached to target")]
+    public GameObject visualEffect;
+
     public enum DebuffType 
     {
         Leeching,

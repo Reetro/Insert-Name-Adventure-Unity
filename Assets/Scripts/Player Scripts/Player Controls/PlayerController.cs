@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
+    [SerializeField] ScriptableBuff buff = null;
 
     [Header("Run Settings")]
     [SerializeField] float runSpeed = 40f;
@@ -13,14 +14,14 @@ public class PlayerController : MonoBehaviour
     float horizontalMove = 0f;
     bool jump = false;
     Animator myAnimator = null;
-    PlayerMovement controller = null;
+    PlayerMovement playerMovement = null;
     HealthComponent myHealthComp = null;
     PlayerUIManager uiManager = null;
 
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
-        controller = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovement>();
         myHealthComp = GetComponent<HealthComponent>();
         uiManager = FindObjectOfType<PlayerUIManager>();
 
@@ -30,64 +31,61 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!myHealthComp.GetIsDead())
+        horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
+
+        if (transform.localEulerAngles.y >= 180)
         {
-            horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
-
-            if (transform.localEulerAngles.y >= 180)
-            {
-                myAnimator.SetFloat("Speed", -horizontalMove);
-            }
-            else
-            {
-                myAnimator.SetFloat("Speed", horizontalMove);
-            }
-
-            if (horizontalMove == 0)
-            {
-                myAnimator.SetBool("Idle", true);
-            }
-            else
-            {
-                myAnimator.SetBool("Idle", false);
-            }
-
-            if (CrossPlatformInputManager.GetButtonDown("Jump"))
-            {
-                jump = true;
-                myAnimator.SetBool("IsJumping", true);
-            }
-
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-            {
-                currentGun.FireGun();
-            }
-
-            if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
-            {
-                currentGun.FireGun();
-            }
+            myAnimator.SetFloat("Speed", -horizontalMove);
         }
         else
         {
+            myAnimator.SetFloat("Speed", horizontalMove);
+        }
+
+        if (horizontalMove == 0)
+        {
             myAnimator.SetBool("Idle", true);
+        }
+        else
+        {
+            myAnimator.SetBool("Idle", false);
+        }
+
+        if (CrossPlatformInputManager.GetButtonDown("Jump"))
+        {
+            jump = true;
+            myAnimator.SetBool("IsJumping", true);
+        }
+
+        if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+        {
+            currentGun.FireGun();
+        }
+
+        if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
+        {
+            currentGun.FireGun();
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            var aura = GetComponent<AuraManager>();
+
+            aura.ApplyBuff(gameObject, buff, true);
         }
     }
 
     private void FixedUpdate()
     {
-        if (!myHealthComp.GetIsDead())
-        {
-            controller.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
-            jump = false;
-        }
+        playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
+        jump = false;
     }
 
     public void OnDeath()
     {
         uiManager.ShowDeathUI();
 
-        controller.StopMovement();
+        playerMovement.StopMovement();
     }    
 
     public void OnLanding()

@@ -12,7 +12,7 @@ public class DebuffEffect : MonoBehaviour
     private float defaultTickCount = 0f;
     private float maxTicks = 99999f;
     private float damage = 0f;
-    private HealthComponent targetHealth = null;
+    private GameObject visualEffect = null;
 
     protected DebuffIcon icon = null;
     protected GameplayObjectID idObject;
@@ -21,7 +21,7 @@ public class DebuffEffect : MonoBehaviour
     private bool shouldTick = true;
     private bool isActive = false;
 
-    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, bool useTicks, bool refresh, bool stack)
+    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
     {
         isActive = isDebuffTypeActive(auraManager, debuff);
 
@@ -35,11 +35,13 @@ public class DebuffEffect : MonoBehaviour
             this.icon = icon;
             shouldTick = useTicks;
             damage = debuff.damage;
+            this.target = target;
 
             firstRun = true;
 
-            targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
+
+            visualEffect = SpawnVisualEffect(effect, target.transform);
 
             idObject.ConstructID();
 
@@ -64,8 +66,6 @@ public class DebuffEffect : MonoBehaviour
             else
             {
                 defaultTickCount = maxTicks;
-
-                Debug.Log(defaultTickCount);
             }
 
             RefreshDebuff(true, auraManager, debuff);
@@ -80,7 +80,7 @@ public class DebuffEffect : MonoBehaviour
         }
     }
 
-    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, bool useTick, bool refresh, bool stack)
+    public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
     {
         isActive = isDebuffTypeActive(auraManager, debuff);
 
@@ -92,9 +92,11 @@ public class DebuffEffect : MonoBehaviour
             scriptedDebuff = debuff;
             shouldTick = useTick;
             damage = debuff.damage;
+            this.target = target;
 
-            targetHealth = target.GetComponent<HealthComponent>();
             idObject = gameObject.AddComponent<GameplayObjectID>();
+
+            visualEffect = SpawnVisualEffect(effect, target.transform);
 
             idObject.ConstructID();
 
@@ -155,6 +157,13 @@ public class DebuffEffect : MonoBehaviour
 
     public virtual void OnDebuffEnd()
     {
+        if (visualEffect)
+        {
+            GeneralFunctions.DetachFromParent(visualEffect);
+
+            Destroy(visualEffect);
+        }
+
         if (icon)
         {
             auraManager.RemoveDebuff(gameObject, this, icon);
@@ -228,9 +237,9 @@ public class DebuffEffect : MonoBehaviour
                     }
                     else
                     {
-                        var iconToRemove = auraManager.GetUIManager().FindDebuffIconByType(scriptableDebuff);
+                        var iconToRemove = auraManager.GetPlayerUIManager().FindDebuffIconByType(scriptableDebuff);
 
-                        auraManager.GetUIManager().RemoveDebuffIcon(iconToRemove);
+                        auraManager.GetPlayerUIManager().RemoveDebuffIcon(iconToRemove);
                     }
                 }
                 else
@@ -241,9 +250,9 @@ public class DebuffEffect : MonoBehaviour
                     }
                     else
                     {
-                        var iconToRemove = auraManager.GetUIManager().FindDebuffIconByType(scriptableDebuff);
+                        var iconToRemove = auraManager.GetPlayerUIManager().FindDebuffIconByType(scriptableDebuff);
 
-                        auraManager.GetUIManager().RemoveDebuffIcon(iconToRemove);
+                        auraManager.GetPlayerUIManager().RemoveDebuffIcon(iconToRemove);
                     }
                 }
             }
@@ -276,6 +285,20 @@ public class DebuffEffect : MonoBehaviour
         else
         {
             Debug.LogError("Was unable to refresh debuff on " + gameObject.name + "aura manager was invalid");
+        }
+    }
+
+    private GameObject SpawnVisualEffect(GameObject effect, Transform transform)
+    {
+        if (effect)
+        {
+            var spawnedEffect = Instantiate(effect, transform);
+
+            return spawnedEffect;
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -336,8 +359,8 @@ public class DebuffEffect : MonoBehaviour
         return damage;
     }
 
-    public HealthComponent GetTargetHealthComponent()
+    public GameObject GetVisualEffect()
     {
-        return targetHealth;
+        return visualEffect;
     }
 }
