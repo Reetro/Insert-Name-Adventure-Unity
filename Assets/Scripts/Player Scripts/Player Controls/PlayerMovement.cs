@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 	public LayerMask m_WhatIsGround;											// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck = null;					// A position marking where to check if the player is grounded.
 
-	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+	[SerializeField] float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D = null;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.

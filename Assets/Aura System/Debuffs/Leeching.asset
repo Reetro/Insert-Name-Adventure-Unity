@@ -21,7 +21,7 @@ MonoBehaviour:
   useTicks: 0
   refresh: 0
   stack: 1
-  occurrence: 0.5
-  damage: 0.8
+  occurrence: 1
+  damage: 1
   visualEffect: {fileID: 0}
   debuffType: 0
