@@ -7,9 +7,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
 
-    [Header("Run Settings")]
-    [SerializeField] float runSpeed = 40f;
-
     float horizontalMove = 0f;
     bool jump = false;
     Animator myAnimator = null;
@@ -30,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
+        horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
         if (transform.localEulerAngles.y >= 180)
         {

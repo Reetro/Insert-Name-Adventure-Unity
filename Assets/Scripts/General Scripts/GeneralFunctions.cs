@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -449,6 +450,35 @@ public class GeneralFunctions
     public static bool IsObjectOnLayer(string layer, GameObject gameObject)
     {
         bool localBool = gameObject.layer == LayerMask.NameToLayer(layer);
+
+        return localBool;
+    }
+    /// <summary>
+    /// Checks to see if the provided Gameobject is on the provided layer
+    /// </summary>
+    /// <param name="layer"></param>
+    /// <param name="gameObject"></param>
+    /// <returns>A bool that determines if the Gameobject was on the layer</returns>
+    public static bool IsObjectOnLayer(int layer, GameObject gameObject)
+    {
+        bool localBool = LayerMask.LayerToName(gameObject.layer) == LayerMask.LayerToName(layer);
+
+        return localBool;
+    }
+    /// <summary>
+    /// Checks to see if the provided Gameobject is on the provided layer
+    /// </summary>
+    /// <param name="layer"></param>
+    /// <param name="gameObject"></param>
+    /// <returns>A bool that determines if the Gameobject was on the layer</returns>
+    public static bool IsObjectOnLayer(LayerMask mask, GameObject gameObject)
+    {
+        bool localBool = false;
+
+        if (mask == (mask | (1 << gameObject.layer)))
+        {
+            localBool = true;
+        }
 
         return localBool;
     }

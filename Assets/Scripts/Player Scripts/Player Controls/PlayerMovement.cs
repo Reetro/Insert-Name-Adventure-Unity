@@ -5,16 +5,15 @@ using UnityEngine.Events;
 public class PlayerMovement : MonoBehaviour
 {
 	[Header("Movement Settings")]
-	[SerializeField] private float jumpForce = 400f;							 // Amount of force added when the player jumps.		
-	[Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;	 // How much to smooth out the movement
+	[SerializeField] private float jumpForce = 400f;                             // Amount of force added when the player jumps.		
+    [SerializeField] private float runSpeed = 35f;
+    [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;	 // How much to smooth out the movement
 	[SerializeField] private bool hasAirControl = false;                         // Whether or not a player can steer while jumping;
 	[SerializeField] private float playerAcceleration = 10f;
+    [SerializeField] private float fallingCheckLength = 0.5f;
 
     [Header("Layer Settings")]
 	public LayerMask whatIsGround;											// A mask determining what is ground to the character
-	[SerializeField] private Transform groundCheckTransform = null;         // A position marking where to check if the player is grounded.
-    [SerializeField] Vector2 groundCheckSize = new Vector2(5.4f, 1.5f);
-    [SerializeField] bool drawGroundDebug = false;
 
     private bool grounded;             // Whether or not the player is grounded.
 	private Rigidbody2D myRigidbody2D = null;
@@ -23,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 defaultScale;
 	private HealthComponent hpComp;
 
-	[Header("Events")]
+    [Header("Events")]
 	[Space]
 
 	public UnityEvent OnLandEvent;
@@ -37,32 +36,9 @@ public class PlayerMovement : MonoBehaviour
 		hpComp = GetComponent<HealthComponent>();
 
 		defaultScale = transform.localScale;
-	}
+    }
 
-	private void FixedUpdate()
-	{
-		bool wasGrounded = grounded;
-		grounded = false;
-
-		// The player is grounded if the overlap box position hits anything designated as ground
-		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
-		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckTransform.position, groundCheckSize, 90f, whatIsGround);
-		for (int index = 0; index < colliders.Length; index++)	
-		{
-			print(colliders[index].gameObject.name.ToString());
-
-			if (colliders[index].gameObject != gameObject)
-			{
-				grounded = true;
-				if (!wasGrounded)
-                {
-					OnLandEvent.Invoke();
-				}
-			}
-		}
-	}
-
-	public void Move(float move, bool jump, bool forceFlip)
+    public void Move(float move, bool jump, bool forceFlip)
 	{
 		if (!hpComp.GetIsDead())
         {
@@ -70,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
             if (grounded || hasAirControl)
             {
                 // Move the character by finding the target velocity
-                Vector3 targetVelocity = new Vector2(move * playerAcceleration, myRigidbody2D.velocity.y);
+                Vector3 targetVelocity = new Vector2(move * runSpeed * playerAcceleration, myRigidbody2D.velocity.y);
                 // And then smoothing it out and applying it to the character
                 myRigidbody2D.velocity = Vector3.SmoothDamp(myRigidbody2D.velocity, targetVelocity, ref currentVelocity, movementSmoothing);
 
@@ -93,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             // If the player should jump...
-            if (grounded && jump)
+            if (grounded && jump && !IsFalling())
             {
                 // Add a vertical force to the player.
                 grounded = false;
@@ -101,12 +77,24 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 	}
-	// Attach player to a moving platform
+
+    // Attach player to a moving platform
     private void OnTriggerStay2D(Collider2D collision)
     {
-		if (collision.gameObject.CompareTag("Platform"))
+        bool wasGrounded = grounded;
+        grounded = false;
+
+        if (collision.gameObject.CompareTag("Platform"))
         {
             GeneralFunctions.AttachObjectToTransfrom(collision.transform, gameObject);
+        }
+        else if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
+        {
+            grounded = true;
+            if (!wasGrounded)
+            {
+                OnLandEvent.Invoke();
+            }
         }
     }
 	// Deattach player from a moving platform when they jump off
@@ -144,9 +132,15 @@ public class PlayerMovement : MonoBehaviour
 		myRigidbody2D.freezeRotation = true;
 	}
 
-    private void OnDrawGizmos()
+    private bool IsFalling()
     {
-		Gizmos.color = new Color(1, 0, 0, 0.5f);
-        Gizmos.DrawCube(groundCheckTransform.position, groundCheckSize);
+        RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, -gameObject.transform.up, fallingCheckLength, whatIsGround);
+
+        if (hit)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
