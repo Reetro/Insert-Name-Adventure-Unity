@@ -19,6 +19,10 @@ public class BuffIcon : MonoBehaviour
         UpdateStackCount(1);
     }
 
+    /// <summary>
+    /// Sets all needed values such as the length of the buff
+    /// </summary>
+    /// <param name="buff"></param>
     public void StartCooldown(ScriptableBuff buff)
     {
         this.buff = buff;
@@ -55,12 +59,17 @@ public class BuffIcon : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Update timer text to match duration 
+    /// </summary>
     private void UpdateTimerText()
     {
         timer.text = duration.ToString("F1");
     }
-
+    /// <summary>
+    /// Add the given amount to the current stack count if current stack count is less than 1 stack count will be hidden on the icon
+    /// </summary>
+    /// <param name="stackCount"></param>
     public void UpdateStackCount(int stackCount)
     {
         if (stackCount > 1)
@@ -74,7 +83,9 @@ public class BuffIcon : MonoBehaviour
             stackText.enabled = false;
         }
     }
-
+    /// <summary>
+    /// Will reset both the timer and fill image
+    /// </summary>
     public void ResetFill()
     {
         durationImage.fillAmount = 1;
@@ -82,7 +93,9 @@ public class BuffIcon : MonoBehaviour
 
         UpdateTimerText();
     }
-
+    /// <summary>
+    /// Will toggle between  
+    /// </summary>
     public void UpdatePause()
     {
         canFill = !canFill;

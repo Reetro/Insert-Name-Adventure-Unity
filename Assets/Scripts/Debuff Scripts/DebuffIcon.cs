@@ -33,7 +33,12 @@ public class DebuffIcon : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Sets all needed values then checks if the given debuff has a tick count if it does will hide both the durationImage and the timer
+    /// </summary>
+    /// <param name="debuff"></param>
+    /// <param name="hasFillAmount"></param>
+    /// <param name="useTick"></param>
     public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
     {
         this.debuff = debuff;
@@ -61,7 +66,10 @@ public class DebuffIcon : MonoBehaviour
             timer.enabled = false;
         }
     }
-
+    /// <summary>
+    /// Add the given amount to the current stack count if current stack count is less than 1 stack count will be hidden on the icon
+    /// </summary>
+    /// <param name="stackCount"></param>
     public void UpdateStackCount(int stackCount)
     {
         if (stackText)
@@ -78,7 +86,9 @@ public class DebuffIcon : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Will reset both the timer and fill image
+    /// </summary>
     public void ResetFill()
     {
         durationImage.fillAmount = 1;
@@ -86,12 +96,16 @@ public class DebuffIcon : MonoBehaviour
 
         UpdateTimerText();
     }
-
+    /// <summary>
+    /// Update timer text to match current duration count
+    /// </summary>
     private void UpdateTimerText()
     {
         timer.text = duration.ToString("F1");
     }
-
+    /// <summary>
+    /// Get the current debuff attach to this icon
+    /// </summary>
     public ScriptableDebuff GetDebuff()
     {
         return debuff;
