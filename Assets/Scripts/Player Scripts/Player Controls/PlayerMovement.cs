@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Transform m_GroundCheck = null;					// A position marking where to check if the player is grounded.
 
 	[SerializeField] float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-	[SerializeField] bool debugRadius = false;
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D = null;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
@@ -139,13 +138,4 @@ public class PlayerMovement : MonoBehaviour
 
 		m_Rigidbody2D.freezeRotation = true;
 	}
-
-    private void OnDrawGizmos()
-    {
-        if (debugRadius)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(transform.position, k_GroundedRadius);
-        }
-    }
 }
