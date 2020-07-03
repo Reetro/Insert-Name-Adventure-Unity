@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;	 // How much to smooth out the movement
 	[SerializeField] private bool hasAirControl = false;                         // Whether or not a player can steer while jumping;
 	[SerializeField] private float playerAcceleration = 10f;
-    [SerializeField] private float fallingCheckLength = 0.5f;
 
     [Header("Layer Settings")]
 	public LayerMask whatIsGround;											// A mask determining what is ground to the character
@@ -69,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             // If the player should jump...
-            if (grounded && jump && !IsFalling())
+            if (grounded && jump)
             {
                 // Add a vertical force to the player.
                 grounded = false;
@@ -131,16 +130,4 @@ public class PlayerMovement : MonoBehaviour
 
 		myRigidbody2D.freezeRotation = true;
 	}
-
-    private bool IsFalling()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, -gameObject.transform.up, fallingCheckLength, whatIsGround);
-
-        if (hit)
-        {
-            return false;
-        }
-
-        return true;
-    }
 }
