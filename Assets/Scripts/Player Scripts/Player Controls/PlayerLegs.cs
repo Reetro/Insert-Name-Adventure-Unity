@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public class PlayerLegs : MonoBehaviour
 {
     private bool isGrounded = true;
-    private Vector3 defaultScale;
     private GameObject player = null;
 
     [Header("Layer Settings")]
@@ -18,8 +17,6 @@ public class PlayerLegs : MonoBehaviour
     private void Start()
     {
         player = GeneralFunctions.GetPlayerGameObject();
-
-        defaultScale = player.transform.localScale;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -33,7 +30,7 @@ public class PlayerLegs : MonoBehaviour
 
             if (collision.gameObject != player)
             {
-                isGrounded = true;
+                UpdateGrounded(true);
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
@@ -45,7 +42,7 @@ public class PlayerLegs : MonoBehaviour
         {
             if (collision.gameObject != player)
             {
-                isGrounded = true;
+                UpdateGrounded(true);
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
