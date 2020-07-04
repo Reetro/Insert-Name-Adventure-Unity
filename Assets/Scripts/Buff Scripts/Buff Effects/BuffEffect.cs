@@ -207,7 +207,7 @@ public class BuffEffect : MonoBehaviour
         }    
     }
     /// <summary>
-    /// Adds a value one to the current buff stack
+    /// Adds a value of one to the current buff stack
     /// </summary>
     public void AddToStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
@@ -234,7 +234,7 @@ public class BuffEffect : MonoBehaviour
         }
     }
     /// <summary>
-    /// Removes a value one from the current buff stack
+    /// Removes a value of one from the current buff stack
     /// </summary>
     public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {

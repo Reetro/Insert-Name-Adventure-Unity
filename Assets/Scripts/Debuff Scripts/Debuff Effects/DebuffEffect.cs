@@ -202,7 +202,7 @@ public class DebuffEffect : MonoBehaviour
         }
     }
     /// <summary>
-    /// Will add a value one to the current debuff stack count
+    /// Will add a value of one to the current debuff stack count
     /// </summary>
     private void AddToStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
@@ -229,7 +229,7 @@ public class DebuffEffect : MonoBehaviour
         }
     }
     /// <summary>
-    /// Removes a value one from the current debuff stack count
+    /// Removes a value of one from the current debuff stack count
     /// </summary>
     public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
