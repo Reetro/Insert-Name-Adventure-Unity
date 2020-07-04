@@ -73,10 +73,10 @@ public class EnemyBase : MonoBehaviour
         enemyMovement.LookAtTarget(playerTransform);
     }
     /// <summary>
-    /// Called when the current health on health component is 0 or below
+    /// Called when the current health on health component is 0 or below by default will only disable enemy collision
     /// </summary>
     public virtual void OnDeath()
     {
-        Destroy(gameObject);
+        GetComponent<Collider2D>().enabled = false;
     }
 }

@@ -29,6 +29,8 @@ public class LeechMovement : EnemyBase
 
     public override void OnDeath()
     {
+        base.OnDeath();
+
         GetAnimatorComponent().SetBool("IsDead", true);
 
         GetEnemyMovementComponent().StopMovement(GetRigidbody2D());
