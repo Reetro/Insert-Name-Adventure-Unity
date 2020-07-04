@@ -5,6 +5,7 @@ public class PlayerLegs : MonoBehaviour
 {
     private bool isGrounded = true;
     private Vector3 defaultScale;
+    private GameObject player = null;
 
     [Header("Layer Settings")]
     public LayerMask whatIsGround;  // A mask determining what is ground to the character
@@ -16,22 +17,33 @@ public class PlayerLegs : MonoBehaviour
 
     private void Start()
     {
-        defaultScale = transform.localScale;
+        player = GeneralFunctions.GetPlayerGameObject();
+
+        defaultScale = player.transform.localScale;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         bool wasGrounded = isGrounded;
         isGrounded = false;
-
+        // Look to see if player is standing on a platform
         if (collision.gameObject.CompareTag("Platform"))
         {
-            GeneralFunctions.AttachObjectToTransfrom(collision.transform, gameObject);
+            GeneralFunctions.AttachObjectToTransfrom(collision.transform, player);
+
+            if (collision.gameObject != player)
+            {
+                isGrounded = true;
+                if (!wasGrounded)
+                {
+                    OnLandEvent.Invoke();
+                }
+            }
         }
         // Check to see if player is on the ground
         else if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
         {
-            if (collision.gameObject != gameObject)
+            if (collision.gameObject != player)
             {
                 isGrounded = true;
                 if (!wasGrounded)
@@ -47,9 +59,7 @@ public class PlayerLegs : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            GeneralFunctions.DetachFromParent(gameObject);
-
-            gameObject.transform.localScale = defaultScale;
+            GeneralFunctions.DetachFromParent(player);
         }
     }
 
