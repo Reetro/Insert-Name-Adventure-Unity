@@ -245,6 +245,10 @@ public class BuffEffect : MonoBehaviour
                         var iconToRemove = auraManager.GetPlayerUIManager().FindBuffIconByType(scriptableBuff);
 
                         auraManager.GetPlayerUIManager().RemoveBuffIcon(iconToRemove);
+
+                        var foundBuff = auraManager.FindBuffByID(GetID());
+
+                        auraManager.RemoveBuff(foundBuff.gameObject, this);
                     }
                 }
                 else
