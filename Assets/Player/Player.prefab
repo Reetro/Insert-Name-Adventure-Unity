@@ -766,9 +766,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4157925456548234650}
   - component: {fileID: 4157925456548234629}
+  - component: {fileID: 6459988344784491037}
+  - component: {fileID: 2543864314282910336}
   m_Layer: 9
   m_Name: Legs
-  m_TagString: Untagged
+  m_TagString: Player Legs
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -837,6 +839,61 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &6459988344784491037
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4157925456548234651}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.46310604, y: -3.2508721}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 19.2, y: 10.8}
+    newSize: {x: 19.2, y: 10.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.2984648, y: 1.4588022}
+  m_EdgeRadius: 0
+--- !u!114 &2543864314282910336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4157925456548234651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503675356f896d8449fb18e56812e8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 131383
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5065280756885518072}
+        m_MethodName: OnLanding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4157925456995496915
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +909,6 @@ GameObject:
   - component: {fileID: 1364893853460561661}
   - component: {fileID: 6037561768107980108}
   - component: {fileID: 8124811612354762508}
-  - component: {fileID: 5647717232478659474}
   - component: {fileID: 733678012}
   - component: {fileID: 365247869}
   m_Layer: 9
@@ -970,7 +1026,6 @@ MonoBehaviour:
     type: 3}
   playerState: {fileID: 6849471427158766920, guid: 55e160951fd37af4ebde1c4d69f16472,
     type: 3}
-  runSpeed: 35
 --- !u!114 &1364893853460561661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,29 +1039,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 700
+  runSpeed: 35
   movementSmoothing: 0.05
   hasAirControl: 1
   playerAcceleration: 8
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 131383
-  groundCheckTransform: {fileID: 3217993496403046034}
-  groundCheckSize: {x: 0.5, y: 0.5}
-  drawGroundDebug: 1
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5065280756885518072}
-        m_MethodName: OnLanding
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6037561768107980108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,7 +1093,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.49216604, y: 0.9599428}
+  m_Offset: {x: -0.46664524, y: 0.93833256}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1068,33 +1104,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8.098139, y: 8.3413925}
-  m_EdgeRadius: 0
---- !u!61 &5647717232478659474
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157925456995496915}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.47673833, y: -2.6208608}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 19.2, y: 10.8}
-    newSize: {x: 19.2, y: 10.8}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 8.115462, y: 1.5821395}
+  m_Size: {x: 6.9242496, y: 8.384613}
   m_EdgeRadius: 0
 --- !u!50 &733678012
 Rigidbody2D:

@@ -35,6 +35,17 @@ public class PlayerGun : MonoBehaviour
 
             cooldownBar.StartCooldown(gunCooldown);
         }
+        else
+        {
+            RaycastHit2D hit = Physics2D.Raycast(gunFireLocation.position, gunFireLocation.localEulerAngles, 10f);
+
+            if (hit)
+            {
+                print(hit.transform.gameObject);
+            }
+
+            Debug.DrawRay(gunFireLocation.position, gunFireLocation.localEulerAngles * 10f, Color.white, 10f);
+        }
     }
 
     private void RotatePlayer()
