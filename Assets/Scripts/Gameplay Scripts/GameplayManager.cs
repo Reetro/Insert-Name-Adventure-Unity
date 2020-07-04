@@ -8,6 +8,16 @@ public class GameplayManager : MonoBehaviour
     public float radius = 100f;
     public LayerMask mask;
 
+    [Space]
+
+    [Header("Combat Text Settings")]
+    [Range(0.01f, 1f)] public float combatTextSpeed = 0.01f;
+    public float combatTextUpTime = 0.5f;
+    public float combatRandomVectorMinX = -0.5f;
+    public float combatRandomVectorMaxX = 1f;
+    public float combatRandomVectorMinY = -0.5f;
+    public float combatRandomVectorMaxY = 1f;
+
     List<int> gameplayObjects = new List<int>();
 
     public int GenID()

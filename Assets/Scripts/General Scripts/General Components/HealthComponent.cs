@@ -12,14 +12,6 @@ public class HealthComponent : MonoBehaviour
     [Header("Health Bar Settings")]
     [SerializeField] HealthBar healthBar = null;
 
-    [Header("Combat Text Settings")]
-    [SerializeField] [Range(0.01f, 1f)] float combatTextSpeed = 0.01f;
-    [SerializeField] float combatTextUpTime = 0.5f;
-    [SerializeField] float combatRandomVectorMinX = -0.5f;
-    [SerializeField] float combatRandomVectorMaxX = 1f;
-    [SerializeField] float combatRandomVectorMinY = -0.5f;
-    [SerializeField] float combatRandomVectorMaxY = 1f;
-
     [Header("Events")]
     [Space]
     public UnityEvent OnDeath;
@@ -29,11 +21,14 @@ public class HealthComponent : MonoBehaviour
     private float currentHealth = 0f;
     private bool isDead = false;
     private PlayerState playerState = null;
+    private GameplayManager gameplayManager = null;
 
     private static bool setMaxhealth = false;
 
     public void ConstructHealthComponent()
     {
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+
         isDead = false;
 
         if (IsOnPlayer())
@@ -98,7 +93,7 @@ public class HealthComponent : MonoBehaviour
 
             if (showDamageText)
             {
-                DamageText.CreateDamageText(damage, transform.position, combatTextSpeed, combatTextUpTime, combatRandomVectorMinX, combatRandomVectorMaxX, combatRandomVectorMinY, combatRandomVectorMaxY);
+                DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY);
             }
 
             onTakeAnyDamage.Invoke(damage);

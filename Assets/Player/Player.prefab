@@ -541,6 +541,12 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 256
+  combatTextSpeed: 0.02
+  combatTextUpTime: 0.5
+  combatRandomVectorMinX: -0.5
+  combatRandomVectorMaxX: 1
+  combatRandomVectorMinY: -0.5
+  combatRandomVectorMaxY: 1
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +858,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.46310604, y: -3.2508721}
+  m_Offset: {x: -0.47955096, y: -3.3303375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -863,7 +869,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.2984648, y: 1.4588022}
+  m_Size: {x: 2.5725489, y: 1.617733}
   m_EdgeRadius: 0
 --- !u!114 &2543864314282910336
 MonoBehaviour:
@@ -1056,12 +1062,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   healthBar: {fileID: 8175054866876292592}
-  combatTextSpeed: 0.01
-  combatTextUpTime: 0.5
-  combatRandomVectorMinX: -0.5
-  combatRandomVectorMaxX: 10
-  combatRandomVectorMinY: -0.5
-  combatRandomVectorMaxY: 10
   OnDeath:
     m_PersistentCalls:
       m_Calls:
