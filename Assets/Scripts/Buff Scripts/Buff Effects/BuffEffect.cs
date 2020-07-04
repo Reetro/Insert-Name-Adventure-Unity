@@ -17,6 +17,9 @@ public class BuffEffect : MonoBehaviour
     private bool buffIsRuning = false;
     private bool isActive = true;
 
+    /// <summary>
+    /// Sets all needed values and starts buff timer
+    /// </summary>
     public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
     {
         isActive = IsBuffActive(auraManager, buff);
@@ -58,7 +61,9 @@ public class BuffEffect : MonoBehaviour
             AddToStack(true, auraManager, scriptableBuff);
         }
     }
-
+    /// <summary>
+    /// Sets all needed values and starts buff timer
+    /// </summary>
     public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
     {
         isActive = IsBuffActive(auraManager, buff);
@@ -97,13 +102,17 @@ public class BuffEffect : MonoBehaviour
             AddToStack(false, auraManager, scriptableBuff);
         }
     }
-
+    /// <summary>
+    /// The effect that is called every second while the buff is active
+    /// </summary>
     public virtual void ApplyBuffEffect(float buffAmount)
     {
         // To be overridden in children
         Debug.LogWarning("Buff Effect: " + gameObject.name + "has no buff effect being applied");
     }
-
+    /// <summary>
+    /// Called when the buff timer reaches it's end
+    /// </summary>
     public virtual void OnBuffEnd()
     {
         if (visualEffect)
@@ -140,7 +149,9 @@ public class BuffEffect : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Checks to see if the current buff is active
+    /// </summary>
     public bool IsBuffActive(AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
         if (auraManager)
@@ -155,7 +166,9 @@ public class BuffEffect : MonoBehaviour
             return false;
         }
     }
-
+    /// <summary>
+    /// Completely reset this buff back to it's default values
+    /// </summary>
     public void RefreshBuff(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
         if (auraManager)
@@ -193,7 +206,9 @@ public class BuffEffect : MonoBehaviour
             Debug.LogError("Was unable to refresh buff on " + gameObject.name + "aura manager was invalid");
         }    
     }
-
+    /// <summary>
+    /// Adds a value one to the current buff stack
+    /// </summary>
     public void AddToStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
         if (auraManager)
@@ -218,12 +233,14 @@ public class BuffEffect : MonoBehaviour
             Debug.LogError("Was unable to stack buff on " + gameObject.name + "aura manager was invalid");
         }
     }
-
+    /// <summary>
+    /// Removes a value one from the current buff stack
+    /// </summary>
     public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
     {
         if (auraManager)
         {
-            var localBuff = auraManager.FindBuffOfType(scriptableBuff);
+            var localBuff = auraManager.FindBuffByID(GetID());
 
             localBuff.stackCount--;
 
@@ -245,10 +262,6 @@ public class BuffEffect : MonoBehaviour
                         var iconToRemove = auraManager.GetPlayerUIManager().FindBuffIconByType(scriptableBuff);
 
                         auraManager.GetPlayerUIManager().RemoveBuffIcon(iconToRemove);
-
-                        var foundBuff = auraManager.FindBuffByID(GetID());
-
-                        auraManager.RemoveBuff(foundBuff.gameObject, this);
                     }
                 }
                 else
@@ -265,7 +278,10 @@ public class BuffEffect : MonoBehaviour
             Debug.LogError("Was unable to remove buff stack on " + gameObject.name + "aura manager was invalid");
         }
     }
-
+    /// <summary>
+    /// Spawn and attach the given visual effect
+    /// </summary>
+    /// <returns>The spawned visual effect</returns>
     private GameObject SpawnVisualEffect(GameObject effect, Transform transform)
     {
         if (effect)
@@ -279,57 +295,79 @@ public class BuffEffect : MonoBehaviour
             return null;
         }
     }
-
+    /// <summary>
+    /// Gets the current buff target
+    /// </summary>
     public GameObject GetTarget()
     {
         return target;
     }
-
+    /// <summary>
+    /// Resets the buff duration back it's default value
+    /// </summary>
     public void ResetDuration()
     {
         duration = defaultDuration;
     }
-
+    /// <summary>
+    /// Gets the buff data
+    /// </summary>
     public ScriptableBuff GetBuff()
     {
         return scriptableBuff;
     }
-
+    /// <summary>
+    /// Gets the buffs stack count
+    /// </summary>
     public int GetStackCount()
     {
         return stackCount;
     }
-
+    /// <summary>
+    /// Looks to see if the buff is currently active
+    /// </summary>
     public bool GetIsActive()
     {
         return isActive;
     }
-
+    /// <summary>
+    /// Checks to see if the buff is running
+    /// </summary>
     public bool GetBuffRunning()
     {
         return buffIsRuning;
     }
-
+    /// <summary>
+    /// Get the current duration of the buff
+    /// </summary>
     public float GetDuration()
     {
         return duration;
     }
-
+    /// <summary>
+    /// Gets the actual buff amount
+    /// </summary>
     public float GetBuffAmount()
     {
         return buffAmount;
     }
-
+    /// <summary>
+    /// Get the aura manager on the given buff
+    /// </summary>
     public AuraManager GetAuraManager()
     {
         return auraManager;
     }
-
+    /// <summary>
+    /// Get the spawn visual effect
+    /// </summary>
     public GameObject GetVisualEffect()
     {
         return visualEffect;
     }
-
+    /// <summary>
+    /// Gets this buff id
+    /// </summary>
     public int GetID()
     {
         return idObject.GetID();

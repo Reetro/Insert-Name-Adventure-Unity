@@ -75,7 +75,7 @@ public class AuraManager : MonoBehaviour
 
         foreach (BuffEffect buffEffect in currentBuffs)
         {
-            var localID = buffEffect.GetBuff().buffEffect.GetID();
+            var localID = buffEffect.GetID();
 
             if (localID == ID)
             {
@@ -228,7 +228,7 @@ public class AuraManager : MonoBehaviour
 
         foreach (DebuffEffect debuffEffect in currentDebuffs)
         {
-            var localID = debuffEffect.GetDebuff().debuffEffect.GetID();
+            var localID = debuffEffect.GetID();
 
             if (localID == ID)
             {

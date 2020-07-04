@@ -21,6 +21,9 @@ public class DebuffEffect : MonoBehaviour
     private bool shouldTick = true;
     private bool isActive = false;
 
+    /// <summary>
+    /// Sets all needed values for the given debuff and starts debuff ticking
+    /// </summary>
     public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
     {
         isActive = isDebuffTypeActive(auraManager, debuff);
@@ -79,7 +82,9 @@ public class DebuffEffect : MonoBehaviour
             AddToStack(true, auraManager, scriptedDebuff);
         }
     }
-
+    /// <summary>
+    /// Sets all needed values for the given debuff and starts debuff ticking
+    /// </summary>
     public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
     {
         isActive = isDebuffTypeActive(auraManager, debuff);
@@ -125,7 +130,9 @@ public class DebuffEffect : MonoBehaviour
             AddToStack(false, auraManager, scriptedDebuff);
         }
     }
-
+    /// <summary>
+    /// The actual debuff timer that counts ticks
+    /// </summary>
     private IEnumerator DebuffTimer()
     {
         if (firstRun)
@@ -148,13 +155,17 @@ public class DebuffEffect : MonoBehaviour
             OnDebuffEnd();
         }
     }
-
+    /// <summary>
+    /// Called when ever the current debuff ticks
+    /// </summary>
     public virtual void ApplyDebuffEffect()
     {
         // To be overridden in child
         Debug.LogWarning("Debuff Effect: " + gameObject.name + "has no debuff effect being applied");
     }
-
+    /// <summary>
+    /// Called when tick count <= 0
+    /// </summary>
     public virtual void OnDebuffEnd()
     {
         if (visualEffect)
@@ -173,7 +184,9 @@ public class DebuffEffect : MonoBehaviour
             auraManager.RemoveDebuff(gameObject, this);
         }
     }
-
+    /// <summary>
+    /// Checks to see if a debuff of the given type is currently active
+    /// </summary>
     private bool isDebuffTypeActive(AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
         if (auraManager)
@@ -188,7 +201,9 @@ public class DebuffEffect : MonoBehaviour
             return false;
         }
     }
-
+    /// <summary>
+    /// Will add a value one to the current debuff stack count
+    /// </summary>
     private void AddToStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
         if (auraManager)
@@ -213,12 +228,14 @@ public class DebuffEffect : MonoBehaviour
             Debug.LogError("Was unable to add debuff stack on " + gameObject.name + "aura manager was invalid");
         }
     }
-
+    /// <summary>
+    /// Removes a value one from the current debuff stack count
+    /// </summary>
     public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
         if (auraManager)
         {
-            var localDebuff = auraManager.FindDebuffOtype(scriptableDebuff);
+            var localDebuff = auraManager.FindDebuffByID(GetID());
 
             localDebuff.stackCount--;
 
@@ -240,10 +257,6 @@ public class DebuffEffect : MonoBehaviour
                         var iconToRemove = auraManager.GetPlayerUIManager().FindDebuffIconByType(scriptableDebuff);
 
                         auraManager.GetPlayerUIManager().RemoveDebuffIcon(iconToRemove);
-
-                        var foundDebuff = auraManager.FindDebuffByID(GetID());
-
-                        auraManager.RemoveDebuff(foundDebuff.gameObject, this);
                     }
                 }
                 else
@@ -260,7 +273,9 @@ public class DebuffEffect : MonoBehaviour
             Debug.LogError("Was unable to remove debuff stack on " + gameObject.name + "aura manager was invalid");
         }
     }
-
+    /// <summary>
+    /// Resets the debuff back to default values
+    /// </summary>
     private void RefreshDebuff(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
     {
         if (auraManager)
@@ -285,7 +300,10 @@ public class DebuffEffect : MonoBehaviour
             Debug.LogError("Was unable to refresh debuff on " + gameObject.name + "aura manager was invalid");
         }
     }
-
+    /// <summary>
+    /// Spawn and attach the given visual effect
+    /// </summary>
+    /// <returns>The spawned visual effect</returns>
     private GameObject SpawnVisualEffect(GameObject effect, Transform transform)
     {
         if (effect)
@@ -299,7 +317,9 @@ public class DebuffEffect : MonoBehaviour
             return null;
         }
     }
-
+    /// <summary>
+    /// Resets the tick count back to it's default value 
+    /// </summary>
     public void ResetTickCount(bool useTick)
     {
         if (useTick)
@@ -311,57 +331,79 @@ public class DebuffEffect : MonoBehaviour
             ticks = maxTicks;
         }
     }
-
+    /// <summary>
+    /// Gets the current stack count
+    /// </summary>
     public int GetStackCount()
     {
         return stackCount;
     }
-
+    /// <summary>
+    /// Gets the current debuff target
+    /// </summary>
     public GameObject GetTarget()
     {
         return target;
     }
-
+    /// <summary>
+    /// Gets the current tick count
+    /// </summary>
     public float GetTicks()
     {
         return ticks;
     }
-
+    /// <summary>
+    /// Gets the interval between each tick count
+    /// </summary>
     public float GetOccurrence()
     {
         return occurrence;
     }
-
+    /// <summary>
+    /// Get the aura manager on the given debuff
+    /// </summary>
     public AuraManager GetAuraManager()
     {
         return auraManager;
     }
-
+    /// <summary>
+    /// Gets the actual debuff data
+    /// </summary>
     public ScriptableDebuff GetDebuff()
     {
         return scriptedDebuff;
     }
-
+    /// <summary>
+    /// Gets the default tick count
+    /// </summary>
     public float GetDefaultTickCount()
     {
         return defaultTickCount;
     }
-
+    /// <summary>
+    /// Checks to see if the current debuff is actual active
+    /// </summary>
     public bool GetIsActive()
     {
         return isActive;
     }
-
+    /// <summary>
+    /// Get the damage this debuff applies to it's target
+    /// </summary>
     public float GetDamage()
     {
         return damage;
     }
-
+    /// <summary>
+    /// Get the spawn visual effect
+    /// </summary>
     public GameObject GetVisualEffect()
     {
         return visualEffect;
     }
-
+    /// <summary>
+    /// Gets this debuff id
+    /// </summary>
     public int GetID()
     {
         return idObject.GetID();
