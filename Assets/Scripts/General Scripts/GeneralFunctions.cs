@@ -208,7 +208,7 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    ///  Gets the targets health component then damages the target
+    ///  Gets the targets health component then damages to the target
     /// </summary>
     /// <param name="target"></param>
     /// <param name="amount"></param>
@@ -236,7 +236,7 @@ public class GeneralFunctions
 
         if (health)
         {
-            health.ProccessDamage(1000000, false);
+            health.ProccessDamage(10000000, false);
         }
         else
         {
