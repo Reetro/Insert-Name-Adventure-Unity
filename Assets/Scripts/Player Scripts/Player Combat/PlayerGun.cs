@@ -25,9 +25,12 @@ public class PlayerGun : MonoBehaviour
         RotatePlayer();
     }
 
+    /// <summary>
+    /// Will try to spawn the player projectile to damage Gameobjects
+    /// </summary>
     public void FireGun()
     {
-        if (CanGunFire())
+        if (CanGunSpawnProjectile())
         {
             PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
 
@@ -37,17 +40,27 @@ public class PlayerGun : MonoBehaviour
         }
         else
         {
-            RaycastHit2D hit = Physics2D.Raycast(gunFireLocation.position, gunFireLocation.localEulerAngles, 10f);
-
-            if (hit)
-            {
-                print(hit.transform.gameObject);
-            }
-
-            Debug.DrawRay(gunFireLocation.position, gunFireLocation.localEulerAngles * 10f, Color.white, 10f);
+            // if a projectile was not able to be fired check to see if there is a still a leech attached to the player and damage it
+            DamageAttachedLeech();
         }
     }
+    /// <summary>
+    /// Fire a raycast to check attached leeches and if found will damage it only called if the player projectile failed to spawn
+    /// </summary>
+    private void DamageAttachedLeech()
+    {
+        var player = GeneralFunctions.GetPlayerGameObject();
 
+        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, 0.5f, LayerMask.GetMask("Attached Leech"));
+
+        if (hit)
+        {
+            GeneralFunctions.DamageTarget(hit.transform.gameObject, gunDamage, true);
+        }
+    }
+    /// <summary>
+    /// Rotate the player left or right to match the direction the gun is facing
+    /// </summary>
     private void RotatePlayer()
     {
         if (!playerHealthComp.GetIsDead())
@@ -65,7 +78,9 @@ public class PlayerGun : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Rotate the gun either to the mouse location or to the gamepad joystick position
+    /// </summary>
     private void RotateGun()
     {
         if (!playerHealthComp.GetIsDead())
@@ -122,7 +137,9 @@ public class PlayerGun : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Check to see if there is a gamepad active if not default input to mouse
+    /// </summary>
     public void UpdateInput(bool gamepadActive)
     {
         if (gamepadActive)
@@ -142,8 +159,11 @@ public class PlayerGun : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
     }
-
-    private bool CanGunFire()
+    /// <summary>
+    /// Checks to see if the gun is being block by ground
+    /// </summary>
+    /// <returns>A bool that determines if the player projectile can spawn</returns>
+    private bool CanGunSpawnProjectile()
     {
         if (!cooldownBar.GetIsActive())
         {
@@ -162,17 +182,17 @@ public class PlayerGun : MonoBehaviour
             return false;
         }
     }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
         touchingGround = true;
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         touchingGround = false;
     }
-
+    /// <summary>
+    /// Look see if the mouse is on the left or right the screen
+    /// </summary>
     private bool MouseLeftOrRight()
     {
         var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);

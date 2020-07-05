@@ -31,12 +31,7 @@ public class PlayerProjectile : MonoBehaviour
         {
             if (!colliders[index].gameObject.CompareTag("Player"))
             {
-                var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
-
-                if (healthComp)
-                {
-                    healthComp.ProccessDamage(damage, true);
-                }
+                GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true);
 
                 var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
 
