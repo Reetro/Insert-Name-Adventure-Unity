@@ -7,7 +7,7 @@ public class OneShotMovement : PlatformMovement
     private Vector3 normalizeDirection;
     private bool canMove = true;
 
-    private void Start()
+    private void Awake()
     {
         normalizeDirection = (targetDirection.position - transform.position).normalized;
     }

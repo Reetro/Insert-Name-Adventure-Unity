@@ -883,9 +883,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503675356f896d8449fb18e56812e8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrounded: 1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 131383
+    m_Bits: 311
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:

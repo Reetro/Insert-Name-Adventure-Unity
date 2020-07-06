@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
 	private HealthComponent hpComp;
     private PlayerLegs myLegs = null;
 
-	private void Start()
+	private void Awake()
 	{
 		myRigidbody2D = GetComponent<Rigidbody2D>();
 		hpComp = GetComponent<HealthComponent>();
@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
 		if (!hpComp.GetIsDead())
         {
             //only control the player if grounded or airControl is turned on
-            if (myLegs.GetIsGrounded() || hasAirControl)
+            if (myLegs.isGrounded || hasAirControl)
             {
                 // Move the character by finding the target velocity
                 Vector3 targetVelocity = new Vector2(move * runSpeed * playerAcceleration, myRigidbody2D.velocity.y);
@@ -55,10 +55,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             // If the player should jump...
-            if (myLegs.GetIsGrounded() && jump)
+            if (myLegs.isGrounded && jump)
             {
                 // Add a vertical force to the player.
-                myLegs.UpdateGrounded(false);
+                myLegs.isGrounded = false;
                 myRigidbody2D.AddForce(new Vector2(0f, jumpForce));
             }
         }

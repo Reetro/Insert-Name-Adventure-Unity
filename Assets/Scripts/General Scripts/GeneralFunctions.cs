@@ -215,15 +215,18 @@ public class GeneralFunctions
     /// <param name="showText"></param>
     public static void DamageTarget(GameObject target, float amount, bool showText)
     {
-        var health = target.GetComponent<HealthComponent>();
+        if (!IsObjectOnLayer("Platform", target) && !IsObjectOnLayer("Ground", target))
+        {
+            var health = target.GetComponent<HealthComponent>();
 
-        if (health)
-        {
-            health.ProccessDamage(amount, showText);
-        }
-        else
-        {
-            Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+            if (health)
+            {
+                health.ProccessDamage(amount, showText);
+            }
+            else
+            {
+                Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+            }
         }
     }
     /// <summary>
