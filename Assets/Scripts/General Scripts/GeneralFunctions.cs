@@ -215,13 +215,13 @@ public class GeneralFunctions
     /// <param name="showText"></param>
     public static void DamageTarget(GameObject target, float amount, bool showText)
     {
-        if (!IsObjectOnLayer("Platform", target) && !IsObjectOnLayer("Ground", target))
+        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
         {
             var health = target.GetComponent<HealthComponent>();
 
             if (health)
             {
-                health.ProccessDamage(amount, showText);
+                health.ProccessDamage(amount, showText, GetGameplayManager().whatCanBeDamaged);
             }
             else
             {
@@ -235,16 +235,24 @@ public class GeneralFunctions
     /// <param name="target"></param>
     public static void KillTarget(GameObject target)
     {
-        var health = target.GetComponent<HealthComponent>();
+        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
 
-        if (health)
-        {
-            health.ProccessDamage(10000000, false);
+            if (health)
+            {
+                health.ProccessDamage(10000000, false, GetGameplayManager().whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
+            }
         }
-        else
-        {
-            Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
-        }
+    }
+
+    public static GameplayManager GetGameplayManager()
+    {
+        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
     }
     /// <summary>
     /// Checks to see if the given Gameobject is currently dead

@@ -29,7 +29,7 @@ TagManager:
   - Player
   - Enemy
   - Background
-  - Projectile
+  - Player Projectile
   - Enemy Projectile
   - Attached Leech
   - Leech Collision

@@ -8,7 +8,7 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
-
+    
     [Header("Health Bar Settings")]
     [SerializeField] HealthBar healthBar = null;
 
@@ -85,33 +85,36 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
-    public void ProccessDamage(float damage, bool showDamageText)
+    public void ProccessDamage(float damage, bool showDamageText, LayerMask damageLayer)
     {
-        if (!isDead)
+        if (GeneralFunctions.IsObjectOnLayer(damageLayer, gameObject))
         {
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-
-            if (showDamageText)
+            if (!isDead)
             {
-                DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY);
-            }
+                currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
-            onTakeAnyDamage.Invoke(damage);
+                if (showDamageText)
+                {
+                    DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY);
+                }
 
-            if (IsOnPlayer())
-            {
-                UpdatePlayerState();
-            }
+                onTakeAnyDamage.Invoke(damage);
 
-            if (healthBar)
-            {
-                healthBar.SetHealth(currentHealth);
-            }
+                if (IsOnPlayer())
+                {
+                    UpdatePlayerState();
+                }
 
-            if (currentHealth <= 0)
-            {
-                isDead = true;
-                OnDeath.Invoke();
+                if (healthBar)
+                {
+                    healthBar.SetHealth(currentHealth);
+                }
+
+                if (currentHealth <= 0)
+                {
+                    isDead = true;
+                    OnDeath.Invoke();
+                }
             }
         }
     }

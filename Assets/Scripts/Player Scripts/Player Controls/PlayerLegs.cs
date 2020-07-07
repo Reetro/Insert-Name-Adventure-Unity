@@ -40,6 +40,7 @@ public class PlayerLegs : MonoBehaviour
                 }
             }
         }
+        // See if the player is on a platform if so attach player to it
         else if (collision.gameObject.CompareTag("Platform"))
         {
             GeneralFunctions.AttachObjectToTransfrom(collision.transform, player);

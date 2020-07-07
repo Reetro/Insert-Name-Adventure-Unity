@@ -15,9 +15,9 @@ public class Boomerang : ProjectileMovement
 
         UpdateDirection(newDirection);
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
         {
-            collision.gameObject.GetComponent<HealthComponent>().ProccessDamage(damage, true);
+            GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
 
             DestroyBoomerang(true);
         }

@@ -18,6 +18,9 @@ public class GameplayManager : MonoBehaviour
     public float combatRandomVectorMinY = -0.5f;
     public float combatRandomVectorMaxY = 1f;
 
+    [Header("Damage Settings")]
+    public LayerMask whatCanBeDamaged;
+
     List<int> gameplayObjects = new List<int>();
 
     public int GenID()
