@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4489563985592206378}
   - component: {fileID: 875436551712551168}
   - component: {fileID: 3206767798431477385}
-  m_Layer: 10
+  m_Layer: 20
   m_Name: Razor Blade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
