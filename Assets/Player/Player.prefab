@@ -543,10 +543,11 @@ MonoBehaviour:
     m_Bits: 256
   combatTextSpeed: 0.02
   combatTextUpTime: 0.5
-  combatRandomVectorMinX: -0.5
+  combatRandomVectorMinX: -1
   combatRandomVectorMaxX: 1
-  combatRandomVectorMinY: -0.5
+  combatRandomVectorMinY: -1
   combatRandomVectorMaxY: 1
+  dissapearTime: 3
   whatCanBeDamaged:
     serializedVersion: 2
     m_Bits: 17920
@@ -777,7 +778,7 @@ GameObject:
   - component: {fileID: 4157925456548234629}
   - component: {fileID: 6459988344784491037}
   - component: {fileID: 2543864314282910336}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Legs
   m_TagString: Player Legs
   m_Icon: {fileID: 0}

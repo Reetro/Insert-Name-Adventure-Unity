@@ -20,7 +20,7 @@ public class LeechAttachCollisionTop : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Attachable Leech"))
         {
-            if (GeneralFunctions.CanLeechAttach(tagToAttach) && !GeneralFunctions.IsLeechDead(collision.gameObject))
+            if (GeneralFunctions.CanLeechAttach(tagToAttach) && !GeneralFunctions.IsObjectDead(collision.gameObject))
             {
                 var leechHP = collision.gameObject.GetComponent<HealthComponent>();
 

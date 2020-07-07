@@ -17,6 +17,7 @@ public class GameplayManager : MonoBehaviour
     public float combatRandomVectorMaxX = 1f;
     public float combatRandomVectorMinY = -0.5f;
     public float combatRandomVectorMaxY = 1f;
+    public float dissapearTime = 3f;
 
     [Header("Damage Settings")]
     public LayerMask whatCanBeDamaged;

@@ -25,6 +25,9 @@ public class HealthComponent : MonoBehaviour
 
     private static bool setMaxhealth = false;
 
+    /// <summary>
+    /// Setup all needed health component variables and update player state if on player
+    /// </summary>
     public void ConstructHealthComponent()
     {
         gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
@@ -69,7 +72,10 @@ public class HealthComponent : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Add the given value to this Gameobjects current health
+    /// </summary>
+    /// <param name="amountToAdd"></param>
     public void AddHealth(float amountToAdd)
     {
         currentHealth = Mathf.Clamp(currentHealth + amountToAdd, 0, maxHealth);
@@ -84,7 +90,12 @@ public class HealthComponent : MonoBehaviour
             UpdatePlayerState();
         }
     }
-
+    /// <summary>
+    /// Apply damage to the Gameobject this component is on if current health is below 0 the Gameobject is killed
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="showDamageText"></param>
+    /// <param name="damageLayer"></param>
     public void ProccessDamage(float damage, bool showDamageText, LayerMask damageLayer)
     {
         if (GeneralFunctions.IsObjectOnLayer(damageLayer, gameObject))
@@ -95,7 +106,8 @@ public class HealthComponent : MonoBehaviour
 
                 if (showDamageText)
                 {
-                    DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY);
+                    DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, 
+                        gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY, gameplayManager.dissapearTime);
                 }
 
                 onTakeAnyDamage.Invoke(damage);
@@ -118,7 +130,10 @@ public class HealthComponent : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Set current health and to the given value
+    /// </summary>
+    /// <param name="value"></param>
     public void SetHealth(float value)
     {
         currentHealth = value;
@@ -134,7 +149,11 @@ public class HealthComponent : MonoBehaviour
             UpdatePlayerState();
         }
     }
-
+    /// <summary>
+    /// Set current health and to the given values
+    /// </summary>
+    /// <param name="currentHP"></param>
+    /// <param name="maxHP"></param>
     public void SetHealth(float currentHP, float maxHP)
     {
         currentHealth = currentHP;
@@ -150,24 +169,33 @@ public class HealthComponent : MonoBehaviour
             healthBar.SetHealth(currentHealth);
         }
     }
-
+    /// <summary>
+    /// Get this Gameobjects current health
+    /// </summary>
     public float GetCurrentHealth()
     {
         return currentHealth;
     }
-
+    /// <summary>
+    /// Check to see if the current Gameobject is dead
+    /// </summary>
+    /// <returns></returns>
     public bool GetIsDead()
     {
         return isDead;
     }
-
+    /// <summary>
+    /// Find the player state in the level then construct the health component
+    /// </summary>
     public void FindPlayerState()
     {
         playerState = FindObjectOfType<PlayerState>();
 
         ConstructHealthComponent();
     }
-
+    /// <summary>
+    /// Update player state health values
+    /// </summary>
     private void UpdatePlayerState()
     {
         if (playerState)
@@ -175,7 +203,9 @@ public class HealthComponent : MonoBehaviour
             playerState.UpdatePlayerStateHP(currentHealth, maxHealth);
         }
     }
-
+    /// <summary>
+    /// Checks to see if this health component is on the player game object
+    /// </summary>
     private bool IsOnPlayer()
     {
         var player = gameObject.GetComponentInParent<PlayerController>();

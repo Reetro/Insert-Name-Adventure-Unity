@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 
-
 public class DamageText : MonoBehaviour
 {
     private TextMeshPro textMesh = null;
@@ -11,6 +10,7 @@ public class DamageText : MonoBehaviour
     private static int sortingOrder;
     private Vector3 textEndPoint;
     private bool startAnimation = false;
+    private float dissapearTime = 3f;
 
     // Time when the movement started.
     private float startTime;
@@ -48,8 +48,6 @@ public class DamageText : MonoBehaviour
 
             if (upTime <= 0)
             {
-                float dissapearTime = 3f;
-
                 textColor.a -= dissapearTime * Time.deltaTime;
 
                 if (textColor.a <= 0)
@@ -60,17 +58,17 @@ public class DamageText : MonoBehaviour
         }
     }
 
-    public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY)
+    public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
     {
         Transform damageTextTransform = Instantiate(GameAssets.instance.damgeText, position, Quaternion.identity);
         DamageText spawnedDamageText = damageTextTransform.GetComponent<DamageText>();
 
-        spawnedDamageText.SetupText(damage, speed, upTime, endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
+        spawnedDamageText.SetupText(damage, speed, upTime, endPointMinX, endPointMaxX, endPointMinY, endPointMaxY, dissapearTime);
 
         return spawnedDamageText;
     }
 
-    private void SetupText(float damage, float speed, float currentUpTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY)
+    private void SetupText(float damage, float speed, float currentUpTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
     { 
         textEndPoint = GeneralFunctions.CreateRandomVector2(endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
 
@@ -80,6 +78,7 @@ public class DamageText : MonoBehaviour
 
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;
+        this.dissapearTime = dissapearTime;
 
         textColor = textMesh.color;
 

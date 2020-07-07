@@ -141,7 +141,7 @@ public class GeneralFunctions
     ///  Finds a point to attach a leech to by look for the point by tag
     /// </summary>
     /// <param name="tag">The leech collision tag</param>
-    /// <returns>The transfrom of the found leeh attach point</returns>
+    /// <returns>The transfrom of the found leech attach point</returns>
     public static Transform GetLeechAttachPointByTag(string tag)
     {
         return GameObject.FindGameObjectWithTag(tag).transform;
@@ -154,25 +154,6 @@ public class GeneralFunctions
     public static bool CanLeechAttach(string tag)
     {
         return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
-    }
-    /// <summary>
-    ///  Checks to see if leech that is trying to attach to player is current dead
-    /// </summary>
-    /// <param name="leech">The leech to check</param>
-    /// <returns>A bool that determines if the given leech is dead</returns>
-    public static bool IsLeechDead(GameObject leech)
-    {
-        var leechHelthComp = leech.GetComponent<HealthComponent>();
-
-        if (leechHelthComp)
-        {
-            return leechHelthComp.GetIsDead();
-        }
-        else
-        {
-            Debug.LogError("Failed to check leech " + leech.name.ToString() + " did not have a health component");
-            return false;
-        }
     }
     /// <summary>
     /// Calls the construct health component function on the given game object
@@ -217,11 +198,6 @@ public class GeneralFunctions
     {
         if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
         {
-            if (target.CompareTag("Player Legs"))
-            {
-                target = GetPlayerGameObject();
-            }
-
             var health = target.GetComponent<HealthComponent>();
 
             if (health)
@@ -246,7 +222,7 @@ public class GeneralFunctions
 
             if (health)
             {
-                health.ProccessDamage(10000000, false, GetGameplayManager().whatCanBeDamaged);
+                health.ProccessDamage(100000000, false, GetGameplayManager().whatCanBeDamaged);
             }
             else
             {
@@ -254,16 +230,11 @@ public class GeneralFunctions
             }
         }
     }
-
-    public static GameplayManager GetGameplayManager()
-    {
-        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
-    }
     /// <summary>
     /// Checks to see if the given Gameobject is currently dead
     /// </summary>
     /// <param name="gameObject"></param>
-    /// <returns>A bool that determins if the object is dead</returns>
+    /// <returns>A bool that determines if the object is dead</returns>
     public static bool IsObjectDead(GameObject gameObject)
     {
         var health = gameObject.GetComponent<HealthComponent>();
@@ -279,14 +250,21 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Pauses the game
+    /// Finds the Gameplay Manager in the current level
+    /// </summary>
+    public static GameplayManager GetGameplayManager()
+    {
+        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+    }
+    /// <summary>
+    /// Pauses the game by setting time scale to 0
     /// </summary>
     public static void PauseGame()
     {
         Time.timeScale = 0;
     }
     /// <summary>
-    /// Resumes the game
+    /// Resumes the game by setting time scale to 1
     /// </summary>
     public static void ResumeGame()
     {
