@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jack's Levels/Jack's original level.unity
     guid: 7eccf9f462b6a3a4c8e834e27131376e
+  - enabled: 1
+    path: Assets/Scenes/Justin's Levels/Justin's original level 1.unity
+    guid: 795b3d0945b66674d8a00d715b00a205
   m_configObjects: {}

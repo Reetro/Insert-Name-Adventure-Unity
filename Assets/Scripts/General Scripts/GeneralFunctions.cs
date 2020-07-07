@@ -217,6 +217,11 @@ public class GeneralFunctions
     {
         if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
         {
+            if (target.CompareTag("Player Legs"))
+            {
+                target = GetPlayerGameObject();
+            }
+
             var health = target.GetComponent<HealthComponent>();
 
             if (health)

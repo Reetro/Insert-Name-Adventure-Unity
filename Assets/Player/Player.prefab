@@ -549,7 +549,7 @@ MonoBehaviour:
   combatRandomVectorMaxY: 1
   whatCanBeDamaged:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 17920
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0
