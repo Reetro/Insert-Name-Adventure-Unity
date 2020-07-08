@@ -31,8 +31,6 @@ public class PlayerProjectile : MonoBehaviour
         {
             if (!colliders[index].gameObject.CompareTag("Player"))
             {
-                GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true);
-
                 var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
 
                 if (leechEggRipe)
@@ -45,6 +43,11 @@ public class PlayerProjectile : MonoBehaviour
                 if (leechEggCold)
                 {
                     leechEggCold.SpawnLeech();
+                }
+
+                if (!leechEggRipe && !leechEggCold)
+                {
+                    GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true);
                 }
             }
         }
