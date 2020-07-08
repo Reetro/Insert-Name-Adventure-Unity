@@ -230,6 +230,14 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Checks to see if the player Gameobject is currently dead
+    /// </summary>
+    /// <returns>A bool that determains if the player is dead</returns>
+    public static bool IsPlayerDead()
+    {
+        return IsObjectDead(GetPlayerGameObject());
+    }
+    /// <summary>
     /// Checks to see if the given Gameobject is currently dead
     /// </summary>
     /// <param name="gameObject"></param>
@@ -373,9 +381,9 @@ public class GeneralFunctions
         return foundObject;
     }
     /// <summary>
-    ///  Returns the player GameObject
+    ///  Find the Player Gameobject by tag in the current level
     /// </summary>
-    /// <returns>The player Gameobject</returns>
+    /// <returns>The Player Gameobject</returns>
     public static GameObject GetPlayerGameObject()
     {
         return GameObject.FindGameObjectWithTag("Player");

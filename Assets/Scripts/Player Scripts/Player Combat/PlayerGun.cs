@@ -40,8 +40,11 @@ public class PlayerGun : MonoBehaviour
         }
         else
         {
-            // if a projectile was not able to be fired check to see if there is a still a leech attached to the player and damage it
-            DamageAttachedLeech();
+            if (!GeneralFunctions.IsPlayerDead())
+            {
+                // if a projectile was not able to be fired check to see if there is a still a leech attached to the player and damage it
+                DamageAttachedLeech();
+            }
         }
     }
     /// <summary>
@@ -165,15 +168,22 @@ public class PlayerGun : MonoBehaviour
     /// <returns>A bool that determines if the player projectile can spawn</returns>
     private bool CanGunSpawnProjectile()
     {
-        if (!cooldownBar.GetIsActive())
+        if (!GeneralFunctions.IsPlayerDead())
         {
-            if (!touchingGround)
+            if (!cooldownBar.GetIsActive())
             {
-                return true;
+                if (!touchingGround)
+                {
+                    return true;
+                }
+                else
+                {
+                    cooldownBar.StartCooldown(gunCooldown);
+                    return false;
+                }
             }
             else
             {
-                cooldownBar.StartCooldown(gunCooldown);
                 return false;
             }
         }
@@ -191,7 +201,7 @@ public class PlayerGun : MonoBehaviour
         touchingGround = false;
     }
     /// <summary>
-    /// Look see if the mouse is on the left or right the screen
+    /// Look see if the mouse is on the left or right of the screen
     /// </summary>
     private bool MouseLeftOrRight()
     {
