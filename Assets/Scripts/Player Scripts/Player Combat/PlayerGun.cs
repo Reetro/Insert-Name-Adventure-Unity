@@ -18,6 +18,7 @@ public class PlayerGun : MonoBehaviour
     private float gunAngle = 0f;
     private bool gamepadActive = false;
     private bool touchingGround = false;
+    private const float traceLength = 1f;
 
     void Update()
     {
@@ -54,7 +55,7 @@ public class PlayerGun : MonoBehaviour
     {
         var player = GeneralFunctions.GetPlayerGameObject();
 
-        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, 0.5f, LayerMask.GetMask("Attached Leech"));
+        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, traceLength, LayerMask.GetMask("Attached Leech"));
 
         if (hit)
         {
