@@ -23,7 +23,11 @@ public class PlayerGun : MonoBehaviour
     void Update()
     {
         RotateGun();
-        RotatePlayer();
+        
+        if (!gamepadActive)
+        {
+            RotatePlayerWithMouse();
+        }
     }
 
     /// <summary>
@@ -65,7 +69,7 @@ public class PlayerGun : MonoBehaviour
     /// <summary>
     /// Rotate the player left or right to match the direction the gun is facing
     /// </summary>
-    private void RotatePlayer()
+    private void RotatePlayerWithMouse()
     {
         if (!playerHealthComp.GetIsDead())
         {
