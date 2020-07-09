@@ -21,11 +21,19 @@ public class Shaman : EnemyBase
 
     public void ThrowBoomerang()
     {
+        var playerLocation = GeneralFunctions.GetPlayerGameObject().transform.position;
+
         currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation);
 
         currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
 
-        currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, transform.position, boomerangMinRandomFactor, boomerangMaxRandomFactor);
+        var startDirection = GeneralFunctions.GetDirectionVectroFrom2Vectors(playerLocation, currentBoomrang.transform.position);
+
+        print(startDirection);
+
+        currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, boomerangMinRandomFactor, boomerangMaxRandomFactor);
+
+        currentBoomrang.UpdateVelocity(playerLocation - currentBoomrang.transform.position);
     }
 
     public override void OnDeath()

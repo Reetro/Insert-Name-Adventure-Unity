@@ -53,6 +53,11 @@ public class ProjectileMovement : MonoBehaviour
         launchDirection = newDirection;
     }
 
+    public void UpdateVelocity(Vector2 newVelocity)
+    {
+        myRigidbody.velocity = newVelocity;
+    }
+
     public Vector2 GetCurrentVelocity()
     {
         return currentVelocity;

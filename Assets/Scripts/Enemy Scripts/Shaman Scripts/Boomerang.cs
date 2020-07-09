@@ -15,28 +15,23 @@ public class Boomerang : ProjectileMovement
 
         UpdateDirection(newDirection);
 
-        if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+        currentHitCount++;
+
+        GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
+
+        if (currentHitCount >= maxHitsBeforeTeleport)
         {
-            GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
+            TeleportShaman(collision.GetContact(0).point);
 
-            DestroyBoomerang(true);
-        }
-        else if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Shaman"))
-        {
-            currentHitCount++;
-
-            if (currentHitCount >= maxHitsBeforeTeleport)
-            {
-                TeleportShaman(collision.GetContact(0).point);
-
-                currentHitCount = 0;
-            }
+            currentHitCount = 0;
         }
     }
 
     private void TeleportShaman(Vector2 teleportLocation)
     {
         var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
+
+        print(newLocation);
 
         currentShaman.transform.position = newLocation;
 
