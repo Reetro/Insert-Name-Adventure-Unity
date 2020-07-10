@@ -80,6 +80,11 @@ public class PlayerController : MonoBehaviour
     public void OnLanding()
     {
         myAnimator.SetBool("IsJumping", false);
+
+        if (CrossPlatformInputManager.GetButton("Jump"))
+        {
+            jump = true;
+        }
     }
 
     private void SpawnLeechCollision()
