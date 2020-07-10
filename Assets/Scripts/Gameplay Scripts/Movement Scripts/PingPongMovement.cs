@@ -3,6 +3,7 @@
 public class PingPongMovement : PlatformMovement
 {
     public Transform pos1, pos2;
+    public float distanceTolerance = 1f;
 
     private Vector3 nextPos;
     private float oldPosition = 0.0f;
@@ -39,12 +40,12 @@ public class PingPongMovement : PlatformMovement
 
     private void InvertDirection()
     {
-        if (Vector3.Distance(transform.position, pos1.position) <= 1)
+        if (Vector3.Distance(transform.position, pos1.position) <= distanceTolerance)
         {
             nextPos = pos2.position;
             lastPos = pos1;
         }
-        if (Vector3.Distance(transform.position, pos2.position) <= 1)
+        if (Vector3.Distance(transform.position, pos2.position) <= distanceTolerance)
         {
             nextPos = pos1.position;
             lastPos = pos2;

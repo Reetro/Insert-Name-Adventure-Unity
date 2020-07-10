@@ -77,11 +77,11 @@ public class PlayerGun : MonoBehaviour
             {
                 if (MouseLeftOrRight())
                 {
-                    controller.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
+                    controller.transform.eulerAngles = new Vector3(0, 180f, transform.position.z);
                 }
                 else
                 {
-                    controller.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
+                    controller.transform.eulerAngles = new Vector3(0, 0f, transform.position.z);
                 }
             }
         }

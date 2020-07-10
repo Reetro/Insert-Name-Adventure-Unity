@@ -5,8 +5,8 @@ public class PlayerLegs : MonoBehaviour
 {
     [HideInInspector]
     public bool isGrounded = true;
+
     private GameObject player = null;
-    private Vector3 defaultScale;
 
     [Header("Layer Settings")]
     public LayerMask whatIsGround;  // A mask determining what is ground to the character
@@ -19,8 +19,6 @@ public class PlayerLegs : MonoBehaviour
     private void Awake()
     {
         player = GeneralFunctions.GetPlayerGameObject();
-
-        defaultScale = player.transform.localScale;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -60,8 +58,6 @@ public class PlayerLegs : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform"))
         {
             GeneralFunctions.DetachFromParent(player);
-
-            player.transform.localScale = defaultScale;
         }
     }
 }
