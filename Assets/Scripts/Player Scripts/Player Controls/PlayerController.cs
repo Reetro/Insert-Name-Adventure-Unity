@@ -27,40 +27,43 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+        if (!GeneralFunctions.IsPlayerDead())
+        {
+            horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
-        if (transform.localEulerAngles.y >= 180)
-        {
-            myAnimator.SetFloat("Speed", -horizontalMove);
-        }
-        else
-        {
-            myAnimator.SetFloat("Speed", horizontalMove);
-        }
+            if (transform.localEulerAngles.y >= 180)
+            {
+                myAnimator.SetFloat("Speed", -horizontalMove);
+            }
+            else
+            {
+                myAnimator.SetFloat("Speed", horizontalMove);
+            }
 
-        if (horizontalMove == 0)
-        {
-            myAnimator.SetBool("Idle", true);
-        }
-        else
-        {
-            myAnimator.SetBool("Idle", false);
-        }
+            if (horizontalMove == 0)
+            {
+                myAnimator.SetBool("Idle", true);
+            }
+            else
+            {
+                myAnimator.SetBool("Idle", false);
+            }
 
-        if (CrossPlatformInputManager.GetButtonDown("Jump"))
-        {
-            jump = true;
-            myAnimator.SetBool("IsJumping", true);
-        }
+            if (CrossPlatformInputManager.GetButtonDown("Jump"))
+            {
+                jump = true;
+                myAnimator.SetBool("IsJumping", true);
+            }
 
-        if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-        {
-            currentGun.FireGun();
-        }
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            {
+                currentGun.FireGun();
+            }
 
-        if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
-        {
-            currentGun.FireGun();
+            if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
+            {
+                currentGun.FireGun();
+            }
         }
     }
 
