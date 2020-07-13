@@ -16,6 +16,7 @@ TagManager:
   - Gameplay Manager
   - Enemy
   - Player Legs
+  - Player Hud Canvas
   layers:
   - Default
   - TransparentFX

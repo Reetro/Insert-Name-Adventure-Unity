@@ -543,4 +543,12 @@ public class GeneralFunctions
             Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
         }
     }
+    /// <summary>
+    /// Find the Player UI Manager in the current scene
+    /// </summary>
+    /// <returns></returns>
+    public static PlayerUIManager GetPlayerUIManager()
+    {
+        return GameObject.FindGameObjectWithTag("Player Hud Canvas").GetComponent<PlayerUIManager>();
+    }
 }

@@ -8,6 +8,7 @@ public class DebuffIcon : MonoBehaviour
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
     [SerializeField] TextMeshProUGUI timer = null;
+    [SerializeField] private DebuffToolTip toolTip = null;
 
     private ScriptableDebuff debuff = null;
     bool hasFillAmount = true;
@@ -17,6 +18,8 @@ public class DebuffIcon : MonoBehaviour
     private void Start()
     {
         UpdateStackCount(1);
+
+        toolTip.ConstructToolTip(debuff);
     }
 
     void Update()

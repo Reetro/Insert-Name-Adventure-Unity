@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -15,12 +16,18 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] Button loadCheckpointBTN = null;
     [SerializeField] TextMeshProUGUI gameOverText = null;
 
+    [Header("Tooltip Settings")]
+    [SerializeField] private ToolTip tooltip = null;
+    public float toolTipTextPadding = 4f;
+
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
     private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
 
     private void Start()
     {
         HideDeathUI();
+
+        HideToolTip();
     }
 
     public BuffIcon AddBuffIcon(ScriptableBuff buff)
@@ -95,6 +102,11 @@ public class PlayerUIManager : MonoBehaviour
             }
         }
         return localIcon;
+    }
+
+    public static void HideToolTip()
+    {
+        ToolTip.HideToolTip_Static();
     }
 
     public void HideDeathUI()
