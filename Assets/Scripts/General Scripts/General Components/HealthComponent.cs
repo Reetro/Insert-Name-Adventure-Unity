@@ -40,6 +40,40 @@ public class HealthComponent : MonoBehaviour
             {
                 currentHealth = maxHealth;
 
+                setMaxhealth = true;
+
+                UpdatePlayerState();
+            }
+            else
+            {
+                maxHealth = playerState.GetCurrentMaxHealth();
+                currentHealth = playerState.GetCurrentHealth();
+
+                UpdatePlayerState();
+            }
+        }
+        else
+        {
+            currentHealth = maxHealth;
+        }
+    }
+    /// <summary>
+    /// Setup all needed health component variables and update player state if on player then setups the given health bar
+    /// </summary>
+    public void ConstructHealthComponent(HealthBar healthBar)
+    {
+        this.healthBar = healthBar;
+
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+
+        isDead = false;
+
+        if (IsOnPlayer())
+        {
+            if (!setMaxhealth)
+            {
+                currentHealth = maxHealth;
+
                 if (healthBar)
                 {
                     healthBar.SetMaxHealth(maxHealth);
@@ -56,10 +90,8 @@ public class HealthComponent : MonoBehaviour
 
                 if (healthBar)
                 {
-                    healthBar.SetHealth(currentHealth);
+                    healthBar.SetPlayerHealth(playerState);
                 }
-
-                UpdatePlayerState();
             }
         }
         else
@@ -72,6 +104,7 @@ public class HealthComponent : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// Add the given value to this Gameobjects current health
     /// </summary>
@@ -192,6 +225,15 @@ public class HealthComponent : MonoBehaviour
         playerState = FindObjectOfType<PlayerState>();
 
         ConstructHealthComponent();
+    }
+    /// <summary>
+    /// Find the player state in the level then construct the health component with a health bar
+    /// </summary>
+    public void FindPlayerState(HealthBar healthBar)
+    {
+        playerState = FindObjectOfType<PlayerState>();
+
+        ConstructHealthComponent(healthBar);
     }
     /// <summary>
     /// Update player state health values

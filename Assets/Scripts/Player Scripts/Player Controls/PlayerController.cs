@@ -102,17 +102,15 @@ public class PlayerController : MonoBehaviour
 
         if (loaderCount <= 0)
         {
-            Instantiate(levelLoader, new Vector2(1000, 1000), Quaternion.identity);
+            levelLoader = Instantiate(levelLoader, new Vector2(1000, 1000), Quaternion.identity);
         }
 
-        var hudCount = FindObjectsOfType<PlayerUIManager>().Length;
+        var levelExit = FindObjectOfType<LevelExit>();
 
-        if (hudCount <= 0)
+        if (levelExit)
         {
-            Instantiate(playerHud, new Vector2(1000, 1000), Quaternion.identity);
+            levelExit.ConsturctExit(levelLoader.GetComponent<LevelLoader>());
         }
-
-        uiManager = FindObjectOfType<PlayerUIManager>();
 
         var playerStateCount = FindObjectsOfType<PlayerState>().Length;
 
@@ -128,6 +126,26 @@ public class PlayerController : MonoBehaviour
             checkpoint.ConstructCheckpoint();
         }
 
-        myHealthComp.FindPlayerState();
+        var hudCount = FindObjectsOfType<PlayerUIManager>().Length;
+
+        if (hudCount <= 0)
+        {
+            playerHud = Instantiate(playerHud, new Vector2(1000, 1000), Quaternion.identity);
+        }
+
+        myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().GetHealthBar());
+
+        var auraManager = GetComponent<AuraManager>();
+
+        if (auraManager)
+        {
+            auraManager.SetUIManager(playerHud.GetComponent<PlayerUIManager>());
+        }
+        else
+        {
+            Debug.LogWarning("Player has no Aura manager");
+        }
+
+        uiManager = FindObjectOfType<PlayerUIManager>();
     }
 }

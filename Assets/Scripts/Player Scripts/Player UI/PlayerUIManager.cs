@@ -16,6 +16,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] Button loadCheckpointBTN = null;
     [SerializeField] TextMeshProUGUI gameOverText = null;
 
+    [Header("Player UI")]
+    [SerializeField] HealthBar healthBar = null;
+
     [Header("Tooltip Settings")]
     public float toolTipTextPadding = 4f;
 
@@ -101,6 +104,11 @@ public class PlayerUIManager : MonoBehaviour
             }
         }
         return localIcon;
+    }
+
+    public HealthBar GetHealthBar()
+    {
+        return healthBar;
     }
 
     public static void HideToolTip()

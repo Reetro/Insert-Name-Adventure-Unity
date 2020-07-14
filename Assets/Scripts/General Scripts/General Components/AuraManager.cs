@@ -7,9 +7,9 @@ public class AuraManager : MonoBehaviour
     private List<DebuffEffect> currentDebuffs = new List<DebuffEffect>();
     private PlayerUIManager playerUIManager = null;
 
-    private void Start()
+    public void SetUIManager(PlayerUIManager playerUIManager)
     {
-        playerUIManager = FindObjectOfType<PlayerUIManager>();
+        this.playerUIManager = playerUIManager;
     }
     /// <summary>
     /// Will spawn the given buff into the scene then start the buff

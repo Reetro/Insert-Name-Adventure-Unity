@@ -4,9 +4,9 @@ public class LevelExit : MonoBehaviour
 {
     private LevelLoader levelLoader = null;
 
-    private void Start()
+    public void ConsturctExit(LevelLoader levelLoader)
     {
-        levelLoader = GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
+        this.levelLoader = levelLoader;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

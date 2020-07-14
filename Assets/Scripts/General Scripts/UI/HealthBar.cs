@@ -18,6 +18,8 @@ public class HealthBar : MonoBehaviour
         slider.value = maxHealth;
         lastMax = maxHealth;
 
+        print("Test");
+
         maxHealthText.text = maxHealth.ToString();
         currentHealthText.text = maxHealth.ToString();
 
@@ -37,7 +39,24 @@ public class HealthBar : MonoBehaviour
         {
             currentHealthText.text = health.ToString();
         }
-        
+
+        fill.color = gradient.Evaluate(slider.normalizedValue);
+    }
+
+    public void SetPlayerHealth(PlayerState playerState)
+    {
+        slider.maxValue = playerState.GetCurrentMaxHealth();
+        slider.value = playerState.GetCurrentHealth();
+
+        if (slider.value < slider.maxValue)
+        {
+            currentHealthText.text = playerState.GetCurrentHealth().ToString("F1");
+        }
+        else
+        {
+            currentHealthText.text = playerState.GetCurrentHealth().ToString();
+        }
+
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 }
