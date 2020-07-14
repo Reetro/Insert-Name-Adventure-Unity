@@ -13,6 +13,8 @@ public class ToolTip : MonoBehaviour
         toolTipText = GameObject.Find("ToolTipText").GetComponent<Text>();
 
         instance = this;
+
+        print(instance);
     }
 
     private void Update()

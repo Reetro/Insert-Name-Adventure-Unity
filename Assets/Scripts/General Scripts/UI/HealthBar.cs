@@ -18,8 +18,6 @@ public class HealthBar : MonoBehaviour
         slider.value = maxHealth;
         lastMax = maxHealth;
 
-        print("Test");
-
         maxHealthText.text = maxHealth.ToString();
         currentHealthText.text = maxHealth.ToString();
 

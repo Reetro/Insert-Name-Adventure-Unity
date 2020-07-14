@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         myHealthComp = GetComponent<HealthComponent>();
 
-        SpawnLeechCollision();
         SetupScene();
     }
 
@@ -91,13 +90,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SpawnLeechCollision()
-    {
-        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
-    }
-
     private void SetupScene()
     {
+        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
+
         var loaderCount = FindObjectsOfType<LevelLoader>().Length;
 
         if (loaderCount <= 0)
@@ -134,6 +130,8 @@ public class PlayerController : MonoBehaviour
         }
 
         myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().GetHealthBar());
+        
+        uiManager = playerHud.GetComponent<PlayerUIManager>();
 
         var auraManager = GetComponent<AuraManager>();
 
@@ -145,7 +143,5 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning("Player has no Aura manager");
         }
-
-        uiManager = FindObjectOfType<PlayerUIManager>();
     }
 }

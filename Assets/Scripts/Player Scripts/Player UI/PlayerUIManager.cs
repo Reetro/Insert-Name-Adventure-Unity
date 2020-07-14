@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -25,11 +24,18 @@ public class PlayerUIManager : MonoBehaviour
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
     private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
 
-    private void Start()
+    private void Awake()
     {
         HideDeathUI();
 
-        //HideToolTip();
+        loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
+    }
+
+    private void loadCheckpoint_onclick()
+    {
+        var levelLoader = FindObjectOfType<LevelLoader>();
+
+        levelLoader.LoadCheckpoint();
     }
 
     public BuffIcon AddBuffIcon(ScriptableBuff buff)
@@ -109,11 +115,6 @@ public class PlayerUIManager : MonoBehaviour
     public HealthBar GetHealthBar()
     {
         return healthBar;
-    }
-
-    public static void HideToolTip()
-    {
-        ToolTip.HideToolTip_Static();
     }
 
     public void HideDeathUI()
