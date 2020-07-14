@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
+    [SerializeField] GameObject playerHud = null;
+    [SerializeField] GameObject levelLoader = null;
 
     float horizontalMove = 0f;
     bool jump = false;
@@ -19,7 +21,6 @@ public class PlayerController : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         myHealthComp = GetComponent<HealthComponent>();
-        uiManager = FindObjectOfType<PlayerUIManager>();
 
         SpawnLeechCollision();
         SetupScene();
@@ -97,6 +98,22 @@ public class PlayerController : MonoBehaviour
 
     private void SetupScene()
     {
+        var loaderCount = FindObjectsOfType<LevelLoader>().Length;
+
+        if (loaderCount <= 0)
+        {
+            Instantiate(levelLoader, new Vector2(1000, 1000), Quaternion.identity);
+        }
+
+        var hudCount = FindObjectsOfType<PlayerUIManager>().Length;
+
+        if (hudCount <= 0)
+        {
+            Instantiate(playerHud, new Vector2(1000, 1000), Quaternion.identity);
+        }
+
+        uiManager = FindObjectOfType<PlayerUIManager>();
+
         var playerStateCount = FindObjectsOfType<PlayerState>().Length;
 
         if (playerStateCount <= 0)

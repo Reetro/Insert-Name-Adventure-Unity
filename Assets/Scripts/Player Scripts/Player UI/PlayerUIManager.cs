@@ -17,7 +17,6 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI gameOverText = null;
 
     [Header("Tooltip Settings")]
-    [SerializeField] private ToolTip tooltip = null;
     public float toolTipTextPadding = 4f;
 
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
@@ -27,7 +26,7 @@ public class PlayerUIManager : MonoBehaviour
     {
         HideDeathUI();
 
-        HideToolTip();
+        //HideToolTip();
     }
 
     public BuffIcon AddBuffIcon(ScriptableBuff buff)
