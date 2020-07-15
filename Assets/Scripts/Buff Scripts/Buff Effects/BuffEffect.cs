@@ -10,15 +10,15 @@ public class BuffEffect : MonoBehaviour
     private ScriptableBuff scriptableBuff = null;
     private GameObject target = null;
     private GameObject visualEffect = null;
+    private int ID = 0;
 
     protected BuffIcon icon = null;
-    protected GameplayObjectID idObject;
-
+    
     private bool buffIsRuning = false;
     private bool isActive = true;
 
     /// <summary>
-    /// Sets all needed values and starts buff timer
+    /// Sets all needed values and starts buff timer then adds an icon to the player hud
     /// </summary>
     public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
     {
@@ -36,9 +36,7 @@ public class BuffEffect : MonoBehaviour
 
             visualEffect = SpawnVisualEffect(effect, target.transform);
 
-            idObject = gameObject.AddComponent<GameplayObjectID>();
-
-            idObject.ConstructID();
+            ID = GeneralFunctions.GenID();
 
             buffIsRuning = true;
         }
@@ -79,9 +77,7 @@ public class BuffEffect : MonoBehaviour
 
             visualEffect = SpawnVisualEffect(effect, target.transform);
 
-            idObject = gameObject.AddComponent<GameplayObjectID>();
-
-            idObject.ConstructID();
+            ID = GeneralFunctions.GenID();
 
             buffIsRuning = true;
         }
@@ -370,6 +366,6 @@ public class BuffEffect : MonoBehaviour
     /// </summary>
     public int GetID()
     {
-        return idObject.GetID();
+        return ID;
     }
 }

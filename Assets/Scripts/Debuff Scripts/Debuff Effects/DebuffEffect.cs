@@ -10,19 +10,19 @@ public class DebuffEffect : MonoBehaviour
     private GameObject target = null;
     private int stackCount = 1;
     private float defaultTickCount = 0f;
-    private float maxTicks = 99999f;
+    private float maxTicks = 9999999f;
     private float damage = 0f;
     private GameObject visualEffect = null;
+    private int ID = 0;
 
     protected DebuffIcon icon = null;
-    protected GameplayObjectID idObject;
-
+    
     private bool firstRun = false;
     private bool shouldTick = true;
     private bool isActive = false;
 
     /// <summary>
-    /// Sets all needed values for the given debuff and starts debuff ticking
+    /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
     /// </summary>
     public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
     {
@@ -42,11 +42,9 @@ public class DebuffEffect : MonoBehaviour
 
             firstRun = true;
 
-            idObject = gameObject.AddComponent<GameplayObjectID>();
+            ID = GeneralFunctions.GenID();
 
             visualEffect = SpawnVisualEffect(effect, target.transform);
-
-            idObject.ConstructID();
 
             if (!shouldTick)
             {
@@ -99,11 +97,9 @@ public class DebuffEffect : MonoBehaviour
             damage = debuff.damage;
             this.target = target;
 
-            idObject = gameObject.AddComponent<GameplayObjectID>();
+            ID = GeneralFunctions.GenID();
 
             visualEffect = SpawnVisualEffect(effect, target.transform);
-
-            idObject.ConstructID();
 
             if (!shouldTick)
             {
@@ -163,9 +159,9 @@ public class DebuffEffect : MonoBehaviour
         // To be overridden in child
         Debug.LogWarning("Debuff Effect: " + gameObject.name + "has no debuff effect being applied");
     }
-    /// <summary>
-    /// Called when tick count <= 0
-    /// </summary>
+   /// <summary>
+   /// Called when tick count is <= 0
+   /// </summary>
     public virtual void OnDebuffEnd()
     {
         if (visualEffect)
@@ -406,6 +402,6 @@ public class DebuffEffect : MonoBehaviour
     /// </summary>
     public int GetID()
     {
-        return idObject.GetID();
+        return ID;
     }
 }

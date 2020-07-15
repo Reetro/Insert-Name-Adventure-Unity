@@ -3,6 +3,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Needed Gameplay Assets")]
     [SerializeField] PlayerGun currentGun = null;
     [SerializeField] GameObject leechCollision = null;
     [SerializeField] GameObject playerState = null;
