@@ -97,7 +97,7 @@ public class BuffIcon : MonoBehaviour
         UpdateTimerText();
     }
     /// <summary>
-    /// Will toggle between  
+    /// Will toggle between filling and not filling the buff icon
     /// </summary>
     public void UpdatePause()
     {
