@@ -99,9 +99,9 @@ MonoBehaviour:
   projectile: {fileID: 3206767798431477385, guid: d9a7810ddd923ec4ca06011f8746198c,
     type: 3}
   fireLocation: {fileID: 6560808137059275111}
-  shootIntervale: 1
+  shootIntervale: 1.1
   projectileSpeed: 300
-  projectileDamage: 4
+  projectileDamage: 3
 --- !u!61 &4469930671447360610
 BoxCollider2D:
   m_ObjectHideFlags: 0
