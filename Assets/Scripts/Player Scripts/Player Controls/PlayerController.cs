@@ -3,27 +3,19 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Needed Gameplay Assets")]
-    [SerializeField] PlayerGun currentGun = null;
-    [SerializeField] GameObject leechCollision = null;
-    [SerializeField] GameObject playerState = null;
-    [SerializeField] GameObject playerHud = null;
-    [SerializeField] GameObject levelLoader = null;
+    [SerializeField] private PlayerGun currentGun = null;
+    [SerializeField] private PlayerUIManager uiManager = null;
 
     float horizontalMove = 0f;
     bool jump = false;
     Animator myAnimator = null;
     PlayerMovement playerMovement = null;
-    HealthComponent myHealthComp = null;
-    PlayerUIManager uiManager = null;
 
     private void Start()
     {
         myAnimator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
-        myHealthComp = GetComponent<HealthComponent>();
-
-        SetupScene();
+        uiManager = FindObjectOfType<PlayerUIManager>();
     }
 
     private void Update()
@@ -73,14 +65,9 @@ public class PlayerController : MonoBehaviour
         playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
         jump = false;
     }
-
-    public void OnDeath()
-    {
-        uiManager.ShowDeathUI();
-
-        playerMovement.StopMovement();
-    }    
-
+    /// <summary>
+    /// Called when player touches ground
+    /// </summary>
     public void OnLanding()
     {
         myAnimator.SetBool("IsJumping", false);
@@ -90,74 +77,13 @@ public class PlayerController : MonoBehaviour
             jump = true;
         }
     }
-
-    private void SetupScene()
+    /// <summary>
+    /// Called player dies will stop all player movement
+    /// </summary>
+    public void OnDeath()
     {
-        SetupLevel();
+        uiManager.ShowDeathUI();
 
-        SetUpPlayer();
-
-        SetUpPlayerHud();
-    }
-
-    private void SetupLevel()
-    {
-        var loaderCount = FindObjectsOfType<LevelLoader>().Length;
-
-        if (loaderCount <= 0)
-        {
-            levelLoader = Instantiate(levelLoader, new Vector2(1000, 1000), Quaternion.identity);
-        }
-
-        var levelExit = FindObjectOfType<LevelExit>();
-
-        if (levelExit)
-        {
-            levelExit.ConsturctExit(levelLoader.GetComponent<LevelLoader>());
-        }
-    }
-
-    private void SetUpPlayer()
-    {
-        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
-
-        var playerStateCount = FindObjectsOfType<PlayerState>().Length;
-
-        if (playerStateCount <= 0)
-        {
-            Instantiate(playerState, new Vector2(1000, 1000), Quaternion.identity);
-        }
-
-        var checkpoint = FindObjectOfType<Checkpoint>();
-
-        if (checkpoint)
-        {
-            checkpoint.ConstructCheckpoint();
-        }
-
-        var hudCount = FindObjectsOfType<PlayerUIManager>().Length;
-
-        if (hudCount <= 0)
-        {
-            playerHud = Instantiate(playerHud, new Vector2(1000, 1000), Quaternion.identity);
-        }
-
-        myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
-    }
-
-    private void SetUpPlayerHud()
-    {
-        uiManager = playerHud.GetComponent<PlayerUIManager>();
-
-        var auraManager = GetComponent<AuraManager>();
-
-        if (auraManager)
-        {
-            auraManager.SetUIManager(playerHud.GetComponent<PlayerUIManager>());
-        }
-        else
-        {
-            Debug.LogWarning("Player has no Aura manager");
-        }
+        playerMovement.StopMovement();
     }
 }
