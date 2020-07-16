@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 9201493524542072395}
   - component: {fileID: 5064017019300010111}
   - component: {fileID: 6851637741438254873}
-  - component: {fileID: 4673283338446059253}
   - component: {fileID: -1454863360295872971}
-  - component: {fileID: -6261675539944027660}
   m_Layer: 5
   m_Name: Debuff
   m_TagString: Untagged
@@ -97,19 +95,6 @@ MonoBehaviour:
   icon: {fileID: 5064017019300010111}
   stackText: {fileID: 5468796260485036820}
   timer: {fileID: 2687216981566776487}
-  toolTip: {fileID: 4673283338446059253}
---- !u!114 &4673283338446059253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2386488643816730369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0672084854d9fa4ab4889f063baa8bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-1454863360295872971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,27 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-6261675539944027660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2386488643816730369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602f74cbbbd80034b96f88091a8e7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverBehaviourType: 0
-  hoverBehaviour_Color_Enter: {r: 0, g: 0, b: 0, a: 0}
-  hoverBehaviour_Color_Exit: {r: 0, g: 0, b: 0, a: 0}
-  hoverBehaviour_Image: {fileID: 0}
-  hoverBehaviour_Sprite_Exit: {fileID: 0}
-  hoverBehaviour_Sprite_Enter: {fileID: 0}
-  hoverBehaviour_Move: 0
-  hoverBehaviour_Move_Amount: {x: 0, y: 0}
-  triggerMouseOutFuncOnClick: 0
 --- !u!1 &5025922271247628112
 GameObject:
   m_ObjectHideFlags: 0
