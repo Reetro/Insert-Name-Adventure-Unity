@@ -1,9 +1,10 @@
-﻿using AuraSystem.Effects;
-
-public class GeneralDamage_DE : DebuffEffect
+﻿namespace AuraSystem.Effects
 {
-    public override void ApplyDebuffEffect()
+    public class GeneralDamage_DE : DebuffEffect
     {
-        GeneralFunctions.DamageTarget(Target, Damage * StackCount, true);
+        public override void ApplyDebuffEffect()
+        {
+            GeneralFunctions.DamageTarget(Target, Damage * StackCount, true);
+        }
     }
 }

@@ -1,9 +1,10 @@
-﻿using AuraSystem.Effects;
-
-public class GeneralHeal_BE : BuffEffect
+﻿namespace AuraSystem.Effects
 {
-    public override void ApplyBuffEffect(float buffAmount)
+    public class GeneralHeal_BE : BuffEffect
     {
-        GeneralFunctions.HealTarget(Target, buffAmount);
+        public override void ApplyBuffEffect(float buffAmount)
+        {
+            GeneralFunctions.HealTarget(Target, buffAmount);
+        }
     }
 }
