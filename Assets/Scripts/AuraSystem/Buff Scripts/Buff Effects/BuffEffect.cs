@@ -1,65 +1,53 @@
 ﻿using UnityEngine;
 using PlayerUI.Icons;
 
-namespace AuraSystem
+namespace AuraSystem.Effects
 {
     public class BuffEffect : MonoBehaviour
     {
-        public float duration = 0f;
         private float defaultDuration = 0f;
-        private float buffAmount = 0f;
-        private int stackCount = 1;
-        private AuraManager auraManager = null;
-        private ScriptableBuff scriptableBuff = null;
-        private GameObject target = null;
-        private GameObject visualEffect = null;
-        private int ID = 0;
-
         protected BuffIcon icon = null;
-
-        private bool buffIsRuning = false;
-        private bool isActive = true;
 
         /// <summary>
         /// Sets all needed values and starts buff timer then adds an icon to the player hud
         /// </summary>
         public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
         {
-            isActive = IsBuffActive(auraManager, buff);
+            IsCurrentlyActive = IsBuffActive(auraManager, buff);
 
-            if (!isActive)
+            if (!IsCurrentlyActive)
             {
-                this.duration = duration;
-                defaultDuration = this.duration;
-                this.buffAmount = buffAmount;
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
+                Duration = duration;
+                defaultDuration = Duration;
+                BuffAmount = buffAmount;
+                MyAuraManager = auraManager;
+                Buff = buff;
                 this.icon = icon;
-                this.target = target;
+                Target = target;
 
-                visualEffect = SpawnVisualEffect(effect, target.transform);
+                VisualEffect = SpawnVisualEffect(effect, target.transform);
 
-                ID = GeneralFunctions.GenID();
+                MyID = GeneralFunctions.GenID();
 
-                buffIsRuning = true;
+                IsBuffRunning = true;
             }
             else if (refresh)
             {
-                this.duration = duration;
-                defaultDuration = this.duration;
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
+                Duration = duration;
+                defaultDuration = Duration;
+                MyAuraManager = auraManager;
+                Buff = buff;
                 this.icon = icon;
 
-                RefreshBuff(true, auraManager, scriptableBuff);
+                RefreshBuff(true, auraManager, Buff);
             }
             else if (stack)
             {
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
+                MyAuraManager = auraManager;
+                Buff = buff;
                 this.icon = icon;
 
-                AddToStack(true, auraManager, scriptableBuff);
+                AddToStack(true, auraManager, Buff);
             }
         }
         /// <summary>
@@ -67,38 +55,38 @@ namespace AuraSystem
         /// </summary>
         public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
         {
-            isActive = IsBuffActive(auraManager, buff);
+            IsCurrentlyActive = IsBuffActive(auraManager, buff);
 
-            if (!isActive)
+            if (!IsCurrentlyActive)
             {
-                this.duration = duration;
-                defaultDuration = this.duration;
-                this.buffAmount = buffAmount;
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
-                this.target = target;
+                Duration = duration;
+                defaultDuration = Duration;
+                BuffAmount = buffAmount;
+                MyAuraManager = auraManager;
+                Buff = buff;
+                Target = target;
 
-                visualEffect = SpawnVisualEffect(effect, target.transform);
+                VisualEffect = SpawnVisualEffect(effect, target.transform);
 
-                ID = GeneralFunctions.GenID();
+                MyID = GeneralFunctions.GenID();
 
-                buffIsRuning = true;
+                IsBuffRunning = true;
             }
             else if (refresh)
             {
-                this.duration = duration;
-                defaultDuration = this.duration;
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
+                Duration = duration;
+                defaultDuration = Duration;
+                MyAuraManager = auraManager;
+                Buff = buff;
 
-                RefreshBuff(false, auraManager, scriptableBuff);
+                RefreshBuff(false, auraManager, Buff);
             }
             else if (stack)
             {
-                this.auraManager = auraManager;
-                scriptableBuff = buff;
+                MyAuraManager = auraManager;
+                Buff = buff;
 
-                AddToStack(false, auraManager, scriptableBuff);
+                AddToStack(false, auraManager, Buff);
             }
         }
         /// <summary>
@@ -114,36 +102,36 @@ namespace AuraSystem
         /// </summary>
         public virtual void OnBuffEnd()
         {
-            if (visualEffect)
+            if (VisualEffect)
             {
-                GeneralFunctions.DetachFromParent(visualEffect);
+                GeneralFunctions.DetachFromParent(VisualEffect);
 
-                Destroy(visualEffect);
+                Destroy(VisualEffect);
             }
 
             if (icon)
             {
-                auraManager.RemoveBuff(gameObject, this, icon);
+                MyAuraManager.RemoveBuff(gameObject, this, icon);
             }
             else
             {
-                auraManager.RemoveBuff(gameObject, this);
+                MyAuraManager.RemoveBuff(gameObject, this);
             }
         }
 
         private void Update()
         {
-            if (buffIsRuning)
+            if (IsBuffRunning)
             {
-                if (duration > 0)
+                if (Duration > 0)
                 {
-                    duration -= Time.deltaTime;
-                    ApplyBuffEffect(buffAmount * Time.deltaTime);
+                    Duration -= Time.deltaTime;
+                    ApplyBuffEffect(BuffAmount * Time.deltaTime);
                 }
                 else
                 {
-                    buffIsRuning = false;
-                    duration = 0;
+                    IsBuffRunning = false;
+                    Duration = 0;
                     OnBuffEnd();
                 }
             }
@@ -174,7 +162,7 @@ namespace AuraSystem
             {
                 var localBuff = auraManager.FindBuffOfType(scriptableBuff);
 
-                localBuff.buffIsRuning = false;
+                localBuff.IsBuffRunning = false;
 
                 if (useIcon)
                 {
@@ -187,7 +175,7 @@ namespace AuraSystem
                 {
                     localBuff.icon.ResetFill();
 
-                    localBuff.buffIsRuning = true;
+                    localBuff.IsBuffRunning = true;
 
                     localBuff.icon.UpdatePause();
 
@@ -195,7 +183,7 @@ namespace AuraSystem
                 }
                 else
                 {
-                    localBuff.buffIsRuning = true;
+                    localBuff.IsBuffRunning = true;
 
                     auraManager.RemoveBuff(gameObject, this);
                 }
@@ -214,11 +202,11 @@ namespace AuraSystem
             {
                 var localBuff = auraManager.FindBuffOfType(scriptableBuff);
 
-                localBuff.stackCount++;
+                localBuff.StackCount++;
 
                 if (useIcon)
                 {
-                    localBuff.icon.UpdateStackCount(localBuff.stackCount);
+                    localBuff.icon.UpdateStackCount(localBuff.StackCount);
 
                     auraManager.RemoveBuff(gameObject, this, icon);
                 }
@@ -239,16 +227,16 @@ namespace AuraSystem
         {
             if (auraManager)
             {
-                var localBuff = auraManager.FindBuffByID(GetID());
+                var localBuff = auraManager.FindBuffByID(MyID);
 
-                localBuff.stackCount--;
+                localBuff.StackCount--;
 
                 if (useIcon)
                 {
-                    localBuff.icon.UpdateStackCount(localBuff.stackCount);
+                    localBuff.icon.UpdateStackCount(localBuff.StackCount);
                 }
 
-                if (localBuff.stackCount <= 0)
+                if (localBuff.StackCount <= 0)
                 {
                     if (useIcon)
                     {
@@ -297,79 +285,49 @@ namespace AuraSystem
         /// <summary>
         /// Gets the current buff target
         /// </summary>
-        public GameObject GetTarget()
-        {
-            return target;
-        }
+        public GameObject Target { get; private set; } = null;
         /// <summary>
         /// Resets the buff duration back it's default value
         /// </summary>
         public void ResetDuration()
         {
-            duration = defaultDuration;
+            Duration = defaultDuration;
         }
         /// <summary>
         /// Gets the buff data
         /// </summary>
-        public ScriptableBuff GetBuff()
-        {
-            return scriptableBuff;
-        }
+        public ScriptableBuff Buff { get; private set; } = null;
         /// <summary>
         /// Gets the buffs stack count
         /// </summary>
-        public int GetStackCount()
-        {
-            return stackCount;
-        }
+        public int StackCount { get; private set; } = 1;
         /// <summary>
         /// Looks to see if the buff is currently active
         /// </summary>
-        public bool GetIsActive()
-        {
-            return isActive;
-        }
+        public bool IsCurrentlyActive { get; private set; } = true;
         /// <summary>
         /// Checks to see if the buff is running
         /// </summary>
-        public bool GetBuffRunning()
-        {
-            return buffIsRuning;
-        }
+        public bool IsBuffRunning { get; private set; } = false;
         /// <summary>
         /// Get the current duration of the buff
         /// </summary>
-        public float GetDuration()
-        {
-            return duration;
-        }
+        public float Duration { get; private set; } = 0f;
         /// <summary>
         /// Gets the actual buff amount
         /// </summary>
-        public float GetBuffAmount()
-        {
-            return buffAmount;
-        }
+        public float BuffAmount { get; private set; } = 0f;
         /// <summary>
         /// Get the aura manager on the given buff
         /// </summary>
-        public AuraManager GetAuraManager()
-        {
-            return auraManager;
-        }
+        public AuraManager MyAuraManager { get; private set; } = null;
         /// <summary>
         /// Get the spawn visual effect
         /// </summary>
-        public GameObject GetVisualEffect()
-        {
-            return visualEffect;
-        }
+        public GameObject VisualEffect { get; private set; } = null;
         /// <summary>
         /// Gets this buff id
         /// </summary>
-        public int GetID()
-        {
-            return ID;
-        }
+        public int MyID { get; private set; } = 0;
     }
 }

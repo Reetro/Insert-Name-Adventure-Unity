@@ -2,6 +2,7 @@
 using UnityEngine;
 using PlayerUI.Icons;
 using PlayerUI;
+using AuraSystem.Effects;
 
 namespace AuraSystem
 {
@@ -47,7 +48,7 @@ namespace AuraSystem
 
                 foreach (BuffEffect buffEffect in MyCurrentBuffs)
                 {
-                    var type = buffEffect.GetBuff().buffEffect;
+                    var type = buffEffect.Buff.buffEffect;
 
                     if (type == buff.buffEffect)
                     {
@@ -79,7 +80,7 @@ namespace AuraSystem
 
             foreach (BuffEffect buffEffect in MyCurrentBuffs)
             {
-                var localID = buffEffect.GetID();
+                var localID = buffEffect.MyID;
 
                 if (localID == ID)
                 {
@@ -200,7 +201,7 @@ namespace AuraSystem
 
                 foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
                 {
-                    var type = debuffEffect.GetDebuff().debuffType;
+                    var type = debuffEffect.Debuff.debuffType;
 
                     if (type == debuff.debuffType)
                     {
@@ -232,7 +233,7 @@ namespace AuraSystem
 
             foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
             {
-                var localID = debuffEffect.GetID();
+                var localID = debuffEffect.MyID;
 
                 if (localID == ID)
                 {

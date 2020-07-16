@@ -2,85 +2,73 @@
 using UnityEngine;
 using PlayerUI.Icons;
 
-namespace AuraSystem
+namespace AuraSystem.Effects
 {
     public class DebuffEffect : MonoBehaviour
     {
-        private float ticks = 0;
-        private float occurrence = 0;
-        private AuraManager auraManager = null;
-        private ScriptableDebuff scriptedDebuff = null;
-        private GameObject target = null;
-        private int stackCount = 1;
-        private float defaultTickCount = 0f;
         private float maxTicks = 9999999f;
-        private float damage = 0f;
-        private GameObject visualEffect = null;
-        private int ID = 0;
-
         protected DebuffIcon icon = null;
 
         private bool firstRun = false;
         private bool shouldTick = true;
-        private bool isActive = false;
 
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
         public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
         {
-            isActive = isDebuffTypeActive(auraManager, debuff);
+            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff);
 
-            if (!isActive)
+            if (!IsCurrentlyActive)
             {
-                this.ticks = ticks;
-                defaultTickCount = ticks;
-                this.occurrence = occurrence;
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                Ticks = ticks;
+                DefaultTickCount = ticks;
+                Occurrence = occurrence;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
                 this.icon = icon;
                 shouldTick = useTicks;
-                damage = debuff.damage;
-                this.target = target;
+                Damage = debuff.damage;
+                Target = target;
 
                 firstRun = true;
 
-                ID = GeneralFunctions.GenID();
+                MyID = GeneralFunctions.GenID();
 
-                visualEffect = SpawnVisualEffect(effect, target.transform);
+                VisualEffect = SpawnVisualEffect(effect, target.transform);
 
                 if (!shouldTick)
                 {
-                    this.ticks = maxTicks;
-                    defaultTickCount = ticks;
+                    this.Ticks = maxTicks;
+                    DefaultTickCount = ticks;
                 }
 
                 StartCoroutine(DebuffTimer());
             }
             else if (refresh)
             {
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
                 this.icon = icon;
 
-                if (scriptedDebuff.useTicks)
+                if (Debuff.useTicks)
                 {
-                    defaultTickCount = ticks;
+                    DefaultTickCount = ticks;
                 }
                 else
                 {
-                    defaultTickCount = maxTicks;
+                    DefaultTickCount = maxTicks;
                 }
 
                 RefreshDebuff(true, auraManager, debuff);
             }
             else if (stack)
             {
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
                 this.icon = icon;
 
-                AddToStack(true, auraManager, scriptedDebuff);
+                AddToStack(true, auraManager, Debuff);
             }
         }
         /// <summary>
@@ -88,45 +76,45 @@ namespace AuraSystem
         /// </summary>
         public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
         {
-            isActive = isDebuffTypeActive(auraManager, debuff);
+            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff);
 
-            if (!isActive)
+            if (!IsCurrentlyActive)
             {
-                this.ticks = ticks;
-                this.occurrence = occurrence;
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                Ticks = ticks;
+                Occurrence = occurrence;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
                 shouldTick = useTick;
-                damage = debuff.damage;
-                this.target = target;
+                Damage = debuff.damage;
+                Target = target;
 
-                ID = GeneralFunctions.GenID();
+                MyID = GeneralFunctions.GenID();
 
-                visualEffect = SpawnVisualEffect(effect, target.transform);
+                VisualEffect = SpawnVisualEffect(effect, target.transform);
 
                 if (!shouldTick)
                 {
-                    this.ticks = maxTicks;
+                    Ticks = maxTicks;
                 }
 
                 firstRun = true;
-                isActive = true;
+                IsCurrentlyActive = true;
 
                 StartCoroutine(DebuffTimer());
             }
             else if (refresh)
             {
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
 
                 RefreshDebuff(false, auraManager, debuff);
             }
             else if (stack)
             {
-                this.auraManager = auraManager;
-                scriptedDebuff = debuff;
+                MyAuraManager = auraManager;
+                Debuff = debuff;
 
-                AddToStack(false, auraManager, scriptedDebuff);
+                AddToStack(false, auraManager, Debuff);
             }
         }
         /// <summary>
@@ -141,15 +129,15 @@ namespace AuraSystem
                 firstRun = false;
             }
 
-            while (ticks > 0)
+            while (Ticks > 0)
             {
-                yield return new WaitForSecondsRealtime(occurrence);
-                ticks--;
+                yield return new WaitForSecondsRealtime(Occurrence);
+                Ticks--;
 
                 ApplyDebuffEffect();
             }
 
-            if (ticks <= 0)
+            if (Ticks <= 0)
             {
                 OnDebuffEnd();
             }
@@ -167,20 +155,20 @@ namespace AuraSystem
         /// </summary>
         public virtual void OnDebuffEnd()
         {
-            if (visualEffect)
+            if (VisualEffect)
             {
-                GeneralFunctions.DetachFromParent(visualEffect);
+                GeneralFunctions.DetachFromParent(VisualEffect);
 
-                Destroy(visualEffect);
+                Destroy(VisualEffect);
             }
 
             if (icon)
             {
-                auraManager.RemoveDebuff(gameObject, this, icon);
+                MyAuraManager.RemoveDebuff(gameObject, this, icon);
             }
             else
             {
-                auraManager.RemoveDebuff(gameObject, this);
+                MyAuraManager.RemoveDebuff(gameObject, this);
             }
         }
         /// <summary>
@@ -209,11 +197,11 @@ namespace AuraSystem
             {
                 var localDebuff = auraManager.FindDebuffOtype(scriptableDebuff);
 
-                localDebuff.stackCount++;
+                localDebuff.StackCount++;
 
                 if (useIcon)
                 {
-                    localDebuff.icon.UpdateStackCount(localDebuff.stackCount);
+                    localDebuff.icon.UpdateStackCount(localDebuff.StackCount);
 
                     auraManager.RemoveDebuff(gameObject, this, icon);
                 }
@@ -234,16 +222,16 @@ namespace AuraSystem
         {
             if (auraManager)
             {
-                var localDebuff = auraManager.FindDebuffByID(GetID());
+                var localDebuff = auraManager.FindDebuffByID(MyID);
 
-                localDebuff.stackCount--;
+                localDebuff.StackCount--;
 
                 if (useIcon)
                 {
-                    localDebuff.icon.UpdateStackCount(localDebuff.stackCount);
+                    localDebuff.icon.UpdateStackCount(localDebuff.StackCount);
                 }
 
-                if (localDebuff.stackCount <= 0)
+                if (localDebuff.StackCount <= 0)
                 {
                     if (useIcon)
                     {
@@ -281,7 +269,7 @@ namespace AuraSystem
             {
                 var localDebuff = auraManager.FindDebuffOtype(scriptableDebuff);
 
-                localDebuff.ResetTickCount(localDebuff.GetDebuff().useTicks);
+                localDebuff.ResetTickCount(localDebuff.Debuff.useTicks);
 
                 if (useIcon)
                 {
@@ -323,89 +311,56 @@ namespace AuraSystem
         {
             if (useTick)
             {
-                ticks = defaultTickCount;
+                Ticks = DefaultTickCount;
             }
             else
             {
-                ticks = maxTicks;
+                Ticks = maxTicks;
             }
         }
         /// <summary>
         /// Gets the current stack count
         /// </summary>
-        public int GetStackCount()
-        {
-            return stackCount;
-        }
+        public int StackCount { get; private set; } = 1;
         /// <summary>
         /// Gets the current debuff target
         /// </summary>
-        public GameObject GetTarget()
-        {
-            return target;
-        }
+        public GameObject Target { get; private set; } = null;
         /// <summary>
         /// Gets the current tick count
         /// </summary>
-        public float GetTicks()
-        {
-            return ticks;
-        }
+        public float Ticks { get; private set; } = 0;
         /// <summary>
         /// Gets the interval between each tick count
         /// </summary>
-        public float GetOccurrence()
-        {
-            return occurrence;
-        }
+        public float Occurrence { get; private set; } = 0;
         /// <summary>
         /// Get the aura manager on the given debuff
         /// </summary>
-        public AuraManager GetAuraManager()
-        {
-            return auraManager;
-        }
+        public AuraManager MyAuraManager { get; private set; } = null;
         /// <summary>
-        /// Gets the actual debuff data
+        /// Gets the debuff data
         /// </summary>
-        public ScriptableDebuff GetDebuff()
-        {
-            return scriptedDebuff;
-        }
+        public ScriptableDebuff Debuff { get; private set; } = null;
         /// <summary>
         /// Gets the default tick count
         /// </summary>
-        public float GetDefaultTickCount()
-        {
-            return defaultTickCount;
-        }
+        public float DefaultTickCount { get; private set; } = 0f;
         /// <summary>
         /// Checks to see if the current debuff is actual active
         /// </summary>
-        public bool GetIsActive()
-        {
-            return isActive;
-        }
+        public bool IsCurrentlyActive { get; private set; } = false;
         /// <summary>
         /// Get the damage this debuff applies to it's target
         /// </summary>
-        public float GetDamage()
-        {
-            return damage;
-        }
+        public float Damage { get; private set; } = 0f;
         /// <summary>
-        /// Get the spawn visual effect
+        /// Gets the spawned visual effect
         /// </summary>
-        public GameObject GetVisualEffect()
-        {
-            return visualEffect;
-        }
+        public GameObject VisualEffect { get; private set; } = null;
         /// <summary>
         /// Gets this debuff id
         /// </summary>
-        public int GetID()
-        {
-            return ID;
-        }
+        public int MyID { get; private set; } = 0;
     }
 }

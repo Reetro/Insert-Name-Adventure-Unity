@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using PlayerUI.ToolTipUI;
-using AuraSystem;
+using AuraSystem.Effects;
 
 [CreateAssetMenu(fileName = "Buff", menuName = "Create New Buff")]
 public class ScriptableBuff : ScriptableItem
