@@ -415,7 +415,7 @@ public class GeneralFunctions
     {
         var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
 
-        return manager.GetComponent<GameplayManager>().GetAllIDs();
+        return manager.GetComponent<GameplayManager>().IDS;
     }
     /// <summary>
     /// Will parent the given object to the provided transform

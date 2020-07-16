@@ -26,7 +26,7 @@ public class BuffIcon : MonoBehaviour
     public void StartCooldown(ScriptableBuff buff)
     {
         this.buff = buff;
-        icon.sprite = this.buff.artwork;
+        icon.sprite = this.buff.Artwork;
         canFill = true;
         durationImage.fillAmount = 1;
 

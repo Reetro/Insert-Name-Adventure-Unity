@@ -113,10 +113,7 @@ public class PlayerUIManager : MonoBehaviour
         return localIcon;
     }
 
-    public HealthBar GetHealthBar()
-    {
-        return healthBar;
-    }
+    public HealthBar HPBar { get { return healthBar; }}
 
     public void HideDeathUI()
     {
