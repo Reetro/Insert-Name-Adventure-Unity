@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlayerUI.Icons;
 
 public class PlayerUIManager : MonoBehaviour
 {

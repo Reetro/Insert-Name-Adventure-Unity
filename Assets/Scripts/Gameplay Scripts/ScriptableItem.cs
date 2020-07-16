@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace PlayerUI.ToolTipUI
 {
     public abstract class ScriptableItem : ScriptableObject
     {
+        [Tooltip("Item title font size")]
+        [SerializeField] private float titleFontSize = 36f;
+
         [Tooltip("Name of the item")]
         [SerializeField] private new string name = null;
 
@@ -19,6 +23,14 @@ namespace PlayerUI.ToolTipUI
 
         public Sprite Artwork { get { return artwork; } }
 
-        public abstract string GetToolTipInfo();
+        public virtual string GetToolTipInfoText()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            builder.Append("<size=" + titleFontSize + ">").Append(Name).Append("</size>").AppendLine();
+            builder.Append(Description).AppendLine();
+
+            return builder.ToString();
+        }
     }
 }

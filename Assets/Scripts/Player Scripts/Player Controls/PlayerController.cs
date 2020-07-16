@@ -6,10 +6,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerGun currentGun = null;
     [SerializeField] private PlayerUIManager uiManager = null;
 
-    float horizontalMove = 0f;
-    bool jump = false;
-    Animator myAnimator = null;
-    PlayerMovement playerMovement = null;
+    private float horizontalMove = 0f;
+    private bool jump = false;
+    private Animator myAnimator = null;
+    private PlayerMovement playerMovement = null;
 
     private void Start()
     {
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     /// <summary>
-    /// Called player dies will stop all player movement
+    /// Called when player dies will stop all player movement
     /// </summary>
     public void OnDeath()
     {

@@ -1,106 +1,115 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlayerUI.ToolTipUI;
 
-public class BuffIcon : MonoBehaviour
+namespace PlayerUI.Icons
 {
-    [SerializeField] private Image durationImage = null;
-    [SerializeField] private Image icon = null;
-    [SerializeField] TextMeshProUGUI stackText = null;
-    [SerializeField] TextMeshProUGUI timer = null;
-
-    private bool canFill = true;
-    private float duration = 0f;
-    private float defaultDuration = 0f;
-
-    private void Start()
+    public class BuffIcon : MonoBehaviour
     {
-        UpdateStackCount(1);
-    }
+        [SerializeField] private Image durationImage = null;
+        [SerializeField] private Image icon = null;
+        [SerializeField] TextMeshProUGUI stackText = null;
+        [SerializeField] TextMeshProUGUI timer = null;
+        [SerializeField] private ItemButton itemButton = null;
 
-    /// <summary>
-    /// Sets all needed values such as the length of the buff
-    /// </summary>
-    /// <param name="buff"></param>
-    public void StartCooldown(ScriptableBuff buff)
-    {
-        this.Buff = buff;
-        icon.sprite = this.Buff.Artwork;
-        canFill = true;
-        durationImage.fillAmount = 1;
+        private bool canFill = true;
+        private float duration = 0f;
+        private float defaultDuration = 0f;
 
-        duration = buff.duration;
-        defaultDuration = duration;
-
-        if (buff.duration > 0)
+        private void Start()
         {
-            timer.enabled = true;
+            itemButton = GetComponent<ItemButton>();
 
-            UpdateTimerText();
+            UpdateStackCount(1);
         }
-        else
-        {
-            timer.enabled = false;
-        }
-    }
 
-    void Update()
-    {
-        if (canFill)
+        /// <summary>
+        /// Sets all needed values such as the length of the buff
+        /// </summary>
+        /// <param name="buff"></param>
+        public void StartCooldown(ScriptableBuff buff)
         {
-            durationImage.fillAmount -= 1 / Buff.duration * Time.deltaTime;
+            Buff = buff;
+            icon.sprite = Buff.Artwork;
+            canFill = true;
+            durationImage.fillAmount = 1;
 
-            if (timer.enabled)
+            itemButton.SetItem(buff);
+
+            duration = buff.duration;
+            defaultDuration = duration;
+
+            if (buff.duration > 0)
             {
-                duration -= Time.deltaTime;
+                timer.enabled = true;
 
                 UpdateTimerText();
             }
+            else
+            {
+                timer.enabled = false;
+            }
         }
-    }
-    /// <summary>
-    /// Update timer text to match duration 
-    /// </summary>
-    private void UpdateTimerText()
-    {
-        timer.text = duration.ToString("F1");
-    }
-    /// <summary>
-    /// Add the given amount to the current stack count if current stack count is less than 1 stack count will be hidden on the icon
-    /// </summary>
-    /// <param name="stackCount"></param>
-    public void UpdateStackCount(int stackCount)
-    {
-        if (stackCount > 1)
-        {
-            stackText.enabled = true;
 
-            stackText.text = stackCount.ToString();
-        }
-        else
+        void Update()
         {
-            stackText.enabled = false;
-        }
-    }
-    /// <summary>
-    /// Will reset both the timer and fill image
-    /// </summary>
-    public void ResetFill()
-    {
-        durationImage.fillAmount = 1;
-        duration = defaultDuration;
+            if (canFill)
+            {
+                durationImage.fillAmount -= 1 / Buff.duration * Time.deltaTime;
 
-        UpdateTimerText();
+                if (timer.enabled)
+                {
+                    duration -= Time.deltaTime;
+
+                    UpdateTimerText();
+                }
+            }
+        }
+        /// <summary>
+        /// Update timer text to match duration 
+        /// </summary>
+        private void UpdateTimerText()
+        {
+            timer.text = duration.ToString("F1");
+        }
+        /// <summary>
+        /// Add the given amount to the current stack count if current stack count is less than 1 stack count will be hidden on the icon
+        /// </summary>
+        /// <param name="stackCount"></param>
+        public void UpdateStackCount(int stackCount)
+        {
+            if (stackCount > 1)
+            {
+                stackText.enabled = true;
+
+                stackText.text = stackCount.ToString();
+            }
+            else
+            {
+                stackText.enabled = false;
+            }
+        }
+        /// <summary>
+        /// Will reset both the timer and fill image
+        /// </summary>
+        public void ResetFill()
+        {
+            durationImage.fillAmount = 1;
+            duration = defaultDuration;
+
+            UpdateTimerText();
+        }
+        /// <summary>
+        /// Will toggle between filling and not filling the buff icon
+        /// </summary>
+        public void UpdatePause()
+        {
+            canFill = !canFill;
+        }
+        /// <summary>
+        /// Get the buff attached to this icon
+        /// </summary>
+        public ScriptableBuff Buff { get; private set; } = null;
     }
-    /// <summary>
-    /// Will toggle between filling and not filling the buff icon
-    /// </summary>
-    public void UpdatePause()
-    {
-        canFill = !canFill;
-    }
-    /// <summary>
-    /// Get the buff attached to this icon
-    /// </summary>
-    public ScriptableBuff Buff { get; private set; } = null;
 }

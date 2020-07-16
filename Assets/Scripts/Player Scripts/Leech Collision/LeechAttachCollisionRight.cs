@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using AuraSystem;
 
 public class LeechAttachCollisionRight : MonoBehaviour
 {

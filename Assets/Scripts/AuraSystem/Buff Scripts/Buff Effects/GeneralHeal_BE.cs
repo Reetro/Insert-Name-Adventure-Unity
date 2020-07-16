@@ -1,4 +1,6 @@
-﻿public class GeneralHeal_BE : BuffEffect
+﻿using AuraSystem;
+
+public class GeneralHeal_BE : BuffEffect
 {
     public override void ApplyBuffEffect(float buffAmount)
     {

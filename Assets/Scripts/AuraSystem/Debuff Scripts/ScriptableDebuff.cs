@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using PlayerUI.ToolTipUI;
+using AuraSystem;
 
 [CreateAssetMenu(fileName = "Debuff", menuName = "Create New Debuff")]
 public class ScriptableDebuff : ScriptableItem
@@ -27,11 +28,6 @@ public class ScriptableDebuff : ScriptableItem
 
     [Tooltip("Visual effect that is attached to target")]
     public GameObject visualEffect;
-
-    public override string GetToolTipInfo()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public enum DebuffType 
     {

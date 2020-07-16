@@ -1,4 +1,6 @@
-﻿public class GeneralDamage_DE : DebuffEffect
+﻿using AuraSystem;
+
+public class GeneralDamage_DE : DebuffEffect
 {
     public override void ApplyDebuffEffect()
     {

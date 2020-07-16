@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using AuraSystem;
+using PlayerUI.ToolTipUI;
 
 public class SceneCreator : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class SceneCreator : MonoBehaviour
     [SerializeField] private GameObject playerHud = null;
     [SerializeField] private GameObject levelLoader = null;
     [SerializeField] private HealthComponent myHealthComp = null;
+    [SerializeField] private GameObject toolTipObject = null;
 
     void Awake()
     {
@@ -74,6 +77,13 @@ public class SceneCreator : MonoBehaviour
         }
 
         myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
+
+        var toolTipCount = FindObjectsOfType<TooltipPopup>().Length;
+
+        if (toolTipCount <= 0)
+        {
+            Instantiate(toolTipObject, new Vector2(1000, 1000), Quaternion.identity);
+        }
     }
     /// <summary>
     /// Setup the player's aura manager component

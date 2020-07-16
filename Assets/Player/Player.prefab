@@ -705,6 +705,8 @@ MonoBehaviour:
   levelLoader: {fileID: 8839679708990522079, guid: 7a76e939c474ce44cbf7f76e032a08f4,
     type: 3}
   myHealthComp: {fileID: 6037561768107980108}
+  toolTipObject: {fileID: 8492254648849075956, guid: d7be695b4aaf5de4ea07b3708b243421,
+    type: 3}
 --- !u!114 &365247869
 MonoBehaviour:
   m_ObjectHideFlags: 0

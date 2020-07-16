@@ -1,47 +1,86 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using PlayerUI.Icons;
 
-public class AuraManager : MonoBehaviour
+namespace AuraSystem
 {
-    public void SetUIManager(PlayerUIManager playerUIManager)
+    public class AuraManager : MonoBehaviour
     {
-        MyUIManager = playerUIManager;
-    }
-    /// <summary>
-    /// Will spawn the given buff into the scene then start the buff
-    /// </summary>
-    public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
-    {
-        BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity);
-
-        if (createIcon)
+        /// <summary>
+        /// Sets this aura manager internal UI manager to the given object
+        /// </summary>
+        /// <param name="playerUIManager"></param>
+        public void SetUIManager(PlayerUIManager playerUIManager)
         {
-            var buffIcon = CreateBuffIcon(buffToApply);
-
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
+            MyUIManager = playerUIManager;
         }
-        else
+        /// <summary>
+        /// Will spawn the given buff into the scene then start the buff
+        /// </summary>
+        public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
         {
-            buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
-        }
+            BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity);
 
-        MyCurrentBuffs.Add(buff);
-    }
-    /// <summary>
-    /// Finds a debuff of the same type as the given debuff
-    /// </summary>
-    /// <returns>A BuffEffect</returns>
-    public BuffEffect FindBuffOfType(ScriptableBuff buff)
-    {
-        if (buff)
+            if (createIcon)
+            {
+                var buffIcon = CreateBuffIcon(buffToApply);
+
+                buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
+            }
+            else
+            {
+                buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
+            }
+
+            MyCurrentBuffs.Add(buff);
+        }
+        /// <summary>
+        /// Finds a debuff of the same type as the given debuff
+        /// </summary>
+        /// <returns>A BuffEffect</returns>
+        public BuffEffect FindBuffOfType(ScriptableBuff buff)
+        {
+            if (buff)
+            {
+                BuffEffect foundBuff = null;
+
+                foreach (BuffEffect buffEffect in MyCurrentBuffs)
+                {
+                    var type = buffEffect.GetBuff().buffEffect;
+
+                    if (type == buff.buffEffect)
+                    {
+                        foundBuff = buffEffect;
+                        break;
+                    }
+                    else
+                    {
+                        foundBuff = null;
+                        continue;
+                    }
+                }
+
+                return foundBuff;
+            }
+            else
+            {
+                Debug.LogError("Was unable to find buff type on " + gameObject.name + "buff was invalid");
+                return null;
+            }
+        }
+        /// <summary>
+        /// Finds a specific buff with the given ID 
+        /// </summary>
+        /// <returns>A BuffEffect</returns>
+        public BuffEffect FindBuffByID(int ID)
         {
             BuffEffect foundBuff = null;
 
             foreach (BuffEffect buffEffect in MyCurrentBuffs)
             {
-                var type = buffEffect.GetBuff().buffEffect;
+                var localID = buffEffect.GetID();
 
-                if (type == buff.buffEffect)
+                if (localID == ID)
                 {
                     foundBuff = buffEffect;
                     break;
@@ -55,146 +94,146 @@ public class AuraManager : MonoBehaviour
 
             return foundBuff;
         }
-        else
+        /// <summary>
+        /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
+        /// </summary>
+        public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
         {
-            Debug.LogError("Was unable to find buff type on " + gameObject.name + "buff was invalid");
-            return null;
-        }
-    }
-    /// <summary>
-    /// Finds a specific buff with the given ID 
-    /// </summary>
-    /// <returns>A BuffEffect</returns>
-    public BuffEffect FindBuffByID(int ID)
-    {
-        BuffEffect foundBuff = null;
-
-        foreach (BuffEffect buffEffect in MyCurrentBuffs)
-        {
-            var localID = buffEffect.GetID();
-
-            if (localID == ID)
+            if (buffEffectObject)
             {
-                foundBuff = buffEffect;
-                break;
+                Destroy(buffEffectObject);
+
+                MyCurrentBuffs.Remove(effect);
+            }
+
+            if (iconToRemove)
+            {
+                MyUIManager.RemoveBuffIcon(iconToRemove);
             }
             else
             {
-                foundBuff = null;
-                continue;
+                Debug.LogError("Failed to remove " + buffEffectObject.name + "buff Icon is invalid");
             }
         }
-
-        return foundBuff;
-    }
-    /// <summary>
-    /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
-    /// </summary>
-    public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
-    {
-        if (buffEffectObject)
+        /// <summary>
+        /// Removes then destroy the given debuff from the aura manager
+        /// </summary>
+        public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
         {
-            Destroy(buffEffectObject);
+            if (buffEffectObject)
+            {
+                Destroy(buffEffectObject);
 
-            MyCurrentBuffs.Remove(effect);
+                MyCurrentBuffs.Remove(effect);
+            }
         }
-
-        if (iconToRemove)
+        /// <summary>
+        /// Will spawn the given debuff into the scene then start the debuff
+        /// </summary>
+        public void ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
         {
-            MyUIManager.RemoveBuffIcon(iconToRemove);
-        }
-        else
-        {
-            Debug.LogError("Failed to remove "  + buffEffectObject.name + "buff Icon is invalid");
-        }
-    }
-    /// <summary>
-    /// Removes then destroy the given debuff from the aura manager
-    /// </summary>
-    public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
-    {
-        if (buffEffectObject)
-        {
-            Destroy(buffEffectObject);
+            DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, transform.position, Quaternion.identity);
 
-            MyCurrentBuffs.Remove(effect);
-        }
-    }
-    /// <summary>
-    /// Will spawn the given debuff into the scene then start the debuff
-    /// </summary>
-    public void ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
-    {
-        DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, transform.position, Quaternion.identity);
+            if (createIcon)
+            {
+                var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
 
-        if (createIcon)
+                debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+            }
+            else
+            {
+                debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+            }
+
+            MyCurrentDebuffs.Add(debuff);
+        }
+        /// <summary>
+        /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI
+        /// </summary>
+        public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
         {
-            var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
+            if (debuffEffectObject)
+            {
+                Destroy(debuffEffectObject);
 
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+                MyCurrentDebuffs.Remove(effect);
+            }
+
+            if (iconToRemove)
+            {
+                MyUIManager.RemoveDebuffIcon(iconToRemove);
+            }
+            else
+            {
+                Debug.LogError("Failed to remove " + debuffEffectObject.name + "debuff Icon is invalid");
+            }
         }
-        else
+        /// <summary>
+        /// Removes then destroy the given debuff from the aura manager
+        /// </summary>
+        public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
         {
-            debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
-        }
+            if (debuffEffectObject)
+            {
+                Destroy(debuffEffectObject);
 
-        MyCurrentDebuffs.Add(debuff);
-    }
-    /// <summary>
-    /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI
-    /// </summary>
-    public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
-    {
-        if (debuffEffectObject)
+                MyCurrentDebuffs.Remove(effect);
+            }
+
+            if (debuffEffectObject)
+            {
+                Destroy(debuffEffectObject);
+
+                MyCurrentDebuffs.Remove(effect);
+            }
+        }
+        /// <summary>
+        /// Finds a debuff of the same type as the given debuff
+        /// </summary>
+        /// <returns>A DebuffEffect</returns>
+        public DebuffEffect FindDebuffOtype(ScriptableDebuff debuff)
         {
-            Destroy(debuffEffectObject);
+            if (debuff)
+            {
+                DebuffEffect foundDebuff = null;
 
-            MyCurrentDebuffs.Remove(effect);
-        }
+                foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
+                {
+                    var type = debuffEffect.GetDebuff().debuffType;
 
-        if (iconToRemove)
-        {
-            MyUIManager.RemoveDebuffIcon(iconToRemove);
-        }
-        else
-        {
-            Debug.LogError("Failed to remove " + debuffEffectObject.name + "debuff Icon is invalid");
-        }
-    }
-    /// <summary>
-    /// Removes then destroy the given debuff from the aura manager
-    /// </summary>
-    public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
-    {
-        if (debuffEffectObject)
-        {
-            Destroy(debuffEffectObject);
+                    if (type == debuff.debuffType)
+                    {
+                        foundDebuff = debuffEffect;
+                        break;
+                    }
+                    else
+                    {
+                        foundDebuff = null;
+                        continue;
+                    }
+                }
 
-            MyCurrentDebuffs.Remove(effect);
+                return foundDebuff;
+            }
+            else
+            {
+                Debug.LogError("Was unable to find debuff type on " + gameObject.name + "debuff was invalid");
+                return null;
+            }
         }
-
-        if (debuffEffectObject)
-        {
-            Destroy(debuffEffectObject);
-
-            MyCurrentDebuffs.Remove(effect);
-        }
-    }
-    /// <summary>
-    /// Finds a debuff of the same type as the given debuff
-    /// </summary>
-    /// <returns>A DebuffEffect</returns>
-    public DebuffEffect FindDebuffOtype(ScriptableDebuff debuff)
-    {
-        if (debuff)
+        /// <summary>
+        /// Finds a specific debuff with the given ID 
+        /// </summary>
+        /// <returns>A DebuffEffect</returns>
+        public DebuffEffect FindDebuffByID(int ID)
         {
             DebuffEffect foundDebuff = null;
 
             foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
             {
-                var type = debuffEffect.GetDebuff().debuffType;
+                var localID = debuffEffect.GetID();
 
-                if (type == debuff.debuffType)
+                if (localID == ID)
                 {
                     foundDebuff = debuffEffect;
                     break;
@@ -208,64 +247,33 @@ public class AuraManager : MonoBehaviour
 
             return foundDebuff;
         }
-        else
+        /// <summary>
+        /// Will add a buff icon to the player UI
+        /// </summary>
+        /// <returns>The created icon</returns>
+        private BuffIcon CreateBuffIcon(ScriptableBuff buff)
         {
-            Debug.LogError("Was unable to find debuff type on " + gameObject.name + "debuff was invalid");
-            return null;
+            return MyUIManager.AddBuffIcon(buff);
         }
-    }
-    /// <summary>
-    /// Finds a specific debuff with the given ID 
-    /// </summary>
-    /// <returns>A DebuffEffect</returns>
-    public DebuffEffect FindDebuffByID(int ID)
-    {
-        DebuffEffect foundDebuff = null;
-
-        foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
+        /// <summary>
+        /// Will add a debuff icon to the player UI
+        /// </summary>
+        /// <returns>The created icon</returns>
+        private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
         {
-            var localID = debuffEffect.GetID();
-
-            if (localID == ID)
-            {
-                foundDebuff = debuffEffect;
-                break;
-            }
-            else
-            {
-                foundDebuff = null;
-                continue;
-            }
+            return MyUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
         }
-
-        return foundDebuff;
+        /// <summary>
+        /// Gets all current buffs on this Gameobject
+        /// </summary>
+        public List<BuffEffect> MyCurrentBuffs { get; } = new List<BuffEffect>();
+        /// <summary>
+        /// Gets all current debuffs on this Gameobject
+        /// </summary>
+        public List<DebuffEffect> MyCurrentDebuffs { get; } = new List<DebuffEffect>();
+        /// <summary>
+        /// Gets the player UI Manager
+        /// </summary>
+        public PlayerUIManager MyUIManager { get; private set; } = null;
     }
-    /// <summary>
-    /// Will add a buff icon to the player UI
-    /// </summary>
-    /// <returns>The created icon</returns>
-    private BuffIcon CreateBuffIcon(ScriptableBuff buff)
-    {
-        return MyUIManager.AddBuffIcon(buff);
-    }
-    /// <summary>
-    /// Will add a debuff icon to the player UI
-    /// </summary>
-    /// <returns>The created icon</returns>
-    private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
-    {
-        return MyUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
-    }
-    /// <summary>
-    /// Gets all current buffs on this Gameobject
-    /// </summary>
-    public List<BuffEffect> MyCurrentBuffs { get; } = new List<BuffEffect>();
-    /// <summary>
-    /// Gets all current debuffs on this Gameobject
-    /// </summary>
-    public List<DebuffEffect> MyCurrentDebuffs { get; } = new List<DebuffEffect>();
-    /// <summary>
-    /// Gets the player UI Manager
-    /// </summary>
-    public PlayerUIManager MyUIManager { get; private set; } = null;
 }
