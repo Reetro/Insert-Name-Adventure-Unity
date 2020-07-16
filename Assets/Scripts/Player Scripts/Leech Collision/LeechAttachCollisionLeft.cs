@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using AuraSystem;
+using EnemyCharacter;
 
 namespace PlayerCharacter.Collision
 {

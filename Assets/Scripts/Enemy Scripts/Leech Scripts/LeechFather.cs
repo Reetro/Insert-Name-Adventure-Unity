@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
-public class LeechFather : EnemyShooter
+namespace EnemyCharacter.AI
 {
-    protected override void Shoot()
+    public class LeechFather : EnemyShooter
     {
-        ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
+        protected override void Shoot()
+        {
+            ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
 
-        Vector2 launchDirection = gameObject.transform.TransformDirection(FireTransform.position);
+            Vector2 launchDirection = gameObject.transform.TransformDirection(FireTransform.position);
 
-        bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+            bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+        }
     }
 }

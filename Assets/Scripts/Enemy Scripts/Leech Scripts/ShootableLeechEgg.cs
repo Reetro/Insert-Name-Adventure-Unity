@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
-public class ShootableLeechEgg : MonoBehaviour
+namespace EnemyCharacter.SceneObject
 {
-    [SerializeField] private GameObject leechToSpawn = null;
-
-    public void SpawnLeech()
+    public class ShootableLeechEgg : MonoBehaviour
     {
-        Instantiate(leechToSpawn, transform.position, Quaternion.identity);
+        [SerializeField] private GameObject leechToSpawn = null;
 
-        Destroy(gameObject);
+        public void SpawnLeech()
+        {
+            Instantiate(leechToSpawn, transform.position, Quaternion.identity);
+
+            Destroy(gameObject);
+        }
     }
 }

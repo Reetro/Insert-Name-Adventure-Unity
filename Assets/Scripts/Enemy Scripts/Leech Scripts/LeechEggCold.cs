@@ -1,45 +1,48 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(RigidbodyManager))]
-public class LeechEggCold : MonoBehaviour
+namespace EnemyCharacter.SceneObject
 {
-    [Tooltip("The actual leech prefab to spawn")]
-    [SerializeField] private GameObject leechToSpawn = null;
-    [Tooltip("Determines if the leech spawns when it hits the ground")]
-    [SerializeField] private bool spawnOnGroundHit = false;
-
-    private bool isOnPlatform = false;
-    private bool hasPlatformEntered = false;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    [RequireComponent(typeof(RigidbodyManager))]
+    public class LeechEggCold : MonoBehaviour
     {
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+        [Tooltip("The actual leech prefab to spawn")]
+        [SerializeField] private GameObject leechToSpawn = null;
+        [Tooltip("Determines if the leech spawns when it hits the ground")]
+        [SerializeField] private bool spawnOnGroundHit = false;
+
+        private bool isOnPlatform = false;
+        private bool hasPlatformEntered = false;
+
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (hasPlatformEntered)
+            if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
             {
-                if (spawnOnGroundHit && !isOnPlatform)
+                if (hasPlatformEntered)
                 {
-                    SpawnLeech();
+                    if (spawnOnGroundHit && !isOnPlatform)
+                    {
+                        SpawnLeech();
+                    }
                 }
             }
         }
-    }
 
-    public void OnPlatformEnter()
-    {
-        hasPlatformEntered = true;
-        isOnPlatform = true;
-    }
+        public void OnPlatformEnter()
+        {
+            hasPlatformEntered = true;
+            isOnPlatform = true;
+        }
 
-    public void OnPlatformExit()
-    {
-        isOnPlatform = false;
-    }
+        public void OnPlatformExit()
+        {
+            isOnPlatform = false;
+        }
 
-    public void SpawnLeech()
-    {
-        Instantiate(leechToSpawn, transform.position, Quaternion.identity);
+        public void SpawnLeech()
+        {
+            Instantiate(leechToSpawn, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 }

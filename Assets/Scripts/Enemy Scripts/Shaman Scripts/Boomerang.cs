@@ -1,78 +1,81 @@
 ﻿using UnityEngine;
 
-public class Boomerang : ProjectileMovement
+namespace EnemyCharacter.AI
 {
-    private Shaman currentShaman = null;
-    private int currentHitCount = 0;
-    private int maxHitsBeforeTeleport = 0;
-    private float offSet = 0.5f;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public class Boomerang : ProjectileMovement
     {
-        Vector2 _wallNormal = collision.GetContact(0).normal;
+        private Shaman currentShaman = null;
+        private int currentHitCount = 0;
+        private int maxHitsBeforeTeleport = 0;
+        private float offSet = 0.5f;
 
-        Vector2 newDirection = Vector2.Reflect(CurrentVelocity, _wallNormal);
-
-        UpdateDirection(newDirection);
-
-        currentHitCount++;
-
-        GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
-
-        if (currentHitCount >= maxHitsBeforeTeleport)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            TeleportShaman(collision.GetContact(0).point);
+            Vector2 _wallNormal = collision.GetContact(0).normal;
 
-            currentHitCount = 0;
-        }
-    }
+            Vector2 newDirection = Vector2.Reflect(CurrentVelocity, _wallNormal);
 
-    private void TeleportShaman(Vector2 teleportLocation)
-    {
-        var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
+            UpdateDirection(newDirection);
 
-        print(newLocation);
+            currentHitCount++;
 
-        currentShaman.transform.position = newLocation;
+            GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
 
-        GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);  
-
-        currentShaman.MyRigidBody2D.velocity = new Vector2(0, 0);
-    }
-
-    public void DestroyBoomerang(bool throwBoomerang)
-    {
-        if (currentShaman)
-        {
-            if (throwBoomerang)
+            if (currentHitCount >= maxHitsBeforeTeleport)
             {
-                currentShaman.ThrowBoomerang();
+                TeleportShaman(collision.GetContact(0).point);
+
+                currentHitCount = 0;
             }
-
-            Destroy(gameObject);
         }
-        else
+
+        private void TeleportShaman(Vector2 teleportLocation)
         {
-            Debug.LogError("Unable to destroy boomerang " + name + "currentShaman is invalid");
+            var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
+
+            print(newLocation);
+
+            currentShaman.transform.position = newLocation;
+
+            GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);
+
+            currentShaman.MyRigidBody2D.velocity = new Vector2(0, 0);
         }
-    }
 
-    public Vector2 GetAdjustedTeleportLocation(Vector2 teleportLocation, float offSet)
-    {
-        Ray2D ray = new Ray2D(teleportLocation, teleportLocation.normalized);
-        ray.direction = -ray.direction;
+        public void DestroyBoomerang(bool throwBoomerang)
+        {
+            if (currentShaman)
+            {
+                if (throwBoomerang)
+                {
+                    currentShaman.ThrowBoomerang();
+                }
 
-        var point = ray.GetPoint(offSet);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.LogError("Unable to destroy boomerang " + name + "currentShaman is invalid");
+            }
+        }
 
-        return point;
-    }
+        public Vector2 GetAdjustedTeleportLocation(Vector2 teleportLocation, float offSet)
+        {
+            Ray2D ray = new Ray2D(teleportLocation, teleportLocation.normalized);
+            ray.direction = -ray.direction;
 
-    public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
-    {
-        currentShaman = shamanToSet;
+            var point = ray.GetPoint(offSet);
 
-        this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
+            return point;
+        }
 
-        this.offSet = offSet;
+        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
+        {
+            currentShaman = shamanToSet;
+
+            this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
+
+            this.offSet = offSet;
+        }
     }
 }
