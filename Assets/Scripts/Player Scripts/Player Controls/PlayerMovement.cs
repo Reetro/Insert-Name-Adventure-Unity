@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(float move, bool jump, bool forceFlip)
 	{
-		if (!hpComp.GetIsDead())
+		if (!hpComp.IsCurrentlyDead)
         {
             //only control the player if grounded or airControl is turned on
             if (myLegs.isGrounded || hasAirControl)

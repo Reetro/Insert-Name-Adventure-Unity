@@ -30,7 +30,7 @@ public class Checkpoint : MonoBehaviour
                 {
                     playerState.SetCheckpointIndex(currentLevelIndex);
 
-                    if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).GetCurrentHealth() < healThreshold)
+                    if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).CurrentHealth < healThreshold)
                     {
                         GeneralFunctions.HealTarget(collision.gameObject, healAmount);
 

@@ -93,8 +93,15 @@ public class PlayerController : MonoBehaviour
 
     private void SetupScene()
     {
-        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
+        SetupLevel();
 
+        SetUpPlayer();
+
+        SetUpPlayerHud();
+    }
+
+    private void SetupLevel()
+    {
         var loaderCount = FindObjectsOfType<LevelLoader>().Length;
 
         if (loaderCount <= 0)
@@ -108,6 +115,11 @@ public class PlayerController : MonoBehaviour
         {
             levelExit.ConsturctExit(levelLoader.GetComponent<LevelLoader>());
         }
+    }
+
+    private void SetUpPlayer()
+    {
+        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
 
         var playerStateCount = FindObjectsOfType<PlayerState>().Length;
 
@@ -131,7 +143,10 @@ public class PlayerController : MonoBehaviour
         }
 
         myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
-        
+    }
+
+    private void SetUpPlayerHud()
+    {
         uiManager = playerHud.GetComponent<PlayerUIManager>();
 
         var auraManager = GetComponent<AuraManager>();

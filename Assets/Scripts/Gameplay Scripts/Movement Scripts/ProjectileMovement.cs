@@ -4,7 +4,6 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileMovement : MonoBehaviour
 {
-    private Rigidbody2D myRigidbody = null;
     private float currentMoveSpeed = 400f;
     private Vector2 currentVelocity;
 
@@ -22,7 +21,7 @@ public class ProjectileMovement : MonoBehaviour
 
     protected virtual void Start()
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
+        MyRigidBody2D = GetComponent<Rigidbody2D>();
     }
 
     public virtual void ConstructProjectile(float moveSpeed, float damage, Vector2 launchDirection)
@@ -55,33 +54,27 @@ public class ProjectileMovement : MonoBehaviour
 
     public void UpdateVelocity(Vector2 newVelocity)
     {
-        myRigidbody.velocity = newVelocity;
+        MyRigidBody2D.velocity = newVelocity;
     }
 
-    public Vector2 GetCurrentVelocity()
-    {
-        return currentVelocity;
-    }
+    public Vector2 CurrentVelocity { get { return currentVelocity; } }
 
-    public Rigidbody2D GetRigidbody2D()
-    {
-        return myRigidbody;
-    }
+    public Rigidbody2D MyRigidBody2D { get; private set; } = null;
 
     protected virtual void FixedUpdate()
     {
-        currentVelocity = myRigidbody.velocity;
+        currentVelocity = MyRigidBody2D.velocity;
 
         if (canFire && useNoise)
         {
             var newDirection = launchDirection.normalized + GetNoise(minNoise, maxNoise);
 
-            myRigidbody.velocity = newDirection * currentMoveSpeed * Time.fixedDeltaTime;
+            MyRigidBody2D.velocity = newDirection * currentMoveSpeed * Time.fixedDeltaTime;
         }
 
         if (canFire)
         {
-            myRigidbody.velocity = launchDirection.normalized * currentMoveSpeed * Time.fixedDeltaTime;
+            MyRigidBody2D.velocity = launchDirection.normalized * currentMoveSpeed * Time.fixedDeltaTime;
         }
     }
 

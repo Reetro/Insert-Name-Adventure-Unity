@@ -3,13 +3,9 @@ using UnityEngine;
 
 public class AuraManager : MonoBehaviour
 {
-    private List<BuffEffect> currentBuffs = new List<BuffEffect>();
-    private List<DebuffEffect> currentDebuffs = new List<DebuffEffect>();
-    private PlayerUIManager playerUIManager = null;
-
     public void SetUIManager(PlayerUIManager playerUIManager)
     {
-        this.playerUIManager = playerUIManager;
+        MyUIManager = playerUIManager;
     }
     /// <summary>
     /// Will spawn the given buff into the scene then start the buff
@@ -29,7 +25,7 @@ public class AuraManager : MonoBehaviour
             buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
         }
 
-        currentBuffs.Add(buff);
+        MyCurrentBuffs.Add(buff);
     }
     /// <summary>
     /// Finds a debuff of the same type as the given debuff
@@ -41,7 +37,7 @@ public class AuraManager : MonoBehaviour
         {
             BuffEffect foundBuff = null;
 
-            foreach (BuffEffect buffEffect in currentBuffs)
+            foreach (BuffEffect buffEffect in MyCurrentBuffs)
             {
                 var type = buffEffect.GetBuff().buffEffect;
 
@@ -73,7 +69,7 @@ public class AuraManager : MonoBehaviour
     {
         BuffEffect foundBuff = null;
 
-        foreach (BuffEffect buffEffect in currentBuffs)
+        foreach (BuffEffect buffEffect in MyCurrentBuffs)
         {
             var localID = buffEffect.GetID();
 
@@ -100,12 +96,12 @@ public class AuraManager : MonoBehaviour
         {
             Destroy(buffEffectObject);
 
-            currentBuffs.Remove(effect);
+            MyCurrentBuffs.Remove(effect);
         }
 
         if (iconToRemove)
         {
-            playerUIManager.RemoveBuffIcon(iconToRemove);
+            MyUIManager.RemoveBuffIcon(iconToRemove);
         }
         else
         {
@@ -121,7 +117,7 @@ public class AuraManager : MonoBehaviour
         {
             Destroy(buffEffectObject);
 
-            currentBuffs.Remove(effect);
+            MyCurrentBuffs.Remove(effect);
         }
     }
     /// <summary>
@@ -142,7 +138,7 @@ public class AuraManager : MonoBehaviour
             debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
         }
 
-        currentDebuffs.Add(debuff);
+        MyCurrentDebuffs.Add(debuff);
     }
     /// <summary>
     /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI
@@ -153,12 +149,12 @@ public class AuraManager : MonoBehaviour
         {
             Destroy(debuffEffectObject);
 
-            currentDebuffs.Remove(effect);
+            MyCurrentDebuffs.Remove(effect);
         }
 
         if (iconToRemove)
         {
-            playerUIManager.RemoveDebuffIcon(iconToRemove);
+            MyUIManager.RemoveDebuffIcon(iconToRemove);
         }
         else
         {
@@ -174,14 +170,14 @@ public class AuraManager : MonoBehaviour
         {
             Destroy(debuffEffectObject);
 
-            currentDebuffs.Remove(effect);
+            MyCurrentDebuffs.Remove(effect);
         }
 
         if (debuffEffectObject)
         {
             Destroy(debuffEffectObject);
 
-            currentDebuffs.Remove(effect);
+            MyCurrentDebuffs.Remove(effect);
         }
     }
     /// <summary>
@@ -194,7 +190,7 @@ public class AuraManager : MonoBehaviour
         {
             DebuffEffect foundDebuff = null;
 
-            foreach (DebuffEffect debuffEffect in currentDebuffs)
+            foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
             {
                 var type = debuffEffect.GetDebuff().debuffType;
 
@@ -226,7 +222,7 @@ public class AuraManager : MonoBehaviour
     {
         DebuffEffect foundDebuff = null;
 
-        foreach (DebuffEffect debuffEffect in currentDebuffs)
+        foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
         {
             var localID = debuffEffect.GetID();
 
@@ -250,7 +246,7 @@ public class AuraManager : MonoBehaviour
     /// <returns>The created icon</returns>
     private BuffIcon CreateBuffIcon(ScriptableBuff buff)
     {
-        return playerUIManager.AddBuffIcon(buff);
+        return MyUIManager.AddBuffIcon(buff);
     }
     /// <summary>
     /// Will add a debuff icon to the player UI
@@ -258,29 +254,18 @@ public class AuraManager : MonoBehaviour
     /// <returns>The created icon</returns>
     private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
     {
-        return playerUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
+        return MyUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
     }
     /// <summary>
     /// Gets all current buffs on this Gameobject
     /// </summary>
-    /// <returns>An array of BuffEffects</returns>
-    public List<BuffEffect> GetCurrentBuffs()
-    {
-        return currentBuffs;
-    }
-    /// <summary>
-    /// Gets the PlayerUIManager
-    /// </summary>
-    public PlayerUIManager GetPlayerUIManager()
-    {
-        return playerUIManager;
-    }
+    public List<BuffEffect> MyCurrentBuffs { get; } = new List<BuffEffect>();
     /// <summary>
     /// Gets all current debuffs on this Gameobject
     /// </summary>
-    /// <returns>An array of DebuffEffects</returns>
-    public List<DebuffEffect> GetCurrentDebuffs()
-    {
-        return currentDebuffs;
-    }
+    public List<DebuffEffect> MyCurrentDebuffs { get; } = new List<DebuffEffect>();
+    /// <summary>
+    /// Gets the player UI Manager
+    /// </summary>
+    public PlayerUIManager MyUIManager { get; private set; } = null;
 }

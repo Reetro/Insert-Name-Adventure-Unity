@@ -17,9 +17,6 @@ public class HealthComponent : MonoBehaviour
     public UnityEvent OnDeath;
     [Space]
     public TakeAnyDamge onTakeAnyDamage;
-
-    private float currentHealth = 0f;
-    private bool isDead = false;
     private PlayerState playerState = null;
     private GameplayManager gameplayManager = null;
 
@@ -32,13 +29,13 @@ public class HealthComponent : MonoBehaviour
     {
         gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
 
-        isDead = false;
+        IsCurrentlyDead = false;
 
         if (IsOnPlayer())
         {
             if (!setMaxhealth)
             {
-                currentHealth = maxHealth;
+                CurrentHealth = maxHealth;
 
                 setMaxhealth = true;
 
@@ -47,14 +44,14 @@ public class HealthComponent : MonoBehaviour
             else
             {
                 maxHealth = playerState.GetCurrentMaxHealth();
-                currentHealth = playerState.GetCurrentHealth();
+                CurrentHealth = playerState.GetCurrentHealth();
 
                 UpdatePlayerState();
             }
         }
         else
         {
-            currentHealth = maxHealth;
+            CurrentHealth = maxHealth;
         }
     }
     /// <summary>
@@ -66,13 +63,13 @@ public class HealthComponent : MonoBehaviour
 
         gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
 
-        isDead = false;
+        IsCurrentlyDead = false;
 
         if (IsOnPlayer())
         {
             if (!setMaxhealth)
             {
-                currentHealth = maxHealth;
+                CurrentHealth = maxHealth;
 
                 if (healthBar)
                 {
@@ -86,7 +83,7 @@ public class HealthComponent : MonoBehaviour
             else
             {
                 maxHealth = playerState.GetCurrentMaxHealth();
-                currentHealth = playerState.GetCurrentHealth();
+                CurrentHealth = playerState.GetCurrentHealth();
 
                 if (healthBar)
                 {
@@ -96,7 +93,7 @@ public class HealthComponent : MonoBehaviour
         }
         else
         {
-            currentHealth = maxHealth;
+            CurrentHealth = maxHealth;
 
             if (healthBar)
             {
@@ -111,11 +108,11 @@ public class HealthComponent : MonoBehaviour
     /// <param name="amountToAdd"></param>
     public void AddHealth(float amountToAdd)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amountToAdd, 0, maxHealth);
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToAdd, 0, maxHealth);
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
 
         if (IsOnPlayer())
@@ -133,9 +130,9 @@ public class HealthComponent : MonoBehaviour
     {
         if (GeneralFunctions.IsObjectOnLayer(damageLayer, gameObject))
         {
-            if (!isDead)
+            if (!IsCurrentlyDead)
             {
-                currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+                CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, maxHealth);
 
                 if (showDamageText)
                 {
@@ -152,12 +149,12 @@ public class HealthComponent : MonoBehaviour
 
                 if (healthBar)
                 {
-                    healthBar.SetHealth(currentHealth);
+                    healthBar.SetHealth(CurrentHealth);
                 }
 
-                if (currentHealth <= 0)
+                if (CurrentHealth <= 0)
                 {
-                    isDead = true;
+                    IsCurrentlyDead = true;
                     OnDeath.Invoke();
                 }
             }
@@ -169,12 +166,12 @@ public class HealthComponent : MonoBehaviour
     /// <param name="value"></param>
     public void SetHealth(float value)
     {
-        currentHealth = value;
+        CurrentHealth = value;
         maxHealth = value;
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
 
         if (IsOnPlayer())
@@ -189,7 +186,7 @@ public class HealthComponent : MonoBehaviour
     /// <param name="maxHP"></param>
     public void SetHealth(float currentHP, float maxHP)
     {
-        currentHealth = currentHP;
+        CurrentHealth = currentHP;
         maxHealth = maxHP;
 
         if (IsOnPlayer())
@@ -199,24 +196,17 @@ public class HealthComponent : MonoBehaviour
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
     }
     /// <summary>
     /// Get this Gameobjects current health
     /// </summary>
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
+    public float CurrentHealth { get; private set; } = 0f;
     /// <summary>
     /// Check to see if the current Gameobject is dead
     /// </summary>
-    /// <returns></returns>
-    public bool GetIsDead()
-    {
-        return isDead;
-    }
+    public bool IsCurrentlyDead { get; private set; } = false;
     /// <summary>
     /// Find the player state in the level then construct the health component
     /// </summary>
@@ -242,7 +232,7 @@ public class HealthComponent : MonoBehaviour
     {
         if (playerState)
         {
-            playerState.UpdatePlayerStateHP(currentHealth, maxHealth);
+            playerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
         }
     }
     /// <summary>

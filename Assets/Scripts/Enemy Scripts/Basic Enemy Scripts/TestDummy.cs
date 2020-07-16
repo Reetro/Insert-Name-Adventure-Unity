@@ -14,7 +14,7 @@ public class TestDummy : MonoBehaviour
 
     public void OnTakeDamage(float damage)
     {
-        Debug.Log("Current HP: " + healthComp.GetCurrentHealth().ToString());
+        Debug.Log("Current HP: " + healthComp.CurrentHealth.ToString());
         Debug.Log("Damage Taken: " + damage);
     }
 

@@ -8,8 +8,7 @@ public class BuffIcon : MonoBehaviour
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
     [SerializeField] TextMeshProUGUI timer = null;
-  
-    private ScriptableBuff buff = null;
+
     private bool canFill = true;
     private float duration = 0f;
     private float defaultDuration = 0f;
@@ -25,8 +24,8 @@ public class BuffIcon : MonoBehaviour
     /// <param name="buff"></param>
     public void StartCooldown(ScriptableBuff buff)
     {
-        this.buff = buff;
-        icon.sprite = this.buff.Artwork;
+        this.Buff = buff;
+        icon.sprite = this.Buff.Artwork;
         canFill = true;
         durationImage.fillAmount = 1;
 
@@ -49,7 +48,7 @@ public class BuffIcon : MonoBehaviour
     {
         if (canFill)
         {
-            durationImage.fillAmount -= 1 / buff.duration * Time.deltaTime;
+            durationImage.fillAmount -= 1 / Buff.duration * Time.deltaTime;
 
             if (timer.enabled)
             {
@@ -100,9 +99,8 @@ public class BuffIcon : MonoBehaviour
     {
         canFill = !canFill;
     }
-
-    public ScriptableBuff GetBuff()
-    {
-        return buff;
-    }
+    /// <summary>
+    /// Get the buff attached to this icon
+    /// </summary>
+    public ScriptableBuff Buff { get; private set; } = null;
 }

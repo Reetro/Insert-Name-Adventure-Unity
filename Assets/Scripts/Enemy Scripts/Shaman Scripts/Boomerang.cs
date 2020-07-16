@@ -11,7 +11,7 @@ public class Boomerang : ProjectileMovement
     {
         Vector2 _wallNormal = collision.GetContact(0).normal;
 
-        Vector2 newDirection = Vector2.Reflect(GetCurrentVelocity(), _wallNormal);
+        Vector2 newDirection = Vector2.Reflect(CurrentVelocity, _wallNormal);
 
         UpdateDirection(newDirection);
 

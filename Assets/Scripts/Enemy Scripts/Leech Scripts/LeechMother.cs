@@ -6,11 +6,11 @@ public class LeechMother : EnemyShooter
     {
         if (!GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
         {
-            ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;
+            ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
 
             Vector2 launchDirection = PlayerTransform.position - transform.position;
 
-            bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
+            bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
         }
     }
 }

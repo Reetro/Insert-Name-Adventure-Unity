@@ -221,7 +221,7 @@ public class GeneralFunctions
 
             if (health)
             {
-                health.ProccessDamage(100000000, false, GetGameplayManager().whatCanBeDamaged);
+                health.ProccessDamage(1000000000, false, GetGameplayManager().whatCanBeDamaged);
             }
             else
             {
@@ -248,7 +248,7 @@ public class GeneralFunctions
 
         if (health)
         {
-            return health.GetIsDead();
+            return health.IsCurrentlyDead;
         }
         else
         {

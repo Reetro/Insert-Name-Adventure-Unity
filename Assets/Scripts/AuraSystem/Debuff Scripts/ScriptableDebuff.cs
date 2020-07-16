@@ -1,16 +1,9 @@
 ﻿using UnityEngine;
+using PlayerUI.ToolTipUI;
 
 [CreateAssetMenu(fileName = "Debuff", menuName = "Create New Debuff")]
-public class ScriptableDebuff : ScriptableObject
+public class ScriptableDebuff : ScriptableItem
 {
-    [Tooltip("Name of the debuff")]
-    public new string name;
-    [Tooltip("Description about what the debuff does")]
-    public string description;
-
-    [Tooltip("Artwork to display on the debuff icon")]
-    public Sprite artwork;
-
     [Tooltip("This is the actual code that is called that applies the debuff")]
     public DebuffEffect debuffEffect;
 
@@ -34,6 +27,11 @@ public class ScriptableDebuff : ScriptableObject
 
     [Tooltip("Visual effect that is attached to target")]
     public GameObject visualEffect;
+
+    public override string GetToolTipInfo()
+    {
+        throw new System.NotImplementedException();
+    }
 
     public enum DebuffType 
     {

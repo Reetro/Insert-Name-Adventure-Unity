@@ -26,7 +26,7 @@ public class LeechAttachCollisionLeft : MonoBehaviour
 
                 var spawnTransform = GeneralFunctions.GetLeechAttachPointByTag(tagToAttach);
 
-                var spawnLeech = GeneralFunctions.SpawnLeechAttach(auraManager, leechToAttach, spawnTransform, leechHP.GetCurrentHealth(), player);
+                var spawnLeech = GeneralFunctions.SpawnLeechAttach(auraManager, leechToAttach, spawnTransform, leechHP.CurrentHealth, player);
 
                 GeneralFunctions.FlipObject(spawnLeech.gameObject);
 

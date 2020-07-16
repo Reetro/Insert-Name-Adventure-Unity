@@ -255,9 +255,9 @@ public class BuffEffect : MonoBehaviour
                     }
                     else
                     {
-                        var iconToRemove = auraManager.GetPlayerUIManager().FindBuffIconByType(scriptableBuff);
+                        var iconToRemove = auraManager.MyUIManager.FindBuffIconByType(scriptableBuff);
 
-                        auraManager.GetPlayerUIManager().RemoveBuffIcon(iconToRemove);
+                        auraManager.MyUIManager.RemoveBuffIcon(iconToRemove);
                     }
                 }
                 else

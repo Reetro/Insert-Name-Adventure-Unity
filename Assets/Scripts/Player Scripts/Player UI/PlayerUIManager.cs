@@ -62,7 +62,7 @@ public class PlayerUIManager : MonoBehaviour
 
         foreach (BuffIcon icon in buffIcons)
         {
-            if (icon.GetBuff().buffType == buff.buffType)
+            if (icon.Buff.buffType == buff.buffType)
             {
                 localIcon = icon;
                 break;
@@ -99,7 +99,7 @@ public class PlayerUIManager : MonoBehaviour
 
         foreach (DebuffIcon icon in debuffIcons)
         {
-            if (icon.GetDebuff().debuffType == debuff.debuffType)
+            if (icon.Debuff.debuffType == debuff.debuffType)
             {
                 localIcon = icon;
                 break;

@@ -26,7 +26,7 @@ public class LeechAttachCollisionTop : MonoBehaviour
 
                 var spawnTransform = GeneralFunctions.GetLeechAttachPointByTag(tagToAttach);
 
-                GeneralFunctions.SpawnLeechAttach(auraManager, leechToAttach, spawnTransform, leechHP.GetCurrentHealth(), player);
+                GeneralFunctions.SpawnLeechAttach(auraManager, leechToAttach, spawnTransform, leechHP.CurrentHealth, player);
 
                 Destroy(collision.gameObject);
             }

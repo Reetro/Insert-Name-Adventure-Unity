@@ -71,7 +71,7 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     private void RotatePlayerWithMouse()
     {
-        if (!playerHealthComp.GetIsDead())
+        if (!playerHealthComp.IsCurrentlyDead)
         {
             if (!gamepadActive)
             {
@@ -91,7 +91,7 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     private void RotateGun()
     {
-        if (!playerHealthComp.GetIsDead())
+        if (!playerHealthComp.IsCurrentlyDead)
         {
             if (!gamepadActive)
             {

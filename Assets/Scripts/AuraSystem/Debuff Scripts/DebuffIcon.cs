@@ -9,7 +9,6 @@ public class DebuffIcon : MonoBehaviour
     [SerializeField] TextMeshProUGUI stackText = null;
     [SerializeField] TextMeshProUGUI timer = null;
 
-    private ScriptableDebuff debuff = null;
     bool hasFillAmount = true;
     private float duration = 0f;
     private float defaultDuration = 0f;
@@ -23,7 +22,7 @@ public class DebuffIcon : MonoBehaviour
     {
         if (hasFillAmount)
         {
-            durationImage.fillAmount -= 1 / debuff.GetTotalTime() * Time.deltaTime;
+            durationImage.fillAmount -= 1 / Debuff.GetTotalTime() * Time.deltaTime;
 
             if (timer.enabled)
             {
@@ -41,8 +40,8 @@ public class DebuffIcon : MonoBehaviour
     /// <param name="useTick"></param>
     public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
     {
-        this.debuff = debuff;
-        icon.sprite = this.debuff.artwork;
+        this.Debuff = debuff;
+        icon.sprite = this.Debuff.Artwork;
         this.hasFillAmount = hasFillAmount;
 
         if (useTick)
@@ -104,10 +103,7 @@ public class DebuffIcon : MonoBehaviour
         timer.text = duration.ToString("F1");
     }
     /// <summary>
-    /// Get the current debuff attach to this icon
+    /// Get the debuff attached to this icon
     /// </summary>
-    public ScriptableDebuff GetDebuff()
-    {
-        return debuff;
-    }
+    public ScriptableDebuff Debuff { get; private set; } = null;
 }

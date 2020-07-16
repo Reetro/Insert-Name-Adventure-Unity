@@ -9,7 +9,7 @@ public class LeechMovement : EnemyBase
 
     private void Update()
     {
-        if (!MyHealthComponent.GetIsDead())
+        if (!MyHealthComponent.IsCurrentlyDead)
         {
             LookAtPlayer();
 
@@ -21,7 +21,7 @@ public class LeechMovement : EnemyBase
 
     private void FixedUpdate()
     {
-        if (!MyHealthComponent.GetIsDead())
+        if (!MyHealthComponent.IsCurrentlyDead)
         {
             MovementComp.MoveAITowards(PlayerTransform, MyRigidBody2D, leechFlySpeed);
         }
