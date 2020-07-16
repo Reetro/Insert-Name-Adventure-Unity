@@ -22,29 +22,24 @@ public class GameplayManager : MonoBehaviour
     [Header("Damage Settings")]
     public LayerMask whatCanBeDamaged;
 
-    List<int> gameplayObjects = new List<int>();
-
     public int GenID()
     {
         var newID = Random.Range(1, 1000000);
 
-        for (int index = 0; index < gameplayObjects.Count; index++)
+        for (int index = 0; index < IDS.Count; index++)
         {
-            if (gameplayObjects.Contains(newID))
+            if (IDS.Contains(newID))
             {
                 newID = Random.Range(1, 1000000);
                 break;
             }
         }
 
-        gameplayObjects.Add(newID);
+        IDS.Add(newID);
         return newID;
     }
 
-    public List<int> GetAllIDs()
-    {
-        return gameplayObjects;
-    }
+    public List<int> IDS { get; } = new List<int>();
 
     public bool PreventSpawnOverlap(Vector3 spawnPosition)
     {

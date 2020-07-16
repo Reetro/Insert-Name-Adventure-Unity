@@ -1,16 +1,9 @@
 ﻿using UnityEngine;
+using PlayerUI.ToolTipUI;
 
 [CreateAssetMenu(fileName = "Buff", menuName = "Create New Buff")]
-public class ScriptableBuff : ScriptableObject
+public class ScriptableBuff : ScriptableItem
 {
-    [Tooltip("Name of the buff")]
-    public new string name;
-    [Tooltip("Description about what the buff does")]
-    public string description;
-
-    [Tooltip("Artwork to display on the buff icon")]
-    public Sprite artwork;
-
     [Tooltip("This is the actual code that is called that applies the buff")]
     public BuffEffect buffEffect;
 
@@ -28,6 +21,11 @@ public class ScriptableBuff : ScriptableObject
 
     [Tooltip("Visual effect that is attached to target")]
     public GameObject visualEffect;
+
+    public override string GetToolTipInfo()
+    {
+        throw new System.NotImplementedException();
+    }
 
     public enum BuffType
     {

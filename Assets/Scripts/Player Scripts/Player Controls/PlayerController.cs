@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
             playerHud = Instantiate(playerHud, new Vector2(1000, 1000), Quaternion.identity);
         }
 
-        myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().GetHealthBar());
+        myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
         
         uiManager = playerHud.GetComponent<PlayerUIManager>();
 
