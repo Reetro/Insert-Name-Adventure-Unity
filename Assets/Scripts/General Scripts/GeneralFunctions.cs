@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using AuraSystem;
+using PlayerUI;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management

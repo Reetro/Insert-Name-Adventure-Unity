@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerCharacter.GameSaving;
 
 public class Checkpoint : MonoBehaviour
 {

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using PlayerCharacter.Controller;
+using PlayerCharacter.GameSaving;
+using PlayerUI;
 
 public class HealthComponent : MonoBehaviour
 {

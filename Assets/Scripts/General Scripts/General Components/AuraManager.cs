@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using PlayerUI.Icons;
+using PlayerUI;
 
 namespace AuraSystem
 {
