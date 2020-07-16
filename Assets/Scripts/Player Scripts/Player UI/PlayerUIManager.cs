@@ -23,18 +23,19 @@ public class PlayerUIManager : MonoBehaviour
 
     private List<BuffIcon> buffIcons = new List<BuffIcon>();
     private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
+    private LevelLoader levelLoader = null;
 
     private void Awake()
     {
         HideDeathUI();
+
+        levelLoader = FindObjectOfType<LevelLoader>();
 
         loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
     }
 
     private void loadCheckpoint_onclick()
     {
-        var levelLoader = FindObjectOfType<LevelLoader>();
-
         levelLoader.LoadCheckpoint();
     }
 

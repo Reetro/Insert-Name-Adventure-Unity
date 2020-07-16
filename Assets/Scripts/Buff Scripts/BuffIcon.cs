@@ -8,8 +8,7 @@ public class BuffIcon : MonoBehaviour
     [SerializeField] private Image icon = null;
     [SerializeField] TextMeshProUGUI stackText = null;
     [SerializeField] TextMeshProUGUI timer = null;
-    [SerializeField] private BuffToolTip toolTip = null;
-
+  
     private ScriptableBuff buff = null;
     private bool canFill = true;
     private float duration = 0f;
@@ -18,8 +17,6 @@ public class BuffIcon : MonoBehaviour
     private void Start()
     {
         UpdateStackCount(1);
-
-        toolTip.ConstructToolTip(buff);
     }
 
     /// <summary>
