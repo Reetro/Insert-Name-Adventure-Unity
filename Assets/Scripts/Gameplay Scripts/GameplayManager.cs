@@ -26,20 +26,20 @@ public class GameplayManager : MonoBehaviour
     {
         var newID = Random.Range(1, 1000000);
 
-        for (int index = 0; index < IDS.Count; index++)
+        for (int index = 0; index < gameIDS.Count; index++)
         {
-            if (IDS.Contains(newID))
+            if (gameIDS.Contains(newID))
             {
                 newID = Random.Range(1, 1000000);
                 break;
             }
         }
 
-        IDS.Add(newID);
+        gameIDS.Add(newID);
         return newID;
     }
 
-    public List<int> IDS { get; } = new List<int>();
+    public List<int> gameIDS { get; } = new List<int>();
 
     public bool PreventSpawnOverlap(Vector3 spawnPosition)
     {

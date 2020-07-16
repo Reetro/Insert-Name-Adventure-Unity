@@ -37,7 +37,7 @@ public class Boomerang : ProjectileMovement
 
         GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);  
 
-        currentShaman.GetRigidbody2D().velocity = new Vector2(0, 0);
+        currentShaman.MyRigidBody2D.velocity = new Vector2(0, 0);
     }
 
     public void DestroyBoomerang(bool throwBoomerang)

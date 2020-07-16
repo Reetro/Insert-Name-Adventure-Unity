@@ -16,7 +16,7 @@ public class EnemyShooter : EnemyBase
 
     private IEnumerator ShootInterval()
     {
-        while (!GetHealthComponent().GetIsDead())
+        while (MyHealthComponent.GetIsDead())
         {
             yield return new WaitForSecondsRealtime(shootIntervale);
 

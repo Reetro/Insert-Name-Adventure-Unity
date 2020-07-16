@@ -9,21 +9,21 @@ public class LeechMovement : EnemyBase
 
     private void Update()
     {
-        if (!GetHealthComponent().GetIsDead())
+        if (!MyHealthComponent.GetIsDead())
         {
             LookAtPlayer();
 
             var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
 
-            GetEnemyMovementComponent().AddToLeechY(transform, amountToAddToY.y);
+            MovementComp.AddToLeechY(transform, amountToAddToY.y);
         }
     }
 
     private void FixedUpdate()
     {
-        if (!GetHealthComponent().GetIsDead())
+        if (!MyHealthComponent.GetIsDead())
         {
-            GetEnemyMovementComponent().MoveAITowards(GetPlayerTransform(), GetRigidbody2D(), leechFlySpeed);
+            MovementComp.MoveAITowards(PlayerTransform, MyRigidBody2D, leechFlySpeed);
         }
     }
 
@@ -31,9 +31,9 @@ public class LeechMovement : EnemyBase
     {
         base.OnDeath();
 
-        GetAnimatorComponent().SetBool("IsDead", true);
+        MyAnimator.SetBool("IsDead", true);
 
-        GetEnemyMovementComponent().StopMovement(GetRigidbody2D());
+        MovementComp.StopMovement(MyRigidBody2D);
     }
 
     public void OnDeathAnimationEnd()

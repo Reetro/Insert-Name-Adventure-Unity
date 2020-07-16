@@ -4,73 +4,50 @@
 [RequireComponent(typeof(EnemyMovement), typeof(Animator))]
 public class EnemyBase : MonoBehaviour
 {
-    private HealthComponent healthComp = null;
-    private Transform playerTransform = null;
-    private Rigidbody2D myRigidBody2D = null;
     private GameplayObjectID idObject = null;
-    private EnemyMovement enemyMovement = null;
-    private Animator animator = null;
 
     protected virtual void Awake()
     {
-        playerTransform = GeneralFunctions.GetPlayerGameObject().transform;
-        healthComp = GetComponent<HealthComponent>();
-        myRigidBody2D = GetComponent<Rigidbody2D>();
+        PlayerTransform = GeneralFunctions.GetPlayerGameObject().transform;
+        MyHealthComponent = GetComponent<HealthComponent>();
+        MyRigidBody2D = GetComponent<Rigidbody2D>();
         idObject = GetComponent<GameplayObjectID>();
-        enemyMovement = GetComponent<EnemyMovement>();
-        animator = GetComponent<Animator>();
+        MovementComp = GetComponent<EnemyMovement>();
+        MyAnimator = GetComponent<Animator>();
 
         idObject.ConstructID();
-        healthComp.ConstructHealthComponent();
+        MyHealthComponent.ConstructHealthComponent();
     }
     /// <summary>
     /// Get this Gameobjects health component
     /// </summary>
-    public HealthComponent GetHealthComponent()
-    {
-        return healthComp;
-    }
+    public HealthComponent MyHealthComponent { get; private set; } = null;
     /// <summary>
     /// Get the players current transform
     /// </summary>
-    public Transform GetPlayerTransform()
-    {
-        return playerTransform;
-    }
+    public Transform PlayerTransform { get; private set; } = null;
     /// <summary>
     /// Gets this Gameobjects Rigidbody
     /// </summary>
-    public Rigidbody2D GetRigidbody2D()
-    {
-        return myRigidBody2D;
-    }
+    public Rigidbody2D MyRigidBody2D { get; private set; } = null;
     /// <summary>
     /// Gets this Gameobjects ID
     /// </summary>
-    public int GetID()
-    {
-        return idObject.GetID();
-    }
+    public int IdGameObject { get { return IdGameObject; } }
     /// <summary>
     /// Gets this Gameobjects movement component
     /// </summary>
-    public EnemyMovement GetEnemyMovementComponent()
-    {
-        return enemyMovement;
-    }
+    public EnemyMovement MovementComp { get; private set; } = null;
     /// <summary>
     /// Get this Gameobjects animator component
     /// </summary>
-    public Animator GetAnimatorComponent()
-    {
-        return animator;
-    }
+    public Animator MyAnimator { get; private set; } = null;
     /// <summary>
     /// Make this Gameobject look towards the player
     /// </summary>
     public void LookAtPlayer()
     {
-        enemyMovement.LookAtTarget(playerTransform);
+        MovementComp.LookAtTarget(PlayerTransform);
     }
     /// <summary>
     /// Called when the current health on health component is 0 or below by default will only disable enemy collision
