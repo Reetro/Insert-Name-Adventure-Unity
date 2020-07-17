@@ -21,7 +21,7 @@ namespace LevelObjects.MovingObjects
         [Space]
         public UnityEvent OnImpact;
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             MyRigidBody2D = GetComponent<Rigidbody2D>();
         }

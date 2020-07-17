@@ -22,9 +22,6 @@ namespace PlayerUI
         [Header("Player UI")]
         [SerializeField] HealthBar healthBar = null;
 
-        [Header("Tooltip Settings")]
-        public float toolTipTextPadding = 4f;
-
         private List<BuffIcon> buffIcons = new List<BuffIcon>();
         private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
         private LevelLoader levelLoader = null;

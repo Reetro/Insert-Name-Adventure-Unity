@@ -7,8 +7,8 @@ namespace PlayerCharacter.Controller
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerGun currentGun = null;
-        [SerializeField] private PlayerUIManager uiManager = null;
 
+        private PlayerUIManager uiManager = null;
         private float horizontalMove = 0f;
         private bool jump = false;
         private Animator myAnimator = null;
