@@ -1,59 +1,62 @@
 ﻿using UnityEngine;
 
-public class PingPongMovement : PlatformMovement
+namespace LevelObjects.MovingObjects
 {
-    public Transform pos1, pos2;
-    public float distanceTolerance = 1f;
-
-    private Vector3 nextPos;
-    private float oldPosition = 0.0f;
-    private Transform lastPos;
-
-    void Start()
+    public class PingPongMovement : PlatformMovement
     {
-        nextPos = pos2.position;
+        public Transform pos1, pos2;
+        public float distanceTolerance = 1f;
 
-        oldPosition = transform.position.x;
+        private Vector3 nextPos;
+        private float oldPosition = 0.0f;
+        private Transform lastPos;
 
-        lastPos = pos1;
-    }
-
-    void Update()
-    {
-        InvertDirection();
-
-        transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            if (transform.position.x > oldPosition || transform.position.x < oldPosition)
-            {
-                nextPos = lastPos.position;
-            }
-        }
-    }
-
-    private void InvertDirection()
-    {
-        if (Vector3.Distance(transform.position, pos1.position) <= distanceTolerance)
+        void Start()
         {
             nextPos = pos2.position;
+
+            oldPosition = transform.position.x;
+
             lastPos = pos1;
         }
-        if (Vector3.Distance(transform.position, pos2.position) <= distanceTolerance)
-        {
-            nextPos = pos1.position;
-            lastPos = pos2;
-        }
-    }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(pos1.position, pos2.position);
+        void Update()
+        {
+            InvertDirection();
+
+            transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
+        }
+
+        protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            base.OnTriggerEnter2D(collision);
+
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                if (transform.position.x > oldPosition || transform.position.x < oldPosition)
+                {
+                    nextPos = lastPos.position;
+                }
+            }
+        }
+
+        private void InvertDirection()
+        {
+            if (Vector3.Distance(transform.position, pos1.position) <= distanceTolerance)
+            {
+                nextPos = pos2.position;
+                lastPos = pos1;
+            }
+            if (Vector3.Distance(transform.position, pos2.position) <= distanceTolerance)
+            {
+                nextPos = pos1.position;
+                lastPos = pos2;
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(pos1.position, pos2.position);
+        }
     }
 }

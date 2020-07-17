@@ -2,40 +2,43 @@
 using UnityEngine.SceneManagement;
 using PlayerCharacter.GameSaving;
 
-public class Checkpoint : MonoBehaviour
+namespace LevelObjects.Saving
 {
-    [Tooltip("Amount to heal the player")]
-    public float healAmount = 3f;
-    [Tooltip("The amount of health the player has to have or below to be healed")]
-    public float healThreshold = 8f;
-
-    private PlayerState playerState = null;
-    private int currentLevelIndex = 0;
-    private bool healedPlayer = false;
-
-    public void ConstructCheckpoint()
+    public class Checkpoint : MonoBehaviour
     {
-        playerState = FindObjectOfType<PlayerState>();
-        currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+        [Tooltip("Amount to heal the player")]
+        public float healAmount = 3f;
+        [Tooltip("The amount of health the player has to have or below to be healed")]
+        public float healThreshold = 8f;
 
-        healedPlayer = false;
-    }
+        private PlayerState playerState = null;
+        private int currentLevelIndex = 0;
+        private bool healedPlayer = false;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!healedPlayer)
+        public void ConstructCheckpoint()
         {
-            if (collision.gameObject.CompareTag("Player"))
+            playerState = FindObjectOfType<PlayerState>();
+            currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+
+            healedPlayer = false;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!healedPlayer)
             {
-                if (!GeneralFunctions.IsObjectDead(collision.gameObject))
+                if (collision.gameObject.CompareTag("Player"))
                 {
-                    playerState.SetCheckpointIndex(currentLevelIndex);
-
-                    if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).CurrentHealth < healThreshold)
+                    if (!GeneralFunctions.IsObjectDead(collision.gameObject))
                     {
-                        GeneralFunctions.HealTarget(collision.gameObject, healAmount);
+                        playerState.SetCheckpointIndex(currentLevelIndex);
 
-                        healedPlayer = true;
+                        if (GeneralFunctions.GetGameObjectHealthComponent(GeneralFunctions.GetPlayerGameObject()).CurrentHealth < healThreshold)
+                        {
+                            GeneralFunctions.HealTarget(collision.gameObject, healAmount);
+
+                            healedPlayer = true;
+                        }
                     }
                 }
             }

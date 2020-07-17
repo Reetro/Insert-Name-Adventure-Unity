@@ -3,39 +3,42 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayerCharacter.GameSaving;
 
-public class LevelLoader : MonoBehaviour
+namespace LevelObjects.SceneLoading
 {
-    public Animator transition;
-    public float transitionTime = 1f;
-
-    public PlayerState playerState = null;
-
-    public void LoadCheckpoint()
+    public class LevelLoader : MonoBehaviour
     {
-        playerState.ResetHealthToMax();
-        StartCoroutine(LoadLevel(playerState.GetCheckpointIndex()));
-    }
+        public Animator transition;
+        public float transitionTime = 1f;
 
-    public void LoadNextLevel()
-    {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
-    }
+        public PlayerState playerState = null;
 
-    IEnumerator LoadLevel(int levelIndex)
-    {
-        transition.SetTrigger("Start");
-
-        yield return new WaitForSeconds(transitionTime);
-
-        bool goBackToStart = levelIndex >= SceneManager.sceneCountInBuildSettings;
-
-        if (!goBackToStart)
+        public void LoadCheckpoint()
         {
-            SceneManager.LoadScene(levelIndex);
+            playerState.ResetHealthToMax();
+            StartCoroutine(LoadLevel(playerState.GetCheckpointIndex()));
         }
-        else
+
+        public void LoadNextLevel()
         {
-            SceneManager.LoadScene(0);
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
+        }
+
+        IEnumerator LoadLevel(int levelIndex)
+        {
+            transition.SetTrigger("Start");
+
+            yield return new WaitForSeconds(transitionTime);
+
+            bool goBackToStart = levelIndex >= SceneManager.sceneCountInBuildSettings;
+
+            if (!goBackToStart)
+            {
+                SceneManager.LoadScene(levelIndex);
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
         }
     }
 }

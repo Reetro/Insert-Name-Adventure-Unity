@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class RazorBladeMovement : ProjectileMovement
+namespace LevelObjects.MovingObjects
 {
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    public class RazorBladeMovement : ProjectileMovement
     {
-        GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
+        protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
 
-        OnImpact.Invoke();
+            OnImpact.Invoke();
+        }
     }
 }

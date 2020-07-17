@@ -1,40 +1,43 @@
 ﻿using UnityEngine;
 
-public class OneShotMovement : PlatformMovement
+namespace LevelObjects.MovingObjects
 {
-    public Transform targetDirection;
-
-    private Vector3 normalizeDirection;
-    private bool canMove = true;
-
-    private void Awake()
+    public class OneShotMovement : PlatformMovement
     {
-        normalizeDirection = (targetDirection.position - transform.position).normalized;
-    }
+        public Transform targetDirection;
 
-    private void Update()
-    {
-        if (canMove)
+        private Vector3 normalizeDirection;
+        private bool canMove = true;
+
+        private void Awake()
         {
-            transform.position += normalizeDirection * speed * Time.deltaTime;
+            normalizeDirection = (targetDirection.position - transform.position).normalized;
         }
-    }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-
-        if (collision.gameObject.CompareTag("Ground"))
+        private void Update()
         {
-            canMove = false;
+            if (canMove)
+            {
+                transform.position += normalizeDirection * speed * Time.deltaTime;
+            }
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        protected override void OnTriggerEnter2D(Collider2D collision)
         {
-            canMove = true;
+            base.OnTriggerEnter2D(collision);
+
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                canMove = false;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                canMove = true;
+            }
         }
     }
 }

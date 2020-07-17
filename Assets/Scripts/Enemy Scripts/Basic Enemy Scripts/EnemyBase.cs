@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using EnemyCharacter.AI;
 
 namespace EnemyCharacter
 {

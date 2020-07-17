@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class PressurePlate : MonoBehaviour
+namespace LevelObjects.Trap
 {
-    [Header("Settings")]
-    public string[] whatCanPressPlate;
-
-    [Header("Events")]
-    public UnityEvent onPressurePlatePressed;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class PressurePlate : MonoBehaviour
     {
-        foreach (string currentTag in whatCanPressPlate)
+        [Header("Settings")]
+        public string[] whatCanPressPlate;
+
+        [Header("Events")]
+        public UnityEvent onPressurePlatePressed;
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(currentTag))
+            foreach (string currentTag in whatCanPressPlate)
             {
-                onPressurePlatePressed.Invoke();
+                if (collision.gameObject.CompareTag(currentTag))
+                {
+                    onPressurePlatePressed.Invoke();
+                }
             }
         }
     }

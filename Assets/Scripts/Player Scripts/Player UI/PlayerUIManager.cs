@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using PlayerUI.Icons;
+using LevelObjects.SceneLoading;
 
 namespace PlayerUI
 {
