@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using PlayerUI.ToolTipUI;
 using AuraSystem.Effects;
+using System.Text;
 
 [CreateAssetMenu(fileName = "Debuff", menuName = "Create New Debuff")]
 public class ScriptableDebuff : ScriptableItem

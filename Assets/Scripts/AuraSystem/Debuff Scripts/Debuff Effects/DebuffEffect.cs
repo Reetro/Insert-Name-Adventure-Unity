@@ -33,13 +33,15 @@ namespace AuraSystem.Effects
 
                 firstRun = true;
 
+                debuff.UpdateStackCount(StackCount);
+
                 MyID = GeneralFunctions.GenID();
 
                 VisualEffect = SpawnVisualEffect(effect, target.transform);
 
                 if (!shouldTick)
                 {
-                    this.Ticks = maxTicks;
+                    Ticks = maxTicks;
                     DefaultTickCount = ticks;
                 }
 
@@ -87,6 +89,8 @@ namespace AuraSystem.Effects
                 shouldTick = useTick;
                 Damage = debuff.damage;
                 Target = target;
+
+                debuff.UpdateStackCount(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
@@ -141,6 +145,13 @@ namespace AuraSystem.Effects
             {
                 OnDebuffEnd();
             }
+        }
+        /// <summary>
+        /// Update stack count on tooltip
+        /// </summary>
+        private void Update()
+        {
+            Debuff.UpdateStackCount(StackCount);
         }
         /// <summary>
         /// Called when ever the current debuff ticks

@@ -27,6 +27,20 @@ namespace PlayerUI.ToolTipUI
 
         public Sprite Artwork { get { return artwork; } }
 
+        /// <summary>
+        /// The current stack count on the given item
+        /// </summary>
+        public int CurrentStackCount { get; private set; } = 0;
+
+        /// <summary>
+        /// needs to be placed in the item update method will update the ScriptableItem internal stack count
+        /// </summary>
+        /// <param name="amount"></param>
+        public void UpdateStackCount(int amount)
+        {
+            CurrentStackCount = amount;
+        }
+
         private void OnEnable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -47,10 +61,20 @@ namespace PlayerUI.ToolTipUI
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.Append("<size=" + MyGameplayManager.nameFontSize + ">").Append(Name).Append("</size>").AppendLine();
-            builder.Append("<size=" + MyGameplayManager.descriptionFontSize + ">").Append(Description).Append("</size>").AppendLine();
+            if (CurrentStackCount > 1)
+            {
+                builder.Append("<size=" + MyGameplayManager.nameFontSize + ">").Append(Name).Append("</size>").Append(" ").Append("<size=" + MyGameplayManager.nameFontSize + ">").Append("x").Append(CurrentStackCount).Append("</size>").AppendLine();
+                builder.Append("<size=" + MyGameplayManager.descriptionFontSize + ">").Append(Description).Append("</size>").AppendLine();
 
-            return builder.ToString();
+                return builder.ToString();
+            }
+            else
+            {
+                builder.Append("<size=" + MyGameplayManager.nameFontSize + ">").Append(Name).Append("</size>").AppendLine();
+                builder.Append("<size=" + MyGameplayManager.descriptionFontSize + ">").Append(Description).Append("</size>").AppendLine();
+
+                return builder.ToString();
+            }
         }
     }
 }

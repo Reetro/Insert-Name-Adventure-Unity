@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using PlayerUI.Icons;
+using System.Collections;
 
 namespace AuraSystem.Effects
 {
@@ -123,6 +124,8 @@ namespace AuraSystem.Effects
         {
             if (IsBuffRunning)
             {
+                Buff.UpdateStackCount(StackCount);
+
                 if (Duration > 0)
                 {
                     Duration -= Time.deltaTime;

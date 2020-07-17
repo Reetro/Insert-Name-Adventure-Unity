@@ -7,6 +7,7 @@ namespace PlayerUI.ToolTipUI
     {
         private ScriptableItem item = null;
         private TooltipPopup tooltipPopup = null;
+        private bool mouseOnButton = false;
 
         private void Awake()
         {
@@ -15,17 +16,27 @@ namespace PlayerUI.ToolTipUI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            tooltipPopup.DisplayInfo(item);
+            mouseOnButton = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             tooltipPopup.HideInfo();
+
+            mouseOnButton = false;
         }
 
         public void SetItem(ScriptableItem item)
         {
             this.item = item;
+        }
+
+        private void Update()
+        {
+            if (mouseOnButton)
+            {
+                tooltipPopup.DisplayInfo(item);
+            }
         }
     }
 }
