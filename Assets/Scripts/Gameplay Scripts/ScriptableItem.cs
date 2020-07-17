@@ -10,8 +10,10 @@ namespace PlayerUI.ToolTipUI
         [Tooltip("Name of the item")]
         [SerializeField] private new string name = null;
 
+        [TextArea(10, 14)]
         [Tooltip("Description about what the item does")]
         [SerializeField] private string description = null;
+        [Space]
 
         [Tooltip("Artwork to display on the item icon")]
         [SerializeField] private Sprite artwork = null;
@@ -51,10 +53,12 @@ namespace PlayerUI.ToolTipUI
         {
             OnStart();
         }
-
+        /// <summary>
+        /// Called when a scene is loaded
+        /// </summary>
         protected virtual void OnStart()
         {
-            MyGameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+            MyGameplayManager = GeneralFunctions.GetGameplayManager();
         }
 
         public virtual string GetToolTipInfoText()
