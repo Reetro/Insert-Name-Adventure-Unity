@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using PlayerUI;
+using GameplayManagement;
 
 namespace PlayerCharacter.Controller
 {
@@ -21,6 +23,12 @@ namespace PlayerCharacter.Controller
         private bool gamepadActive = false;
         private bool touchingGround = false;
         private const float traceLength = 1f;
+        private GameplayManager gameplayManager = null;
+
+        private void Awake()
+        {
+            gameplayManager = FindObjectOfType<GameplayManager>();
+        }
 
         void Update()
         {
@@ -49,19 +57,19 @@ namespace PlayerCharacter.Controller
             {
                 if (!GeneralFunctions.IsPlayerDead())
                 {
-                    // if a projectile was not able to be fired check to see if there is a still a leech attached to the player and damage it
-                    DamageAttachedLeech();
+                    // if a projectile was not able to be fired check to see if there is in front of the player and damage it
+                    CheckForEnemy();
                 }
             }
         }
         /// <summary>
         /// Fire a raycast to check attached leeches and if found will damage it only called if the player projectile failed to spawn
         /// </summary>
-        private void DamageAttachedLeech()
+        private void CheckForEnemy()
         {
             var player = GeneralFunctions.GetPlayerGameObject();
 
-            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, traceLength, LayerMask.GetMask("Attached Leech"));
+            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, traceLength, gameplayManager.whatCanBeDamaged);
 
             if (hit)
             {

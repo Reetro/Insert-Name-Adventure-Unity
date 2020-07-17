@@ -1,39 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CooldownBar : MonoBehaviour
+namespace PlayerUI
 {
-    public Slider slider = null;
-
-    private bool isActive = false;
-
-    public void SetCooldownValue(float value)
+    public class CooldownBar : MonoBehaviour
     {
-        slider.value = value;
-        slider.maxValue = value;
-    }
+        public Slider slider = null;
 
-    public void StartCooldown(float cooldownTime)
-    {
-        SetCooldownValue(cooldownTime);
+        private bool isActive = false;
 
-        isActive = true;
-    }
-
-    public bool GetIsActive()
-    {
-        return isActive;
-    }
-
-    private void Update()
-    {
-        if (isActive)
+        public void SetCooldownValue(float value)
         {
-            slider.value -= Time.deltaTime;
+            slider.value = value;
+            slider.maxValue = value;
+        }
 
-            if (slider.value <= 0)
+        public void StartCooldown(float cooldownTime)
+        {
+            SetCooldownValue(cooldownTime);
+
+            isActive = true;
+        }
+
+        public bool GetIsActive()
+        {
+            return isActive;
+        }
+
+        private void Update()
+        {
+            if (isActive)
             {
-                isActive = false;
+                slider.value -= Time.deltaTime;
+
+                if (slider.value <= 0)
+                {
+                    isActive = false;
+                }
             }
         }
     }

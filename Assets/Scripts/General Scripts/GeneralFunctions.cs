@@ -2,6 +2,7 @@
 using UnityEngine;
 using AuraSystem;
 using PlayerUI;
+using GameplayManagement;
 using EnemyCharacter;
 
 /// <summary>
