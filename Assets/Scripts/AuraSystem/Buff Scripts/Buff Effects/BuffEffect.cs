@@ -253,7 +253,7 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Will remove a value of 1 from given the buff
+        /// Will remove a value of 1 from given the buff stack if stack is <= 0 buff will be removed
         /// </summary>
         /// <param name="useIcon"></param>
         /// <param name="scriptableDebuff"></param>
@@ -277,7 +277,7 @@ namespace AuraSystem.Effects
             }
             else
             {
-                Debug.LogError("Failed to remove debuff debuffEffect was not valid");
+                Debug.LogError("Failed to remove buff buffEffect was not valid");
             }
         }
         /// <summary>

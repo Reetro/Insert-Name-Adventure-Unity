@@ -256,7 +256,7 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Will remove a value of 1 from the given debuff
+        /// Will remove a value of 1 from given the debuff stack if stack is <= 0 debuff will be removed
         /// </summary>
         /// <param name="useIcon"></param>
         /// <param name="scriptableDebuff"></param>
