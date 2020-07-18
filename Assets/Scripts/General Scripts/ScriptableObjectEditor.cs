@@ -43,7 +43,7 @@ public class ScriptableObjectEditor : EditorWindow
 
     private void OnGUI()
     {
-        scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(1000), GUILayout.Height(1000));
+        scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
         GUILayout.Label("Debuffs", EditorStyles.boldLabel);
 
