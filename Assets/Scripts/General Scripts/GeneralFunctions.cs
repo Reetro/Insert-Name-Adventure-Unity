@@ -530,6 +530,7 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
+
             return null;
         }
     }

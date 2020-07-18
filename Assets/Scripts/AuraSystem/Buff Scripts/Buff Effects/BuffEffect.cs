@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using PlayerUI.Icons;
-using System.Collections;
 
 namespace AuraSystem.Effects
 {
@@ -12,6 +11,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values and starts buff timer then adds an icon to the player hud
         /// </summary>
+        /// <returns>The active buff effect</returns>
         public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
         {
             BuffEffect buffEffect = null;
@@ -66,6 +66,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values and starts buff timer
         /// </summary>
+        /// <returns>The active buff effect</returns>
         public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
         {
             BuffEffect buffEffect = null;
