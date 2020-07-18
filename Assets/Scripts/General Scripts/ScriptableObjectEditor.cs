@@ -12,7 +12,24 @@ public class ScriptableObjectEditor : EditorWindow
     private List<Editor> MyScriptableObjectBuffEditors = new List<Editor>();
     private Vector2 scrollPosition = Vector2.zero;
 
+    void OnDisable()
+    {
+        EditorApplication.update -= UpdateWindow;
+    }
+
     private void OnEnable()
+    {
+        EditorApplication.update += UpdateWindow;
+
+        AddItems();
+    }
+
+    private void UpdateWindow()
+    {
+        AddItems();
+    }
+
+    private void AddItems()
     {
         scriptableDebuffs = GetAllInstances<ScriptableDebuff>().ToList();
         scriptableBuffs = GetAllInstances<ScriptableBuff>().ToList();
