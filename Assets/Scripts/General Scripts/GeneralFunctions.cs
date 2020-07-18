@@ -6,6 +6,7 @@ using GameplayManagement;
 using EnemyCharacter;
 using AuraSystem.Effects;
 using PlayerCharacter.Controller;
+using System;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -293,8 +294,8 @@ public class GeneralFunctions
     /// <returns>A a random vector 2</returns>
     public static Vector2 CreateRandomVector2(float minX, float maxX, float minY, float maxY)
     {
-        var randomX = Random.Range(minX, maxX);
-        var randomY = Random.Range(minY, maxY);
+        var randomX = UnityEngine.Random.Range(minX, maxX);
+        var randomY = UnityEngine.Random.Range(minY, maxY);
 
         return new Vector2(randomX, randomY);
     }
@@ -306,7 +307,7 @@ public class GeneralFunctions
     /// <returns>A vector2 with a random y coordinate</returns>
     public static Vector2 CreateRandomVector2OnlyY(float minY, float maxY)
     {
-        var randomY = Random.Range(minY, maxY);
+        var randomY = UnityEngine.Random.Range(minY, maxY);
 
         return new Vector2(0, randomY);
     }
@@ -318,7 +319,7 @@ public class GeneralFunctions
     /// <returns>A vector2 with a random x coordinate</returns>
     public static Vector2 CreateRandomVector2OnlyX(float minX, float maxX)
     {
-        var randomX = Random.Range(minX, maxX);
+        var randomX = UnityEngine.Random.Range(minX, maxX);
 
         return new Vector2(randomX, 0);
     }
@@ -571,5 +572,21 @@ public class GeneralFunctions
         var player = objectToTest.GetComponentInParent<PlayerController>();
 
         return player;
+    }
+    /// <summary>
+    /// Remove an item from an array at a given index
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arr"></param>
+    /// <param name="index"></param>
+    public static void RemoveAt<T>(ref T[] arr, int index)
+    {
+        for (int a = index; a < arr.Length - 1; a++)
+        {
+            // moving elements downwards, to fill the gap at [index]
+            arr[a] = arr[a + 1];
+        }
+        // finally, let's decrement Array's size by one
+        Array.Resize(ref arr, arr.Length - 1);
     }
 }
