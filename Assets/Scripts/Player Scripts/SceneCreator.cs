@@ -23,7 +23,7 @@ namespace PlayerCharacter.SceneLoading
             SetupScene();
         }
         /// <summary>
-        /// Goes through 3 stages of setup Level, Player, Player Aura Manager on each stage checks to see if the given assets currently exist will call there construction scripts if not it will spawn them in
+        /// Goes through 3 stages of setup Level, Player, Gameplay Components on each stage checks to see if the given assets currently exist will call there construction scripts if not it will spawn them in
         /// </summary>
         private void SetupScene()
         {
@@ -31,7 +31,7 @@ namespace PlayerCharacter.SceneLoading
 
             SetUpPlayer();
 
-            SetUpPlayerAuraManager();
+            SetupGameplayComponents();
         }
         /// <summary>
         /// Checks if the level loader and level exit currently exist in the spawn
@@ -92,19 +92,16 @@ namespace PlayerCharacter.SceneLoading
             }
         }
         /// <summary>
-        /// Setup the player's aura manager component
+        /// Sets up all gameplay related components
         /// </summary>
-        private void SetUpPlayerAuraManager()
+        private void SetupGameplayComponents()
         {
-            var auraManager = GetComponent<AuraManager>();
+            var auraManagers = FindObjectsOfType<AuraManager>();
 
-            if (auraManager)
+            foreach (AuraManager auraManager in auraManagers)
             {
+                // Set all Aura Components UI reference to the player UI
                 auraManager.SetUIManager(playerHud.GetComponent<PlayerUIManager>());
-            }
-            else
-            {
-                Debug.LogWarning("Player has no Aura manager");
             }
         }
     }

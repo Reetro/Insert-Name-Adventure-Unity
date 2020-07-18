@@ -5,6 +5,7 @@ using PlayerUI;
 using GameplayManagement;
 using EnemyCharacter;
 using AuraSystem.Effects;
+using PlayerCharacter.Controller;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -559,5 +560,16 @@ public class GeneralFunctions
     public static PlayerUIManager GetPlayerUIManager()
     {
         return GameObject.FindGameObjectWithTag("Player Hud Canvas").GetComponent<PlayerUIManager>();
+    }
+    /// <summary>
+    /// Checks to see if the given object is on the player character
+    /// </summary>
+    /// <param name="objectToTest"></param>
+    /// <returns></returns>
+    public static bool IsObjectOnPlayer(GameObject objectToTest)
+    {
+        var player = objectToTest.GetComponentInParent<PlayerController>();
+
+        return player;
     }
 }

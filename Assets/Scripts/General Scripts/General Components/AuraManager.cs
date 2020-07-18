@@ -39,7 +39,10 @@ namespace AuraSystem
 
             if (createdBuff)
             {
-                MyCurrentBuffs.Add(createdBuff);
+                if (!MyCurrentBuffs.Contains(createdBuff))
+                {
+                    MyCurrentBuffs.Add(createdBuff);
+                }
 
                 return createdBuff;
             }
@@ -166,7 +169,10 @@ namespace AuraSystem
 
             if (createdDebuff)
             {
-                MyCurrentDebuffs.Add(createdDebuff);
+                if (!MyCurrentDebuffs.Contains(createdDebuff))
+                {
+                    MyCurrentDebuffs.Add(createdDebuff);
+                }
 
                 return createdDebuff;
             }

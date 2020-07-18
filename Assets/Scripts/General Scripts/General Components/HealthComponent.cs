@@ -35,7 +35,7 @@ public class HealthComponent : MonoBehaviour
 
         IsCurrentlyDead = false;
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             if (!setMaxhealth)
             {
@@ -69,7 +69,7 @@ public class HealthComponent : MonoBehaviour
 
         IsCurrentlyDead = false;
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             if (!setMaxhealth)
             {
@@ -119,7 +119,7 @@ public class HealthComponent : MonoBehaviour
             healthBar.SetHealth(CurrentHealth);
         }
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
@@ -146,7 +146,7 @@ public class HealthComponent : MonoBehaviour
 
                 onTakeAnyDamage.Invoke(damage);
 
-                if (IsOnPlayer())
+                if (GeneralFunctions.IsObjectOnPlayer(gameObject))
                 {
                     UpdatePlayerState();
                 }
@@ -178,7 +178,7 @@ public class HealthComponent : MonoBehaviour
             healthBar.SetHealth(CurrentHealth);
         }
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
@@ -193,7 +193,7 @@ public class HealthComponent : MonoBehaviour
         CurrentHealth = currentHP;
         maxHealth = maxHP;
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
@@ -238,14 +238,5 @@ public class HealthComponent : MonoBehaviour
         {
             playerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
         }
-    }
-    /// <summary>
-    /// Checks to see if this health component is on the player game object
-    /// </summary>
-    private bool IsOnPlayer()
-    {
-        var player = gameObject.GetComponentInParent<PlayerController>();
-
-        return player;
     }
 }

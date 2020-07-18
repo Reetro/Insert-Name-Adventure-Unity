@@ -15,7 +15,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
-        /// <returns>The active debuff effect</returns>
+        /// <returns>The active DebuffEffect</returns>
         public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
         {
             DebuffEffect debuffEffect = null;
@@ -89,7 +89,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking
         /// </summary>
-        /// <returns>The active debuff effect</returns>
+        /// <returns>The active DebuffEffect</returns>
         public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
         {
             DebuffEffect debuffEffect = null;
