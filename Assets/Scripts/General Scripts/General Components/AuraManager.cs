@@ -51,7 +51,7 @@ namespace AuraSystem
             }
         }
         /// <summary>
-        /// Finds a debuff of the same type as the given debuff
+        /// Finds a buff of the same type as the given buff
         /// </summary>
         /// <returns>A BuffEffect</returns>
         public BuffEffect FindBuffOfType(ScriptableBuff buff)
@@ -199,7 +199,7 @@ namespace AuraSystem
             }
         }
         /// <summary>
-        /// Removes then destroy the given debuff from the aura manager
+        /// Removes then destroys the given debuff from the aura manager
         /// </summary>
         public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
         {
