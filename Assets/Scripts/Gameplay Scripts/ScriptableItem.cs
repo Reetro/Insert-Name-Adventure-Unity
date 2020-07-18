@@ -38,7 +38,7 @@ namespace PlayerUI.ToolTipUI
         /// needs to be placed in the item update method will update the ScriptableItem internal stack count
         /// </summary>
         /// <param name="amount"></param>
-        public void UpdateStackCount(int amount)
+        public void UpdateToolTip(int amount)
         {
             CurrentStackCount = amount;
         }

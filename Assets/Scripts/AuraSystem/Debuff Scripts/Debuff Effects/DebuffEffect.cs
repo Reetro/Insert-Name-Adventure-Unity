@@ -15,9 +15,11 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
-        public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
+        public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
         {
-            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff);
+            DebuffEffect debuffEffect = null;
+
+            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff, out debuffEffect);
 
             if (!IsCurrentlyActive)
             {
@@ -33,7 +35,7 @@ namespace AuraSystem.Effects
 
                 firstRun = true;
 
-                debuff.UpdateStackCount(StackCount);
+                debuff.UpdateToolTip(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
@@ -46,6 +48,8 @@ namespace AuraSystem.Effects
                 }
 
                 StartCoroutine(DebuffTimer());
+
+                return this;
             }
             else if (refresh)
             {
@@ -63,6 +67,8 @@ namespace AuraSystem.Effects
                 }
 
                 RefreshDebuff(true, auraManager, debuff);
+
+                return debuffEffect;
             }
             else if (stack)
             {
@@ -70,15 +76,23 @@ namespace AuraSystem.Effects
                 Debuff = debuff;
                 this.icon = icon;
 
-                AddToStack(true, auraManager, Debuff);
+                AddToStack(true, auraManager, debuff);
+
+                return debuffEffect;
+            }
+            else
+            {
+                return null;
             }
         }
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking
         /// </summary>
-        public virtual void StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
+        public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
         {
-            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff);
+            DebuffEffect debuffEffect = null;
+
+            IsCurrentlyActive = isDebuffTypeActive(auraManager, debuff, out debuffEffect);
 
             if (!IsCurrentlyActive)
             {
@@ -90,7 +104,7 @@ namespace AuraSystem.Effects
                 Damage = debuff.damage;
                 Target = target;
 
-                debuff.UpdateStackCount(StackCount);
+                debuff.UpdateToolTip(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
@@ -105,6 +119,8 @@ namespace AuraSystem.Effects
                 IsCurrentlyActive = true;
 
                 StartCoroutine(DebuffTimer());
+
+                return this;
             }
             else if (refresh)
             {
@@ -112,6 +128,8 @@ namespace AuraSystem.Effects
                 Debuff = debuff;
 
                 RefreshDebuff(false, auraManager, debuff);
+
+                return debuffEffect;
             }
             else if (stack)
             {
@@ -119,6 +137,12 @@ namespace AuraSystem.Effects
                 Debuff = debuff;
 
                 AddToStack(false, auraManager, Debuff);
+
+                return debuffEffect;
+            }
+            else
+            {
+                return null;
             }
         }
         /// <summary>
@@ -151,7 +175,7 @@ namespace AuraSystem.Effects
         /// </summary>
         private void Update()
         {
-            Debuff.UpdateStackCount(StackCount);
+            Debuff.UpdateToolTip(StackCount);
         }
         /// <summary>
         /// Called when ever the current debuff ticks
@@ -185,17 +209,22 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Checks to see if a debuff of the given type is currently active
         /// </summary>
-        private bool isDebuffTypeActive(AuraManager auraManager, ScriptableDebuff scriptableDebuff)
+        private bool isDebuffTypeActive(AuraManager auraManager, ScriptableDebuff scriptableDebuff, out DebuffEffect debuffEffect)
         {
             if (auraManager)
             {
                 var debuff = auraManager.FindDebuffOtype(scriptableDebuff);
+
+                debuffEffect = debuff;
 
                 return debuff;
             }
             else
             {
                 Debug.LogError("Was unable to check debuff type on " + gameObject.name + "aura manager was invalid");
+
+                debuffEffect = null;
+
                 return false;
             }
         }
@@ -227,7 +256,7 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Removes a value of one from the current debuff stack count
+        /// Will remove a value of 1 from given debuff tries to find the debuff by ID
         /// </summary>
         public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
         {
@@ -269,6 +298,34 @@ namespace AuraSystem.Effects
             else
             {
                 Debug.LogError("Was unable to remove debuff stack on " + gameObject.name + "aura manager was invalid");
+            }
+        }
+        /// <summary>
+        /// Will remove a value of 1 from given debuff
+        /// </summary>
+        /// <param name="useIcon"></param>
+        /// <param name="scriptableDebuff"></param>
+        public void RemoveFromStack(bool useIcon, DebuffEffect debuffEffect)
+        {
+            if (debuffEffect)
+            {
+                debuffEffect.StackCount--;
+
+                if (debuffEffect.StackCount <= 0)
+                {
+                    if (useIcon)
+                    {
+                        debuffEffect.MyAuraManager.RemoveDebuff(debuffEffect.gameObject, debuffEffect, debuffEffect.icon);
+                    }
+                    else
+                    {
+                        debuffEffect.MyAuraManager.RemoveDebuff(debuffEffect.gameObject, debuffEffect);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to remove debuff debuffEffect was not valid");
             }
         }
         /// <summary>

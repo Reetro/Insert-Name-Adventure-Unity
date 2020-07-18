@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using AuraSystem;
+using AuraSystem.Effects;
 
 namespace EnemyCharacter
 {
@@ -8,24 +9,20 @@ namespace EnemyCharacter
         [SerializeField] ScriptableDebuff leechingDebuff = null;
         [SerializeField] HealthComponent leechHealthComp = null;
 
-        private AuraManager auraManager = null;
+        private DebuffEffect debuffEffect = null;
 
-        public void OnLeechSpawn(float health, AuraManager auraManager, GameObject player)
+        public void OnLeechSpawn(float health, GameObject player)
         {
             GeneralFunctions.ConstructHPComponent(gameObject);
 
             leechHealthComp.SetHealth(health);
 
-            auraManager.ApplyDebuff(player, leechingDebuff, true);
-
-            this.auraManager = auraManager;
+            debuffEffect = GeneralFunctions.ApplyDebuffToTarget(player, leechingDebuff, true);
         }
 
         public void OnDeath()
         {
-            var debuff = auraManager.FindDebuffOtype(leechingDebuff);
-
-            debuff.RemoveFromStack(true, auraManager, leechingDebuff);
+            debuffEffect.RemoveFromStack(true, debuffEffect);
 
             Destroy(gameObject);
         }

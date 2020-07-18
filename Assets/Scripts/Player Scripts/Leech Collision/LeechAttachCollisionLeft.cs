@@ -30,11 +30,14 @@ namespace PlayerCharacter.Collision
 
                     var spawnTransform = GeneralFunctions.GetLeechAttachPointByTag(tagToAttach);
 
-                    var spawnLeech = GeneralFunctions.SpawnLeechAttach(auraManager, leechToAttach, spawnTransform, leechHP.CurrentHealth, player);
+                    var spawnLeech = GeneralFunctions.SpawnLeechAttach(leechToAttach, spawnTransform, leechHP.CurrentHealth, player);
 
                     GeneralFunctions.FlipObject(spawnLeech.gameObject);
 
-                    Destroy(collision.gameObject);
+                    if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+                    {
+                        Destroy(collision.gameObject);
+                    }
                 }
             }
         }

@@ -4,6 +4,7 @@ using AuraSystem;
 using PlayerUI;
 using GameplayManagement;
 using EnemyCharacter;
+using AuraSystem.Effects;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -130,13 +131,13 @@ public class GeneralFunctions
     /// <param name="health">Incoming leech's health</param>
     /// <param name="player">Player reference</param>
     /// <returns>The spawned leech attached to the player</returns>
-    public static AttachedLeech SpawnLeechAttach(AuraManager auraManager, AttachedLeech attachedLeech, Transform transform, float health,  GameObject player)
+    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health,  GameObject player)
     {
         AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
 
         localLeech.transform.parent = transform;
 
-        localLeech.OnLeechSpawn(health, auraManager, player);
+        localLeech.OnLeechSpawn(health, player);
 
         return localLeech;
     }
@@ -495,17 +496,19 @@ public class GeneralFunctions
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static void ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    public static BuffEffect ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
         var auraManager = target.GetComponent<AuraManager>();
         
         if (auraManager)
         {
-            auraManager.ApplyBuff(target, buffToApply, createIcon);
+            return auraManager.ApplyBuff(target, buffToApply, createIcon);
         }
         else
         {
             Debug.LogError("Failed to apply buff to " + target.gameObject.name + " did not have a aura manager component");
+
+            return null;
         }
     }
     /// <summary>
@@ -516,17 +519,18 @@ public class GeneralFunctions
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static void ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
+    public static DebuffEffect ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
     {
         var auraManager = target.GetComponent<AuraManager>();
 
         if (auraManager)
         {
-            auraManager.ApplyDebuff(target, debuffToApply, createIcon);
+            return auraManager.ApplyDebuff(target, debuffToApply, createIcon);
         }
         else
         {
             Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
+            return null;
         }
     }
     /// <summary>

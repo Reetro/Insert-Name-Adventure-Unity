@@ -19,22 +19,36 @@ namespace AuraSystem
         /// <summary>
         /// Will spawn the given buff into the scene then start the buff
         /// </summary>
-        public void ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+        /// <returns>The applied buff</returns>
+        public BuffEffect ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
         {
             BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity);
+
+            BuffEffect createdBuff = null;
 
             if (createIcon)
             {
                 var buffIcon = CreateBuffIcon(buffToApply);
 
-                buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
+                createdBuff = buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
             }
             else
             {
-                buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
+                createdBuff = buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
             }
 
-            MyCurrentBuffs.Add(buff);
+            if (createdBuff)
+            {
+                MyCurrentBuffs.Add(createdBuff);
+
+                return createdBuff;
+            }
+            else
+            {
+                Debug.LogError("Failed to apply " + buffToApply.Name + " created buff failed to start");
+
+                return null;
+            }
         }
         /// <summary>
         /// Finds a debuff of the same type as the given debuff
@@ -132,22 +146,36 @@ namespace AuraSystem
         /// <summary>
         /// Will spawn the given debuff into the scene then start the debuff
         /// </summary>
-        public void ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
+        /// <returns>The applied debuff</returns>
+        public DebuffEffect ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
         {
-            DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, transform.position, Quaternion.identity);
+            DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, Vector2.zero, Quaternion.identity);
+
+            DebuffEffect createdDebuff = null;
 
             if (createIcon)
             {
                 var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
 
-                debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+                createdDebuff = debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
             }
             else
             {
-                debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
+                createdDebuff = debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
             }
 
-            MyCurrentDebuffs.Add(debuff);
+            if (createdDebuff)
+            {
+                MyCurrentDebuffs.Add(createdDebuff);
+
+                return createdDebuff;
+            }
+            else
+            {
+                Debug.LogError("Failed to apply " + debuffToApply.Name + " created debuff failed to start");
+
+                return null;
+            }
         }
         /// <summary>
         /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI

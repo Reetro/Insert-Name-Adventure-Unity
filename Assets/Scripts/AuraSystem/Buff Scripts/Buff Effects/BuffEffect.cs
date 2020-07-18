@@ -12,9 +12,11 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Sets all needed values and starts buff timer then adds an icon to the player hud
         /// </summary>
-        public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
+        public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
         {
-            IsCurrentlyActive = IsBuffActive(auraManager, buff);
+            BuffEffect buffEffect = null;
+
+            IsCurrentlyActive = IsBuffActive(auraManager, buff, out buffEffect);
 
             if (!IsCurrentlyActive)
             {
@@ -31,6 +33,8 @@ namespace AuraSystem.Effects
                 MyID = GeneralFunctions.GenID();
 
                 IsBuffRunning = true;
+
+                return this;
             }
             else if (refresh)
             {
@@ -41,6 +45,8 @@ namespace AuraSystem.Effects
                 this.icon = icon;
 
                 RefreshBuff(true, auraManager, Buff);
+
+                return buffEffect;
             }
             else if (stack)
             {
@@ -49,14 +55,22 @@ namespace AuraSystem.Effects
                 this.icon = icon;
 
                 AddToStack(true, auraManager, Buff);
+
+                return buffEffect;
+            }
+            else
+            {
+                return null;
             }
         }
         /// <summary>
         /// Sets all needed values and starts buff timer
         /// </summary>
-        public virtual void StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
+        public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
         {
-            IsCurrentlyActive = IsBuffActive(auraManager, buff);
+            BuffEffect buffEffect = null;
+
+            IsCurrentlyActive = IsBuffActive(auraManager, buff, out buffEffect);
 
             if (!IsCurrentlyActive)
             {
@@ -72,6 +86,8 @@ namespace AuraSystem.Effects
                 MyID = GeneralFunctions.GenID();
 
                 IsBuffRunning = true;
+
+                return this;
             }
             else if (refresh)
             {
@@ -81,6 +97,8 @@ namespace AuraSystem.Effects
                 Buff = buff;
 
                 RefreshBuff(false, auraManager, Buff);
+
+                return buffEffect;
             }
             else if (stack)
             {
@@ -88,6 +106,12 @@ namespace AuraSystem.Effects
                 Buff = buff;
 
                 AddToStack(false, auraManager, Buff);
+
+                return buffEffect;
+            }
+            else
+            {
+                return null;
             }
         }
         /// <summary>
@@ -124,7 +148,7 @@ namespace AuraSystem.Effects
         {
             if (IsBuffRunning)
             {
-                Buff.UpdateStackCount(StackCount);
+                Buff.UpdateToolTip(StackCount);
 
                 if (Duration > 0)
                 {
@@ -142,17 +166,22 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Checks to see if the current buff is active
         /// </summary>
-        public bool IsBuffActive(AuraManager auraManager, ScriptableBuff scriptableBuff)
+        public bool IsBuffActive(AuraManager auraManager, ScriptableBuff scriptableBuff, out BuffEffect buffEffect)
         {
             if (auraManager)
             {
                 var buff = auraManager.FindBuffOfType(scriptableBuff);
+
+                buffEffect = buff;
 
                 return buff;
             }
             else
             {
                 Debug.LogError("Was unable to check buff type on " + gameObject.name + "aura manager was invalid");
+
+                buffEffect = null;
+
                 return false;
             }
         }
