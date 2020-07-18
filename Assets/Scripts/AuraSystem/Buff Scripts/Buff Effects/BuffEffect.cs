@@ -253,48 +253,31 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Removes a value of one from the current buff stack
+        /// Will remove a value of 1 from given the buff
         /// </summary>
-        public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableBuff scriptableBuff)
+        /// <param name="useIcon"></param>
+        /// <param name="scriptableDebuff"></param>
+        public void RemoveFromStack(bool useIcon, BuffEffect buffEffect)
         {
-            if (auraManager)
+            if (buffEffect)
             {
-                var localBuff = auraManager.FindBuffByID(MyID);
+                buffEffect.StackCount--;
 
-                localBuff.StackCount--;
-
-                if (useIcon)
-                {
-                    localBuff.icon.UpdateStackCount(localBuff.StackCount);
-                }
-
-                if (localBuff.StackCount <= 0)
+                if (buffEffect.StackCount <= 0)
                 {
                     if (useIcon)
                     {
-                        if (localBuff)
-                        {
-                            auraManager.RemoveBuff(localBuff.gameObject, localBuff, localBuff.icon);
-                        }
-                        else
-                        {
-                            var iconToRemove = auraManager.MyUIManager.FindBuffIconByType(scriptableBuff);
-
-                            auraManager.MyUIManager.RemoveBuffIcon(iconToRemove);
-                        }
+                        buffEffect.MyAuraManager.RemoveBuff(buffEffect.gameObject, buffEffect, buffEffect.icon);
                     }
                     else
                     {
-                        if (localBuff)
-                        {
-                            auraManager.RemoveBuff(localBuff.gameObject, localBuff);
-                        }
+                        buffEffect.MyAuraManager.RemoveBuff(buffEffect.gameObject, buffEffect);
                     }
                 }
             }
             else
             {
-                Debug.LogError("Was unable to remove buff stack on " + gameObject.name + "aura manager was invalid");
+                Debug.LogError("Failed to remove debuff debuffEffect was not valid");
             }
         }
         /// <summary>

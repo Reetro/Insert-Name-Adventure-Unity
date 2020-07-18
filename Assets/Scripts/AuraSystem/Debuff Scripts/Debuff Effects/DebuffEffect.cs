@@ -256,52 +256,7 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Will remove a value of 1 from given debuff tries to find the debuff by ID
-        /// </summary>
-        public void RemoveFromStack(bool useIcon, AuraManager auraManager, ScriptableDebuff scriptableDebuff)
-        {
-            if (auraManager)
-            {
-                var localDebuff = auraManager.FindDebuffByID(MyID);
-
-                localDebuff.StackCount--;
-
-                if (useIcon)
-                {
-                    localDebuff.icon.UpdateStackCount(localDebuff.StackCount);
-                }
-
-                if (localDebuff.StackCount <= 0)
-                {
-                    if (useIcon)
-                    {
-                        if (localDebuff)
-                        {
-                            auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff, localDebuff.icon);
-                        }
-                        else
-                        {
-                            var iconToRemove = auraManager.MyUIManager.FindDebuffIconByType(scriptableDebuff);
-
-                            auraManager.MyUIManager.RemoveDebuffIcon(iconToRemove);
-                        }
-                    }
-                    else
-                    {
-                        if (localDebuff)
-                        {
-                            auraManager.RemoveDebuff(localDebuff.gameObject, localDebuff);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogError("Was unable to remove debuff stack on " + gameObject.name + "aura manager was invalid");
-            }
-        }
-        /// <summary>
-        /// Will remove a value of 1 from given debuff
+        /// Will remove a value of 1 from the given debuff
         /// </summary>
         /// <param name="useIcon"></param>
         /// <param name="scriptableDebuff"></param>
