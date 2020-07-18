@@ -22,7 +22,7 @@ namespace AuraSystem
         /// <returns>The applied buff</returns>
         public BuffEffect ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
         {
-            BuffEffect buff = Instantiate(buffToApply.buffEffect, transform.position, Quaternion.identity);
+            BuffEffect buff = Instantiate(buffToApply.buffEffect, Vector2.zero, Quaternion.identity);
 
             BuffEffect createdBuff = null;
 
