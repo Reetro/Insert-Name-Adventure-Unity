@@ -81,7 +81,7 @@ public class ScriptableObjectEditor : EditorWindow
         GUILayout.EndScrollView();
     }
 
-    public T[] GetAllInstances<T>() where T : ScriptableObject
+    private T[] GetAllInstances<T>() where T : ScriptableObject
     {
         string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);  //FindAssets uses tags check documentation for more info
         T[] a = new T[guids.Length];
