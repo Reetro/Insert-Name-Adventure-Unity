@@ -27,13 +27,14 @@ namespace PlayerCharacter.Controller
             {
                 horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
-                if (transform.localEulerAngles.y >= 180)
+                switch (transform.localEulerAngles.y >= 180)
                 {
-                    myAnimator.SetFloat("Speed", -horizontalMove);
-                }
-                else
-                {
-                    myAnimator.SetFloat("Speed", horizontalMove);
+                    case true:
+                        myAnimator.SetFloat("Speed", -horizontalMove);
+                        break;
+                    case false:
+                        myAnimator.SetFloat("Speed", horizontalMove);
+                        break;
                 }
 
                 if (horizontalMove == 0)
