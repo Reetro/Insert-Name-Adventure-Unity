@@ -7,6 +7,7 @@ using EnemyCharacter;
 using AuraSystem.Effects;
 using PlayerCharacter.Controller;
 using System;
+using UnityEditor;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -588,5 +589,21 @@ public class GeneralFunctions
         }
         // finally, let's decrement Array's size by one
         Array.Resize(ref arr, arr.Length - 1);
+    }
+    /// <summary>
+    /// Get all ScriptableObjects of the given type
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns>An array of ScriptableObjects</returns>
+    public static T[] GetAllScriptInstances<T>() where T : ScriptableObject
+    {
+        string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);  //FindAssets uses tags check documentation for more info
+        T[] a = new T[guids.Length];
+        for (int i = 0; i < guids.Length; i++)         //probably could get optimized 
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            a[i] = AssetDatabase.LoadAssetAtPath<T>(path);
+        }
+        return a;
     }
 }
