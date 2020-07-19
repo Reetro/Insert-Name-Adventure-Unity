@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using PlayerUI;
 using GameplayManagement;
+using System;
 
+[Serializable]
 public class HealthComponent : MonoBehaviour
 {
     [System.Serializable]

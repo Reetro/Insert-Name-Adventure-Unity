@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace PlayerCharacter.Controller
 {
+    [Serializable]
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour
     {
