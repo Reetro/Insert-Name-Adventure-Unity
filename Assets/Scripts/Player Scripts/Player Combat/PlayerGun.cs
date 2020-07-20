@@ -13,23 +13,26 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float laserUpTime = 0.02f;
         [SerializeField] private float gunDamage = 3.5f;
         [SerializeField] private float gunCooldown = 1f;
+        [SerializeField] private PlayerProjectile projectileToSpawn = null;
 
-        [Header("Config Settings")]
-        [SerializeField] private PlayerProjectile hitBoxToSpawn = null;
-        [SerializeField] private Transform gunFireLocation = null;
-        [SerializeField] private PlayerController controller = null;
-        [SerializeField] private CooldownBar cooldownBar = null;
-        [SerializeField] private HealthComponent playerHealthComp = null;
+        #region Gun Components
+        private Transform gunFireLocation = null;
+        private PlayerController controller = null;
+        private CooldownBar cooldownBar = null;
+        private HealthComponent playerHealthComp = null;
+        #endregion
 
+        #region Local Varabiles
         private float gunAngle = 0f;
         private bool gamepadActive = false;
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
+        #endregion
 
         private void Awake()
         {
-            gameplayManager = FindObjectOfType<GameplayManager>();
+            SetupGun();
         }
 
         void Update()
@@ -49,7 +52,7 @@ namespace PlayerCharacter.Controller
         {
             if (CanGunSpawnProjectile())
             {
-                PlayerProjectile gunHit = Instantiate(hitBoxToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
+                PlayerProjectile gunHit = Instantiate(projectileToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
 
                 gunHit.ConstructBox(gunDamage, laserUpTime);
 
@@ -226,6 +229,17 @@ namespace PlayerCharacter.Controller
             float mouseX = Input.mousePosition.x;
 
             return mouseX < playerScreenPoint.x ? true : false;
+        }
+        /// <summary>
+        /// Collects all need components for the gun to work
+        /// </summary>
+        private void SetupGun()
+        {
+            gunFireLocation = transform.GetChild(2).transform;
+            controller = GetComponentInParent<PlayerController>();
+            cooldownBar = transform.GetChild(3).transform.GetChild(0).GetComponent<CooldownBar>();
+            playerHealthComp = GetComponentInParent<HealthComponent>();
+            gameplayManager = FindObjectOfType<GameplayManager>();
         }
     }
 }

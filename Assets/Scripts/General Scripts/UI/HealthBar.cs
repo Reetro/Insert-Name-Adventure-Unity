@@ -33,7 +33,6 @@ namespace PlayerUI
             slider.maxValue = lastMax;
 
             maxHealthText.text = lastMax.ToString();
-            currentHealthText.text = health.ToString();
 
             if (slider.value < slider.maxValue)
             {
@@ -53,7 +52,6 @@ namespace PlayerUI
             slider.value = playerState.GetCurrentHealth();
 
             maxHealthText.text = playerState.GetCurrentMaxHealth().ToString();
-            currentHealthText.text = playerState.GetCurrentMaxHealth().ToString();
 
             if (slider.value < slider.maxValue)
             {
