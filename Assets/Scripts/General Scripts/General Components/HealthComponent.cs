@@ -14,16 +14,15 @@ public class HealthComponent : MonoBehaviour
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
     
-    [Header("Health Bar Settings")]
-    [SerializeField] HealthBar healthBar = null;
-
-    [Header("Events")]
-    [Space]
+    [HideInInspector]
     public UnityEvent OnDeath;
-    [Space]
+    
+    [HideInInspector]
     public TakeAnyDamge onTakeAnyDamage;
+    
     private PlayerState playerState = null;
     private GameplayManager gameplayManager = null;
+    private HealthBar healthBar = null;
 
     private static bool setMaxhealth = false;
 

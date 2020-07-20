@@ -20,6 +20,8 @@ namespace EnemyCharacter
 
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
+
+            MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
         /// <summary>
         /// Get this Gameobjects health component

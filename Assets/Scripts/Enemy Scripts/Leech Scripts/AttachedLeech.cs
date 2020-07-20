@@ -17,6 +17,8 @@ namespace EnemyCharacter
 
             leechHealthComp.SetHealth(health);
 
+            leechHealthComp.OnDeath.AddListener(OnDeath);
+
             debuffEffect = GeneralFunctions.ApplyDebuffToTarget(player, leechingDebuff, true);
         }
 

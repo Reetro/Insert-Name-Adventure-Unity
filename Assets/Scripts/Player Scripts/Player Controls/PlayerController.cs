@@ -13,12 +13,16 @@ namespace PlayerCharacter.Controller
         private bool jump = false;
         private Animator myAnimator = null;
         private PlayerMovement playerMovement = null;
+        private HealthComponent healthComponent = null;
 
         private void Start()
         {
             myAnimator = GetComponent<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
             uiManager = FindObjectOfType<PlayerUIManager>();
+            healthComponent = GetComponent<HealthComponent>();
+
+            healthComponent.OnDeath.AddListener(OnDeath);
         }
 
         private void Update()
