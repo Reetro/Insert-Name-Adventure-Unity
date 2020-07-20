@@ -137,6 +137,8 @@ namespace CustomEditors
             SetupLeechFatherEditor();
 
             SetupLeechFatherShooting();
+
+            SetupLeechFatherHealth();
         }
 
         private void SetupPlayer()
@@ -224,6 +226,21 @@ namespace CustomEditors
             }
         }
 
+        private void SetLeechHealth()
+        {
+            _LeechHealthBar = leechHealthObject.FindProperty("healthBar");
+            _LeechMaxHealth = leechHealthObject.FindProperty("maxHealth");
+            _LeechOnDeath = leechHealthObject.FindProperty("OnDeath");
+            _LeechTakeAnyDamage = leechHealthObject.FindProperty("onTakeAnyDamage");
+        }
+
+        private void SetLeechMovement()
+        {
+            _LeechFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
+            _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
+            _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
+        }
+
         private void SetupLeechFatherEditor()
         {
             List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
@@ -256,19 +273,12 @@ namespace CustomEditors
             _LeechFatherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
         }
 
-        private void SetLeechHealth()
+        private void SetupLeechFatherHealth()
         {
-            _LeechHealthBar = leechHealthObject.FindProperty("healthBar");
-            _LeechMaxHealth = leechHealthObject.FindProperty("maxHealth");
-            _LeechOnDeath = leechHealthObject.FindProperty("OnDeath");
-            _LeechTakeAnyDamage = leechHealthObject.FindProperty("onTakeAnyDamage");
-        }
-
-        private void SetLeechMovement()
-        {
-            _LeechFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
-            _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
-            _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
+            _LeechFatherMaxHealth = leechFatherHealthObject.FindProperty("maxHealth");
+            _LeechFatherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
+            _LeechFatherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
+            _LeechFatherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void OnGUI()
@@ -315,6 +325,10 @@ namespace CustomEditors
             /// Player area end
 
             GUILayout.Space(50f);
+
+            GUILayout.Label("Enemy Settings", EditorStyles.boldLabel);
+
+            GUILayout.Space(15f);
 
             /// Enemies area start
             GUILayout.Label("Leech", EditorStyles.boldLabel);
