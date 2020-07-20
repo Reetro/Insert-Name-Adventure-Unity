@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using LevelObjects.MovingObjects;
+using System;
 
 namespace EnemyCharacter.AI
 {
+    [Serializable]
     public class LeechMother : EnemyShooter
     {
         protected override void Shoot()

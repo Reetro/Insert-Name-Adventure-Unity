@@ -135,6 +135,33 @@ namespace CustomEditors
         private SerializedProperty _LeechMotherProjectileSpeed;
         #endregion
 
+        #region Shaman Objects
+        private SerializedObject shamanObject;
+        private SerializedObject shamanHealthObject;
+        #endregion
+
+        #region Shaman Health Varaibles
+        private SerializedProperty _ShamanMaxHealth;
+        private SerializedProperty _ShamanHealthBar;
+        private SerializedProperty _ShamanOnDeath;
+        private SerializedProperty _ShamanTakeAnyDamage;
+        #endregion
+
+        #region Shaman Shooting Varaibles
+        private SerializedProperty _ShamanProjectilePrefab;
+        private SerializedProperty _ShamanTeleportOffset;
+        private SerializedProperty _ShamanBoomerangSpeed;
+        private SerializedProperty _ShamanHitsBeforeTeleport;
+        private SerializedProperty _ShamanMinRandom;
+        private SerializedProperty _ShamanMaxRandom;
+        private SerializedProperty _ShamanDamage;
+        #endregion
+
+        #region Shaman Editors
+        private Editor shamanHealthEditor = null;
+        private Editor shamanEditor = null;
+        #endregion
+
         #region Local Varaibles
         private Vector2 scrollPosition = Vector2.zero;
         private static bool showPlayerSettings = false;
@@ -159,6 +186,7 @@ namespace CustomEditors
             SetupEnemies();
         }
 
+        #region Enemy Functions
         private void SetupEnemies()
         {
             SetupLeechEditor();
@@ -178,73 +206,13 @@ namespace CustomEditors
             SetupLeechMotherHealth();
 
             SetupLeechMotherShooting();
+
+            SetupShamanEditor();
+
+            SetupShamanHealth();
+
+            SetupShamanShooting();
         }
-
-        private void SetupPlayer()
-        {
-            SetupPlayerEditor();
-
-            SetPlayerMovement();
-
-            SetPlayerHealth();
-
-            SetPlayerGun();
-        }
-
-        #region Player Functions
-        private void SetPlayerMovement()
-        {
-            _PlayerJumpForce = playerMovementObject.FindProperty("jumpForce");
-            _PlayerRunSpeed = playerMovementObject.FindProperty("runSpeed");
-            _MovementSmothing = playerMovementObject.FindProperty("movementSmoothing");
-            _HasAirControl = playerMovementObject.FindProperty("hasAirControl");
-            _PlayerAccleration = playerMovementObject.FindProperty("playerAcceleration");
-        }
-
-        private void SetPlayerHealth()
-        {
-            _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
-            _PlayerHealthBar = playerHealthObject.FindProperty("healthBar");
-            _PlayerOnDeath = playerHealthObject.FindProperty("OnDeath");
-            _PlayerTakeAnyDamage = playerHealthObject.FindProperty("onTakeAnyDamage");
-        }
-
-        private void SetPlayerGun()
-        {
-            _PlayerLaserUpTime = playerGunOject.FindProperty("laserUpTime");
-            _PlayerGunDumage = playerGunOject.FindProperty("gunDamage");
-            _PlayerGunCooldown = playerGunOject.FindProperty("gunCooldown");
-            _GunProjectile = playerGunOject.FindProperty("hitBoxToSpawn");
-            _GunFireLocation = playerGunOject.FindProperty("gunFireLocation");
-            _GunController = playerGunOject.FindProperty("controller");
-            _CooldownBar = playerGunOject.FindProperty("cooldownBar");
-            _PlayerHealthComp = playerGunOject.FindProperty("playerHealthComp");
-        }
-
-        private void SetupPlayerEditor()
-        {
-            // Find and add player Gameobject to menu
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
-
-            foreach (string currentPath in prefabsPaths)
-            {
-                GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
-
-                if (playerPrefab)
-                {
-                    playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
-                    playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
-                    playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
-
-                    playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
-                    playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
-                    playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
-
-                    break;
-                }
-            }
-        }
-        #endregion
 
         #region Leech Functions
         private void SetupLeechEditor()
@@ -365,6 +333,115 @@ namespace CustomEditors
             _LeechMotherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
             _LeechMotherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
             _LeechMotherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
+        }
+        #endregion
+
+        #region Shaman Functions
+        private void SetupShamanEditor()
+        {
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Shaman/Shaman.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject shamanPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (shamanPrefab)
+                {
+                    shamanEditor = Editor.CreateEditor(shamanPrefab.GetComponent<Shaman>());
+                    shamanHealthEditor = Editor.CreateEditor(shamanPrefab.GetComponent<HealthComponent>());
+
+                    shamanHealthObject = new SerializedObject(shamanPrefab.GetComponent<HealthComponent>());
+
+                    shamanObject = new SerializedObject(shamanPrefab.GetComponent<Shaman>());
+
+                    break;
+                }
+            }
+        }
+
+        private void SetupShamanHealth()
+        {
+            _ShamanMaxHealth = shamanHealthObject.FindProperty("maxHealth");
+            _ShamanHealthBar = shamanHealthObject.FindProperty("healthBar");
+            _ShamanOnDeath = shamanHealthObject.FindProperty("OnDeath");
+            _ShamanTakeAnyDamage = shamanHealthObject.FindProperty("onTakeAnyDamage");
+        }
+
+        private void SetupShamanShooting()
+        {
+            _ShamanBoomerangSpeed = shamanObject.FindProperty("boomerangSpeed");
+            _ShamanDamage = shamanObject.FindProperty("boomerangDamage");
+            _ShamanHitsBeforeTeleport = shamanObject.FindProperty("maxHitsBeforeTeleport");
+            _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
+            _ShamanMinRandom = shamanObject.FindProperty("boomerangMinRandomFactor");
+            _ShamanMaxRandom = shamanObject.FindProperty("boomerangMaxRandomFactor");
+            _ShamanProjectilePrefab = shamanObject.FindProperty("boomerangToSpawn");
+        }
+        #endregion
+        #endregion
+
+        #region Player Functions
+        private void SetupPlayer()
+        {
+            SetupPlayerEditor();
+
+            SetPlayerMovement();
+
+            SetPlayerHealth();
+
+            SetPlayerGun();
+        }
+        private void SetPlayerMovement()
+        {
+            _PlayerJumpForce = playerMovementObject.FindProperty("jumpForce");
+            _PlayerRunSpeed = playerMovementObject.FindProperty("runSpeed");
+            _MovementSmothing = playerMovementObject.FindProperty("movementSmoothing");
+            _HasAirControl = playerMovementObject.FindProperty("hasAirControl");
+            _PlayerAccleration = playerMovementObject.FindProperty("playerAcceleration");
+        }
+
+        private void SetPlayerHealth()
+        {
+            _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
+            _PlayerHealthBar = playerHealthObject.FindProperty("healthBar");
+            _PlayerOnDeath = playerHealthObject.FindProperty("OnDeath");
+            _PlayerTakeAnyDamage = playerHealthObject.FindProperty("onTakeAnyDamage");
+        }
+
+        private void SetPlayerGun()
+        {
+            _PlayerLaserUpTime = playerGunOject.FindProperty("laserUpTime");
+            _PlayerGunDumage = playerGunOject.FindProperty("gunDamage");
+            _PlayerGunCooldown = playerGunOject.FindProperty("gunCooldown");
+            _GunProjectile = playerGunOject.FindProperty("hitBoxToSpawn");
+            _GunFireLocation = playerGunOject.FindProperty("gunFireLocation");
+            _GunController = playerGunOject.FindProperty("controller");
+            _CooldownBar = playerGunOject.FindProperty("cooldownBar");
+            _PlayerHealthComp = playerGunOject.FindProperty("playerHealthComp");
+        }
+
+        private void SetupPlayerEditor()
+        {
+            // Find and add player Gameobject to menu
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (playerPrefab)
+                {
+                    playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
+                    playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
+                    playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
+
+                    playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
+                    playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
+                    playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
+
+                    break;
+                }
+            }
         }
         #endregion
 
@@ -539,9 +616,28 @@ namespace CustomEditors
 
             if (showShamanSettings)
             {
+                // fetch current values from the target
+                shamanObject.Update();
 
+                // fetch current values from the target
+                shamanHealthObject.Update();
+
+                if (shamanHealthEditor)
+                {
+                    shamanHealthEditor.OnInspectorGUI();
+                }
+
+                if (shamanEditor)
+                {
+                    shamanEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                shamanObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                shamanHealthObject.ApplyModifiedProperties();
             }
-
             #endregion
 
             GUILayout.EndScrollView();

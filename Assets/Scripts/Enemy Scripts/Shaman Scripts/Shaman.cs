@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using System;
 
 namespace EnemyCharacter.AI
 {
+    [Serializable]
     public class Shaman : EnemyBase
     {
-        [SerializeField] private Boomerang boomerangToSpawn = null;
-
         [Header("Boomerang settings")]
         [SerializeField] private int maxHitsBeforeTeleport = 2;
         [SerializeField] private float boomerangSpeed = 300f;
@@ -13,6 +13,7 @@ namespace EnemyCharacter.AI
         [SerializeField] private float boomerangMinRandomFactor = 300f;
         [SerializeField] private float boomerangMaxRandomFactor = 600f;
         [SerializeField] private float teleportOffset = 0.5f;
+        [SerializeField] private Boomerang boomerangToSpawn = null;
 
         private Boomerang currentBoomrang = null;
 
