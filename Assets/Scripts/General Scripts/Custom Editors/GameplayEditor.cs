@@ -102,7 +102,47 @@ namespace CustomEditors
         private SerializedProperty _LeechFatherProjectileSpeed;
         #endregion
 
+        #region Leech Mother Health Varaibles
+        private SerializedProperty _LeechMotherMaxHealth;
+        private SerializedProperty _LeechMotherHealthBar;
+        private SerializedProperty _LeechMotherOnDeath;
+        private SerializedProperty _LeechMotherTakeAnyDamage;
+        #endregion
+
+        #region Leech Mother Movement Varaibles
+        private SerializedProperty _LeechMotherFlySpeed;
+        private SerializedProperty _LeechMotherRandomYmin;
+        private SerializedProperty _LeechMotherRandomYmax;
+        #endregion
+
+        #region Leech Mother Objects
+        private SerializedObject leechMotherMovementObject;
+        private SerializedObject leechMotherHealthObject;
+        private SerializedObject leechMotherObject;
+        #endregion
+
+        #region Leech Mother Editors
+        private Editor leechMotherMovmentEditor = null;
+        private Editor leechMotherHealthEditor = null;
+        private Editor leechMotherEditor = null;
+        #endregion
+
+        #region Leech Mother Shooting Varaibles
+        private SerializedProperty _LeechMotherProjectilePrefab;
+        private SerializedProperty _LeechMotherShootIntervale;
+        private SerializedProperty _LeechMotherProjectileDamage;
+        private SerializedProperty _LeechMotherFirePoint;
+        private SerializedProperty _LeechMotherProjectileSpeed;
+        #endregion
+
+        #region Local Varaibles
         private Vector2 scrollPosition = Vector2.zero;
+        private static bool showPlayerSettings = false;
+        private static bool showLeechSettings = false;
+        private static bool showLeechFatherSettings = false;
+        private static bool showLeechMotherSettings = false;
+        private static bool showShamanSettings = false;
+        #endregion
 
         [MenuItem("Window/Gameplay Editor")]
         public static void ShowWindow()
@@ -114,13 +154,6 @@ namespace CustomEditors
         {
             base.OnEnable();
 
-            SetupPlayer();
-
-            SetupEnemies();
-        }
-
-        public override void UpdateWindow()
-        {
             SetupPlayer();
 
             SetupEnemies();
@@ -139,6 +172,12 @@ namespace CustomEditors
             SetupLeechFatherShooting();
 
             SetupLeechFatherHealth();
+
+            SetupLeechMotherEditor();
+
+            SetupLeechMotherHealth();
+
+            SetupLeechMotherShooting();
         }
 
         private void SetupPlayer()
@@ -152,6 +191,7 @@ namespace CustomEditors
             SetPlayerGun();
         }
 
+        #region Player Functions
         private void SetPlayerMovement()
         {
             _PlayerJumpForce = playerMovementObject.FindProperty("jumpForce");
@@ -204,7 +244,9 @@ namespace CustomEditors
                 }
             }
         }
+        #endregion
 
+        #region Leech Functions
         private void SetupLeechEditor()
         {
             List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech.prefab");
@@ -240,7 +282,9 @@ namespace CustomEditors
             _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
             _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
         }
+        #endregion
 
+        #region Leech Father Functions
         private void SetupLeechFatherEditor()
         {
             List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
@@ -280,132 +324,225 @@ namespace CustomEditors
             _LeechFatherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
             _LeechFatherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
         }
+        #endregion
+
+        #region Leech Mother Functions
+        private void SetupLeechMotherEditor()
+        {
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Mother.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (leechPrefab)
+                {
+                    leechMotherMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
+                    leechMotherHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
+                    leechMotherEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMother>());
+
+                    leechMotherHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
+                    leechMotherMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
+                    leechMotherObject = new SerializedObject(leechPrefab.GetComponent<LeechMother>());
+
+                    break;
+                }
+            }
+        }
+
+        private void SetupLeechMotherShooting()
+        {
+            _LeechMotherFirePoint = leechFatherObject.FindProperty("firePoint");
+            _LeechMotherProjectilePrefab = leechFatherObject.FindProperty("projectilePrefab");
+            _LeechMotherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
+            _LeechMotherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
+            _LeechMotherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
+        }
+
+        private void SetupLeechMotherHealth()
+        {
+            _LeechMotherMaxHealth = leechFatherHealthObject.FindProperty("maxHealth");
+            _LeechMotherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
+            _LeechMotherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
+            _LeechMotherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
+        }
+        #endregion
 
         private void OnGUI()
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
-            /// Player area start
-            GUILayout.Label("Player Settings", EditorStyles.boldLabel);
+            #region PlayerUI
+            showPlayerSettings = EditorGUILayout.Foldout(showPlayerSettings, "Player Settings");
 
-            EditorStyles.boldLabel.fontSize = 15;
-
-            // fetch current values from the target
-            playerMovementObject.Update();
-
-            if (playerMovementEditor)
+            if (showPlayerSettings)
             {
-                playerMovementEditor.OnInspectorGUI();
+                // fetch current values from the target
+                playerMovementObject.Update();
+
+                if (playerMovementEditor)
+                {
+                    playerMovementEditor.OnInspectorGUI();
+                }
+
+                // fetch current values from the target
+                playerHealthObject.Update();
+
+                if (playerHealthEditor)
+                {
+                    playerHealthEditor.OnInspectorGUI();
+                }
+
+                // fetch current values from the target
+                playerGunOject.Update();
+
+                if (playerGunEditor)
+                {
+                    playerGunEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                playerMovementObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                playerHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                playerGunOject.ApplyModifiedProperties();
+
+                GUILayout.Space(50f);
+            }
+            #endregion
+
+            #region Leech UI
+            showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings");
+
+            if (showLeechSettings)
+            {
+                // fetch current values from the target
+                leechHealthObject.Update();
+
+                // fetch current values from the target
+                leechMovementObject.Update();
+
+                if (leechHealthEditor)
+                {
+                    leechHealthEditor.OnInspectorGUI();
+                }
+
+                if (leechMovmentEditor)
+                {
+                    leechMovmentEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                leechHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechMovementObject.ApplyModifiedProperties();
+
+                GUILayout.Space(50f);
             }
 
-            // fetch current values from the target
-            playerHealthObject.Update();
+            #endregion
 
-            if (playerHealthEditor)
+            #region Leech Father UI
+            showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings");
+
+            if (showLeechFatherSettings)
             {
-                playerHealthEditor.OnInspectorGUI();
+                // fetch current values from the target
+                leechFatherHealthObject.Update();
+
+                // fetch current values from the target
+                leechFatherMovementObject.Update();
+
+                // fetch current values from the target
+                leechFatherObject.Update();
+
+                if (leechFatherHealthEditor)
+                {
+                    leechFatherHealthEditor.OnInspectorGUI();
+                }
+
+                if (leechFatherMovmentEditor)
+                {
+                    leechFatherMovmentEditor.OnInspectorGUI();
+                }
+
+                if (leechFatherEditor)
+                {
+                    GUILayout.Space(5f);
+
+                    leechFatherEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                leechFatherHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechFatherMovementObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechFatherObject.ApplyModifiedProperties();
+
+                GUILayout.Space(50f);
+            }
+            #endregion
+
+            #region Leech Mother UI
+            showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings");
+
+            if (showLeechMotherSettings)
+            {
+                // fetch current values from the target
+                leechMotherHealthObject.Update();
+
+                // fetch current values from the target
+                leechMotherMovementObject.Update();
+
+                // fetch current values from the target
+                leechMotherObject.Update();
+
+                if (leechMotherHealthEditor)
+                {
+                    leechMotherHealthEditor.OnInspectorGUI();
+                }
+
+                if (leechMotherMovmentEditor)
+                {
+                    leechMotherMovmentEditor.OnInspectorGUI();
+                }
+
+                if (leechMotherEditor)
+                {
+                    GUILayout.Space(5f);
+
+                    leechMotherEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                leechMotherHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechMotherMovementObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechMotherObject.ApplyModifiedProperties();
+
+                GUILayout.Space(50f);
+            }
+            #endregion
+
+            #region Shaman UI
+            showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings");
+
+            if (showShamanSettings)
+            {
+
             }
 
-            // fetch current values from the target
-            playerGunOject.Update();
-
-            if (playerGunEditor)
-            {
-                playerGunEditor.OnInspectorGUI();
-            }
-
-            // Apply values to the target
-            playerMovementObject.ApplyModifiedProperties();
-
-            // Apply values to the target
-            playerHealthObject.ApplyModifiedProperties();
-
-            // Apply values to the target
-            playerGunOject.ApplyModifiedProperties();
-            /// Player area end
-
-            GUILayout.Space(50f);
-
-            GUILayout.Label("Enemy Settings", EditorStyles.boldLabel);
-
-            GUILayout.Space(15f);
-
-            /// Enemies area start
-            GUILayout.Label("Leech", EditorStyles.boldLabel);
-
-            // fetch current values from the target
-            leechHealthObject.Update();
-
-            // fetch current values from the target
-            leechMovementObject.Update();
-
-            if (leechHealthEditor)
-            {
-                leechHealthEditor.OnInspectorGUI();
-            }
-
-            if (leechMovmentEditor)
-            {
-                leechMovmentEditor.OnInspectorGUI();
-            }
-
-            // Apply values to the target
-            leechHealthObject.ApplyModifiedProperties();
-
-            // Apply values to the target
-            leechMovementObject.ApplyModifiedProperties();
-
-            GUILayout.Space(50f);
-
-            GUILayout.Label("Leech Father", EditorStyles.boldLabel);
-
-            // fetch current values from the target
-            leechFatherHealthObject.Update();
-
-            // fetch current values from the target
-            leechFatherMovementObject.Update();
-
-            // fetch current values from the target
-            leechFatherObject.Update();
-
-            if (leechFatherHealthEditor)
-            {
-                leechFatherHealthEditor.OnInspectorGUI();
-            }
-
-            if (leechFatherMovmentEditor)
-            {
-                leechFatherMovmentEditor.OnInspectorGUI();
-            }
-
-            if (leechFatherEditor)
-            {
-                GUILayout.Space(5f);
-
-                leechFatherEditor.OnInspectorGUI();
-            }
-
-            // Apply values to the target
-            leechFatherHealthObject.ApplyModifiedProperties();
-
-            // Apply values to the target
-            leechFatherMovementObject.ApplyModifiedProperties();
-
-            // Apply values to the target
-            leechFatherObject.ApplyModifiedProperties();
-
-            GUILayout.Space(50f);
-
-            GUILayout.Label("Leech Mother", EditorStyles.boldLabel);
-
-
-            GUILayout.Space(50f);
-
-            GUILayout.Label("Shaman", EditorStyles.boldLabel);
-
-
-            /// Enemies area end
-
+            #endregion
 
             GUILayout.EndScrollView();
         }
