@@ -7,23 +7,44 @@ namespace CustomEditors
 {
     public class GameplayEditor : CustomEditorBase
     {
-        // player editors
-        private Editor playerMovementEditor = null;
-        private Editor playerHealthEditor = null;
-
-        // Editable player variables
+        #region Player Movement Varaibles
         private SerializedProperty _PlayerJumpForce;
         private SerializedProperty _PlayerRunSpeed;
         private SerializedProperty _MovementSmothing;
         private SerializedProperty _HasAirControl;
         private SerializedProperty _PlayerAccleration;
+        #endregion
+
+        #region Player Gun Varaibles
+        private SerializedProperty _PlayerLaserUpTime;
+        private SerializedProperty _PlayerGunDumage;
+        private SerializedProperty _PlayerGunCooldown;
+        private SerializedProperty _GunProjectile;
+        private SerializedProperty _GunFireLocation;
+        private SerializedProperty _GunController;
+        private SerializedProperty _CooldownBar;
+        private SerializedProperty _PlayerHealthComp;
+        #endregion
+
+        #region Player Health Varaibles
         private SerializedProperty _PlayerMaxHealth;
         private SerializedProperty _PlayerHealthBar;
         private SerializedProperty _PlayerOnDeath;
         private SerializedProperty _PlayerTakeAnyDamage;
+        #endregion
 
+        #region Player Objects
         private SerializedObject playerMovementObject;
         private SerializedObject playerHealthObject;
+        private SerializedObject playerGunOject;
+        #endregion
+
+        #region Player Editors
+        private Editor playerMovementEditor = null;
+        private Editor playerHealthEditor = null;
+        private Editor playerGunEditor = null;
+        #endregion
+
 
         private Vector2 scrollPosition = Vector2.zero;
 
@@ -31,16 +52,24 @@ namespace CustomEditors
         {
             base.OnEnable();
 
-            AddGameObjects();
+            SetupPlayerEditor();
 
-            SetPlayerPropertyValues();
+            SetPlayerMovement();
+
+            SetPlayerHealth();
+
+            SetPlayerGun();
         }
 
         public override void UpdateWindow()
         {
-            AddGameObjects();
+            SetupPlayerEditor();
 
-            SetPlayerPropertyValues();
+            SetPlayerMovement();
+
+            SetPlayerHealth();
+
+            SetPlayerGun();
         }
 
         [MenuItem("Window/Gameplay Editor")]
@@ -49,21 +78,37 @@ namespace CustomEditors
             GetWindow<GameplayEditor>("Gameplay Editor");
         }
 
-        private void SetPlayerPropertyValues()
+        private void SetPlayerMovement()
         {
-            // Set player properties
             _PlayerJumpForce = playerMovementObject.FindProperty("jumpForce");
             _PlayerRunSpeed = playerMovementObject.FindProperty("runSpeed");
             _MovementSmothing = playerMovementObject.FindProperty("movementSmoothing");
             _HasAirControl = playerMovementObject.FindProperty("hasAirControl");
             _PlayerAccleration = playerMovementObject.FindProperty("playerAcceleration");
+            
+        }
+
+        private void SetPlayerHealth()
+        {
             _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
             _PlayerHealthBar = playerHealthObject.FindProperty("healthBar");
             _PlayerOnDeath = playerHealthObject.FindProperty("OnDeath");
             _PlayerTakeAnyDamage = playerHealthObject.FindProperty("onTakeAnyDamage");
         }
 
-        private void AddGameObjects()
+        private void SetPlayerGun()
+        {
+            _PlayerLaserUpTime = playerGunOject.FindProperty("laserUpTime");
+            _PlayerGunDumage = playerGunOject.FindProperty("gunDamage");
+            _PlayerGunCooldown = playerGunOject.FindProperty("gunCooldown");
+            _GunProjectile = playerGunOject.FindProperty("hitBoxToSpawn");
+            _GunFireLocation = playerGunOject.FindProperty("gunFireLocation");
+            _GunController = playerGunOject.FindProperty("controller");
+            _CooldownBar = playerGunOject.FindProperty("cooldownBar");
+            _PlayerHealthComp = playerGunOject.FindProperty("playerHealthComp");
+        }
+
+        private void SetupPlayerEditor()
         {
             // Find and add player Gameobject to menu
             List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
@@ -76,9 +121,11 @@ namespace CustomEditors
                 {
                     playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
                     playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
+                    playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
 
                     playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
                     playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
+                    playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
 
                     break;
                 }
@@ -108,20 +155,30 @@ namespace CustomEditors
                 playerHealthEditor.OnInspectorGUI();
             }
 
+            // fetch current values from the target
+            playerGunOject.Update();
+
+            if (playerGunEditor)
+            {
+                playerGunEditor.OnInspectorGUI();
+            }
+
             // Apply values to the target
             playerMovementObject.ApplyModifiedProperties();
 
             // Apply values to the target
             playerHealthObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            playerGunOject.ApplyModifiedProperties();
             /// Player area end
 
+            /// Enemies area start
             GUILayout.Space(50f);
 
-            /// Enemies area end
+            
             GUILayout.Label("Enemies", EditorStyles.boldLabel);
-
-
-
+            /// Enemies area end
 
             GUILayout.EndScrollView();
         }

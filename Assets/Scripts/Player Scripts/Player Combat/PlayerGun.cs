@@ -2,9 +2,11 @@
 using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
 using GameplayManagement;
+using System;
 
 namespace PlayerCharacter.Controller
 {
+    [Serializable]
     public class PlayerGun : MonoBehaviour
     {
         [Header("Gun Settings")]

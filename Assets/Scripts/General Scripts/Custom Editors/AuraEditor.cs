@@ -61,6 +61,7 @@ namespace CustomEditors
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
+            /// Debuff area start
             GUILayout.Label("Debuffs", EditorStyles.boldLabel);
 
             foreach (Editor editor in MyScriptableObjectDebuffEditors)
