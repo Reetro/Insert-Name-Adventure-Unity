@@ -1,25 +1,15 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 using PlayerCharacter.Controller;
 
 namespace CustomEditors
 {
     public class GameplayEditor : CustomEditorBase
     {
-        // Buffs and Debuff lists
-        private List<ScriptableDebuff> scriptableDebuffs = new List<ScriptableDebuff>();
-        private List<ScriptableBuff> scriptableBuffs = new List<ScriptableBuff>();
-
         // player editors
         private Editor playerMovementEditor = null;
         private Editor playerHealthEditor = null;
-
-        // Buffs and Debuff editors
-        private List<Editor> MyScriptableObjectDebuffEditors = new List<Editor>();
-        private List<Editor> MyScriptableObjectBuffEditors = new List<Editor>();
-        private Vector2 scrollPosition = Vector2.zero;
 
         // Editable player variables
         private SerializedProperty _PlayerJumpForce;
@@ -35,11 +25,11 @@ namespace CustomEditors
         private SerializedObject playerMovementObject;
         private SerializedObject playerHealthObject;
 
+        private Vector2 scrollPosition = Vector2.zero;
+
         public override void OnEnable()
         {
             base.OnEnable();
-
-            AddScriptableObjects();
 
             AddGameObjects();
 
@@ -48,11 +38,15 @@ namespace CustomEditors
 
         public override void UpdateWindow()
         {
-            AddScriptableObjects();
-
             AddGameObjects();
 
             SetPlayerPropertyValues();
+        }
+
+        [MenuItem("Window/Gameplay Editor")]
+        public static void ShowWindow()
+        {
+            GetWindow<GameplayEditor>("Gameplay Editor");
         }
 
         private void SetPlayerPropertyValues()
@@ -91,35 +85,6 @@ namespace CustomEditors
             }
         }
 
-        private void AddScriptableObjects()
-        {
-            scriptableDebuffs = GeneralFunctions.GetAllScriptInstances<ScriptableDebuff>().ToList();
-            scriptableBuffs = GeneralFunctions.GetAllScriptInstances<ScriptableBuff>().ToList();
-
-            MyScriptableObjectBuffEditors.Clear();
-            MyScriptableObjectDebuffEditors.Clear();
-
-            foreach (ScriptableDebuff debuff in scriptableDebuffs)
-            {
-                var editor = Editor.CreateEditor(debuff);
-
-                MyScriptableObjectDebuffEditors.Add(editor);
-            }
-
-            foreach (ScriptableBuff buff in scriptableBuffs)
-            {
-                var editor = Editor.CreateEditor(buff);
-
-                MyScriptableObjectBuffEditors.Add(editor);
-            }
-        }
-
-        [MenuItem("Window/Gameplay Editor")]
-        public static void ShowWindow()
-        {
-            GetWindow<GameplayEditor>("Gameplay Editor");
-        }
-
         private void OnGUI()
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
@@ -149,30 +114,6 @@ namespace CustomEditors
             // Apply values to the target
             playerHealthObject.ApplyModifiedProperties();
             /// Player area end
-
-            /// Debuff area start
-            GUILayout.Space(50f);
-
-            GUILayout.Label("Debuffs", EditorStyles.boldLabel);
-
-            foreach (Editor editor in MyScriptableObjectDebuffEditors)
-            {
-                editor.OnInspectorGUI();
-            }
-
-            /// Debuff area end
-
-            GUILayout.Space(50f);
-
-            /// Buff area start
-            GUILayout.Label("Buffs", EditorStyles.boldLabel);
-
-            foreach (Editor editor in MyScriptableObjectBuffEditors)
-            {
-                editor.OnInspectorGUI();
-            }
-
-            /// Buff area end
 
             GUILayout.Space(50f);
 
