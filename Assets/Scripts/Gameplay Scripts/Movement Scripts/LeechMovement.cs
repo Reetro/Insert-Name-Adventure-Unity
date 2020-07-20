@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
+using System;
 
 namespace EnemyCharacter.AI
 {
+    [Serializable]
     public class LeechMovement : EnemyBase
     {
         [Header("Leech Movement Settings")]
         [SerializeField] float leechFlySpeed = 4f;
-        [SerializeField] float randomAmountToAddToYmin = 0.005f;
-        [SerializeField] float randomAmountToAddToYmax = 0.007f;
+        [SerializeField] float randomYMin = 0.005f;
+        [SerializeField] float randomYMax = 0.007f;
 
         private void Update()
         {
@@ -15,7 +17,7 @@ namespace EnemyCharacter.AI
             {
                 LookAtPlayer();
 
-                var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
+                var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
 
                 MovementComp.AddToLeechY(transform, amountToAddToY.y);
             }

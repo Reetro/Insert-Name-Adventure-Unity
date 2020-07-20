@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using PlayerCharacter.Controller;
+using EnemyCharacter.AI;
 
 namespace CustomEditors
 {
@@ -45,37 +46,108 @@ namespace CustomEditors
         private Editor playerGunEditor = null;
         #endregion
 
+        #region Leech Health Varaibles
+        private SerializedProperty _LeechMaxHealth;
+        private SerializedProperty _LeechHealthBar;
+        private SerializedProperty _LeechOnDeath;
+        private SerializedProperty _LeechTakeAnyDamage;
+        #endregion
+
+        #region Leech Movement Varaibles
+        private SerializedProperty _LeechFlySpeed;
+        private SerializedProperty _LeechRandomYmin;
+        private SerializedProperty _LeechRandomYmax;
+        #endregion
+
+        #region Leech Objects
+        private SerializedObject leechMovementObject;
+        private SerializedObject leechHealthObject;
+        #endregion
+
+        #region Leech Editors
+        private Editor leechMovmentEditor = null;
+        private Editor leechHealthEditor = null;
+        #endregion
+
+        #region Leech Father Health Varaibles
+        private SerializedProperty _LeechFatherMaxHealth;
+        private SerializedProperty _LeechFatherHealthBar;
+        private SerializedProperty _LeechFatherOnDeath;
+        private SerializedProperty _LeechFatherTakeAnyDamage;
+        #endregion
+
+        #region Leech Father Movement Varaibles
+        private SerializedProperty _LeechFatherFlySpeed;
+        private SerializedProperty _LeechFatherRandomYmin;
+        private SerializedProperty _LeechFatherRandomYmax;
+        #endregion
+
+        #region Leech Father Objects
+        private SerializedObject leechFatherMovementObject;
+        private SerializedObject leechFatherHealthObject;
+        private SerializedObject leechFatherObject;
+        #endregion
+
+        #region Leech Father Editors
+        private Editor leechFatherMovmentEditor = null;
+        private Editor leechFatherHealthEditor = null;
+        private Editor leechFatherEditor = null;
+        #endregion
+
+        #region Leech Father Shooting Varaibles
+        private SerializedProperty _LeechFatherProjectilePrefab;
+        private SerializedProperty _LeechFatherShootIntervale;
+        private SerializedProperty _LeechFatherProjectileDamage;
+        private SerializedProperty _LeechFatherFirePoint;
+        private SerializedProperty _LeechFatherProjectileSpeed;
+        #endregion
 
         private Vector2 scrollPosition = Vector2.zero;
-
-        public override void OnEnable()
-        {
-            base.OnEnable();
-
-            SetupPlayerEditor();
-
-            SetPlayerMovement();
-
-            SetPlayerHealth();
-
-            SetPlayerGun();
-        }
-
-        public override void UpdateWindow()
-        {
-            SetupPlayerEditor();
-
-            SetPlayerMovement();
-
-            SetPlayerHealth();
-
-            SetPlayerGun();
-        }
 
         [MenuItem("Window/Gameplay Editor")]
         public static void ShowWindow()
         {
             GetWindow<GameplayEditor>("Gameplay Editor");
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            SetupPlayer();
+
+            SetupEnemies();
+        }
+
+        public override void UpdateWindow()
+        {
+            SetupPlayer();
+
+            SetupEnemies();
+        }
+
+        private void SetupEnemies()
+        {
+            SetupLeechEditor();
+
+            SetLeechHealth();
+
+            SetLeechMovement();
+
+            SetupLeechFatherEditor();
+
+            SetupLeechFatherShooting();
+        }
+
+        private void SetupPlayer()
+        {
+            SetupPlayerEditor();
+
+            SetPlayerMovement();
+
+            SetPlayerHealth();
+
+            SetPlayerGun();
         }
 
         private void SetPlayerMovement()
@@ -85,7 +157,6 @@ namespace CustomEditors
             _MovementSmothing = playerMovementObject.FindProperty("movementSmoothing");
             _HasAirControl = playerMovementObject.FindProperty("hasAirControl");
             _PlayerAccleration = playerMovementObject.FindProperty("playerAcceleration");
-            
         }
 
         private void SetPlayerHealth()
@@ -132,12 +203,82 @@ namespace CustomEditors
             }
         }
 
+        private void SetupLeechEditor()
+        {
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (leechPrefab)
+                {
+                    leechMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
+                    leechHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
+
+                    leechHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
+                    leechMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
+
+                    break;
+                }
+            }
+        }
+
+        private void SetupLeechFatherEditor()
+        {
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (leechPrefab)
+                {
+                    leechFatherMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
+                    leechFatherHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
+                    leechFatherEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechFather>());
+
+                    leechFatherHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
+                    leechFatherMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
+                    leechFatherObject = new SerializedObject(leechPrefab.GetComponent<LeechFather>());
+
+                    break;
+                }
+            }
+        }
+
+        private void SetupLeechFatherShooting()
+        {
+            _LeechFatherFirePoint = leechFatherObject.FindProperty("firePoint");
+            _LeechFatherProjectilePrefab = leechFatherObject.FindProperty("projectilePrefab");
+            _LeechFatherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
+            _LeechFatherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
+            _LeechFatherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
+        }
+
+        private void SetLeechHealth()
+        {
+            _LeechHealthBar = leechHealthObject.FindProperty("healthBar");
+            _LeechMaxHealth = leechHealthObject.FindProperty("maxHealth");
+            _LeechOnDeath = leechHealthObject.FindProperty("OnDeath");
+            _LeechTakeAnyDamage = leechHealthObject.FindProperty("onTakeAnyDamage");
+        }
+
+        private void SetLeechMovement()
+        {
+            _LeechFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
+            _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
+            _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
+        }
+
         private void OnGUI()
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
             /// Player area start
             GUILayout.Label("Player Settings", EditorStyles.boldLabel);
+
+            EditorStyles.boldLabel.fontSize = 15;
 
             // fetch current values from the target
             playerMovementObject.Update();
@@ -173,12 +314,84 @@ namespace CustomEditors
             playerGunOject.ApplyModifiedProperties();
             /// Player area end
 
-            /// Enemies area start
             GUILayout.Space(50f);
 
-            
-            GUILayout.Label("Enemies", EditorStyles.boldLabel);
+            /// Enemies area start
+            GUILayout.Label("Leech", EditorStyles.boldLabel);
+
+            // fetch current values from the target
+            leechHealthObject.Update();
+
+            // fetch current values from the target
+            leechMovementObject.Update();
+
+            if (leechHealthEditor)
+            {
+                leechHealthEditor.OnInspectorGUI();
+            }
+
+            if (leechMovmentEditor)
+            {
+                leechMovmentEditor.OnInspectorGUI();
+            }
+
+            // Apply values to the target
+            leechHealthObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            leechMovementObject.ApplyModifiedProperties();
+
+            GUILayout.Space(50f);
+
+            GUILayout.Label("Leech Father", EditorStyles.boldLabel);
+
+            // fetch current values from the target
+            leechFatherHealthObject.Update();
+
+            // fetch current values from the target
+            leechFatherMovementObject.Update();
+
+            // fetch current values from the target
+            leechFatherObject.Update();
+
+            if (leechFatherHealthEditor)
+            {
+                leechFatherHealthEditor.OnInspectorGUI();
+            }
+
+            if (leechFatherMovmentEditor)
+            {
+                leechFatherMovmentEditor.OnInspectorGUI();
+            }
+
+            if (leechFatherEditor)
+            {
+                GUILayout.Space(5f);
+
+                leechFatherEditor.OnInspectorGUI();
+            }
+
+            // Apply values to the target
+            leechFatherHealthObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            leechFatherMovementObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            leechFatherObject.ApplyModifiedProperties();
+
+            GUILayout.Space(50f);
+
+            GUILayout.Label("Leech Mother", EditorStyles.boldLabel);
+
+
+            GUILayout.Space(50f);
+
+            GUILayout.Label("Shaman", EditorStyles.boldLabel);
+
+
             /// Enemies area end
+
 
             GUILayout.EndScrollView();
         }
