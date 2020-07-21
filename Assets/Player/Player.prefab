@@ -438,7 +438,7 @@ MonoBehaviour:
   isGrounded: 1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 524599
+    m_Bits: 311
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
