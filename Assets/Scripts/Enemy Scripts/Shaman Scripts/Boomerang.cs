@@ -34,8 +34,6 @@ namespace EnemyCharacter.AI
         {
             var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
 
-            print(newLocation);
-
             currentShaman.transform.position = newLocation;
 
             GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);
