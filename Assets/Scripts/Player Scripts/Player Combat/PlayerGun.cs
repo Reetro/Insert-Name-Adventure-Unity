@@ -3,6 +3,8 @@ using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
 using GameplayManagement;
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 
 namespace PlayerCharacter.Controller
 {
@@ -13,10 +15,10 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float laserUpTime = 0.02f;
         [SerializeField] private float gunDamage = 3.5f;
         [SerializeField] private float gunCooldown = 1f;
-        [SerializeField] private PlayerProjectile projectileToSpawn = null;
-
+        
         #region Gun Components
         private Transform gunFireLocation = null;
+        private PlayerProjectile projectileToSpawn = null;
         private PlayerController controller = null;
         private CooldownBar cooldownBar = null;
         private HealthComponent playerHealthComp = null;
@@ -240,6 +242,19 @@ namespace PlayerCharacter.Controller
             cooldownBar = transform.GetChild(3).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
+            GetPlayerProjectile();
+        }
+        /// <summary>
+        /// Finds the player projectile asset in the resource folder
+        /// </summary>
+        private void GetPlayerProjectile()
+        {
+            var prefab = Resources.Load("Gun Laser") as GameObject;
+
+            if (prefab)
+            {
+                projectileToSpawn = prefab.GetComponent<PlayerProjectile>();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -36,8 +37,8 @@ namespace CustomEditors
 
         private void AddScriptableObjects()
         {
-            scriptableDebuffs = GeneralFunctions.GetAllScriptInstances<ScriptableDebuff>().ToList();
-            scriptableBuffs = GeneralFunctions.GetAllScriptInstances<ScriptableBuff>().ToList();
+            scriptableDebuffs = GetAllScriptInstances<ScriptableDebuff>().ToList();
+            scriptableBuffs = GetAllScriptInstances<ScriptableBuff>().ToList();
 
             MyScriptableObjectBuffEditors.Clear();
             MyScriptableObjectDebuffEditors.Clear();
@@ -87,3 +88,4 @@ namespace CustomEditors
         }
     }
 }
+#endif

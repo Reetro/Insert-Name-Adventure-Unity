@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using PlayerCharacter.Controller;
@@ -42,7 +43,6 @@ namespace CustomEditors
         private SerializedProperty _PlayerLaserUpTime;
         private SerializedProperty _PlayerGunDumage;
         private SerializedProperty _PlayerGunCooldown;
-        private SerializedProperty _GunProjectile;
         private SerializedProperty _GunFireLocation;
         private SerializedProperty _GunController;
         private SerializedProperty _CooldownBar;
@@ -222,7 +222,7 @@ namespace CustomEditors
         private void SetupGameplayManagerEditor()
         {
             // Find and add player Gameobject to menu
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Player/Player.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -284,7 +284,7 @@ namespace CustomEditors
         #region Leech Functions
         private void SetupLeechEditor()
         {
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -322,7 +322,7 @@ namespace CustomEditors
         #region Leech Father Functions
         private void SetupLeechFatherEditor()
         {
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -364,7 +364,7 @@ namespace CustomEditors
         #region Leech Mother Functions
         private void SetupLeechMotherEditor()
         {
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Leech/Leech Mother.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech Mother.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -406,7 +406,7 @@ namespace CustomEditors
         #region Shaman Functions
         private void SetupShamanEditor()
         {
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Enemies/Shaman/Shaman.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Shaman/Shaman.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -480,7 +480,6 @@ namespace CustomEditors
             _PlayerLaserUpTime = playerGunOject.FindProperty("laserUpTime");
             _PlayerGunDumage = playerGunOject.FindProperty("gunDamage");
             _PlayerGunCooldown = playerGunOject.FindProperty("gunCooldown");
-            _GunProjectile = playerGunOject.FindProperty("hitBoxToSpawn");
             _GunFireLocation = playerGunOject.FindProperty("gunFireLocation");
             _GunController = playerGunOject.FindProperty("controller");
             _CooldownBar = playerGunOject.FindProperty("cooldownBar");
@@ -490,7 +489,7 @@ namespace CustomEditors
         private void SetupPlayerEditor()
         {
             // Find and add player Gameobject to menu
-            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
+            List<string> prefabsPaths = FindObjectsAtPath("Assets/Player/Player.prefab");
 
             foreach (string currentPath in prefabsPaths)
             {
@@ -733,3 +732,4 @@ namespace CustomEditors
         }
     }
 }
+#endif

@@ -134,7 +134,7 @@ public class GeneralFunctions
     /// <param name="health">Incoming leech's health</param>
     /// <param name="player">Player reference</param>
     /// <returns>The spawned leech attached to the player</returns>
-    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health,  GameObject player)
+    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject player)
     {
         AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
 
@@ -502,7 +502,7 @@ public class GeneralFunctions
     public static BuffEffect ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
         var auraManager = target.GetComponent<AuraManager>();
-        
+
         if (auraManager)
         {
             return auraManager.ApplyBuff(target, buffToApply, createIcon);
@@ -589,65 +589,5 @@ public class GeneralFunctions
         }
         // finally, let's decrement Array's size by one
         Array.Resize(ref arr, arr.Length - 1);
-    }
-    /// <summary>
-    /// Get all ScriptableObjects of the given type
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns>An array of ScriptableObjects</returns>
-    public static T[] GetAllScriptInstances<T>() where T : ScriptableObject
-    {
-        string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);  //FindAssets uses tags check documentation for more info
-        T[] a = new T[guids.Length];
-        for (int i = 0; i < guids.Length; i++)         //probably could get optimized 
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            a[i] = AssetDatabase.LoadAssetAtPath<T>(path);
-        }
-        return a;
-    }
-    /// <summary>
-    /// Find all prefabs containing a specific component (T)
-    /// </summary>
-    /// <typeparam name="T">The type of component</typeparam>
-    /// /// <returns>A list of all prefabs containing the specified component</returns>
-    public static List<GameObject> LoadPrefabsContaining<T>(string path) where T : UnityEngine.Component
-    {
-        List<GameObject> result = new List<GameObject>();
-
-        var allFiles = Resources.LoadAll<UnityEngine.Object>(path);
-        foreach (var obj in allFiles)
-        {
-            if (obj is GameObject)
-            {
-                GameObject go = obj as GameObject;
-                if (go.GetComponent<T>() != null)
-                {
-                    result.Add(go);
-                }
-            }
-        }
-        return result;
-    }
-    /// <summary>
-    /// Finds all items in the provided path
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns>An array of strings</returns>
-    public static List<String> FindObjectsAtPath(string path)
-    {
-        string[] assetsPaths = AssetDatabase.GetAllAssetPaths();
-
-        List<string> prefabsPaths = new List<string>();
-
-        foreach (string assetPath in assetsPaths)
-        {
-            if (assetPath.Contains(path))
-            {
-                prefabsPaths.Add(assetPath);
-            }
-        }
-
-        return prefabsPaths;
     }
 }
