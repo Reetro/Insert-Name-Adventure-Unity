@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Level Assets/Traps/Cannon/Projectiles.meta
 guid: 3e6184305cb7f5649aff323faffc3552
+=======
+guid: 1962810c5d9970f45903471a488298cc
+>>>>>>> parent of 4a024e0... made a level:Assets/Aura System/VFX.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
