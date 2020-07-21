@@ -19,12 +19,14 @@ namespace CustomEditors
 
         public override void OnEnable()
         {
+            ShouldTick(true);
+
             base.OnEnable();
 
             AddScriptableObjects();
         }
 
-        public override void UpdateWindow()
+        protected override void Update()
         {
             AddScriptableObjects();
         }

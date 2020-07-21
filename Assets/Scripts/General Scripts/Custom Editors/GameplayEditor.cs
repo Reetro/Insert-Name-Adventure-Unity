@@ -203,7 +203,7 @@ namespace CustomEditors
 
         public override void OnEnable()
         {
-            base.OnEnable();
+            ShouldTick(false);
 
             SetupGameplayManager();
 

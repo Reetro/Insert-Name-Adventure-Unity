@@ -8,24 +8,39 @@ namespace CustomEditors
 {
     public class CustomEditorBase : EditorWindow
     {
+        /// <summary>
+        /// Whether or not this editor should tick
+        /// </summary>
+        protected void ShouldTick(bool value)
+        {
+            _ShouldTick = value;
+        }
+
+        protected bool _ShouldTick { get; private set; } = false;
+
         public virtual void OnDisable()
         {
-            EditorApplication.update -= UpdateWindow;
+            if (_ShouldTick)
+            {
+                EditorApplication.update -= Update;
+            }
         }
 
         public virtual void OnEnable()
         {
-            EditorApplication.update += UpdateWindow;
+            if (_ShouldTick)
+            {
+                EditorApplication.update += Update;
+            }
         }
 
         /// <summary>
-        /// Called every frame while window is visible
+        /// Called update every frame while window is visible only called if shouldTick is true
         /// </summary>
-        public virtual void UpdateWindow()
+        protected virtual void Update()
         {
-            // For use in children
+            // To be used in children
         }
-
         /// <summary>
         /// Get all ScriptableObjects of the given type
         /// </summary>
