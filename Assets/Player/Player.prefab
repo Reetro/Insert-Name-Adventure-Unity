@@ -100,7 +100,7 @@ MonoBehaviour:
   combatRandomVectorMinY: -1
   combatRandomVectorMaxY: 1
   dissapearTime: 3
-  nameFontSize: 36
+  nameFontSize: 38
   descriptionFontSize: 28
   whatCanBeDamaged:
     serializedVersion: 2
@@ -207,12 +207,8 @@ MonoBehaviour:
   laserUpTime: 0.02
   gunDamage: 3.5
   gunCooldown: 0.5
-  hitBoxToSpawn: {fileID: 808947735825934316, guid: fba7b4b21985c8b46aa766f3983c9881,
+  projectileToSpawn: {fileID: 808947735825934316, guid: fba7b4b21985c8b46aa766f3983c9881,
     type: 3}
-  gunFireLocation: {fileID: 3046961054608351218}
-  controller: {fileID: 5065280756885518072}
-  cooldownBar: {fileID: 1449529014}
-  playerHealthComp: {fileID: 6037561768107980108}
 --- !u!61 &1121136768
 BoxCollider2D:
   m_ObjectHideFlags: 0

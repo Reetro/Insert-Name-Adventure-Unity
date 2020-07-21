@@ -3,11 +3,33 @@ using UnityEngine;
 using System.Collections.Generic;
 using PlayerCharacter.Controller;
 using EnemyCharacter.AI;
+using GameplayManagement;
 
 namespace CustomEditors
 {
     public class GameplayEditor : CustomEditorBase
     {
+        #region Gameplay Manager Varaibles
+        private SerializedProperty _ManagerTextSpeed;
+        private SerializedProperty _ManagerTextUpTime;
+        private SerializedProperty _ManagerRandomMinX;
+        private SerializedProperty _ManagerRandomMinY;
+        private SerializedProperty _ManagerRandomMaxX;
+        private SerializedProperty _ManagerRandomMaxY;
+        private SerializedProperty _ManagerTextDissapearTime;
+        private SerializedProperty _ManagerNameFontSize;
+        private SerializedProperty _ManagerDescriptionFontSize;
+        private SerializedProperty _ManagerWhatCanBeDamaged;
+        #endregion
+
+        #region Gameplay Manager Editors
+        private Editor gameplayManagerEditor;
+        #endregion
+
+        #region Gameplay Manager Objects
+        private SerializedObject gameplayManagerObject;
+        #endregion
+
         #region Player Movement Varaibles
         private SerializedProperty _PlayerJumpForce;
         private SerializedProperty _PlayerRunSpeed;
@@ -169,6 +191,8 @@ namespace CustomEditors
         private static bool showLeechFatherSettings = false;
         private static bool showLeechMotherSettings = false;
         private static bool showShamanSettings = false;
+        private static bool showManagerSettings = false;
+        private const float foldoutSpaceing = 20f;
         #endregion
 
         [MenuItem("Window/Gameplay Editor")]
@@ -181,10 +205,53 @@ namespace CustomEditors
         {
             base.OnEnable();
 
+            SetupGameplayManager();
+
             SetupPlayer();
 
             SetupEnemies();
         }
+
+        #region Gameplay Manager Functions
+        private void SetupGameplayManager()
+        {
+            SetupGameplayManagerEditor();
+
+            SetGameplayManagerVars();
+        }
+        private void SetupGameplayManagerEditor()
+        {
+            // Find and add player Gameobject to menu
+            List<string> prefabsPaths = GeneralFunctions.FindObjectsAtPath("Assets/Player/Player.prefab");
+
+            foreach (string currentPath in prefabsPaths)
+            {
+                GameObject managerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+
+                if (managerPrefab)
+                {
+                    gameplayManagerEditor = Editor.CreateEditor(managerPrefab.GetComponentInChildren<GameplayManager>());
+                    
+                    gameplayManagerObject = new SerializedObject(managerPrefab.GetComponentInChildren<GameplayManager>());
+
+                    break;
+                }
+            }
+        }
+        private void SetGameplayManagerVars()
+        {
+            _ManagerDescriptionFontSize = gameplayManagerObject.FindProperty("descriptionFontSize");
+            _ManagerNameFontSize = gameplayManagerObject.FindProperty("nameFontSize");
+            _ManagerWhatCanBeDamaged = gameplayManagerObject.FindProperty("whatCanBeDamaged");
+            _ManagerTextSpeed = gameplayManagerObject.FindProperty("combatTextSpeed");
+            _ManagerTextUpTime = gameplayManagerObject.FindProperty("combatTextUpTime");
+            _ManagerRandomMinX = gameplayManagerObject.FindProperty("combatRandomVectorMinX");
+            _ManagerRandomMaxX = gameplayManagerObject.FindProperty("combatRandomVectorMaxX");
+            _ManagerRandomMinY = gameplayManagerObject.FindProperty("combatRandomVectorMinY");
+            _ManagerRandomMaxY = gameplayManagerObject.FindProperty("combatRandomVectorMaxY");
+            _ManagerTextDissapearTime = gameplayManagerObject.FindProperty("dissapearTime");
+        }
+        #endregion
 
         #region Enemy Functions
         private void SetupEnemies()
@@ -449,6 +516,26 @@ namespace CustomEditors
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
+            #region Gameplay Manager UI
+            showManagerSettings = EditorGUILayout.Foldout(showManagerSettings, "Gameplay Manager");
+
+            if (showManagerSettings)
+            {
+                // fetch current values from the target
+                gameplayManagerObject.Update();
+
+                if (gameplayManagerEditor)
+                {
+                    gameplayManagerEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                gameplayManagerObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+            #endregion
+
             #region PlayerUI
             showPlayerSettings = EditorGUILayout.Foldout(showPlayerSettings, "Player Settings");
 
@@ -487,7 +574,7 @@ namespace CustomEditors
                 // Apply values to the target
                 playerGunOject.ApplyModifiedProperties();
 
-                GUILayout.Space(50f);
+                GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 
@@ -518,7 +605,7 @@ namespace CustomEditors
                 // Apply values to the target
                 leechMovementObject.ApplyModifiedProperties();
 
-                GUILayout.Space(50f);
+                GUILayout.Space(foldoutSpaceing);
             }
 
             #endregion
@@ -563,7 +650,7 @@ namespace CustomEditors
                 // Apply values to the target
                 leechFatherObject.ApplyModifiedProperties();
 
-                GUILayout.Space(50f);
+                GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 
@@ -607,7 +694,7 @@ namespace CustomEditors
                 // Apply values to the target
                 leechMotherObject.ApplyModifiedProperties();
 
-                GUILayout.Space(50f);
+                GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 
@@ -637,6 +724,8 @@ namespace CustomEditors
 
                 // Apply values to the target
                 shamanHealthObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace GameplayManagement
 {
+    [Serializable]
     public class GameplayManager : MonoBehaviour
     {
         [Header("Combat Text Settings")]
@@ -25,13 +27,13 @@ namespace GameplayManagement
 
         public int GenID()
         {
-            var newID = Random.Range(1, 1000000);
+            var newID = UnityEngine.Random.Range(1, 1000000);
 
             for (int index = 0; index < gameIDS.Count; index++)
             {
                 if (gameIDS.Contains(newID))
                 {
-                    newID = Random.Range(1, 1000000);
+                    newID = UnityEngine.Random.Range(1, 1000000);
                     break;
                 }
             }
