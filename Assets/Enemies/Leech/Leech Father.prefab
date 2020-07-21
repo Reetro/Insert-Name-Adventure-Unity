@@ -123,10 +123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1500ae66d6a93ee448fffb36d9bbce70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 2772496834163594369}
   leechFlySpeed: 2
-  randomAmountToAddToYmin: 0.005
-  randomAmountToAddToYmax: 0.007
+  randomYMin: 0.005
+  randomYMax: 0.007
 --- !u!114 &6519975429741626814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,18 +157,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 9
-  healthBar: {fileID: 0}
-  combatTextSpeed: 0.01
-  combatTextUpTime: 0.5
-  combatRandomVectorMinX: -0.5
-  combatRandomVectorMaxX: 10
-  combatRandomVectorMinY: -0.5
-  combatRandomVectorMaxY: 10
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2772496834163594373}
-        m_MethodName: OnDeath
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -277,6 +269,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c11e49f83dc6459308b91afaf9fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnPlatformEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlatformExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5820174219516750763
 GameObject:
   m_ObjectHideFlags: 0

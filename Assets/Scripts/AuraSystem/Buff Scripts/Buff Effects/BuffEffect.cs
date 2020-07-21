@@ -250,7 +250,7 @@ namespace AuraSystem.Effects
             }
             else
             {
-                Debug.LogError("Was unable to stack buff on " + gameObject.name + "aura manager was invalid");
+                Debug.LogError("Was unable to stack buff on " + gameObject.name + " aura manager was invalid");
             }
         }
         /// <summary>
@@ -263,6 +263,11 @@ namespace AuraSystem.Effects
             if (buffEffect)
             {
                 buffEffect.StackCount--;
+
+                if (useIcon)
+                {
+                    buffEffect.icon.UpdateStackCount(buffEffect.StackCount);
+                }
 
                 if (buffEffect.StackCount <= 0)
                 {

@@ -20,7 +20,6 @@ namespace EnemyCharacter
 
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
-
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
         /// <summary>

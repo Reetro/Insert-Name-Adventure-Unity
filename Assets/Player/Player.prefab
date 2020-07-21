@@ -104,7 +104,7 @@ MonoBehaviour:
   descriptionFontSize: 28
   whatCanBeDamaged:
     serializedVersion: 2
-    m_Bits: 17920
+    m_Bits: 17408
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,8 +614,8 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5065280756885518072}
-        m_MethodName: OnDeath
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
