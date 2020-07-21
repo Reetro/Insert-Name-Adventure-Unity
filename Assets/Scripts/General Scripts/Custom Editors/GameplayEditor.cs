@@ -170,7 +170,6 @@ namespace CustomEditors
         #endregion
 
         #region Shaman Shooting Varaibles
-        private SerializedProperty _ShamanProjectilePrefab;
         private SerializedProperty _ShamanTeleportOffset;
         private SerializedProperty _ShamanBoomerangSpeed;
         private SerializedProperty _ShamanHitsBeforeTeleport;
@@ -442,7 +441,6 @@ namespace CustomEditors
             _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
             _ShamanMinRandom = shamanObject.FindProperty("boomerangMinRandomFactor");
             _ShamanMaxRandom = shamanObject.FindProperty("boomerangMaxRandomFactor");
-            _ShamanProjectilePrefab = shamanObject.FindProperty("boomerangToSpawn");
         }
         #endregion
         #endregion

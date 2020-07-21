@@ -249,7 +249,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void GetPlayerProjectile()
         {
-            var prefab = Resources.Load("Gun Laser") as GameObject;
+            var prefab = Resources.Load("Player/Gun Laser") as GameObject;
 
             if (prefab)
             {

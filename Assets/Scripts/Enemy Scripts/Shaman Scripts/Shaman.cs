@@ -13,9 +13,18 @@ namespace EnemyCharacter.AI
         [SerializeField] private float boomerangMinRandomFactor = 300f;
         [SerializeField] private float boomerangMaxRandomFactor = 600f;
         [SerializeField] private float teleportOffset = 0.5f;
-        [SerializeField] private Boomerang boomerangToSpawn = null;
 
+        private Boomerang boomerangToSpawn = null;
         private Boomerang currentBoomrang = null;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            var boomerangObject = Resources.Load("Enemy/Boomerang") as GameObject;
+
+            boomerangToSpawn = boomerangObject.GetComponent<Boomerang>();
+        }
 
         private void Start()
         {
@@ -30,9 +39,7 @@ namespace EnemyCharacter.AI
 
             currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
 
-            var startDirection = GeneralFunctions.GetDirectionVectroFrom2Vectors(playerLocation, currentBoomrang.transform.position);
-
-            print(startDirection);
+            var startDirection = GeneralFunctions.GetDirectionVectorFrom2Vectors(playerLocation, currentBoomrang.transform.position);
 
             currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, boomerangMinRandomFactor, boomerangMaxRandomFactor);
 

@@ -16,7 +16,7 @@ namespace LevelObjects.Trap
 
                 GeneralFunctions.ApplyKnockback(collision.gameObject, collision.transform.up * knockbackForceY);
 
-                var knockbackX = GeneralFunctions.GetDirectionVectroFrom2Vectors(collision.gameObject.transform.position, transform.position).x;
+                var knockbackX = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform.position, transform.position).x;
 
                 GeneralFunctions.ApplyKnockback(collision.gameObject, new Vector2(knockbackX * knockbackForceX, 0));
             }

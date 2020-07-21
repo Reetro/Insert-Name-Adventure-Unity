@@ -71,7 +71,7 @@ public class GeneralFunctions
     /// <param name="position1"></param>
     /// <param name="position2"></param>
     /// <returns>A vector2 that is pointing in a direction</returns>
-    public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
+    public static Vector2 GetDirectionVectorFrom2Vectors(Vector2 position1, Vector2 position2)
     {
         var direction = position1 - position2;
 
