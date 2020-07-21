@@ -104,7 +104,7 @@ MonoBehaviour:
   descriptionFontSize: 28
   whatCanBeDamaged:
     serializedVersion: 2
-    m_Bits: 17408
+    m_Bits: 17920
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,8 +207,6 @@ MonoBehaviour:
   laserUpTime: 0.02
   gunDamage: 3.5
   gunCooldown: 0.5
-  projectileToSpawn: {fileID: 808947735825934316, guid: fba7b4b21985c8b46aa766f3983c9881,
-    type: 3}
 --- !u!61 &1121136768
 BoxCollider2D:
   m_ObjectHideFlags: 0
