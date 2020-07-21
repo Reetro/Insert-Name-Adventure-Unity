@@ -1,41 +1,48 @@
 ﻿using UnityEngine;
+using System;
 
-public class LeechMovement : EnemyBase
+namespace EnemyCharacter.AI
 {
-    [Header("Leech Movement Settings")]
-    [SerializeField] float leechFlySpeed = 4f;
-    [SerializeField] float randomAmountToAddToYmin = 0.005f;
-    [SerializeField] float randomAmountToAddToYmax = 0.007f;
-
-    private void Update()
+    [Serializable]
+    public class LeechMovement : EnemyBase
     {
-        if (!GetHealthComponent().GetIsDead())
+        [Header("Leech Movement Settings")]
+        [SerializeField] float leechFlySpeed = 4f;
+        [SerializeField] float randomYMin = 0.005f;
+        [SerializeField] float randomYMax = 0.007f;
+
+        private void Update()
         {
-            LookAtPlayer();
+            if (!MyHealthComponent.IsCurrentlyDead)
+            {
+                LookAtPlayer();
 
-            var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomAmountToAddToYmin, randomAmountToAddToYmax);
+                var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
 
-            GetEnemyMovementComponent().AddToLeechY(transform, amountToAddToY.y);
+                MovementComp.AddToLeechY(transform, amountToAddToY.y);
+            }
         }
-    }
 
-    private void FixedUpdate()
-    {
-        if (!GetHealthComponent().GetIsDead())
+        private void FixedUpdate()
         {
-            GetEnemyMovementComponent().MoveAITowards(GetPlayerTransform(), GetRigidbody2D(), leechFlySpeed);
+            if (!MyHealthComponent.IsCurrentlyDead)
+            {
+                MovementComp.MoveAITowards(PlayerTransform, MyRigidBody2D, leechFlySpeed);
+            }
         }
-    }
 
-    public override void OnDeath()
-    {
-        GetAnimatorComponent().SetBool("IsDead", true);
+        public override void OnDeath()
+        {
+            base.OnDeath();
 
-        GetEnemyMovementComponent().StopMovement(GetRigidbody2D());
-    }
+            MyAnimator.SetBool("IsDead", true);
 
-    public void OnDeathAnimationEnd()
-    {
-        Destroy(gameObject);
+            MovementComp.StopMovement(MyRigidBody2D);
+        }
+
+        public void OnDeathAnimationEnd()
+        {
+            Destroy(gameObject);
+        }
     }
 }

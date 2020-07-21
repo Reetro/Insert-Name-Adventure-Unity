@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EnemyCharacter.SceneObject;
 
 public class PlayerProjectile : MonoBehaviour
 {
@@ -31,13 +32,6 @@ public class PlayerProjectile : MonoBehaviour
         {
             if (!colliders[index].gameObject.CompareTag("Player"))
             {
-                var healthComp = colliders[index].gameObject.GetComponent<HealthComponent>();
-
-                if (healthComp)
-                {
-                    healthComp.ProccessDamage(damage, true);
-                }
-
                 var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
 
                 if (leechEggRipe)
@@ -50,6 +44,11 @@ public class PlayerProjectile : MonoBehaviour
                 if (leechEggCold)
                 {
                     leechEggCold.SpawnLeech();
+                }
+
+                if (!leechEggRipe && !leechEggCold)
+                {
+                    GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true);
                 }
             }
         }

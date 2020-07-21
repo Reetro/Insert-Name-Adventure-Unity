@@ -100,14 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c907fc1092c66489b303101be9ba27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
-    type: 3}
   maxHitsBeforeTeleport: 2
   boomerangSpeed: 600
   boomerangDamage: 2
   boomerangMinRandomFactor: 300
   boomerangMaxRandomFactor: 600
   teleportOffset: 0.2
+  boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
+    type: 3}
 --- !u!114 &2099811738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,18 +121,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 6
-  healthBar: {fileID: 0}
-  combatTextSpeed: 0.01
-  combatTextUpTime: 0.5
-  combatRandomVectorMinX: -0.5
-  combatRandomVectorMaxX: 10
-  combatRandomVectorMinY: -0.5
-  combatRandomVectorMaxY: 10
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 974195502854416268}
-        m_MethodName: OnDeath
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

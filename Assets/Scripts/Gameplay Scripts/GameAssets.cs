@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 
-public class GameAssets : MonoBehaviour
+namespace GameplayManagement.Assets
 {
-    private static GameAssets _Instance;
+    public class GameAssets : MonoBehaviour
+    {
+        private static GameAssets _Instance;
 
-    public static GameAssets instance {
-        get
+        public static GameAssets instance
         {
-            if (_Instance == null)
+            get
             {
-                _Instance = Instantiate(Resources.Load<GameAssets>("GameAssetLoader")).GetComponent<GameAssets>();
+                if (_Instance == null)
+                {
+                    _Instance = Instantiate(Resources.Load<GameAssets>("GameAssetLoader")).GetComponent<GameAssets>();
+                }
+                return _Instance;
             }
-            return _Instance;
         }
-    }
 
-    public Transform damgeText;
+        public Transform damgeText;
+    }
 }

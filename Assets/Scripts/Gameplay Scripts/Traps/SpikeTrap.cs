@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 
-public class SpikeTrap : MonoBehaviour
+namespace LevelObjects.Trap
 {
-    [SerializeField] private float damageToPlayer = 3f;
-    [SerializeField] private float knockbackForceX = 1000f;
-    [SerializeField] private float knockbackForceY = 400f;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public class SpikeTrap : MonoBehaviour
     {
-        if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+        [SerializeField] private float damageToPlayer = 3f;
+        [SerializeField] private float knockbackForceX = 1000f;
+        [SerializeField] private float knockbackForceY = 400f;
+
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true);
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true);
 
-            GeneralFunctions.ApplyKnockback(collision.gameObject, collision.transform.up * knockbackForceY);
+                GeneralFunctions.ApplyKnockback(collision.gameObject, collision.transform.up * knockbackForceY);
 
-            var knockbackX = GeneralFunctions.GetDirectionVectroFrom2Vectors(collision.gameObject.transform.position, transform.position).x;
+                var knockbackX = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform.position, transform.position).x;
 
-            GeneralFunctions.ApplyKnockback(collision.gameObject, new Vector2(knockbackX * knockbackForceX, 0));
+                GeneralFunctions.ApplyKnockback(collision.gameObject, new Vector2(knockbackX * knockbackForceX, 0));
+            }
         }
     }
 }

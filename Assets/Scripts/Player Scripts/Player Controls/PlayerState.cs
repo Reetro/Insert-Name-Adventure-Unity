@@ -1,81 +1,86 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerCharacter.Controller;
+using PlayerUI;
 
-public class PlayerState : MonoBehaviour
+namespace PlayerCharacter.GameSaving
 {
-    public static float currentHealth = 0f;
-    public static float maxHealth = 0f;
-    public static int checkpointIndex = 0;
-
-    public PlayerController player = null;
-    public HealthBar playerHPBar = null;
-
-    private void Awake()
+    public class PlayerState : MonoBehaviour
     {
-        int playerStateCount = FindObjectsOfType<PlayerState>().Length;
+        public static float currentHealth = 0f;
+        public static float maxHealth = 0f;
+        public static int checkpointIndex = 0;
 
-        if (playerStateCount > 1)
+        public PlayerController player = null;
+        public HealthBar playerHPBar = null;
+
+        private void Awake()
         {
-            Destroy(gameObject);
+            int playerStateCount = FindObjectsOfType<PlayerState>().Length;
+
+            if (playerStateCount > 1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
         }
-        else
+
+        public void SetCheckpointIndex(int index)
         {
-            DontDestroyOnLoad(gameObject);
+            checkpointIndex = index;
         }
-    }
 
-    public void SetCheckpointIndex(int index)
-    {
-        checkpointIndex = index;
-    }
+        public int GetCheckpointIndex()
+        {
+            return checkpointIndex;
+        }
 
-    public int GetCheckpointIndex()
-    {
-        return checkpointIndex;
-    }
+        public void SetPlayerHealth()
+        {
+            player = FindObjectOfType<PlayerController>();
 
-    public void SetPlayerHealth()
-    {
-        player = FindObjectOfType<PlayerController>();
+            player.GetComponent<HealthComponent>().SetHealth(currentHealth, maxHealth);
 
-        player.GetComponent<HealthComponent>().SetHealth(currentHealth, maxHealth);
+            playerHPBar.SetHealth(currentHealth);
+        }
 
-        playerHPBar.SetHealth(currentHealth);
-    }
+        public float GetCurrentMaxHealth()
+        {
+            return maxHealth;
+        }
 
-    public float GetCurrentMaxHealth()
-    {
-        return maxHealth;
-    }
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
+        }
 
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
+        public void ResetHealthToMax()
+        {
+            currentHealth = maxHealth;
+        }
 
-    public void ResetHealthToMax()
-    {
-        currentHealth = maxHealth;
-    }
+        public void UpdatePlayerStateHP(float currentHP, float maxHP)
+        {
+            currentHealth = currentHP;
+            maxHealth = maxHP;
+        }
 
-    public void UpdatePlayerStateHP(float currentHP, float maxHP)
-    {
-        currentHealth = currentHP;
-        maxHealth = maxHP;
-    }
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnLevelFinishedLoading;
-    }
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-    }
-
-    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-    {
-        SetPlayerHealth();
+        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        {
+            SetPlayerHealth();
+        }
     }
 }

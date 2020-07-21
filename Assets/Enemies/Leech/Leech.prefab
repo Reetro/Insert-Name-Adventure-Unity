@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5653861939190943891}
   - component: {fileID: 5653861939190943895}
   - component: {fileID: 5195909725976671376}
+  - component: {fileID: 5653861939190943896}
   - component: {fileID: 5653861939190943894}
   - component: {fileID: 5653861939190943893}
-  - component: {fileID: 5653861939190943896}
   - component: {fileID: 9216003248066244641}
   - component: {fileID: 6829688603436420196}
   - component: {fileID: 3351196616577038255}
@@ -121,9 +121,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1500ae66d6a93ee448fffb36d9bbce70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leechFlySpeed: 4
-  randomAmountToAddToYmin: 0.005
-  randomAmountToAddToYmax: 0.007
+  leechFlySpeed: 3
+  randomYMin: 0.005
+  randomYMax: 0.007
+--- !u!114 &5653861939190943896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653861939190943890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &5653861939190943894
 Rigidbody2D:
   serializedVersion: 4
@@ -158,7 +188,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.028783977, y: 0.04316485}
+  m_Offset: {x: -0.028783977, y: -0.13299564}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -169,45 +199,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7702, y: 1.6866777}
+  m_Size: {x: 0.7702, y: 1.3343568}
   m_EdgeRadius: 0
---- !u!114 &5653861939190943896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5653861939190943890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 3
-  healthBar: {fileID: 0}
-  combatTextSpeed: 0.01
-  combatTextUpTime: 0.5
-  combatRandomVectorMinX: -0.5
-  combatRandomVectorMaxX: 10
-  combatRandomVectorMinY: -0.5
-  combatRandomVectorMaxY: 10
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5195909725976671376}
-        m_MethodName: OnDeath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTakeAnyDamage:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &9216003248066244641
 MonoBehaviour:
   m_ObjectHideFlags: 0

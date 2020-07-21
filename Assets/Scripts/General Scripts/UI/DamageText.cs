@@ -1,88 +1,91 @@
 ﻿using UnityEngine;
 using TMPro;
+using GameplayManagement.Assets;
 
-
-public class DamageText : MonoBehaviour
+namespace PlayerUI
 {
-    private TextMeshPro textMesh = null;
-    private float textSpeed = 0f;
-    private float upTime = 0f;
-    private Color textColor;
-    private static int sortingOrder;
-    private Vector3 textEndPoint;
-    private bool startAnimation = false;
-
-    // Time when the movement started.
-    private float startTime;
-
-    // Total distance between the markers.
-    private float journeyLength;
-
-    private void Awake()
+    public class DamageText : MonoBehaviour
     {
-        textMesh = transform.GetComponent<TextMeshPro>();
+        private TextMeshPro textMesh = null;
+        private float textSpeed = 0f;
+        private float upTime = 0f;
+        private Color textColor;
+        private static int sortingOrder;
+        private Vector3 textEndPoint;
+        private bool startAnimation = false;
+        private float dissapearTime = 3f;
 
-        startAnimation = false;
+        // Time when the movement started.
+        private float startTime;
 
-        // Keep a note of the time the movement started.
-        startTime = Time.time;
+        // Total distance between the markers.
+        private float journeyLength;
 
-        // Calculate the journey length.
-        journeyLength = Vector3.Distance(transform.position, textEndPoint);
-    }
-
-    private void Update()
-    {
-        if (startAnimation)
+        private void Awake()
         {
-            // Distance moved equals elapsed time times speed..
-            float distCovered = (Time.time - startTime) * textSpeed;
+            textMesh = transform.GetComponent<TextMeshPro>();
 
-            // Fraction of journey completed equals current distance divided by total distance.
-            float fractionOfJourney = distCovered / journeyLength;
+            startAnimation = false;
 
-            // Set our position as a fraction of the distance between the markers.
-            transform.position = Vector3.Lerp(transform.position, textEndPoint, fractionOfJourney);
+            // Keep a note of the time the movement started.
+            startTime = Time.time;
 
-            upTime -= Time.deltaTime;
+            // Calculate the journey length.
+            journeyLength = Vector3.Distance(transform.position, textEndPoint);
+        }
 
-            if (upTime <= 0)
+        private void Update()
+        {
+            if (startAnimation)
             {
-                float dissapearTime = 3f;
+                // Distance moved equals elapsed time times speed..
+                float distCovered = (Time.time - startTime) * textSpeed;
 
-                textColor.a -= dissapearTime * Time.deltaTime;
+                // Fraction of journey completed equals current distance divided by total distance.
+                float fractionOfJourney = distCovered / journeyLength;
 
-                if (textColor.a <= 0)
+                // Set our position as a fraction of the distance between the markers.
+                transform.position = Vector3.Lerp(transform.position, textEndPoint, fractionOfJourney);
+
+                upTime -= Time.deltaTime;
+
+                if (upTime <= 0)
                 {
-                    Destroy(gameObject);
+                    textColor.a -= dissapearTime * Time.deltaTime;
+
+                    if (textColor.a <= 0)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
             }
         }
-    }
 
-    public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY)
-    {
-        Transform damageTextTransform = Instantiate(GameAssets.instance.damgeText, position, Quaternion.identity);
-        DamageText spawnedDamageText = damageTextTransform.GetComponent<DamageText>();
+        public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
+        {
+            Transform damageTextTransform = Instantiate(GameAssets.instance.damgeText, position, Quaternion.identity);
+            DamageText spawnedDamageText = damageTextTransform.GetComponent<DamageText>();
 
-        spawnedDamageText.SetupText(damage, speed, upTime, endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
+            spawnedDamageText.SetupText(damage, speed, upTime, endPointMinX, endPointMaxX, endPointMinY, endPointMaxY, dissapearTime);
 
-        return spawnedDamageText;
-    }
+            return spawnedDamageText;
+        }
 
-    private void SetupText(float damage, float speed, float currentUpTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY)
-    { 
-        textEndPoint = GeneralFunctions.CreateRandomVector2(endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
+        private void SetupText(float damage, float speed, float currentUpTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
+        {
+            textEndPoint = GeneralFunctions.CreateRandomVector2(endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
 
-        textMesh.SetText(damage.ToString());
-        textSpeed = speed;
-        upTime = currentUpTime;
+            textMesh.SetText(damage.ToString());
+            textSpeed = speed;
+            upTime = currentUpTime;
 
-        sortingOrder++;
-        textMesh.sortingOrder = sortingOrder;
+            sortingOrder++;
+            textMesh.sortingOrder = sortingOrder;
+            this.dissapearTime = dissapearTime;
 
-        textColor = textMesh.color;
+            textColor = textMesh.color;
 
-        startAnimation = true;
+            startAnimation = true;
+        }
     }
 }

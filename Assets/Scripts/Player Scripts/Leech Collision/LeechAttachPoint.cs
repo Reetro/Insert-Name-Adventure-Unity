@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 
-public class LeechAttachPoint : MonoBehaviour
+namespace PlayerCharacter.Collision
 {
-    [SerializeField] private Vector2 offset = new Vector2(0, 0);
-    private GameObject player = null;
-
-    private void Start()
+    public class LeechAttachPoint : MonoBehaviour
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+        [SerializeField] private Vector2 offset = new Vector2(0, 0);
+        private GameObject player = null;
 
-    private void LateUpdate()
-    {
-        transform.position = player.transform.position + (Vector3)offset;
+        private void Start()
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        private void LateUpdate()
+        {
+            transform.position = player.transform.position + (Vector3)offset;
+        }
     }
 }

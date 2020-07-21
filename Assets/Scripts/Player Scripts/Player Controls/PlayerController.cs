@@ -1,108 +1,98 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using PlayerUI;
 
-public class PlayerController : MonoBehaviour
+namespace PlayerCharacter.Controller
 {
-    [SerializeField] PlayerGun currentGun = null;
-    [SerializeField] GameObject leechCollision = null;
-    [SerializeField] GameObject playerState = null;
-
-    float horizontalMove = 0f;
-    bool jump = false;
-    Animator myAnimator = null;
-    PlayerMovement playerMovement = null;
-    HealthComponent myHealthComp = null;
-    PlayerUIManager uiManager = null;
-
-    private void Start()
+    public class PlayerController : MonoBehaviour
     {
-        myAnimator = GetComponent<Animator>();
-        playerMovement = GetComponent<PlayerMovement>();
-        myHealthComp = GetComponent<HealthComponent>();
-        uiManager = FindObjectOfType<PlayerUIManager>();
+        [SerializeField] private PlayerGun currentGun = null;
 
-        SpawnLeechCollision();
-        SetupScene();
-    }
+        private PlayerUIManager uiManager = null;
+        private float horizontalMove = 0f;
+        private bool jump = false;
+        private Animator myAnimator = null;
+        private PlayerMovement playerMovement = null;
+        private HealthComponent healthComponent = null;
 
-    private void Update()
-    {
-        horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-
-        if (transform.localEulerAngles.y >= 180)
+        private void Start()
         {
-            myAnimator.SetFloat("Speed", -horizontalMove);
-        }
-        else
-        {
-            myAnimator.SetFloat("Speed", horizontalMove);
+            myAnimator = GetComponent<Animator>();
+            playerMovement = GetComponent<PlayerMovement>();
+            uiManager = FindObjectOfType<PlayerUIManager>();
+            healthComponent = GetComponent<HealthComponent>();
+
+            healthComponent.OnDeath.AddListener(OnDeath);
         }
 
-        if (horizontalMove == 0)
+        private void Update()
         {
-            myAnimator.SetBool("Idle", true);
-        }
-        else
-        {
-            myAnimator.SetBool("Idle", false);
-        }
+            if (!GeneralFunctions.IsPlayerDead())
+            {
+                horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 
-        if (CrossPlatformInputManager.GetButtonDown("Jump"))
-        {
-            jump = true;
-            myAnimator.SetBool("IsJumping", true);
-        }
+                switch (transform.localEulerAngles.y >= 180)
+                {
+                    case true:
+                        myAnimator.SetFloat("Speed", -horizontalMove);
+                        break;
+                    case false:
+                        myAnimator.SetFloat("Speed", horizontalMove);
+                        break;
+                }
 
-        if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-        {
-            currentGun.FireGun();
-        }
+                if (horizontalMove == 0)
+                {
+                    myAnimator.SetBool("Idle", true);
+                }
+                else
+                {
+                    myAnimator.SetBool("Idle", false);
+                }
 
-        if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
-        {
-            currentGun.FireGun();
-        }
-    }
+                if (CrossPlatformInputManager.GetButtonDown("Jump"))
+                {
+                    jump = true;
+                    myAnimator.SetBool("IsJumping", true);
+                }
 
-    private void FixedUpdate()
-    {
-        playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
-        jump = false;
-    }
+                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                {
+                    currentGun.FireGun();
+                }
 
-    public void OnDeath()
-    {
-        uiManager.ShowDeathUI();
-
-        playerMovement.StopMovement();
-    }    
-
-    public void OnLanding()
-    {
-        myAnimator.SetBool("IsJumping", false);
-    }
-
-    private void SpawnLeechCollision()
-    {
-        Instantiate(leechCollision, new Vector2(1000, 1000), Quaternion.identity);
-    }
-
-    private void SetupScene()
-    {
-        var playerStateCount = FindObjectsOfType<PlayerState>().Length;
-
-        if (playerStateCount <= 0)
-        {
-            Instantiate(playerState, new Vector2(1000, 1000), Quaternion.identity);
+                if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
+                {
+                    currentGun.FireGun();
+                }
+            }
         }
 
-        var checkpoint = FindObjectOfType<Checkpoint>();
-
-        if (checkpoint)
+        private void FixedUpdate()
         {
-            checkpoint.ConstructCheckpoint();
+            playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
+            jump = false;
         }
+        /// <summary>
+        /// Called when player touches ground
+        /// </summary>
+        public void OnLanding()
+        {
+            myAnimator.SetBool("IsJumping", false);
 
-        myHealthComp.FindPlayerState();
+            if (CrossPlatformInputManager.GetButton("Jump"))
+            {
+                jump = true;
+            }
+        }
+        /// <summary>
+        /// Called when player dies will stop all player movement
+        /// </summary>
+        public void OnDeath()
+        {
+            uiManager.ShowDeathUI();
+
+            playerMovement.StopMovement();
+        }
     }
 }

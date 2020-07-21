@@ -1,14 +1,19 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using LevelObjects.MovingObjects;
+using System;
 
-public class LeechFather : EnemyShooter
+namespace EnemyCharacter.AI
 {
-    protected override void Shoot()
+    [Serializable]
+    public class LeechFather : EnemyShooter
     {
-        ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;
+        protected override void Shoot()
+        {
+            ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
 
-        Vector2 launchDirection = gameObject.transform.TransformDirection(GetFirePoint().position);
+            Vector2 launchDirection = gameObject.transform.TransformDirection(FireTransform.position);
 
-        bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
+            bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+        }
     }
 }

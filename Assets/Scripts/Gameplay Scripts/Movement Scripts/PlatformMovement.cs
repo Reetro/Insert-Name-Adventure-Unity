@@ -1,62 +1,66 @@
 ﻿using UnityEngine;
+using EnemyCharacter.AI;
 
-public class PlatformMovement : MonoBehaviour
+namespace LevelObjects.MovingObjects
 {
-    public float speed;
-    public Transform startPos;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public class PlatformMovement : MonoBehaviour
     {
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
+        public float speed;
+        public Transform startPos;
+
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
-
-            RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
-
-            if (rigidbodyManager)
+            if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
             {
-                rigidbodyManager.OnPlatfromEnter();
+                GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
+
+                RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
+
+                if (rigidbodyManager)
+                {
+                    rigidbodyManager.OnPlatfromEnter();
+                }
             }
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
+        private void OnCollisionExit2D(Collision2D collision)
         {
-            GeneralFunctions.DetachFromParent(collision.gameObject);
-
-            RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
-
-            if (rigidbodyManager)
+            if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
             {
-                rigidbodyManager.OnPlatfromExit();
+                GeneralFunctions.DetachFromParent(collision.gameObject);
+
+                RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
+
+                if (rigidbodyManager)
+                {
+                    rigidbodyManager.OnPlatfromExit();
+                }
             }
         }
-    }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
-            var enemy = collision.gameObject.GetComponent<EnemyMovement>();
-
-            if (enemy.TouchingGround())
+            if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
             {
-                GeneralFunctions.KillTarget(collision.gameObject);
+                var enemy = collision.gameObject.GetComponent<EnemyMovement>();
+
+                if (enemy.TouchingGround())
+                {
+                    GeneralFunctions.KillTarget(collision.gameObject);
+                }
             }
         }
-    }
 
-    protected virtual void OnTriggerStay2D(Collider2D collision)
-    {
-        if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
+        protected virtual void OnTriggerStay2D(Collider2D collision)
         {
-            var enemy = collision.gameObject.GetComponent<EnemyMovement>();
-
-            if (enemy.TouchingGround())
+            if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
             {
-                GeneralFunctions.KillTarget(collision.gameObject);
+                var enemy = collision.gameObject.GetComponent<EnemyMovement>();
+
+                if (enemy.TouchingGround())
+                {
+                    GeneralFunctions.KillTarget(collision.gameObject);
+                }
             }
         }
     }

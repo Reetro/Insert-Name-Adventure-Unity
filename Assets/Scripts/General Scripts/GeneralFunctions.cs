@@ -1,6 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
+using AuraSystem;
+using PlayerUI;
+using GameplayManagement;
+using EnemyCharacter;
+using AuraSystem.Effects;
+using PlayerCharacter.Controller;
+using System;
+using UnityEditor;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -64,7 +71,7 @@ public class GeneralFunctions
     /// <param name="position1"></param>
     /// <param name="position2"></param>
     /// <returns>A vector2 that is pointing in a direction</returns>
-    public static Vector2 GetDirectionVectroFrom2Vectors(Vector2 position1, Vector2 position2)
+    public static Vector2 GetDirectionVectorFrom2Vectors(Vector2 position1, Vector2 position2)
     {
         var direction = position1 - position2;
 
@@ -127,13 +134,13 @@ public class GeneralFunctions
     /// <param name="health">Incoming leech's health</param>
     /// <param name="player">Player reference</param>
     /// <returns>The spawned leech attached to the player</returns>
-    public static AttachedLeech SpawnLeechAttach(AuraManager auraManager, AttachedLeech attachedLeech, Transform transform, float health,  GameObject player)
+    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject player)
     {
         AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
 
         localLeech.transform.parent = transform;
 
-        localLeech.OnLeechSpawn(health, auraManager, player);
+        localLeech.OnLeechSpawn(health, player);
 
         return localLeech;
     }
@@ -141,7 +148,7 @@ public class GeneralFunctions
     ///  Finds a point to attach a leech to by look for the point by tag
     /// </summary>
     /// <param name="tag">The leech collision tag</param>
-    /// <returns>The transfrom of the found leeh attach point</returns>
+    /// <returns>The transfrom of the found leech attach point</returns>
     public static Transform GetLeechAttachPointByTag(string tag)
     {
         return GameObject.FindGameObjectWithTag(tag).transform;
@@ -154,25 +161,6 @@ public class GeneralFunctions
     public static bool CanLeechAttach(string tag)
     {
         return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
-    }
-    /// <summary>
-    ///  Checks to see if leech that is trying to attach to player is current dead
-    /// </summary>
-    /// <param name="leech">The leech to check</param>
-    /// <returns>A bool that determines if the given leech is dead</returns>
-    public static bool IsLeechDead(GameObject leech)
-    {
-        var leechHelthComp = leech.GetComponent<HealthComponent>();
-
-        if (leechHelthComp)
-        {
-            return leechHelthComp.GetIsDead();
-        }
-        else
-        {
-            Debug.LogError("Failed to check leech " + leech.name.ToString() + " did not have a health component");
-            return false;
-        }
     }
     /// <summary>
     /// Calls the construct health component function on the given game object
@@ -208,22 +196,25 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    ///  Gets the targets health component then damages the target
+    ///  Gets the targets health component then damages to the target
     /// </summary>
     /// <param name="target"></param>
     /// <param name="amount"></param>
     /// <param name="showText"></param>
     public static void DamageTarget(GameObject target, float amount, bool showText)
     {
-        var health = target.GetComponent<HealthComponent>();
+        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
 
-        if (health)
-        {
-            health.ProccessDamage(amount, showText);
-        }
-        else
-        {
-            Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+            if (health)
+            {
+                health.ProccessDamage(amount, showText, GetGameplayManager().whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+            }
         }
     }
     /// <summary>
@@ -232,29 +223,40 @@ public class GeneralFunctions
     /// <param name="target"></param>
     public static void KillTarget(GameObject target)
     {
-        var health = target.GetComponent<HealthComponent>();
+        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
 
-        if (health)
-        {
-            health.ProccessDamage(1000000, false);
+            if (health)
+            {
+                health.ProccessDamage(1000000000, false, GetGameplayManager().whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
+            }
         }
-        else
-        {
-            Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
-        }
+    }
+    /// <summary>
+    /// Checks to see if the player Gameobject is currently dead
+    /// </summary>
+    /// <returns>A bool that determains if the player is dead</returns>
+    public static bool IsPlayerDead()
+    {
+        return IsObjectDead(GetPlayerGameObject());
     }
     /// <summary>
     /// Checks to see if the given Gameobject is currently dead
     /// </summary>
     /// <param name="gameObject"></param>
-    /// <returns>A bool that determins if the object is dead</returns>
+    /// <returns>A bool that determines if the object is dead</returns>
     public static bool IsObjectDead(GameObject gameObject)
     {
         var health = gameObject.GetComponent<HealthComponent>();
 
         if (health)
         {
-            return health.GetIsDead();
+            return health.IsCurrentlyDead;
         }
         else
         {
@@ -263,14 +265,21 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Pauses the game
+    /// Finds the Gameplay Manager in the current level
+    /// </summary>
+    public static GameplayManager GetGameplayManager()
+    {
+        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+    }
+    /// <summary>
+    /// Pauses the game by setting time scale to 0
     /// </summary>
     public static void PauseGame()
     {
         Time.timeScale = 0;
     }
     /// <summary>
-    /// Resumes the game
+    /// Resumes the game by setting time scale to 1
     /// </summary>
     public static void ResumeGame()
     {
@@ -286,8 +295,8 @@ public class GeneralFunctions
     /// <returns>A a random vector 2</returns>
     public static Vector2 CreateRandomVector2(float minX, float maxX, float minY, float maxY)
     {
-        var randomX = Random.Range(minX, maxX);
-        var randomY = Random.Range(minY, maxY);
+        var randomX = UnityEngine.Random.Range(minX, maxX);
+        var randomY = UnityEngine.Random.Range(minY, maxY);
 
         return new Vector2(randomX, randomY);
     }
@@ -299,7 +308,7 @@ public class GeneralFunctions
     /// <returns>A vector2 with a random y coordinate</returns>
     public static Vector2 CreateRandomVector2OnlyY(float minY, float maxY)
     {
-        var randomY = Random.Range(minY, maxY);
+        var randomY = UnityEngine.Random.Range(minY, maxY);
 
         return new Vector2(0, randomY);
     }
@@ -311,7 +320,7 @@ public class GeneralFunctions
     /// <returns>A vector2 with a random x coordinate</returns>
     public static Vector2 CreateRandomVector2OnlyX(float minX, float maxX)
     {
-        var randomX = Random.Range(minX, maxX);
+        var randomX = UnityEngine.Random.Range(minX, maxX);
 
         return new Vector2(randomX, 0);
     }
@@ -380,9 +389,9 @@ public class GeneralFunctions
         return foundObject;
     }
     /// <summary>
-    ///  Returns the player GameObject
+    ///  Find the Player Gameobject by tag in the current level
     /// </summary>
-    /// <returns>The player Gameobject</returns>
+    /// <returns>The Player Gameobject</returns>
     public static GameObject GetPlayerGameObject()
     {
         return GameObject.FindGameObjectWithTag("Player");
@@ -414,7 +423,7 @@ public class GeneralFunctions
     {
         var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
 
-        return manager.GetComponent<GameplayManager>().GetAllIDs();
+        return manager.GetComponent<GameplayManager>().gameIDS;
     }
     /// <summary>
     /// Will parent the given object to the provided transform
@@ -490,17 +499,19 @@ public class GeneralFunctions
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static void ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    public static BuffEffect ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
     {
         var auraManager = target.GetComponent<AuraManager>();
-        
+
         if (auraManager)
         {
-            auraManager.ApplyBuff(target, buffToApply, createIcon);
+            return auraManager.ApplyBuff(target, buffToApply, createIcon);
         }
         else
         {
             Debug.LogError("Failed to apply buff to " + target.gameObject.name + " did not have a aura manager component");
+
+            return null;
         }
     }
     /// <summary>
@@ -511,17 +522,19 @@ public class GeneralFunctions
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static void ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
+    public static DebuffEffect ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
     {
         var auraManager = target.GetComponent<AuraManager>();
 
         if (auraManager)
         {
-            auraManager.ApplyDebuff(target, debuffToApply, createIcon);
+            return auraManager.ApplyDebuff(target, debuffToApply, createIcon);
         }
         else
         {
             Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
+
+            return null;
         }
     }
     /// <summary>
@@ -541,5 +554,40 @@ public class GeneralFunctions
         {
             Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
         }
+    }
+    /// <summary>
+    /// Find the Player UI Manager in the current scene
+    /// </summary>
+    /// <returns></returns>
+    public static PlayerUIManager GetPlayerUIManager()
+    {
+        return GameObject.FindGameObjectWithTag("Player Hud Canvas").GetComponent<PlayerUIManager>();
+    }
+    /// <summary>
+    /// Checks to see if the given object is on the player character
+    /// </summary>
+    /// <param name="objectToTest"></param>
+    /// <returns></returns>
+    public static bool IsObjectOnPlayer(GameObject objectToTest)
+    {
+        var player = objectToTest.GetComponentInParent<PlayerController>();
+
+        return player;
+    }
+    /// <summary>
+    /// Remove an item from an array at a given index
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arr"></param>
+    /// <param name="index"></param>
+    public static void RemoveAt<T>(ref T[] arr, int index)
+    {
+        for (int a = index; a < arr.Length - 1; a++)
+        {
+            // moving elements downwards, to fill the gap at [index]
+            arr[a] = arr[a + 1];
+        }
+        // finally, let's decrement Array's size by one
+        Array.Resize(ref arr, arr.Length - 1);
     }
 }

@@ -1,29 +1,31 @@
 ﻿using UnityEngine;
+using AuraSystem.Effects;
 
-public class AttachedLeech : MonoBehaviour
+namespace EnemyCharacter
 {
-    [SerializeField] ScriptableDebuff leechingDebuff = null;
-    [SerializeField] HealthComponent leechHealthComp = null;
-
-    private AuraManager auraManager = null;
-    
-    public void OnLeechSpawn(float health, AuraManager auraManager, GameObject player)
+    public class AttachedLeech : MonoBehaviour
     {
-        GeneralFunctions.ConstructHPComponent(gameObject);
+        [SerializeField] ScriptableDebuff leechingDebuff = null;
+        [SerializeField] HealthComponent leechHealthComp = null;
 
-        leechHealthComp.SetHealth(health);
+        private DebuffEffect debuffEffect = null;
 
-        auraManager.ApplyDebuff(player, leechingDebuff, true);
+        public void OnLeechSpawn(float health, GameObject player)
+        {
+            GeneralFunctions.ConstructHPComponent(gameObject);
 
-        this.auraManager = auraManager;
-    }
+            leechHealthComp.SetHealth(health);
 
-    public void OnDeath()
-    {
-        var debuff = auraManager.FindDebuffOtype(leechingDebuff);
+            leechHealthComp.OnDeath.AddListener(OnDeath);
 
-        debuff.RemoveFromStack(true, auraManager, leechingDebuff);
+            debuffEffect = GeneralFunctions.ApplyDebuffToTarget(player, leechingDebuff, true);
+        }
 
-        Destroy(gameObject);
+        public void OnDeath()
+        {
+            debuffEffect.RemoveFromStack(true, debuffEffect);
+
+            Destroy(gameObject);
+        }
     }
 }

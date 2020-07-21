@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
+using LevelObjects.MovingObjects;
+using System;
 
-public class LeechMother : EnemyShooter
+namespace EnemyCharacter.AI
 {
-    protected override void Shoot()
+    [Serializable]
+    public class LeechMother : EnemyShooter
     {
-        if (!GeneralFunctions.IsObjectAbove(GetPlayerTransform().position, transform.position))
+        protected override void Shoot()
         {
-            ProjectileMovement bulllet = Instantiate(GetProjectile(), GetFirePoint().position, Quaternion.identity) as ProjectileMovement;
+            if (!GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
+            {
+                ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
 
-            Vector2 launchDirection = GetPlayerTransform().position - transform.position;
+                Vector2 launchDirection = PlayerTransform.position - transform.position;
 
-            bulllet.ConstructProjectile(GetProjectileSpeed(), GetProjectileDamage(), launchDirection);
+                bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+            }
         }
     }
 }

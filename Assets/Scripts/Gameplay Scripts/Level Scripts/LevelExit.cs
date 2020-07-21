@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
-public class LevelExit : MonoBehaviour
+namespace LevelObjects.SceneLoading
 {
-    private LevelLoader levelLoader = null;
-
-    private void Start()
+    public class LevelExit : MonoBehaviour
     {
-        levelLoader = GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
-    }
+        private LevelLoader levelLoader = null;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+        public void ConsturctExit(LevelLoader levelLoader)
         {
-            if (!GeneralFunctions.IsObjectDead(collision.gameObject))
+            this.levelLoader = levelLoader;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                levelLoader.LoadNextLevel();
+                if (!GeneralFunctions.IsObjectDead(collision.gameObject))
+                {
+                    levelLoader.LoadNextLevel();
+                }
             }
         }
     }

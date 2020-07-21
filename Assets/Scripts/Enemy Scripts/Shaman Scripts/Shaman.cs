@@ -1,40 +1,61 @@
 ﻿using UnityEngine;
+using System;
 
-public class Shaman : EnemyBase
+namespace EnemyCharacter.AI
 {
-    [SerializeField] private Boomerang boomerangToSpawn = null;
-
-    [Header("Boomerang settings")]
-    [SerializeField] private int maxHitsBeforeTeleport = 2;
-    [SerializeField] private float boomerangSpeed = 300f;
-    [SerializeField] private float boomerangDamage = 2f;
-    [SerializeField] private float boomerangMinRandomFactor = 300f;
-    [SerializeField] private float boomerangMaxRandomFactor = 600f;
-    [SerializeField] private float teleportOffset = 0.5f;
-
-    private Boomerang currentBoomrang = null;
-
-    private void Start()
+    [Serializable]
+    public class Shaman : EnemyBase
     {
-        ThrowBoomerang();
-    }
+        [Header("Boomerang settings")]
+        [SerializeField] private int maxHitsBeforeTeleport = 2;
+        [SerializeField] private float boomerangSpeed = 300f;
+        [SerializeField] private float boomerangDamage = 2f;
+        [SerializeField] private float boomerangMinRandomFactor = 300f;
+        [SerializeField] private float boomerangMaxRandomFactor = 600f;
+        [SerializeField] private float teleportOffset = 0.5f;
 
-    public void ThrowBoomerang()
-    {
-        currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation);
+        private Boomerang boomerangToSpawn = null;
+        private Boomerang currentBoomrang = null;
 
-        currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
-
-        currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, transform.position, boomerangMinRandomFactor, boomerangMaxRandomFactor);
-    }
-
-    public override void OnDeath()
-    {
-        if (currentBoomrang)
+        protected override void Awake()
         {
-            currentBoomrang.DestroyBoomerang(false);
+            base.Awake();
+
+            var boomerangObject = Resources.Load("Enemy/Boomerang") as GameObject;
+
+            boomerangToSpawn = boomerangObject.GetComponent<Boomerang>();
         }
 
-        Destroy(gameObject);
+        private void Start()
+        {
+            ThrowBoomerang();
+        }
+
+        public void ThrowBoomerang()
+        {
+            var playerLocation = GeneralFunctions.GetPlayerGameObject().transform.position;
+
+            currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation);
+
+            currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
+
+            var startDirection = GeneralFunctions.GetDirectionVectorFrom2Vectors(playerLocation, currentBoomrang.transform.position);
+
+            currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, boomerangMinRandomFactor, boomerangMaxRandomFactor);
+
+            currentBoomrang.UpdateVelocity(playerLocation - currentBoomrang.transform.position);
+        }
+
+        public override void OnDeath()
+        {
+            base.OnDeath();
+
+            if (currentBoomrang)
+            {
+                currentBoomrang.DestroyBoomerang(false);
+            }
+
+            Destroy(gameObject);
+        }
     }
 }

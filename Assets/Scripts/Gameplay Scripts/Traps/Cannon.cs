@@ -1,30 +1,34 @@
 ﻿using System.Collections;
 using UnityEngine;
+using LevelObjects.MovingObjects;
 
-public class Cannon : MonoBehaviour
+namespace LevelObjects.Trap
 {
-    [SerializeField] private ProjectileMovement projectile = null;
-    [SerializeField] private Transform fireLocation = null;
-    [SerializeField] private float shootIntervale = 3f;
-    [SerializeField] private float projectileSpeed = 300f;
-    [SerializeField] private float projectileDamage = 4f;
-
-    private void Start()
+    public class Cannon : MonoBehaviour
     {
-        StartCoroutine(Shoot());
-    }
+        [SerializeField] private ProjectileMovement projectile = null;
+        [SerializeField] private Transform fireLocation = null;
+        [SerializeField] private float shootIntervale = 3f;
+        [SerializeField] private float projectileSpeed = 300f;
+        [SerializeField] private float projectileDamage = 4f;
 
-    public IEnumerator Shoot()
-    {
-        while (true)
+        private void Start()
         {
-            yield return new WaitForSecondsRealtime(shootIntervale);
+            StartCoroutine(Shoot());
+        }
 
-            if (projectile)
+        public IEnumerator Shoot()
+        {
+            while (true)
             {
-                ProjectileMovement spawnedProjectile = Instantiate(projectile, fireLocation.position, Quaternion.identity);
+                yield return new WaitForSecondsRealtime(shootIntervale);
 
-                spawnedProjectile.ConstructProjectile(projectileSpeed, projectileDamage, fireLocation.right);
+                if (projectile)
+                {
+                    ProjectileMovement spawnedProjectile = Instantiate(projectile, fireLocation.position, Quaternion.identity);
+
+                    spawnedProjectile.ConstructProjectile(projectileSpeed, projectileDamage, fireLocation.right);
+                }
             }
         }
     }

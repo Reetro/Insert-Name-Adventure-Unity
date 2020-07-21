@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using PlayerCharacter.GameSaving;
+using PlayerUI;
+using GameplayManagement;
+using System;
 
+[Serializable]
 public class HealthComponent : MonoBehaviour
 {
     [System.Serializable]
@@ -8,39 +13,67 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] float maxHealth = 10f;
-
-    [Header("Health Bar Settings")]
-    [SerializeField] HealthBar healthBar = null;
-
-    [Header("Combat Text Settings")]
-    [SerializeField] [Range(0.01f, 1f)] float combatTextSpeed = 0.01f;
-    [SerializeField] float combatTextUpTime = 0.5f;
-    [SerializeField] float combatRandomVectorMinX = -0.5f;
-    [SerializeField] float combatRandomVectorMaxX = 1f;
-    [SerializeField] float combatRandomVectorMinY = -0.5f;
-    [SerializeField] float combatRandomVectorMaxY = 1f;
-
-    [Header("Events")]
-    [Space]
+    
+    [HideInInspector]
     public UnityEvent OnDeath;
-    [Space]
+    
+    [HideInInspector]
     public TakeAnyDamge onTakeAnyDamage;
-
-    private float currentHealth = 0f;
-    private bool isDead = false;
+    
     private PlayerState playerState = null;
+    private GameplayManager gameplayManager = null;
+    private HealthBar healthBar = null;
 
     private static bool setMaxhealth = false;
 
+    /// <summary>
+    /// Setup all needed health component variables and update player state if on player
+    /// </summary>
     public void ConstructHealthComponent()
     {
-        isDead = false;
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
 
-        if (IsOnPlayer())
+        IsCurrentlyDead = false;
+
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             if (!setMaxhealth)
             {
-                currentHealth = maxHealth;
+                CurrentHealth = maxHealth;
+
+                setMaxhealth = true;
+
+                UpdatePlayerState();
+            }
+            else
+            {
+                maxHealth = playerState.GetCurrentMaxHealth();
+                CurrentHealth = playerState.GetCurrentHealth();
+
+                UpdatePlayerState();
+            }
+        }
+        else
+        {
+            CurrentHealth = maxHealth;
+        }
+    }
+    /// <summary>
+    /// Setup all needed health component variables and update player state if on player then setups the given health bar
+    /// </summary>
+    public void ConstructHealthComponent(HealthBar healthBar)
+    {
+        this.healthBar = healthBar;
+
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+
+        IsCurrentlyDead = false;
+
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
+        {
+            if (!setMaxhealth)
+            {
+                CurrentHealth = maxHealth;
 
                 if (healthBar)
                 {
@@ -54,19 +87,17 @@ public class HealthComponent : MonoBehaviour
             else
             {
                 maxHealth = playerState.GetCurrentMaxHealth();
-                currentHealth = playerState.GetCurrentHealth();
+                CurrentHealth = playerState.GetCurrentHealth();
 
                 if (healthBar)
                 {
-                    healthBar.SetHealth(currentHealth);
+                    healthBar.SetPlayerHealth(playerState);
                 }
-
-                UpdatePlayerState();
             }
         }
         else
         {
-            currentHealth = maxHealth;
+            CurrentHealth = maxHealth;
 
             if (healthBar)
             {
@@ -75,113 +106,137 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add the given value to this Gameobjects current health
+    /// </summary>
+    /// <param name="amountToAdd"></param>
     public void AddHealth(float amountToAdd)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amountToAdd, 0, maxHealth);
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToAdd, 0, maxHealth);
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
     }
-
-    public void ProccessDamage(float damage, bool showDamageText)
+    /// <summary>
+    /// Apply damage to the Gameobject this component is on if current health is below 0 the Gameobject is killed
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="showDamageText"></param>
+    /// <param name="damageLayer"></param>
+    public void ProccessDamage(float damage, bool showDamageText, LayerMask damageLayer)
     {
-        if (!isDead)
+        if (GeneralFunctions.IsObjectOnLayer(damageLayer, gameObject))
         {
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-
-            if (showDamageText)
+            if (!IsCurrentlyDead)
             {
-                DamageText.CreateDamageText(damage, transform.position, combatTextSpeed, combatTextUpTime, combatRandomVectorMinX, combatRandomVectorMaxX, combatRandomVectorMinY, combatRandomVectorMaxY);
-            }
+                CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, maxHealth);
 
-            onTakeAnyDamage.Invoke(damage);
+                if (showDamageText)
+                {
+                    DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, 
+                        gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY, gameplayManager.dissapearTime);
+                }
 
-            if (IsOnPlayer())
-            {
-                UpdatePlayerState();
-            }
+                onTakeAnyDamage.Invoke(damage);
 
-            if (healthBar)
-            {
-                healthBar.SetHealth(currentHealth);
-            }
+                if (GeneralFunctions.IsObjectOnPlayer(gameObject))
+                {
+                    UpdatePlayerState();
+                }
 
-            if (currentHealth <= 0)
-            {
-                isDead = true;
-                OnDeath.Invoke();
+                if (healthBar)
+                {
+                    healthBar.SetHealth(CurrentHealth);
+                }
+
+                if (CurrentHealth <= 0)
+                {
+                    IsCurrentlyDead = true;
+                    OnDeath.Invoke();
+                }
             }
         }
     }
-
+    /// <summary>
+    /// Set current health and to the given value
+    /// </summary>
+    /// <param name="value"></param>
     public void SetHealth(float value)
     {
-        currentHealth = value;
+        CurrentHealth = value;
         maxHealth = value;
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
     }
-
+    /// <summary>
+    /// Set current health and to the given values
+    /// </summary>
+    /// <param name="currentHP"></param>
+    /// <param name="maxHP"></param>
     public void SetHealth(float currentHP, float maxHP)
     {
-        currentHealth = currentHP;
+        CurrentHealth = currentHP;
         maxHealth = maxHP;
 
-        if (IsOnPlayer())
+        if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
             UpdatePlayerState();
         }
 
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetHealth(CurrentHealth);
         }
     }
-
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-
-    public bool GetIsDead()
-    {
-        return isDead;
-    }
-
+    /// <summary>
+    /// Get this Gameobjects current health
+    /// </summary>
+    public float CurrentHealth { get; private set; } = 0f;
+    /// <summary>
+    /// Check to see if the current Gameobject is dead
+    /// </summary>
+    public bool IsCurrentlyDead { get; private set; } = false;
+    /// <summary>
+    /// Find the player state in the level then construct the health component
+    /// </summary>
     public void FindPlayerState()
     {
         playerState = FindObjectOfType<PlayerState>();
 
         ConstructHealthComponent();
     }
+    /// <summary>
+    /// Find the player state in the level then construct the health component with a health bar
+    /// </summary>
+    public void FindPlayerState(HealthBar healthBar)
+    {
+        playerState = FindObjectOfType<PlayerState>();
 
+        ConstructHealthComponent(healthBar);
+    }
+    /// <summary>
+    /// Update player state health values
+    /// </summary>
     private void UpdatePlayerState()
     {
         if (playerState)
         {
-            playerState.UpdatePlayerStateHP(currentHealth, maxHealth);
+            playerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
         }
-    }
-
-    private bool IsOnPlayer()
-    {
-        var player = gameObject.GetComponentInParent<PlayerController>();
-
-        return player;
     }
 }

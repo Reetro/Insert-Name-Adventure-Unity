@@ -2,110 +2,130 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlayerUI.Icons;
+using LevelObjects.SceneLoading;
 
-public class PlayerUIManager : MonoBehaviour
+namespace PlayerUI
 {
-    [Header("Aura System UI Elements")]
-    [SerializeField] GridLayoutGroup buffGridLayoutGroup = null;
-    [SerializeField] GridLayoutGroup debuffGridLayoutGroup = null;
-    [SerializeField] BuffIcon buffIconPrefab = null;
-    [SerializeField] DebuffIcon debuffIconPrefab = null;
-
-    [Header("GameOver UI Elements")]
-    [SerializeField] Button loadCheckpointBTN = null;
-    [SerializeField] TextMeshProUGUI gameOverText = null;
-
-    private List<BuffIcon> buffIcons = new List<BuffIcon>();
-    private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
-
-    private void Start()
+    public class PlayerUIManager : MonoBehaviour
     {
-        HideDeathUI();
-    }
+        [Header("Aura System UI Elements")]
+        [SerializeField] GridLayoutGroup buffGridLayoutGroup = null;
+        [SerializeField] GridLayoutGroup debuffGridLayoutGroup = null;
+        [SerializeField] BuffIcon buffIconPrefab = null;
+        [SerializeField] DebuffIcon debuffIconPrefab = null;
 
-    public BuffIcon AddBuffIcon(ScriptableBuff buff)
-    {
-        BuffIcon icon = Instantiate(buffIconPrefab, buffGridLayoutGroup.transform);
-        buffIcons.Add(icon);
+        [Header("GameOver UI Elements")]
+        [SerializeField] Button loadCheckpointBTN = null;
+        [SerializeField] TextMeshProUGUI gameOverText = null;
 
-        icon.StartCooldown(buff);
+        [Header("Player UI")]
+        [SerializeField] HealthBar healthBar = null;
 
-        return icon;
-    }
+        private List<BuffIcon> buffIcons = new List<BuffIcon>();
+        private List<DebuffIcon> debuffIcons = new List<DebuffIcon>();
+        private LevelLoader levelLoader = null;
 
-    public void RemoveBuffIcon(BuffIcon iconToRemove)
-    {
-        buffIcons.Remove(iconToRemove);
-
-        Destroy(iconToRemove.gameObject);
-    }
-
-    public BuffIcon FindBuffIconByType(ScriptableBuff buff)
-    {
-        BuffIcon localIcon = null;
-
-        foreach (BuffIcon icon in buffIcons)
+        private void Awake()
         {
-            if (icon.GetBuff().buffType == buff.buffType)
-            {
-                localIcon = icon;
-                break;
-            }
-            else
-            {
-                localIcon = null;
-                continue;
-            }
+            HideDeathUI();
+
+            levelLoader = FindObjectOfType<LevelLoader>();
+
+            loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
         }
-        return localIcon;
-    }
 
-    public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
-    {
-        DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
-        debuffIcons.Add(icon);
-
-        icon.StartCooldown(debuff, hasFillAmount, useTick);
-
-        return icon;
-    }
-
-    public void RemoveDebuffIcon(DebuffIcon iconToRemove)
-    {
-        debuffIcons.Remove(iconToRemove);
-
-        Destroy(iconToRemove.gameObject);
-    }
-
-    public DebuffIcon FindDebuffIconByType(ScriptableDebuff debuff)
-    {
-        DebuffIcon localIcon = null;
-
-        foreach (DebuffIcon icon in debuffIcons)
+        private void loadCheckpoint_onclick()
         {
-            if (icon.GetDebuff().debuffType == debuff.debuffType)
-            {
-                localIcon = icon;
-                break;
-            }
-            else
-            {
-                localIcon = null;
-                continue;
-            }
+            levelLoader.LoadCheckpoint();
         }
-        return localIcon;
-    }
 
-    public void HideDeathUI()
-    {
-        loadCheckpointBTN.gameObject.SetActive(false);
-        gameOverText.gameObject.SetActive(false);
-    }
+        public BuffIcon AddBuffIcon(ScriptableBuff buff)
+        {
+            BuffIcon icon = Instantiate(buffIconPrefab, buffGridLayoutGroup.transform);
+            buffIcons.Add(icon);
 
-    public void ShowDeathUI()
-    {
-        loadCheckpointBTN.gameObject.SetActive(true);
-        gameOverText.gameObject.SetActive(true);
+            icon.StartCooldown(buff);
+
+            return icon;
+        }
+
+        public void RemoveBuffIcon(BuffIcon iconToRemove)
+        {
+            buffIcons.Remove(iconToRemove);
+
+            Destroy(iconToRemove.gameObject);
+        }
+
+        public BuffIcon FindBuffIconByType(ScriptableBuff buff)
+        {
+            BuffIcon localIcon = null;
+
+            foreach (BuffIcon icon in buffIcons)
+            {
+                if (icon.Buff.buffType == buff.buffType)
+                {
+                    localIcon = icon;
+                    break;
+                }
+                else
+                {
+                    localIcon = null;
+                    continue;
+                }
+            }
+            return localIcon;
+        }
+
+        public DebuffIcon AddDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
+        {
+            DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
+            debuffIcons.Add(icon);
+
+            icon.StartCooldown(debuff, hasFillAmount, useTick);
+
+            return icon;
+        }
+
+        public void RemoveDebuffIcon(DebuffIcon iconToRemove)
+        {
+            debuffIcons.Remove(iconToRemove);
+
+            Destroy(iconToRemove.gameObject);
+        }
+
+        public DebuffIcon FindDebuffIconByType(ScriptableDebuff debuff)
+        {
+            DebuffIcon localIcon = null;
+
+            foreach (DebuffIcon icon in debuffIcons)
+            {
+                if (icon.Debuff.debuffType == debuff.debuffType)
+                {
+                    localIcon = icon;
+                    break;
+                }
+                else
+                {
+                    localIcon = null;
+                    continue;
+                }
+            }
+            return localIcon;
+        }
+
+        public HealthBar HPBar => healthBar;
+
+        public void HideDeathUI()
+        {
+            loadCheckpointBTN.gameObject.SetActive(false);
+            gameOverText.gameObject.SetActive(false);
+        }
+
+        public void ShowDeathUI()
+        {
+            loadCheckpointBTN.gameObject.SetActive(true);
+            gameOverText.gameObject.SetActive(true);
+        }
     }
 }
