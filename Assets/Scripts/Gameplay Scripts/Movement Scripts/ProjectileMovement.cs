@@ -16,6 +16,10 @@ namespace LevelObjects.MovingObjects
 
         private float minNoise = 0f;
         private float maxNoise = 0f;
+        private Vector2 lastDirection = Vector2.zero;
+
+        public Vector2 LastDirection { get { return lastDirection; } }
+        public Vector2 LaunchDirection { get { return launchDirection; } }
 
         [Header("Events")]
         [Space]
@@ -51,6 +55,7 @@ namespace LevelObjects.MovingObjects
 
         public void UpdateDirection(Vector2 newDirection)
         {
+            lastDirection = launchDirection;
             launchDirection = newDirection;
         }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using LevelObjects.MovingObjects;
+using System;
 
 namespace EnemyCharacter.AI
 {
@@ -10,8 +11,22 @@ namespace EnemyCharacter.AI
         private int maxHitsBeforeTeleport = 0;
         private float offSet = 0.5f;
 
+        private float defaultTimer = 0;
+        private float resetTimer = 0;
+        private bool firstRun = true;
+
+        private float boomerangMinRandomFactor = 60;
+        private float boomerangMaxRandomFactor = 0;
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (firstRun)
+            {
+                firstRun = false;
+            }
+
+            resetTimer = defaultTimer;
+
             Vector2 _wallNormal = collision.GetContact(0).normal;
 
             Vector2 newDirection = Vector2.Reflect(CurrentVelocity, _wallNormal);
@@ -27,6 +42,20 @@ namespace EnemyCharacter.AI
                 TeleportShaman(collision.GetContact(0).point);
 
                 currentHitCount = 0;
+            }
+        }
+
+        private void Update()
+        {
+            if (!firstRun)
+            {
+                resetTimer -= Time.deltaTime;
+
+                if (resetTimer <= 0)
+                {
+                    UpdateDirection(GeneralFunctions.CreateRandomVector2(boomerangMinRandomFactor, boomerangMaxRandomFactor, boomerangMinRandomFactor, boomerangMaxRandomFactor));
+                    resetTimer = defaultTimer;
+                }
             }
         }
 
@@ -68,13 +97,19 @@ namespace EnemyCharacter.AI
             return point;
         }
 
-        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
+        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet, float timerLength)
         {
             currentShaman = shamanToSet;
 
             this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
 
             this.offSet = offSet;
+
+            firstRun = true;
+
+            defaultTimer = timerLength;
+
+            resetTimer = timerLength;
         }
     }
 }

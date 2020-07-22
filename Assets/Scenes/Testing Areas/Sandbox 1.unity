@@ -5428,11 +5428,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 974195502854416268, guid: e56c704d4e011d74f99d556500c5390c,
-        type: 3}
-      propertyPath: maxHitsBeforeTeleport
-      value: 999
-      objectReference: {fileID: 0}
     - target: {fileID: 7367770904653533427, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}
       propertyPath: m_Name

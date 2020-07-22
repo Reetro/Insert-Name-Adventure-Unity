@@ -176,6 +176,7 @@ namespace CustomEditors
         private SerializedProperty _ShamanMinRandom;
         private SerializedProperty _ShamanMaxRandom;
         private SerializedProperty _ShamanDamage;
+        private SerializedProperty _ShamanTimer;
         #endregion
 
         #region Shaman Editors
@@ -439,8 +440,9 @@ namespace CustomEditors
             _ShamanDamage = shamanObject.FindProperty("boomerangDamage");
             _ShamanHitsBeforeTeleport = shamanObject.FindProperty("maxHitsBeforeTeleport");
             _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
-            _ShamanMinRandom = shamanObject.FindProperty("boomerangMinRandomFactor");
-            _ShamanMaxRandom = shamanObject.FindProperty("boomerangMaxRandomFactor");
+            _ShamanMinRandom = shamanObject.FindProperty("MinNoise");
+            _ShamanMaxRandom = shamanObject.FindProperty("MaxNoise");
+            _ShamanTimer = shamanObject.FindProperty("hitTimerLength");
         }
         #endregion
         #endregion
