@@ -198,7 +198,7 @@ namespace CustomEditors
 
         public override void OnEnable()
         {
-            ShouldTick(false);
+            _ShouldTick = false;
 
             SetupGameplayManager();
 
@@ -216,21 +216,17 @@ namespace CustomEditors
         }
         private void SetupGameplayManagerEditor()
         {
-            // Find and add player Gameobject to menu
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Player/Player.prefab");
+            var managerPrefab = Resources.Load("Player/Player") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (managerPrefab)
             {
-                GameObject managerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                gameplayManagerEditor = Editor.CreateEditor(managerPrefab.GetComponentInChildren<GameplayManager>());
 
-                if (managerPrefab)
-                {
-                    gameplayManagerEditor = Editor.CreateEditor(managerPrefab.GetComponentInChildren<GameplayManager>());
-                    
-                    gameplayManagerObject = new SerializedObject(managerPrefab.GetComponentInChildren<GameplayManager>());
-
-                    break;
-                }
+                gameplayManagerObject = new SerializedObject(managerPrefab.GetComponentInChildren<GameplayManager>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get managerPrefab in Gameplay Editor");
             }
         }
         private void SetGameplayManagerVars()
@@ -279,22 +275,19 @@ namespace CustomEditors
         #region Leech Functions
         private void SetupLeechEditor()
         {
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech.prefab");
+            var leechPrefab = Resources.Load("Enemies/Leech/Leech") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (leechPrefab)
             {
-                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                leechMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
+                leechHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
 
-                if (leechPrefab)
-                {
-                    leechMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
-                    leechHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
-
-                    leechHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
-                    leechMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
-
-                    break;
-                }
+                leechHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
+                leechMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get leechPrefab in Gameplay Editor");
             }
         }
 
@@ -317,24 +310,21 @@ namespace CustomEditors
         #region Leech Father Functions
         private void SetupLeechFatherEditor()
         {
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech Father.prefab");
+            var leechFatherPrefab = Resources.Load("Enemies/Leech/Leech Father") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (leechFatherPrefab)
             {
-                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                leechFatherMovmentEditor = Editor.CreateEditor(leechFatherPrefab.GetComponent<LeechMovement>());
+                leechFatherHealthEditor = Editor.CreateEditor(leechFatherPrefab.GetComponent<HealthComponent>());
+                leechFatherEditor = Editor.CreateEditor(leechFatherPrefab.GetComponent<LeechFather>());
 
-                if (leechPrefab)
-                {
-                    leechFatherMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
-                    leechFatherHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
-                    leechFatherEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechFather>());
-
-                    leechFatherHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
-                    leechFatherMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
-                    leechFatherObject = new SerializedObject(leechPrefab.GetComponent<LeechFather>());
-
-                    break;
-                }
+                leechFatherHealthObject = new SerializedObject(leechFatherPrefab.GetComponent<HealthComponent>());
+                leechFatherMovementObject = new SerializedObject(leechFatherPrefab.GetComponent<LeechMovement>());
+                leechFatherObject = new SerializedObject(leechFatherPrefab.GetComponent<LeechFather>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get leechFatherPrefab in Gameplay Editor");
             }
         }
 
@@ -357,24 +347,22 @@ namespace CustomEditors
         #region Leech Mother Functions
         private void SetupLeechMotherEditor()
         {
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Leech/Leech Mother.prefab");
+            var leechMotherPrefab = Resources.Load("Enemies/Leech/Leech Mother") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (leechMotherPrefab)
             {
-                GameObject leechPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                leechMotherMovmentEditor = Editor.CreateEditor(leechMotherPrefab.GetComponent<LeechMovement>());
+                leechMotherHealthEditor = Editor.CreateEditor(leechMotherPrefab.GetComponent<HealthComponent>());
+                leechMotherEditor = Editor.CreateEditor(leechMotherPrefab.GetComponent<LeechMother>());
 
-                if (leechPrefab)
-                {
-                    leechMotherMovmentEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMovement>());
-                    leechMotherHealthEditor = Editor.CreateEditor(leechPrefab.GetComponent<HealthComponent>());
-                    leechMotherEditor = Editor.CreateEditor(leechPrefab.GetComponent<LeechMother>());
-
-                    leechMotherHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
-                    leechMotherMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
-                    leechMotherObject = new SerializedObject(leechPrefab.GetComponent<LeechMother>());
-
-                    break;
-                }
+                leechMotherHealthObject = new SerializedObject(leechMotherPrefab.GetComponent<HealthComponent>());
+                leechMotherMovementObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMovement>());
+                
+                leechMotherObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMother>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get leechMotherPrefab in Gameplay Editor");
             }
         }
 
@@ -397,23 +385,20 @@ namespace CustomEditors
         #region Shaman Functions
         private void SetupShamanEditor()
         {
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Enemies/Shaman/Shaman.prefab");
+            var shamanPrefab = Resources.Load("Enemies/Shaman/Shaman") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (shamanPrefab)
             {
-                GameObject shamanPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                shamanEditor = Editor.CreateEditor(shamanPrefab.GetComponent<Shaman>());
+                shamanHealthEditor = Editor.CreateEditor(shamanPrefab.GetComponent<HealthComponent>());
 
-                if (shamanPrefab)
-                {
-                    shamanEditor = Editor.CreateEditor(shamanPrefab.GetComponent<Shaman>());
-                    shamanHealthEditor = Editor.CreateEditor(shamanPrefab.GetComponent<HealthComponent>());
+                shamanHealthObject = new SerializedObject(shamanPrefab.GetComponent<HealthComponent>());
 
-                    shamanHealthObject = new SerializedObject(shamanPrefab.GetComponent<HealthComponent>());
-
-                    shamanObject = new SerializedObject(shamanPrefab.GetComponent<Shaman>());
-
-                    break;
-                }
+                shamanObject = new SerializedObject(shamanPrefab.GetComponent<Shaman>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get shamanPrefab in Gameplay Editor");
             }
         }
 
@@ -478,25 +463,21 @@ namespace CustomEditors
 
         private void SetupPlayerEditor()
         {
-            // Find and add player Gameobject to menu
-            List<string> prefabsPaths = FindObjectsAtPath("Assets/Player/Player.prefab");
+            var playerPrefab = Resources.Load("Player/Player") as GameObject;
 
-            foreach (string currentPath in prefabsPaths)
+            if (playerPrefab)
             {
-                GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(currentPath, typeof(GameObject));
+                playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
+                playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
+                playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
 
-                if (playerPrefab)
-                {
-                    playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
-                    playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
-                    playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
-
-                    playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
-                    playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
-                    playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
-
-                    break;
-                }
+                playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
+                playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
+                playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get playerPrefab in Gameplay Editor");
             }
         }
         #endregion

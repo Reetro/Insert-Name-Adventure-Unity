@@ -19,7 +19,7 @@ namespace CustomEditors
 
         public override void OnEnable()
         {
-            ShouldTick(true);
+            _ShouldTick = true;
 
             base.OnEnable();
 

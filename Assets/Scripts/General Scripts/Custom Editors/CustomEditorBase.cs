@@ -1,6 +1,4 @@
 ﻿#if UNITY_EDITOR
-using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,12 +9,7 @@ namespace CustomEditors
         /// <summary>
         /// Whether or not this editor should tick
         /// </summary>
-        protected void ShouldTick(bool value)
-        {
-            _ShouldTick = value;
-        }
-
-        protected bool _ShouldTick { get; private set; } = false;
+        protected bool _ShouldTick { get; set; } = false;
 
         public virtual void OnDisable()
         {
@@ -56,27 +49,6 @@ namespace CustomEditors
                 a[i] = AssetDatabase.LoadAssetAtPath<T>(path);
             }
             return a;
-        }
-        /// <summary>
-        /// Finds all items in the provided path
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns>An array of strings</returns>
-        public static List<String> FindObjectsAtPath(string path)
-        {
-            string[] assetsPaths = AssetDatabase.GetAllAssetPaths();
-
-            List<string> prefabsPaths = new List<string>();
-
-            foreach (string assetPath in assetsPaths)
-            {
-                if (assetPath.Contains(path))
-                {
-                    prefabsPaths.Add(assetPath);
-                }
-            }
-
-            return prefabsPaths;
         }
     }
 }
