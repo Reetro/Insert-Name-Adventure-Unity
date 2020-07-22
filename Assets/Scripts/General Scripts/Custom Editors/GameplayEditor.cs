@@ -17,7 +17,7 @@ namespace CustomEditors
         private SerializedProperty _ManagerRandomMinY;
         private SerializedProperty _ManagerRandomMaxX;
         private SerializedProperty _ManagerRandomMaxY;
-        private SerializedProperty _ManagerTextDissapearTime;
+        private SerializedProperty _ManagerTextDisappearTime;
         private SerializedProperty _ManagerNameFontSize;
         private SerializedProperty _ManagerDescriptionFontSize;
         private SerializedProperty _ManagerWhatCanBeDamaged;
@@ -52,8 +52,6 @@ namespace CustomEditors
         #region Player Health Varaibles
         private SerializedProperty _PlayerMaxHealth;
         private SerializedProperty _PlayerHealthBar;
-        private SerializedProperty _PlayerOnDeath;
-        private SerializedProperty _PlayerTakeAnyDamage;
         #endregion
 
         #region Player Objects
@@ -71,8 +69,6 @@ namespace CustomEditors
         #region Leech Health Varaibles
         private SerializedProperty _LeechMaxHealth;
         private SerializedProperty _LeechHealthBar;
-        private SerializedProperty _LeechOnDeath;
-        private SerializedProperty _LeechTakeAnyDamage;
         #endregion
 
         #region Leech Movement Varaibles
@@ -97,8 +93,6 @@ namespace CustomEditors
         #region Leech Father Health Varaibles
         private SerializedProperty _LeechFatherMaxHealth;
         private SerializedProperty _LeechFatherHealthBar;
-        private SerializedProperty _LeechFatherOnDeath;
-        private SerializedProperty _LeechFatherTakeAnyDamage;
         #endregion
 
         #region Leech Father Movement Varaibles
@@ -131,8 +125,6 @@ namespace CustomEditors
         #region Leech Mother Health Varaibles
         private SerializedProperty _LeechMotherMaxHealth;
         private SerializedProperty _LeechMotherHealthBar;
-        private SerializedProperty _LeechMotherOnDeath;
-        private SerializedProperty _LeechMotherTakeAnyDamage;
         #endregion
 
         #region Leech Mother Movement Varaibles
@@ -249,7 +241,7 @@ namespace CustomEditors
             _ManagerRandomMaxX = gameplayManagerObject.FindProperty("combatRandomVectorMaxX");
             _ManagerRandomMinY = gameplayManagerObject.FindProperty("combatRandomVectorMinY");
             _ManagerRandomMaxY = gameplayManagerObject.FindProperty("combatRandomVectorMaxY");
-            _ManagerTextDissapearTime = gameplayManagerObject.FindProperty("dissapearTime");
+            _ManagerTextDisappearTime = gameplayManagerObject.FindProperty("disappearTime");
         }
         #endregion
 
@@ -308,8 +300,6 @@ namespace CustomEditors
         {
             _LeechHealthBar = leechHealthObject.FindProperty("healthBar");
             _LeechMaxHealth = leechHealthObject.FindProperty("maxHealth");
-            _LeechOnDeath = leechHealthObject.FindProperty("OnDeath");
-            _LeechTakeAnyDamage = leechHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void SetLeechMovement()
@@ -317,7 +307,7 @@ namespace CustomEditors
             _LeechFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
             _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
             _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechForceMultipler = leechMovementObject.FindProperty("downwardForceMultipler");
+            _LeechForceMultipler = leechMovementObject.FindProperty("forceMultipler");
             _LeechPushTimer = leechMovementObject.FindProperty("pushTimer");
             _LeechForceLayer = leechMovementObject.FindProperty("ForceLayer");
         }
@@ -355,8 +345,6 @@ namespace CustomEditors
         {
             _LeechFatherMaxHealth = leechFatherHealthObject.FindProperty("maxHealth");
             _LeechFatherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
-            _LeechFatherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
-            _LeechFatherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void SetupLeechFatherMovement()
@@ -364,7 +352,7 @@ namespace CustomEditors
             _LeechFatherFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
             _LeechFatherRandomYmin = leechMovementObject.FindProperty("randomYMin");
             _LeechFatherRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechFatherForceMultipler = leechMovementObject.FindProperty("downwardForceMultipler");
+            _LeechFatherForceMultipler = leechMovementObject.FindProperty("forceMultipler");
             _LeechFatherPushTimer = leechMovementObject.FindProperty("pushTimer");
             _LeechFatherForceLayer = leechMovementObject.FindProperty("ForceLayer");
         }
@@ -403,8 +391,6 @@ namespace CustomEditors
         {
             _LeechMotherMaxHealth = leechFatherHealthObject.FindProperty("maxHealth");
             _LeechMotherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
-            _LeechMotherOnDeath = leechFatherHealthObject.FindProperty("OnDeath");
-            _LeechMotherTakeAnyDamage = leechFatherHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void SetupLeechMotherMovement()
@@ -412,7 +398,7 @@ namespace CustomEditors
             _LeechMotherFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
             _LeechMotherRandomYmin = leechMovementObject.FindProperty("randomYMin");
             _LeechMotherRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechMotherForceMultipler = leechMovementObject.FindProperty("downwardForceMultipler");
+            _LeechMotherForceMultipler = leechMovementObject.FindProperty("forceMultipler");
             _LeechMotherPushTimer = leechMovementObject.FindProperty("pushTimer");
             _LeechMotherForceLayer = leechMovementObject.FindProperty("ForceLayer");
         }
@@ -442,8 +428,6 @@ namespace CustomEditors
         {
             _ShamanMaxHealth = shamanHealthObject.FindProperty("maxHealth");
             _ShamanHealthBar = shamanHealthObject.FindProperty("healthBar");
-            _ShamanOnDeath = shamanHealthObject.FindProperty("OnDeath");
-            _ShamanTakeAnyDamage = shamanHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void SetupShamanShooting()
@@ -482,8 +466,6 @@ namespace CustomEditors
         {
             _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
             _PlayerHealthBar = playerHealthObject.FindProperty("healthBar");
-            _PlayerOnDeath = playerHealthObject.FindProperty("OnDeath");
-            _PlayerTakeAnyDamage = playerHealthObject.FindProperty("onTakeAnyDamage");
         }
 
         private void SetPlayerGun()

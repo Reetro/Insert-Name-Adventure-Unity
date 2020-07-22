@@ -8,11 +8,17 @@ namespace EnemyCharacter.AI
     public class LeechMovement : EnemyBase
     {
         [Header("Leech Movement Settings")]
+        [Tooltip("How fast the leech flies towards the player")]
         [SerializeField] private float leechFlySpeed = 4f;
+        [Tooltip("Minimum amount to add to the leeches current Y vector")]
         [SerializeField] private float randomYMin = 0.005f;
+        [Tooltip("Maximum amount to add to the leeches current Y vector")]
         [SerializeField] private float randomYMax = 0.007f;
-        [SerializeField] private float downwardForceMultipler = 0.8f;
+        [Tooltip("Multiplier used to knock leech downward")]
+        [SerializeField] private float forceMultipler = 0.8f;
+        [Tooltip("Delay for downward force")]
         [SerializeField] private float pushTimer = 2f;
+        [Tooltip("What layers can add force to leech")]
         public LayerMask ForceLayer;
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -61,7 +67,10 @@ namespace EnemyCharacter.AI
         {
             yield return new WaitForSeconds(pushTimer);
 
-            MyRigidBody2D.AddForce(-transform.up * downwardForceMultipler, ForceMode2D.Impulse);
+            if (!MyHealthComponent.IsCurrentlyDead)
+            {
+                MyRigidBody2D.AddForce(-transform.up * forceMultipler, ForceMode2D.Impulse);
+            }
         }
 
         private bool CheckCollision()

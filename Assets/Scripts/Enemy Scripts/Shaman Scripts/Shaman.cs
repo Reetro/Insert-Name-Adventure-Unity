@@ -7,11 +7,17 @@ namespace EnemyCharacter.AI
     public class Shaman : EnemyBase
     {
         [Header("Boomerang settings")]
+        [Tooltip("How many hits it takes to make the shaman teleport")]
         [SerializeField] private int maxHitsBeforeTeleport = 2;
+        [Tooltip("How fast the spawn boomerang moves")]
         [SerializeField] private float boomerangSpeed = 300f;
+        [Tooltip("How much damage the spawned boomerang does")]
         [SerializeField] private float boomerangDamage = 2f;
+        [Tooltip("Minimum amount of noise to add the Initial spawn of the boomerang")]
         [SerializeField] private float MinNoise = 300f;
+        [Tooltip("Maximum amount of noise to add the Initial spawn of the boomerang")]
         [SerializeField] private float MaxNoise = 600f;
+        [Tooltip("How much to offset the shaman teleport location by")]
         [SerializeField] private float teleportOffset = 0.5f;
 
         private Boomerang boomerangToSpawn = null;

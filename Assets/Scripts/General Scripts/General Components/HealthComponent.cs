@@ -12,6 +12,7 @@ public class HealthComponent : MonoBehaviour
     public class TakeAnyDamge : UnityEvent<float> { }
 
     [Header("Health Settings")]
+    [Tooltip("Maximum amount health this object can have")]
     [SerializeField] float maxHealth = 10f;
     
     [HideInInspector]
@@ -141,7 +142,7 @@ public class HealthComponent : MonoBehaviour
                 if (showDamageText)
                 {
                     DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, gameplayManager.combatTextUpTime, gameplayManager.combatRandomVectorMinX, 
-                        gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY, gameplayManager.dissapearTime);
+                        gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY, gameplayManager.disappearTime);
                 }
 
                 onTakeAnyDamage.Invoke(damage);

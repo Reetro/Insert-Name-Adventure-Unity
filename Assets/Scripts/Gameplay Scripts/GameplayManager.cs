@@ -8,21 +8,31 @@ namespace GameplayManagement
     public class GameplayManager : MonoBehaviour
     {
         [Header("Combat Text Settings")]
+        [Tooltip("How fast spawned combat text moves")]
         [Range(0.01f, 1f)] public float combatTextSpeed = 0.01f;
+        [Tooltip("How long combat text exists in the world")]
         public float combatTextUpTime = 0.5f;
+        [Tooltip("Minimum amount for spawned text X coordinate")]
         public float combatRandomVectorMinX = -0.5f;
+        [Tooltip("Maximum amount for spawned text X coordinate")]
         public float combatRandomVectorMaxX = 1f;
+        [Tooltip("Minimum amount for spawned text Y coordinate")]
         public float combatRandomVectorMinY = -0.5f;
+        [Tooltip("Maximum amount for spawned text Y coordinate")]
         public float combatRandomVectorMaxY = 1f;
-        public float dissapearTime = 3f;
+        [Tooltip("How long it takes for combat text to disappear")]
+        public float disappearTime = 3f;
 
         [Header("Tooltip Settings")]
+        [Tooltip("Font size for ToolTip item names")]
         public float nameFontSize = 36f;
+        [Tooltip("Font size for ToolTip item descriptions")]
         public float descriptionFontSize = 28f;
 
         [Space]
 
         [Header("Damage Settings")]
+        [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
 
         public int GenID()

@@ -99,7 +99,7 @@ MonoBehaviour:
   combatRandomVectorMaxX: 1
   combatRandomVectorMinY: -1
   combatRandomVectorMaxY: 1
-  dissapearTime: 3
+  disappearTime: 3
   nameFontSize: 38
   descriptionFontSize: 28
   whatCanBeDamaged:
@@ -596,6 +596,7 @@ MonoBehaviour:
   movementSmoothing: 0.05
   hasAirControl: 1
   playerAcceleration: 8
+  myLegs: {fileID: 2543864314282910336}
 --- !u!114 &6037561768107980108
 MonoBehaviour:
   m_ObjectHideFlags: 0

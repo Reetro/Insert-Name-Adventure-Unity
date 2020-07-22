@@ -156,6 +156,11 @@ MonoBehaviour:
   leechFlySpeed: 3
   randomYMin: 0.005
   randomYMax: 0.007
+  forceMultipler: 0.8
+  pushTimer: 2
+  ForceLayer:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!114 &5899286072162422531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,12 +173,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354c0b4e35ccce84781fee4423c06a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 8857225106022265615, guid: c0c51ddd683319c4c8eb82cf56e0163c,
-    type: 3}
   shootIntervale: 2
   projectileSpeed: 500
   projectileDamage: 1
-  firePoint: {fileID: 3267386186718289769}
 --- !u!114 &8627691463657521404
 MonoBehaviour:
   m_ObjectHideFlags: 0
