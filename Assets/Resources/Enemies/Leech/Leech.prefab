@@ -124,7 +124,7 @@ MonoBehaviour:
   leechFlySpeed: 3
   randomYMin: 0.005
   randomYMax: 0.007
-  forceMultipler: 0.8
+  forceMultipler: 0.3
   pushTimer: 2
   ForceLayer:
     serializedVersion: 2
