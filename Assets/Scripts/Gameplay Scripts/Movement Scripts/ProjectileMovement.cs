@@ -6,18 +6,21 @@ namespace LevelObjects.MovingObjects
     [RequireComponent(typeof(Rigidbody2D))]
     public class ProjectileMovement : MonoBehaviour
     {
-        private float currentMoveSpeed = 400f;
-        private Vector2 currentVelocity;
+        protected Vector2 CurrentVelocity { get; set; }
+
+        protected Rigidbody2D MyRigidBody2D { get; private set; } = null;
 
         private Vector2 launchDirection;
         protected bool canFire = false;
         protected bool useNoise = false;
         protected float damage = 1f;
 
-        private float minNoise = 0f;
-        private float maxNoise = 0f;
         private Vector2 lastDirection = Vector2.zero;
 
+        protected float MinNoise { get; private set; } = 0;
+        protected float MaxNoise { get; private set; } = 0;
+        public virtual bool UseFixedUpdate { get; set; } = true;
+        protected float MoveSpeed { get; private set; } = 0;
         public Vector2 LastDirection { get { return lastDirection; } }
         public Vector2 LaunchDirection { get { return launchDirection; } }
 
@@ -33,7 +36,7 @@ namespace LevelObjects.MovingObjects
         public virtual void ConstructProjectile(float moveSpeed, float damage, Vector2 launchDirection)
         {
             this.damage = damage;
-            currentMoveSpeed = moveSpeed;
+            MoveSpeed = moveSpeed;
             this.launchDirection = launchDirection;
 
             canFire = true;
@@ -43,11 +46,11 @@ namespace LevelObjects.MovingObjects
         public virtual void ConstructProjectileWithNoise(float moveSpeed, float damage, Vector2 launchDirection, float noiseMin, float noiseMax)
         {
             this.damage = damage;
-            currentMoveSpeed = moveSpeed;
-            this.launchDirection = launchDirection + GetNoise(noiseMin, noiseMax);
+            MoveSpeed = moveSpeed;
+            this.launchDirection = launchDirection + GeneralFunctions.CreateRandomVector2(noiseMin, noiseMax, noiseMin, noiseMax);
 
-            minNoise = noiseMin;
-            maxNoise = noiseMax;
+            MinNoise = noiseMin;
+            MaxNoise = noiseMax;
 
             canFire = true;
             useNoise = true;
@@ -64,41 +67,29 @@ namespace LevelObjects.MovingObjects
             MyRigidBody2D.velocity = newVelocity;
         }
 
-        public Vector2 CurrentVelocity { get { return currentVelocity; } }
-
-        public Rigidbody2D MyRigidBody2D { get; private set; } = null;
-
         protected virtual void FixedUpdate()
         {
-            currentVelocity = MyRigidBody2D.velocity;
-
-            if (canFire && useNoise)
+            if (UseFixedUpdate)
             {
-                var newDirection = launchDirection.normalized + GetNoise(minNoise, maxNoise);
+                CurrentVelocity = MyRigidBody2D.velocity;
 
-                MyRigidBody2D.velocity = newDirection * currentMoveSpeed * Time.fixedDeltaTime;
-            }
+                if (canFire && useNoise)
+                {
+                    var newDirection = launchDirection.normalized + GeneralFunctions.CreateRandomVector2(MinNoise, MaxNoise, MinNoise, MaxNoise);
 
-            if (canFire)
-            {
-                MyRigidBody2D.velocity = launchDirection.normalized * currentMoveSpeed * Time.fixedDeltaTime;
+                    MyRigidBody2D.velocity = newDirection * MoveSpeed * Time.fixedDeltaTime;
+                }
+
+                if (canFire)
+                {
+                    MyRigidBody2D.velocity = launchDirection.normalized * MoveSpeed * Time.fixedDeltaTime;
+                }
             }
         }
 
         public void OnProjectileImpact()
         {
             Destroy(gameObject);
-        }
-
-        public Vector2 GetNoise(float min, float max)
-        {
-            // Find random angle between min & max inclusive
-            float xNoise = Random.Range(min, max);
-            float yNoise = Random.Range(min, max);
-
-            Vector2 noise = new Vector2(2 * Mathf.PI * xNoise / 360, 2 * Mathf.PI * yNoise / 360);
-
-            return noise;
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)

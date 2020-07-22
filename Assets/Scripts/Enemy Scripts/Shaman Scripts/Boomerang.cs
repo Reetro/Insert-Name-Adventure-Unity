@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using LevelObjects.MovingObjects;
-using System;
 
 namespace EnemyCharacter.AI
 {
@@ -11,22 +10,8 @@ namespace EnemyCharacter.AI
         private int maxHitsBeforeTeleport = 0;
         private float offSet = 0.5f;
 
-        private float defaultTimer = 0;
-        private float resetTimer = 0;
-        private bool firstRun = true;
-
-        private float boomerangMinRandomFactor = 60;
-        private float boomerangMaxRandomFactor = 0;
-
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (firstRun)
-            {
-                firstRun = false;
-            }
-
-            resetTimer = defaultTimer;
-
             Vector2 _wallNormal = collision.GetContact(0).normal;
 
             Vector2 newDirection = Vector2.Reflect(CurrentVelocity, _wallNormal);
@@ -45,18 +30,11 @@ namespace EnemyCharacter.AI
             }
         }
 
-        private void Update()
+        protected override void FixedUpdate()
         {
-            if (!firstRun)
-            {
-                resetTimer -= Time.deltaTime;
+            CurrentVelocity = MyRigidBody2D.velocity;
 
-                if (resetTimer <= 0)
-                {
-                    UpdateDirection(GeneralFunctions.CreateRandomVector2(boomerangMinRandomFactor, boomerangMaxRandomFactor, boomerangMinRandomFactor, boomerangMaxRandomFactor));
-                    resetTimer = defaultTimer;
-                }
-            }
+            print(CurrentVelocity);
         }
 
         private void TeleportShaman(Vector2 teleportLocation)
@@ -97,7 +75,7 @@ namespace EnemyCharacter.AI
             return point;
         }
 
-        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet, float timerLength)
+        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
         {
             currentShaman = shamanToSet;
 
@@ -105,11 +83,7 @@ namespace EnemyCharacter.AI
 
             this.offSet = offSet;
 
-            firstRun = true;
-
-            defaultTimer = timerLength;
-
-            resetTimer = timerLength;
+            MyRigidBody2D.AddForce(LaunchDirection * MoveSpeed);
         }
     }
 }

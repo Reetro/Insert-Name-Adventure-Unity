@@ -10,10 +10,9 @@ namespace EnemyCharacter.AI
         [SerializeField] private int maxHitsBeforeTeleport = 2;
         [SerializeField] private float boomerangSpeed = 300f;
         [SerializeField] private float boomerangDamage = 2f;
-        [SerializeField] private float MinNoise = 300f;
-        [SerializeField] private float MaxNoise = 600f;
+        [SerializeField] private float MinNoise = 0;
+        [SerializeField] private float MaxNoise = 2;
         [SerializeField] private float teleportOffset = 0.5f;
-        [SerializeField] private float hitTimerLength = 0.05f;
 
         private Boomerang boomerangToSpawn = null;
         private Boomerang currentBoomrang = null;
@@ -38,13 +37,11 @@ namespace EnemyCharacter.AI
 
             currentBoomrang = Instantiate(boomerangToSpawn, transform.position, transform.rotation);
 
-            currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset, hitTimerLength);
-
             var startDirection = GeneralFunctions.GetDirectionVectorFrom2Vectors(playerLocation, currentBoomrang.transform.position);
 
             currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, MinNoise, MaxNoise);
 
-            currentBoomrang.UpdateVelocity(playerLocation - currentBoomrang.transform.position);
+            currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
         }
 
         public override void OnDeath()
