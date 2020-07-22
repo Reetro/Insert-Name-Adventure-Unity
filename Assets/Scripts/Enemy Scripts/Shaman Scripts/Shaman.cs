@@ -10,8 +10,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private int maxHitsBeforeTeleport = 2;
         [SerializeField] private float boomerangSpeed = 300f;
         [SerializeField] private float boomerangDamage = 2f;
-        [SerializeField] private float MinNoise = 0;
-        [SerializeField] private float MaxNoise = 2;
+        [SerializeField] private float MinNoise = 300f;
+        [SerializeField] private float MaxNoise = 600f;
         [SerializeField] private float teleportOffset = 0.5f;
 
         private Boomerang boomerangToSpawn = null;

@@ -101,10 +101,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHitsBeforeTeleport: 2
-  boomerangSpeed: 40
+  boomerangSpeed: 22
   boomerangDamage: 2
-  MinNoise: 1
-  MaxNoise: 4
+  MinNoise: 0.8
+  MaxNoise: 3
   teleportOffset: 0.2
 --- !u!114 &2099811738
 MonoBehaviour:

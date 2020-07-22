@@ -33,8 +33,6 @@ namespace EnemyCharacter.AI
         protected override void FixedUpdate()
         {
             CurrentVelocity = MyRigidBody2D.velocity;
-
-            print(CurrentVelocity);
         }
 
         private void TeleportShaman(Vector2 teleportLocation)
