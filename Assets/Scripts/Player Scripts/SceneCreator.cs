@@ -38,12 +38,7 @@ namespace PlayerCharacter.SceneLoading
         /// </summary>
         private void SetupLevel()
         {
-            var loaderCount = FindObjectsOfType<LevelLoader>().Length;
-
-            if (loaderCount <= 0)
-            {
-                levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
-            }
+            levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
 
             var levelExit = FindObjectOfType<LevelExit>();
 
@@ -60,12 +55,7 @@ namespace PlayerCharacter.SceneLoading
         {
             Instantiate(leechCollision, Vector2.zero, Quaternion.identity);
 
-            var playerStateCount = FindObjectsOfType<PlayerState>().Length;
-
-            if (playerStateCount <= 0)
-            {
-                Instantiate(playerState, Vector2.zero, Quaternion.identity);
-            }
+            Instantiate(playerState, Vector2.zero, Quaternion.identity);
 
             var checkpoint = FindObjectOfType<Checkpoint>();
 
@@ -75,21 +65,13 @@ namespace PlayerCharacter.SceneLoading
                 checkpoint.ConstructCheckpoint();
             }
 
-            var hudCount = FindObjectsOfType<PlayerUIManager>().Length;
-
-            if (hudCount <= 0)
-            {
-                playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
-            }
+            playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
 
             myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
 
             var toolTipCount = FindObjectsOfType<TooltipPopup>().Length;
 
-            if (toolTipCount <= 0)
-            {
-                Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
-            }
+            Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
         }
         /// <summary>
         /// Sets up all gameplay related components
