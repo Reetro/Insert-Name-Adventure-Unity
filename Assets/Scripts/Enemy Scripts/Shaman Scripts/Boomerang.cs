@@ -43,7 +43,7 @@ namespace EnemyCharacter.AI
 
             GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);
 
-            currentShaman.MyRigidBody2D.velocity = new Vector2(0, 0);
+            currentShaman.MyRigidBody2D.velocity = Vector2.zero;
         }
 
         public void DestroyBoomerang(bool throwBoomerang)

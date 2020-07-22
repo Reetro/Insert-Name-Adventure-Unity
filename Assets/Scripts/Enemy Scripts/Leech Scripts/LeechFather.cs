@@ -7,6 +7,14 @@ namespace EnemyCharacter.AI
     [Serializable]
     public class LeechFather : EnemyShooter
     {
+        protected override void Awake()
+        {
+            base.Awake();
+
+            PrefabPath = "Enemy Projectiles/Shootable Egg";
+            CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
+        }
+
         protected override void Shoot()
         {
             ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);

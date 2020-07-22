@@ -21,7 +21,7 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            var boomerangObject = Resources.Load("Enemy/Boomerang") as GameObject;
+            var boomerangObject = Resources.Load("Enemy Projectiles/Boomerang") as GameObject;
 
             boomerangToSpawn = boomerangObject.GetComponent<Boomerang>();
         }

@@ -117,10 +117,8 @@ namespace CustomEditors
         #endregion
 
         #region Leech Father Shooting Varaibles
-        private SerializedProperty _LeechFatherProjectilePrefab;
         private SerializedProperty _LeechFatherShootIntervale;
         private SerializedProperty _LeechFatherProjectileDamage;
-        private SerializedProperty _LeechFatherFirePoint;
         private SerializedProperty _LeechFatherProjectileSpeed;
         #endregion
 
@@ -150,10 +148,8 @@ namespace CustomEditors
         #endregion
 
         #region Leech Mother Shooting Varaibles
-        private SerializedProperty _LeechMotherProjectilePrefab;
         private SerializedProperty _LeechMotherShootIntervale;
         private SerializedProperty _LeechMotherProjectileDamage;
-        private SerializedProperty _LeechMotherFirePoint;
         private SerializedProperty _LeechMotherProjectileSpeed;
         #endregion
 
@@ -344,8 +340,6 @@ namespace CustomEditors
 
         private void SetupLeechFatherShooting()
         {
-            _LeechFatherFirePoint = leechFatherObject.FindProperty("firePoint");
-            _LeechFatherProjectilePrefab = leechFatherObject.FindProperty("projectilePrefab");
             _LeechFatherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
             _LeechFatherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
             _LeechFatherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
@@ -386,8 +380,6 @@ namespace CustomEditors
 
         private void SetupLeechMotherShooting()
         {
-            _LeechMotherFirePoint = leechFatherObject.FindProperty("firePoint");
-            _LeechMotherProjectilePrefab = leechFatherObject.FindProperty("projectilePrefab");
             _LeechMotherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
             _LeechMotherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
             _LeechMotherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");

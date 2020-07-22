@@ -6,14 +6,23 @@ namespace EnemyCharacter.AI
 {
     public class EnemyShooter : EnemyBase
     {
-        [SerializeField] private ProjectileMovement projectilePrefab = null;
         [SerializeField] private float shootIntervale = 2f;
         [SerializeField] private float projectileSpeed = 400f;
         [SerializeField] private float projectileDamage = 1f;
-        [SerializeField] private Transform firePoint = null;
+
+        /// <summary>
+        /// Where to find the shooter projectile prefab in resources folder
+        /// </summary>
+        protected virtual string PrefabPath { get; set; } = "";
+        /// <summary>
+        /// The transform to fire the spawned projectile from
+        /// </summary>
+        protected virtual Transform CurrentFireTransform { get; set; } = null;
 
         private void Start()
         {
+            ConstructShooter();
+
             StartCoroutine(ShootInterval());
         }
         /// <summary>
@@ -29,6 +38,38 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
+        /// Collects all virtual data and sets local values
+        /// </summary>
+        private void ConstructShooter()
+        {
+            var projectileObject = Resources.Load(PrefabPath) as GameObject;
+
+            if (projectileObject)
+            {
+                ProjectileToShoot = projectileObject.GetComponent<ProjectileMovement>();
+
+                if (ProjectileToShoot)
+                {
+                    if (CurrentFireTransform)
+                    {
+                        FireTransform = CurrentFireTransform;
+                    }
+                    else
+                    {
+                        Debug.LogError(gameObject.name + " failed to set FireTransform CurrentFireTransform is not valid");
+                    }
+                }
+                else
+                {
+                    Debug.LogError(gameObject.name + " failed to get projectile movement");
+                }
+            }
+            else
+            {
+                Debug.LogError(gameObject.name + " failed to get projectile prefab invalid path");
+            }
+        }
+        /// <summary>
         /// Called every X seconds (determined by shootIntervale)
         /// </summary>
         protected virtual void Shoot()
@@ -39,7 +80,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Gets the current projectile prefab
         /// </summary>
-        public ProjectileMovement ProjectileToShoot => projectilePrefab;
+        public ProjectileMovement ProjectileToShoot { get; private set; } = null;
         /// <summary>
         /// Gets current shoot intervals
         /// </summary>
@@ -55,6 +96,6 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Gets the transform of the projectile fire point
         /// </summary>
-        public Transform FireTransform { get { return firePoint; } }
+        public Transform FireTransform { get; private set; } = null;
     }
 }

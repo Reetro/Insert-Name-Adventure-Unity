@@ -7,6 +7,14 @@ namespace EnemyCharacter.AI
     [Serializable]
     public class LeechMother : EnemyShooter
     {
+        protected override void Awake()
+        {
+            base.Awake();
+
+            PrefabPath = "Enemy Projectiles/PH Leech Goo";
+            CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
+        }
+
         protected override void Shoot()
         {
             if (!GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
