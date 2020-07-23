@@ -33,10 +33,14 @@ namespace LevelObjects.SceneLoading
 
             if (!goBackToStart)
             {
+                playerState.SetSceneLoading(true);
+
                 SceneManager.LoadScene(levelIndex);
             }
             else
             {
+                playerState.SetSceneLoading(true);
+
                 SceneManager.LoadScene(0);
             }
         }

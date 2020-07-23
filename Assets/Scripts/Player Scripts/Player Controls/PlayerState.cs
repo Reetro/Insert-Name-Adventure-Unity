@@ -7,9 +7,10 @@ namespace PlayerCharacter.GameSaving
 {
     public class PlayerState : MonoBehaviour
     {
-        public static float currentHealth = 0f;
-        public static float maxHealth = 0f;
-        public static int checkpointIndex = 0;
+        private static float currentHealth = 0f;
+        private static float maxHealth = 0f;
+        private static int checkpointIndex = 0;
+        private static bool isSceneLoading = false;
 
         public PlayerController player = null;
         public HealthBar playerHPBar = null;
@@ -26,6 +27,10 @@ namespace PlayerCharacter.GameSaving
         /// Get the players current checkpoint
         /// </summary>
         public int CheckpointInedex { get { return checkpointIndex; } }
+        /// <summary>
+        /// Checks to see if a scene is currently loading
+        /// </summary>
+        public bool IsLoadingScene { get { return isSceneLoading; } }
 
         private void Awake()
         {
@@ -44,6 +49,11 @@ namespace PlayerCharacter.GameSaving
         public void SetCheckpointIndex(int index)
         {
             checkpointIndex = index;
+        }
+
+        public void SetSceneLoading(bool value)
+        {
+            isSceneLoading = value;
         }
 
         public void SetPlayerHealth()
@@ -78,6 +88,8 @@ namespace PlayerCharacter.GameSaving
 
         void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
         {
+            isSceneLoading = false;
+
             SetPlayerHealth();
         }
     }

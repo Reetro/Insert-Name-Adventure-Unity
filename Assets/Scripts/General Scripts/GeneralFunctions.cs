@@ -8,6 +8,7 @@ using AuraSystem.Effects;
 using PlayerCharacter.Controller;
 using System;
 using UnityEditor;
+using PlayerCharacter.GameSaving;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -160,7 +161,7 @@ public class GeneralFunctions
     /// <returns>A bool that determines if a leech can attach to a given point</returns>
     public static bool CanLeechAttach(string tag)
     {
-        return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0) ? true : false;
+        return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0 && !GameObject.FindObjectOfType<PlayerState>().IsLoadingScene) ? true : false;
     }
     /// <summary>
     /// Calls the construct health component function on the given game object
