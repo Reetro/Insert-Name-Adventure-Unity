@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
+using PlayerCharacter.GameSaving;
 
 namespace PlayerCharacter.Controller
 {
@@ -15,6 +16,11 @@ namespace PlayerCharacter.Controller
         private PlayerMovement playerMovement = null;
         private HealthComponent healthComponent = null;
 
+        /// <summary>
+        /// Reference to player currently in the world
+        /// </summary>
+        public PlayerState MyPlayerState { get; set; } = null;
+
         private void Start()
         {
             myAnimator = GetComponent<Animator>();
@@ -23,6 +29,7 @@ namespace PlayerCharacter.Controller
             healthComponent = GetComponent<HealthComponent>();
 
             healthComponent.OnDeath.AddListener(OnDeath);
+            healthComponent.onTakeAnyDamage.AddListener(OnTakeAnyDamage);
         }
 
         private void Update()
@@ -93,6 +100,20 @@ namespace PlayerCharacter.Controller
             uiManager.ShowDeathUI();
 
             playerMovement.StopMovement();
+        }
+
+        public void OnTakeAnyDamage(float damage)
+        {
+            if (MyPlayerState)
+            {
+                MyPlayerState.UpdatePlayerStateHP(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+            }
+            else
+            {
+                MyPlayerState = FindObjectOfType<PlayerState>();
+
+                MyPlayerState.UpdatePlayerStateHP(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+            }
         }
     }
 }

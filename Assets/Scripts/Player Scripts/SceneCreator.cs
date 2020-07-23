@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using AuraSystem;
-using PlayerUI.ToolTipUI;
 using PlayerUI;
-using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using LevelObjects.Saving;
+using PlayerCharacter.GameSaving;
+using PlayerCharacter.Controller;
 
 namespace PlayerCharacter.SceneLoading
 {
@@ -17,6 +17,8 @@ namespace PlayerCharacter.SceneLoading
         [SerializeField] private GameObject levelLoader = null;
         [SerializeField] private HealthComponent myHealthComp = null;
         [SerializeField] private GameObject toolTipObject = null;
+
+        private PlayerController playerController = null;
 
         void Awake()
         {
@@ -55,7 +57,11 @@ namespace PlayerCharacter.SceneLoading
         {
             Instantiate(leechCollision, Vector2.zero, Quaternion.identity);
 
-            Instantiate(playerState, Vector2.zero, Quaternion.identity);
+            playerState = Instantiate(playerState, Vector2.zero, Quaternion.identity);
+
+            playerController = GetComponent<PlayerController>();
+
+            playerController.MyPlayerState = playerState.GetComponent<PlayerState>();
 
             var checkpoint = FindObjectOfType<Checkpoint>();
 
@@ -67,17 +73,17 @@ namespace PlayerCharacter.SceneLoading
 
             playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
 
-            myHealthComp.FindPlayerState(playerHud.GetComponent<PlayerUIManager>().HPBar);
+            myHealthComp.MyPlayerState = playerState.GetComponent<PlayerState>();
 
-            var toolTipCount = FindObjectsOfType<TooltipPopup>().Length;
-
-            Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
+            myHealthComp.ConstructHealthComponent(playerHud.GetComponent<PlayerUIManager>().HPBar);
         }
         /// <summary>
         /// Sets up all gameplay related components
         /// </summary>
         private void SetupGameplayComponents()
         {
+            Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
+
             var auraManagers = FindObjectsOfType<AuraManager>();
 
             foreach (AuraManager auraManager in auraManagers)

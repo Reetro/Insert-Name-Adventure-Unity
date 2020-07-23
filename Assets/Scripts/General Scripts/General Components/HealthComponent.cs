@@ -20,8 +20,7 @@ public class HealthComponent : MonoBehaviour
     
     [HideInInspector]
     public TakeAnyDamge onTakeAnyDamage;
-    
-    private PlayerState playerState = null;
+   
     private GameplayManager gameplayManager = null;
     private HealthBar healthBar = null;
 
@@ -48,8 +47,8 @@ public class HealthComponent : MonoBehaviour
             }
             else
             {
-                maxHealth = playerState.GetCurrentMaxHealth();
-                CurrentHealth = playerState.GetCurrentHealth();
+                maxHealth = MyPlayerState.MaxHealth;
+                CurrentHealth = MyPlayerState.CurrentHealth;
 
                 UpdatePlayerState();
             }
@@ -87,12 +86,12 @@ public class HealthComponent : MonoBehaviour
             }
             else
             {
-                maxHealth = playerState.GetCurrentMaxHealth();
-                CurrentHealth = playerState.GetCurrentHealth();
+                maxHealth = MyPlayerState.MaxHealth;
+                CurrentHealth = MyPlayerState.CurrentHealth;
 
                 if (healthBar)
                 {
-                    healthBar.SetPlayerHealth(playerState);
+                    healthBar.SetPlayerHealth(MyPlayerState);
                 }
             }
         }
@@ -147,11 +146,6 @@ public class HealthComponent : MonoBehaviour
 
                 onTakeAnyDamage.Invoke(damage);
 
-                if (GeneralFunctions.IsObjectOnPlayer(gameObject))
-                {
-                    UpdatePlayerState();
-                }
-
                 if (healthBar)
                 {
                     healthBar.SetHealth(CurrentHealth);
@@ -205,6 +199,10 @@ public class HealthComponent : MonoBehaviour
         }
     }
     /// <summary>
+    /// Reference to player currently in the world
+    /// </summary>
+    public PlayerState MyPlayerState { get; set; } = null;
+    /// <summary>
     /// Get this Gameobjects current health
     /// </summary>
     public float CurrentHealth { get; private set; } = 0f;
@@ -213,31 +211,17 @@ public class HealthComponent : MonoBehaviour
     /// </summary>
     public bool IsCurrentlyDead { get; private set; } = false;
     /// <summary>
-    /// Find the player state in the level then construct the health component
+    /// Gets the objects max health
     /// </summary>
-    public void FindPlayerState()
-    {
-        playerState = FindObjectOfType<PlayerState>();
-
-        ConstructHealthComponent();
-    }
-    /// <summary>
-    /// Find the player state in the level then construct the health component with a health bar
-    /// </summary>
-    public void FindPlayerState(HealthBar healthBar)
-    {
-        playerState = FindObjectOfType<PlayerState>();
-
-        ConstructHealthComponent(healthBar);
-    }
+    public float MaxHealth { get { return maxHealth; } }
     /// <summary>
     /// Update player state health values
     /// </summary>
     private void UpdatePlayerState()
     {
-        if (playerState)
+        if (MyPlayerState)
         {
-            playerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
+            MyPlayerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
         }
     }
 }

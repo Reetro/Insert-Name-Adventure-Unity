@@ -48,18 +48,18 @@ namespace PlayerUI
 
         public void SetPlayerHealth(PlayerState playerState)
         {
-            slider.maxValue = playerState.GetCurrentMaxHealth();
-            slider.value = playerState.GetCurrentHealth();
+            slider.maxValue = playerState.MaxHealth;
+            slider.value = playerState.CurrentHealth;
 
-            maxHealthText.text = playerState.GetCurrentMaxHealth().ToString();
+            maxHealthText.text = playerState.CurrentHealth.ToString();
 
             if (slider.value < slider.maxValue)
             {
-                currentHealthText.text = playerState.GetCurrentHealth().ToString("F1");
+                currentHealthText.text = playerState.CurrentHealth.ToString("F1");
             }
             else
             {
-                currentHealthText.text = playerState.GetCurrentHealth().ToString();
+                currentHealthText.text = playerState.CurrentHealth.ToString();
             }
 
             fill.color = gradient.Evaluate(slider.normalizedValue);

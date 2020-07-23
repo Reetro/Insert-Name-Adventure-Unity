@@ -14,6 +14,19 @@ namespace PlayerCharacter.GameSaving
         public PlayerController player = null;
         public HealthBar playerHPBar = null;
 
+        /// <summary>
+        /// Get the players current health
+        /// </summary>
+        public float CurrentHealth { get { return currentHealth; } }
+        /// <summary>
+        /// Get the players max health
+        /// </summary>
+        public float MaxHealth { get { return maxHealth; } }
+        /// <summary>
+        /// Get the players current checkpoint
+        /// </summary>
+        public int CheckpointInedex { get { return checkpointIndex; } }
+
         private void Awake()
         {
             int playerStateCount = FindObjectsOfType<PlayerState>().Length;
@@ -33,11 +46,6 @@ namespace PlayerCharacter.GameSaving
             checkpointIndex = index;
         }
 
-        public int GetCheckpointIndex()
-        {
-            return checkpointIndex;
-        }
-
         public void SetPlayerHealth()
         {
             player = FindObjectOfType<PlayerController>();
@@ -45,16 +53,6 @@ namespace PlayerCharacter.GameSaving
             player.GetComponent<HealthComponent>().SetHealth(currentHealth, maxHealth);
 
             playerHPBar.SetHealth(currentHealth);
-        }
-
-        public float GetCurrentMaxHealth()
-        {
-            return maxHealth;
-        }
-
-        public float GetCurrentHealth()
-        {
-            return currentHealth;
         }
 
         public void ResetHealthToMax()
