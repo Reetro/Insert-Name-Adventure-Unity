@@ -223,5 +223,11 @@ public class HealthComponent : MonoBehaviour
         {
             MyPlayerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
         }
+        else
+        {
+            MyPlayerState = FindObjectOfType<PlayerState>();
+
+            MyPlayerState.UpdatePlayerStateHP(CurrentHealth, maxHealth);
+        }
     }
 }
