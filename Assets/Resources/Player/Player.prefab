@@ -438,7 +438,7 @@ MonoBehaviour:
   isGrounded: 1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 524599
+    m_Bits: 525623
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -596,7 +596,6 @@ MonoBehaviour:
   movementSmoothing: 0.05
   hasAirControl: 1
   playerAcceleration: 8
-  myLegs: {fileID: 2543864314282910336}
 --- !u!114 &6037561768107980108
 MonoBehaviour:
   m_ObjectHideFlags: 0

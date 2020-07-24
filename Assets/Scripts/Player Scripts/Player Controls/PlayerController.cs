@@ -99,10 +99,15 @@ namespace PlayerCharacter.Controller
         {
             uiManager.ShowDeathUI();
 
+            myAnimator.SetBool("Idle", true);
+
             playerMovement.StopMovement();
         }
-
-        public void OnTakeAnyDamage(float damage)
+        /// <summary>
+        /// Update PlayerState health when ever player takes damage
+        /// </summary>
+        /// <param name="damage"></param>
+        private void OnTakeAnyDamage(float damage)
         {
             if (MyPlayerState)
             {
