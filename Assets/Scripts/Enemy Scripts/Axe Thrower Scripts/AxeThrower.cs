@@ -25,7 +25,20 @@ namespace EnemyCharacter.AI
 
         private void Update()
         {
-            if (IsPlayerVisiable(sightLayers))
+            print(MyHealthComponent.CurrentHealth);
+
+            if (MyHealthComponent.IsCurrentlyDead)
+            {
+                isPlayerVisiable = false;
+
+                if (isCoroutineRuning)
+                {
+                    StopCoroutine(ShootInterval());
+
+                    isCoroutineRuning = false;
+                }
+            }
+            else if (IsPlayerVisiable(sightLayers))
             {
                 if (!isCoroutineRuning)
                 {
@@ -67,6 +80,13 @@ namespace EnemyCharacter.AI
             Vector2 launchDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
 
             axe.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+        }
+
+        public override void OnDeath()
+        {
+            base.OnDeath();
+
+            Destroy(gameObject);
         }
     }
 }
