@@ -25,38 +25,19 @@ namespace EnemyCharacter.AI
 
         private void Update()
         {
-            print(MyHealthComponent.CurrentHealth);
-
             if (MyHealthComponent.IsCurrentlyDead)
             {
-                isPlayerVisiable = false;
+                StopShooting();
 
-                if (isCoroutineRuning)
-                {
-                    StopCoroutine(ShootInterval());
-
-                    isCoroutineRuning = false;
-                }
             }
             else if (IsPlayerVisiable(sightLayers))
             {
-                if (!isCoroutineRuning)
-                {
-                    isPlayerVisiable = true;
+                StartShooting();
 
-                    StartCoroutine(ShootInterval());
-                }
             }
             else
             {
-                isPlayerVisiable = false;
-
-                if (isCoroutineRuning)
-                {
-                    StopCoroutine(ShootInterval());
-
-                    isCoroutineRuning = false;
-                }
+                StopShooting();
             }
         }
 
@@ -72,6 +53,16 @@ namespace EnemyCharacter.AI
                 yield return new WaitForSeconds(shootIntervale);
             }
         }
+        
+        private void StartShooting()
+        {
+            if (!isCoroutineRuning)
+            {
+                isPlayerVisiable = true;
+
+                StartCoroutine(ShootInterval());
+            }
+        }
 
         protected override void Shoot()
         {
@@ -80,6 +71,18 @@ namespace EnemyCharacter.AI
             Vector2 launchDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
 
             axe.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
+        }
+
+        private void StopShooting()
+        {
+            isPlayerVisiable = false;
+
+            if (isCoroutineRuning)
+            {
+                StopCoroutine(ShootInterval());
+
+                isCoroutineRuning = false;
+            }
         }
 
         public override void OnDeath()
