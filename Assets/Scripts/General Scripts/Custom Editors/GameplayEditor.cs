@@ -161,9 +161,6 @@ namespace CustomEditors
 
         #region Shaman Health Varaibles
         private SerializedProperty _ShamanMaxHealth;
-        private SerializedProperty _ShamanHealthBar;
-        private SerializedProperty _ShamanOnDeath;
-        private SerializedProperty _ShamanTakeAnyDamage;
         #endregion
 
         #region Shaman Shooting Varaibles
@@ -180,12 +177,34 @@ namespace CustomEditors
         private Editor shamanEditor = null;
         #endregion
 
+        #region Axe Thrower Objects
+        private SerializedObject axeThrowerObject;
+        private SerializedObject axeThrowerHealthObject;
+        #endregion
+
+        #region Axe Thrower Shooting Varaibles
+        private SerializedProperty _AxeThrowerShootIntervale;
+        private SerializedProperty _AxeThrowerProjectileDamage;
+        private SerializedProperty _AxeThrowerProjectileSpeed;
+        private SerializedProperty _AxeThrowerSightLayers;
+        #endregion
+
+        #region Axe Thrower Health Varaibles
+        private SerializedProperty _AxeThrowerMaxHealth;
+        #endregion
+
+        #region Axe Thrower Editors
+        private Editor axeThrowerHealthEditor = null;
+        private Editor axeThrowerEditor = null;
+        #endregion
+
         #region Local Varaibles
         private Vector2 scrollPosition = Vector2.zero;
         private static bool showPlayerSettings = false;
         private static bool showLeechSettings = false;
         private static bool showLeechFatherSettings = false;
         private static bool showLeechMotherSettings = false;
+        private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
         private static bool showManagerSettings = false;
         private const float foldoutSpaceing = 20f;
@@ -275,6 +294,12 @@ namespace CustomEditors
             SetupShamanHealth();
 
             SetupShamanShooting();
+
+            SetupAxeThrowerEditor();
+
+            SetupAxeThrowerHealth();
+
+            SetupAxeThrowerShooting();
         }
 
         #region Leech Functions
@@ -349,12 +374,12 @@ namespace CustomEditors
 
         private void SetupLeechFatherMovement()
         {
-            _LeechFatherFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
-            _LeechFatherRandomYmin = leechMovementObject.FindProperty("randomYMin");
-            _LeechFatherRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechFatherForceMultipler = leechMovementObject.FindProperty("forceMultipler");
-            _LeechFatherPushTimer = leechMovementObject.FindProperty("pushTimer");
-            _LeechFatherForceLayer = leechMovementObject.FindProperty("ForceLayer");
+            _LeechFatherFlySpeed = leechFatherMovementObject.FindProperty("leechFlySpeed");
+            _LeechFatherRandomYmin = leechFatherMovementObject.FindProperty("randomYMin");
+            _LeechFatherRandomYmax = leechFatherMovementObject.FindProperty("randomYMax");
+            _LeechFatherForceMultipler = leechFatherMovementObject.FindProperty("forceMultipler");
+            _LeechFatherPushTimer = leechFatherMovementObject.FindProperty("pushTimer");
+            _LeechFatherForceLayer = leechFatherMovementObject.FindProperty("ForceLayer");
         }
         #endregion
 
@@ -382,25 +407,25 @@ namespace CustomEditors
 
         private void SetupLeechMotherShooting()
         {
-            _LeechMotherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
-            _LeechMotherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
-            _LeechMotherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
+            _LeechMotherShootIntervale = leechMotherObject.FindProperty("shootIntervale");
+            _LeechMotherProjectileSpeed = leechMotherObject.FindProperty("projectileSpeed");
+            _LeechMotherProjectileDamage = leechMotherObject.FindProperty("projectileDamage");
         }
 
         private void SetupLeechMotherHealth()
         {
-            _LeechMotherMaxHealth = leechFatherHealthObject.FindProperty("maxHealth");
-            _LeechMotherHealthBar = leechFatherHealthObject.FindProperty("healthBar");
+            _LeechMotherMaxHealth = leechMotherHealthObject.FindProperty("maxHealth");
+            _LeechMotherHealthBar = leechMotherHealthObject.FindProperty("healthBar");
         }
 
         private void SetupLeechMotherMovement()
         {
-            _LeechMotherFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
-            _LeechMotherRandomYmin = leechMovementObject.FindProperty("randomYMin");
-            _LeechMotherRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechMotherForceMultipler = leechMovementObject.FindProperty("forceMultipler");
-            _LeechMotherPushTimer = leechMovementObject.FindProperty("pushTimer");
-            _LeechMotherForceLayer = leechMovementObject.FindProperty("ForceLayer");
+            _LeechMotherFlySpeed = leechMotherMovementObject.FindProperty("leechFlySpeed");
+            _LeechMotherRandomYmin = leechMotherMovementObject.FindProperty("randomYMin");
+            _LeechMotherRandomYmax = leechMotherMovementObject.FindProperty("randomYMax");
+            _LeechMotherForceMultipler = leechMotherMovementObject.FindProperty("forceMultipler");
+            _LeechMotherPushTimer = leechMotherMovementObject.FindProperty("pushTimer");
+            _LeechMotherForceLayer = leechMotherMovementObject.FindProperty("ForceLayer");
         }
         #endregion
 
@@ -415,7 +440,6 @@ namespace CustomEditors
                 shamanHealthEditor = Editor.CreateEditor(shamanPrefab.GetComponent<HealthComponent>());
 
                 shamanHealthObject = new SerializedObject(shamanPrefab.GetComponent<HealthComponent>());
-
                 shamanObject = new SerializedObject(shamanPrefab.GetComponent<Shaman>());
             }
             else
@@ -427,7 +451,6 @@ namespace CustomEditors
         private void SetupShamanHealth()
         {
             _ShamanMaxHealth = shamanHealthObject.FindProperty("maxHealth");
-            _ShamanHealthBar = shamanHealthObject.FindProperty("healthBar");
         }
 
         private void SetupShamanShooting()
@@ -438,6 +461,39 @@ namespace CustomEditors
             _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
             _ShamanMinNoise = shamanObject.FindProperty("MinNoise");
             _ShamanMaxNoise = shamanObject.FindProperty("MaxNoise");
+        }
+        #endregion
+
+        #region Axe Thrower Functions
+        private void SetupAxeThrowerEditor()
+        {
+            var axeThrowerPrefab = Resources.Load("Enemies/Axe Thrower/Axe Thrower") as GameObject;
+
+            if (axeThrowerPrefab)
+            {
+                axeThrowerHealthEditor = Editor.CreateEditor(axeThrowerPrefab.GetComponent<HealthComponent>());
+                axeThrowerEditor = Editor.CreateEditor(axeThrowerPrefab.GetComponent<AxeThrower>());
+
+                axeThrowerObject = new SerializedObject(axeThrowerPrefab.GetComponent<AxeThrower>());
+                axeThrowerHealthObject = new SerializedObject(axeThrowerPrefab.GetComponent<HealthComponent>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get axeThrowerPrefab in Gameplay Editor");
+            }
+        }
+        
+        private void SetupAxeThrowerHealth()
+        {
+            _AxeThrowerMaxHealth = axeThrowerHealthObject.FindProperty("maxHealth");
+        }
+
+        private void SetupAxeThrowerShooting()
+        {
+            _AxeThrowerShootIntervale = axeThrowerObject.FindProperty("shootIntervale");
+            _AxeThrowerProjectileSpeed = axeThrowerObject.FindProperty("projectileSpeed");
+            _AxeThrowerProjectileDamage = axeThrowerObject.FindProperty("projectileDamage");
+            _AxeThrowerSightLayers = axeThrowerObject.FindProperty("sightLayers");
         }
         #endregion
         #endregion
@@ -712,6 +768,37 @@ namespace CustomEditors
 
                 // Apply values to the target
                 shamanHealthObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+            #endregion
+
+            #region Axe Thrower UI
+            showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings");
+
+            if (showAxeThrowerSettings)
+            {
+                // fetch current values from the target
+                axeThrowerObject.Update();
+
+                // fetch current values from the target
+                axeThrowerHealthObject.Update();
+
+                if (axeThrowerHealthEditor)
+                {
+                    axeThrowerHealthEditor.OnInspectorGUI();
+                }
+
+                if (axeThrowerEditor)
+                {
+                    axeThrowerEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                axeThrowerObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                axeThrowerHealthObject.ApplyModifiedProperties();
 
                 GUILayout.Space(foldoutSpaceing);
             }
