@@ -31,6 +31,8 @@ namespace LevelObjects.MovingObjects
         protected virtual void Awake()
         {
             MyRigidBody2D = GetComponent<Rigidbody2D>();
+
+            OnImpact.AddListener(OnProjectileImpact);
         }
 
         public virtual void ConstructProjectile(float moveSpeed, float damage, Vector2 launchDirection)

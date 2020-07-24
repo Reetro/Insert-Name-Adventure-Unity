@@ -11,8 +11,9 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            PrefabPath = "Enemy Projectiles/Shootable Egg";
+            ProjectilePath = "Enemy Projectiles/Shootable Egg";
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
+            AutoStart = true;
         }
 
         protected override void Shoot()

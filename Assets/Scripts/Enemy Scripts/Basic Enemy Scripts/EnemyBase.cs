@@ -23,6 +23,34 @@ namespace EnemyCharacter
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
         /// <summary>
+        /// Fire a raycast from the current AI the player and checks to if there is ground between the player and and the enemy
+        /// </summary>
+        /// <returns>A bool that determines enemy sight</returns>
+        protected bool IsPlayerVisiable(LayerMask layerMask)
+        {
+            var playerDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
+
+            Debug.DrawRay(transform.position, playerDirection * 100f, Color.red);
+
+            RaycastHit2D hit2D = Physics2D.Raycast(transform.position, playerDirection, 10f, layerMask);
+
+            if (hit2D)
+            {
+                if (hit2D.transform.gameObject.CompareTag("Player"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        /// <summary>
         /// Get this Gameobjects health component
         /// </summary>
         public HealthComponent MyHealthComponent { get; private set; } = null;

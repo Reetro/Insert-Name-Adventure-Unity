@@ -7,7 +7,7 @@ namespace EnemyCharacter.AI
     public class EnemyShooter : EnemyBase
     {
         [Tooltip("How often a projectile is spawned")]
-        [SerializeField] private float shootIntervale = 2f;
+        [SerializeField] protected float shootIntervale = 2f;
         [Tooltip("How fast the spawned projectile goes")]
         [SerializeField] private float projectileSpeed = 400f;
         [Tooltip("How much damage the spawned projectile does")]
@@ -16,22 +16,29 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Where to find the shooter projectile prefab in resources folder
         /// </summary>
-        protected virtual string PrefabPath { get; set; } = "";
+        protected virtual string ProjectilePath { get; set; } = "";
         /// <summary>
         /// The transform to fire the spawned projectile from
         /// </summary>
         protected virtual Transform CurrentFireTransform { get; set; } = null;
+        /// <summary>
+        /// Whether or not to instantly start the ShootInterval Coroutine when game starts
+        /// </summary>
+        protected virtual bool AutoStart { get; set; } = true;
 
         private void Start()
         {
             ConstructShooter();
 
-            StartCoroutine(ShootInterval());
+            if (AutoStart)
+            {
+                StartCoroutine(ShootInterval());
+            }
         }
         /// <summary>
         /// Called every X seconds (determined by shootIntervale) will call the shoot method
         /// </summary>
-        private IEnumerator ShootInterval()
+        protected virtual IEnumerator ShootInterval()
         {
             while (!MyHealthComponent.IsCurrentlyDead)
             {
@@ -45,7 +52,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void ConstructShooter()
         {
-            var projectileObject = Resources.Load(PrefabPath) as GameObject;
+            var projectileObject = Resources.Load(ProjectilePath) as GameObject;
 
             if (projectileObject)
             {

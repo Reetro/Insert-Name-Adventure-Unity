@@ -11,8 +11,9 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            PrefabPath = "Enemy Projectiles/PH Leech Goo";
+            ProjectilePath = "Enemy Projectiles/PH Leech Goo";
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
+            AutoStart = true;
         }
 
         protected override void Shoot()
@@ -21,7 +22,7 @@ namespace EnemyCharacter.AI
             {
                 ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
 
-                Vector2 launchDirection = PlayerTransform.position - transform.position;
+                Vector2 launchDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
 
                 bulllet.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
             }
