@@ -28,12 +28,10 @@ namespace EnemyCharacter.AI
             if (MyHealthComponent.IsCurrentlyDead)
             {
                 StopShooting();
-
             }
             else if (IsPlayerVisiable(sightLayers))
             {
                 StartShooting();
-
             }
             else
             {
@@ -47,7 +45,6 @@ namespace EnemyCharacter.AI
 
             while (isPlayerVisiable)
             {
-
                 Shoot();
 
                 yield return new WaitForSeconds(shootIntervale);
@@ -85,7 +82,7 @@ namespace EnemyCharacter.AI
             }
         }
 
-        public override void OnDeath()
+        protected override void OnDeath()
         {
             base.OnDeath();
 

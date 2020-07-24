@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
+using System;
 
 namespace EnemyCharacter
 {
@@ -23,14 +24,12 @@ namespace EnemyCharacter
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
         /// <summary>
-        /// Fire a raycast from the current AI the player and checks to if there is ground between the player and and the enemy
+        /// Fire a raycast from the current AI to the player and checks to if there is ground between the player and and the enemy
         /// </summary>
         /// <returns>A bool that determines enemy sight</returns>
         protected bool IsPlayerVisiable(LayerMask layerMask)
         {
             var playerDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
-
-            Debug.DrawRay(transform.position, playerDirection * 100f, Color.red);
 
             RaycastHit2D hit2D = Physics2D.Raycast(transform.position, playerDirection, 10f, layerMask);
 
@@ -82,9 +81,28 @@ namespace EnemyCharacter
             MovementComp.LookAtTarget(PlayerTransform);
         }
         /// <summary>
+        /// Make the AI face the direction it's moving in
+        /// </summary>
+        public void RotateToMovement()
+        {
+            if (MyRigidBody2D.velocity != Vector2.zero)
+            {
+                var direction = MyRigidBody2D.velocity.normalized;
+                
+                if (GeneralFunctions.IsNumberNegative(direction.x))
+                {
+                    transform.rotation = new Quaternion(0 , 180, 0, 0);
+                }
+                else
+                {
+                    transform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+            }
+        }
+        /// <summary>
         /// Called when the current health on health component is 0 or below by default will only disable enemy collision
         /// </summary>
-        public virtual void OnDeath()
+        protected virtual void OnDeath()
         {
             GetComponent<Collider2D>().enabled = false;
         }

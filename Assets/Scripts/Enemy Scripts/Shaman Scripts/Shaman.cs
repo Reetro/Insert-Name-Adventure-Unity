@@ -50,7 +50,7 @@ namespace EnemyCharacter.AI
             currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
         }
 
-        public override void OnDeath()
+        protected override void OnDeath()
         {
             base.OnDeath();
 

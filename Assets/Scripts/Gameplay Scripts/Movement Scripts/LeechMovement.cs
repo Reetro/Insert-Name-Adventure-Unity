@@ -33,7 +33,7 @@ namespace EnemyCharacter.AI
         {
             if (!MyHealthComponent.IsCurrentlyDead)
             {
-                LookAtPlayer();
+                RotateToMovement();
 
                 var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
 
@@ -49,7 +49,7 @@ namespace EnemyCharacter.AI
             }
         }
 
-        public override void OnDeath()
+        protected override void OnDeath()
         {
             base.OnDeath();
 
@@ -76,8 +76,6 @@ namespace EnemyCharacter.AI
         private bool CheckCollision()
         {
             RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, transform.up, 1f, ForceLayer);
-
-            Debug.DrawRay(transform.position, transform.up * 1f, Color.red);
             
             if (raycastHit2D)
             {
