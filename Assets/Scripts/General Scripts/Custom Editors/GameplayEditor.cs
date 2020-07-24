@@ -1,7 +1,6 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 using PlayerCharacter.Controller;
 using EnemyCharacter.AI;
 using GameplayManagement;
@@ -51,7 +50,6 @@ namespace CustomEditors
 
         #region Player Health Varaibles
         private SerializedProperty _PlayerMaxHealth;
-        private SerializedProperty _PlayerHealthBar;
         #endregion
 
         #region Player Objects
@@ -68,7 +66,6 @@ namespace CustomEditors
 
         #region Leech Health Varaibles
         private SerializedProperty _LeechMaxHealth;
-        private SerializedProperty _LeechHealthBar;
         #endregion
 
         #region Leech Movement Varaibles
@@ -323,7 +320,6 @@ namespace CustomEditors
 
         private void SetLeechHealth()
         {
-            _LeechHealthBar = leechHealthObject.FindProperty("healthBar");
             _LeechMaxHealth = leechHealthObject.FindProperty("maxHealth");
         }
 
@@ -521,7 +517,6 @@ namespace CustomEditors
         private void SetPlayerHealth()
         {
             _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
-            _PlayerHealthBar = playerHealthObject.FindProperty("healthBar");
         }
 
         private void SetPlayerGun()
