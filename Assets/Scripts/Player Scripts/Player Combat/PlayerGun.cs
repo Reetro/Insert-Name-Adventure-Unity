@@ -68,7 +68,7 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Fire a raycast to check attached leeches and if found will damage it only called if the player projectile failed to spawn
+        /// Fire a raycast to check for enemies around the player if player projectile failed to spawn
         /// </summary>
         private void CheckForEnemy()
         {
