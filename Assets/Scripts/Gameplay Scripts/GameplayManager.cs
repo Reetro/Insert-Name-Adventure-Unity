@@ -48,14 +48,18 @@ namespace GameplayManagement
         [Header("Damage Settings")]
         [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
-
+        /// <summary>
+        /// Get the player gun and check to see if a controller is connected
+        /// </summary>
         private void Start()
         {
             playerGun = GeneralFunctions.GetPlayerGameObject().GetComponentInChildren<PlayerGun>();
 
             ControllerCheck();
         }
-
+        /// <summary>
+        /// Every frame look to see if a controller is connected if controller timer is at 0
+        /// </summary>
         private void Update()
         {
             bool currentlyMoving = CrossPlatformInputManager.GetAxis("Horizontal") < 0;
@@ -74,7 +78,9 @@ namespace GameplayManagement
                 controllerCheckTimer = defaultControllerCheckTimer;
             }
         }
-
+        /// <summary>
+        /// Look for any connected controller if none are found default back to keyboard and mouse
+        /// </summary>
         private void ControllerCheck()
         {
             System.Array.Clear(currentControllers, 0, currentControllers.Length);   
@@ -109,7 +115,9 @@ namespace GameplayManagement
 
             UpdateGameInput();
         }
-
+        /// <summary>
+        /// Update input state in the player gun
+        /// </summary>
         private void UpdateGameInput()
         {
             if (xboxController && !playstationController && !keyboard)
@@ -125,7 +133,10 @@ namespace GameplayManagement
                 playerGun.UpdateInput(false);
             }
         }
-
+        /// <summary>
+        /// Generates a random number between 1 and 1000000 then adds to the gameIDS array
+        /// </summary>
+        /// <returns>A random int</returns>
         public int GenID()
         {
             var newID = UnityEngine.Random.Range(1, 1000000);
@@ -142,7 +153,9 @@ namespace GameplayManagement
             gameIDS.Add(newID);
             return newID;
         }
-
+        /// <summary>
+        /// Get all current gameIDS
+        /// </summary>
         public List<int> gameIDS { get; } = new List<int>();
     }
 }
