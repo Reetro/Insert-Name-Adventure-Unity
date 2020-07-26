@@ -56,7 +56,7 @@ namespace GameplayManagement
             ControllerCheck();
         }
 
-        void Update()
+        private void Update()
         {
             bool currentlyMoving = CrossPlatformInputManager.GetAxis("Horizontal") < 0;
 
@@ -75,7 +75,7 @@ namespace GameplayManagement
             }
         }
 
-        public void ControllerCheck()
+        private void ControllerCheck()
         {
             System.Array.Clear(currentControllers, 0, currentControllers.Length);   
             System.Array.Resize<string>(ref currentControllers, Input.GetJoystickNames().Length);
