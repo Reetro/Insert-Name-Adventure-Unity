@@ -126,7 +126,7 @@ public class GeneralFunctions
         return Quaternion.AngleAxis(angle, Vector3.forward);
     }
     /// <summary>
-    /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to the player
+    /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to the target
     /// </summary>
     /// <param name="auraManager">The aura manager to spawn the leech debuff on</param>
     /// <param name="attachedLeech">The leech to attach</param>
@@ -134,13 +134,13 @@ public class GeneralFunctions
     /// <param name="health">Incoming leech's health</param>
     /// <param name="player">Player reference</param>
     /// <returns>The spawned leech attached to the player</returns>
-    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject player)
+    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject target)
     {
         AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
 
         localLeech.transform.parent = transform;
 
-        localLeech.OnLeechSpawn(health, player);
+        localLeech.OnLeechSpawn(health, target);
 
         return localLeech;
     }
@@ -154,7 +154,7 @@ public class GeneralFunctions
         return GameObject.FindGameObjectWithTag(tag).transform;
     }
     /// <summary>
-    /// Checks to see if leech is already attached on the given tag
+    /// Checks to see if leech is already attached on the given tag and checks to see if a new scene is currently loading
     /// </summary>
     /// <param name="tag">the collision tag the leech is attaching to</param>
     /// <returns>A bool that determines if a leech can attach to a given point</returns>

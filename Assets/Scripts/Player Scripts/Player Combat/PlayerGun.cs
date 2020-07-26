@@ -3,8 +3,6 @@ using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
 using GameplayManagement;
 using System;
-using System.Collections.Generic;
-using UnityEditor;
 
 namespace PlayerCharacter.Controller
 {
