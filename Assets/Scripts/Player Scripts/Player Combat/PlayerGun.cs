@@ -74,9 +74,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void CheckForEnemy()
         {
-            var player = GeneralFunctions.GetPlayerGameObject();
-
-            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, transform.right, traceLength, gameplayManager.whatCanBeDamaged);
+            RaycastHit2D hit = Physics2D.Raycast(controller.transform.position, transform.right, traceLength, gameplayManager.whatCanBeDamaged);
 
             if (hit)
             {
@@ -84,7 +82,45 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Rotate the player left or right to match the direction the gun is facing
+        /// Rotate the gun either to the mouse location or to the gamepad joystick position
+        /// </summary>
+        private void RotateGun()
+        {
+            if (!playerHealthComp.IsCurrentlyDead)
+            {
+                if (!gamepadActive)
+                {
+                    RotateGunWithMouse();
+                }
+                else
+                {
+                    RotateGunWithGamepad();
+                }
+            }
+        }
+        /// <summary>
+        /// If a Gamepad is not active get mouse location and rotate gun around the player character with mouse
+        /// </summary>
+        private void RotateGunWithMouse()
+        {
+            Vector3 mousePos = Input.mousePosition;
+            Vector3 gunPos = Camera.main.WorldToScreenPoint(transform.position);
+
+            mousePos.x = mousePos.x - gunPos.x;
+            mousePos.y = mousePos.y - gunPos.y;
+            gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+
+            if (MouseLeftOrRight())
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
+            }
+        }
+        /// <summary>
+        /// Rotate the player left or right to match the direction the gun is facing with mouse controls
         /// </summary>
         private void RotatePlayerWithMouse()
         {
@@ -104,62 +140,17 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Rotate the gun either to the mouse location or to the gamepad joystick position
+        /// If a gamepad is active get value from right stick and calculate gun rotation
         /// </summary>
-        private void RotateGun()
+        private void RotateGunWithGamepad()
         {
-            if (!playerHealthComp.IsCurrentlyDead)
+            Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
+
+            if (stickInput.magnitude > 0)
             {
-                if (!gamepadActive)
-                {
-                    Vector3 mousePos = Input.mousePosition;
-                    Vector3 gunPos = Camera.main.WorldToScreenPoint(transform.position);
+                var lookAt = GeneralFunctions.LookAt2D(transform.position, transform.position + (Vector3)stickInput);
 
-                    mousePos.x = mousePos.x - gunPos.x;
-                    mousePos.y = mousePos.y - gunPos.y;
-                    gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-
-                    if (MouseLeftOrRight())
-                    {
-                        transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
-                    }
-                }
-                else
-                {
-                    float deadzone = 0.25f;
-                    Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
-
-                    if (stickInput.magnitude < deadzone)
-                    {
-                        stickInput = Vector2.zero;
-                    }
-                    else
-                    {
-                        stickInput = stickInput.normalized * ((stickInput.magnitude - deadzone) / (1 - deadzone));
-                    }
-
-                    if (stickInput.sqrMagnitude >= 1)
-                    {
-                        gunAngle = Mathf.Atan2(stickInput.x, stickInput.y) * Mathf.Rad2Deg;
-
-                        if (stickInput.y < 0)
-                        {
-                            transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
-
-                            controller.transform.eulerAngles = new Vector3(transform.position.x, 180f, transform.position.z);
-                        }
-                        else
-                        {
-                            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
-
-                            controller.transform.eulerAngles = new Vector3(transform.position.x, 0f, transform.position.z);
-                        }
-                    }
-                }
+                transform.rotation = Quaternion.Inverse(lookAt);
             }
         }
         /// <summary>

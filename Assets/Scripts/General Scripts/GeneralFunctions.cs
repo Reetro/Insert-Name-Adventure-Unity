@@ -112,18 +112,18 @@ public class GeneralFunctions
         return (position1.normalized.y >= position2.normalized.y) ? true : false;
     }
     /// <summary>
-    /// Will rotate a given object to face a given vector
+    /// Will calculate the needed angle to make the current location look at the look at vector
     /// </summary>
     /// <param name="currentLocation">Current objects location</param>
     /// <param name="LookAt">The look at location</param>
     /// <param name="objectToRotate">Object to rotate</param>
-    public static void LookAt2D(Vector2 currentLocation, Vector2 LookAt, GameObject objectToRotate)
+    public static Quaternion LookAt2D(Vector2 currentLocation, Vector2 LookAt)
     {
         var dir = currentLocation - LookAt;
 
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        objectToRotate.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        return Quaternion.AngleAxis(angle, Vector3.forward);
     }
     /// <summary>
     /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to the player

@@ -41,7 +41,9 @@ namespace EnemyCharacter.AI
 
             currentShaman.transform.position = newLocation;
 
-            GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position, currentShaman.gameObject);
+            var lookAt = GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position);
+
+            transform.rotation = lookAt;
 
             currentShaman.MyRigidBody2D.velocity = Vector2.zero;
         }
