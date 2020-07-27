@@ -7,12 +7,13 @@ namespace AuraSystem.Effects
     public class DebuffEffect : MonoBehaviour
     {
         private float maxTicks = 9999999f;
-        private Animation fadeOutAnimation = null;
         protected DebuffIcon icon = null;
 
         private bool firstRun = false;
         private bool shouldTick = true;
-        private bool isFading = false;
+
+        [HideInInspector]
+        public Animation fadeOutAnimation = null;
 
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
@@ -190,7 +191,7 @@ namespace AuraSystem.Effects
         public virtual void ApplyDebuffEffect()
         {
             // To be overridden in child
-            Debug.LogWarning("Debuff Effect: " + gameObject.name + "has no debuff effect being applied");
+            Debug.LogWarning("Debuff Effect: " + gameObject.name + " has no debuff effect being applied");
         }
         /// <summary>
         /// Called when tick count is <= 0
@@ -206,11 +207,11 @@ namespace AuraSystem.Effects
 
             if (icon)
             {
-                MyAuraManager.RemoveDebuff(gameObject, this, icon);
+                MyAuraManager.StartDebuffRemoval(gameObject, this, icon);
             }
             else
             {
-                MyAuraManager.RemoveDebuff(gameObject, this);
+                MyAuraManager.StartDebuffRemoval(gameObject, this);
             }
         }
         /// <summary>
@@ -226,7 +227,7 @@ namespace AuraSystem.Effects
 
                 if (debuffEffect)
                 {
-                    if (!debuffEffect.isFading)
+                    if (!debuffEffect.IsFading)
                     {
                         return debuff;
                     }
@@ -264,11 +265,11 @@ namespace AuraSystem.Effects
                 {
                     localDebuff.icon.UpdateStackCount(localDebuff.StackCount);
 
-                    auraManager.RemoveDebuff(gameObject, this, icon);
+                    auraManager.StartDebuffRemoval(gameObject, this, icon);
                 }
                 else
                 {
-                    auraManager.RemoveDebuff(gameObject, this);
+                    auraManager.StartDebuffRemoval(gameObject, this);
                 }
             }
             else
@@ -294,11 +295,11 @@ namespace AuraSystem.Effects
                 {
                     if (useIcon)
                     {
-                        debuffEffect.MyAuraManager.RemoveDebuff(debuffEffect.gameObject, debuffEffect, debuffEffect.icon);
+                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject, debuffEffect, debuffEffect.icon);
                     }
                     else
                     {
-                        debuffEffect.MyAuraManager.RemoveDebuff(debuffEffect.gameObject, debuffEffect);
+                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject, debuffEffect);
                     }
                 }
             }
@@ -322,11 +323,11 @@ namespace AuraSystem.Effects
                 {
                     localDebuff.icon.ResetFill();
 
-                    auraManager.RemoveDebuff(gameObject, this, icon);
+                    auraManager.StartDebuffRemoval(gameObject, this, icon);
                 }
                 else
                 {
-                    auraManager.RemoveDebuff(gameObject, this);
+                    auraManager.StartDebuffRemoval(gameObject, this);
                 }
             }
             else
@@ -376,7 +377,7 @@ namespace AuraSystem.Effects
                 {
                     IsCurrentlyActive = false;
 
-                    isFading = true;
+                    IsFading = true;
 
                     fadeOutAnimation.Play();
 
@@ -436,7 +437,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Checks to see if the current debuff is actual active
         /// </summary>
-        public bool IsCurrentlyActive { get; private set; } = false;
+        public bool IsCurrentlyActive { get; set; } = false;
         /// <summary>
         /// Get the damage this debuff applies to it's target
         /// </summary>
@@ -449,5 +450,9 @@ namespace AuraSystem.Effects
         /// Gets this debuff id
         /// </summary>
         public int MyID { get; private set; } = 0;
-    }
+        /// <summary>
+        /// Checks to see if the fade out animation is currently played
+        /// </summary>
+        public bool IsFading { get; set; } = false;
+}
 }

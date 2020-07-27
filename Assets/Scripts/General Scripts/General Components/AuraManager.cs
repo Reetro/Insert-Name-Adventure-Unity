@@ -3,6 +3,7 @@ using UnityEngine;
 using PlayerUI.Icons;
 using PlayerUI;
 using AuraSystem.Effects;
+using System.Collections;
 
 namespace AuraSystem
 {
@@ -184,21 +185,53 @@ namespace AuraSystem
             }
         }
         /// <summary>
-        /// Removes then destroy the given debuff from the aura manager Gameobject then removes the icon from the playerUI
+        /// Plays debuff fade out animation if debuff had a Icon and then destroys the DebuffEffect Gameobject
         /// </summary>
-        public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
+        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
         {
             if (debuffEffectObject)
             {
-                debuffEffectObject.GetComponent<DebuffEffect>().StartRemove();
-
                 MyCurrentDebuffs.Remove(effect);
+
+                if (iconToRemove)
+                {
+                    var debuffEffect = debuffEffectObject.GetComponent<DebuffEffect>();
+
+                    if (debuffEffect)
+                    {
+                        if (debuffEffect.fadeOutAnimation)
+                        {
+                            debuffEffect.IsCurrentlyActive = false;
+                            debuffEffect.IsFading = true;
+
+                            debuffEffect.fadeOutAnimation.Play();
+
+                            StartCoroutine(DestroyDebuffIcon(debuffEffect, iconToRemove));
+                        }
+                        else
+                        {
+                            MyUIManager.RemoveDebuffIcon(iconToRemove);
+
+                            Destroy(debuffEffectObject.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to StartDebuffRemoval on " + debuffEffectObject.name.ToString() + " does not have a DebuffEffect component");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fade out " + debuffEffectObject.name.ToString() + " Icon was invalid");
+
+                    Destroy(debuffEffectObject.gameObject);
+                }
             }
         }
         /// <summary>
         /// Removes then destroys the given debuff from the aura manager
         /// </summary>
-        public void RemoveDebuff(GameObject debuffEffectObject, DebuffEffect effect)
+        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffEffect effect)
         {
             if (debuffEffectObject)
             {
@@ -206,13 +239,17 @@ namespace AuraSystem
 
                 MyCurrentDebuffs.Remove(effect);
             }
+        }
+        /// <summary>
+        /// After the fade out animation is done destroy DebuffEffect Gameobject
+        /// </summary>
+        private IEnumerator DestroyDebuffIcon(DebuffEffect debuff, DebuffIcon iconToRemove)
+        {
+            yield return new WaitForSeconds(debuff.fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
 
-            if (debuffEffectObject)
-            {
-                Destroy(debuffEffectObject);
+            MyUIManager.RemoveDebuffIcon(iconToRemove);
 
-                MyCurrentDebuffs.Remove(effect);
-            }
+            Destroy(debuff.gameObject);
         }
         /// <summary>
         /// Finds a debuff of the same type as the given debuff
