@@ -366,19 +366,28 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Plays debuff fade out animation and starts destroy delay
+        /// Plays debuff fade out animation if debuff had a Icon and then destroys the DebuffEffect Gameobject
         /// </summary>
         public void StartRemove()
         {
             if (icon)
             {
-                IsCurrentlyActive = false;
+                if (fadeOutAnimation)
+                {
+                    IsCurrentlyActive = false;
 
-                isFading = true;
+                    isFading = true;
 
-                fadeOutAnimation.Play();
+                    fadeOutAnimation.Play();
 
-                StartCoroutine(RemoveDebuff());
+                    StartCoroutine(RemoveDebuff());
+                }
+                else
+                {
+                    MyAuraManager.MyUIManager.RemoveDebuffIcon(icon);
+
+                    Destroy(gameObject);
+                }
             }
             else
             {
