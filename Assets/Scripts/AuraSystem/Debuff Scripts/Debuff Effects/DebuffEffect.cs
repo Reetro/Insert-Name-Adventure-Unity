@@ -367,46 +367,6 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Plays debuff fade out animation if debuff had a Icon and then destroys the DebuffEffect Gameobject
-        /// </summary>
-        public void StartRemove()
-        {
-            if (icon)
-            {
-                if (fadeOutAnimation)
-                {
-                    IsCurrentlyActive = false;
-
-                    IsFading = true;
-
-                    fadeOutAnimation.Play();
-
-                    StartCoroutine(RemoveDebuff());
-                }
-                else
-                {
-                    MyAuraManager.MyUIManager.RemoveDebuffIcon(icon);
-
-                    Destroy(gameObject);
-                }
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-        /// <summary>
-        /// After the fade out animation is done destroy DebuffEffect Gameobject
-        /// </summary>
-        private IEnumerator RemoveDebuff()
-        {
-            yield return new WaitForSeconds(fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
-
-            MyAuraManager.MyUIManager.RemoveDebuffIcon(icon);
-
-            Destroy(gameObject);
-        }
-        /// <summary>
         /// Gets the current stack count
         /// </summary>
         public int StackCount { get; private set; } = 1;

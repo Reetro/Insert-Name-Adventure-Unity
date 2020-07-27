@@ -206,7 +206,7 @@ namespace AuraSystem
 
                             debuffEffect.fadeOutAnimation.Play();
 
-                            StartCoroutine(DestroyDebuffIcon(debuffEffect, iconToRemove));
+                            StartCoroutine(DestroyDebuff(debuffEffect, iconToRemove));
                         }
                         else
                         {
@@ -222,7 +222,7 @@ namespace AuraSystem
                 }
                 else
                 {
-                    Debug.LogError("Failed to fade out " + debuffEffectObject.name.ToString() + " Icon was invalid");
+                    Debug.LogError("Failed to fade out " + debuffEffectObject.name.ToString() + " icon was invalid");
 
                     Destroy(debuffEffectObject.gameObject);
                 }
@@ -243,7 +243,7 @@ namespace AuraSystem
         /// <summary>
         /// After the fade out animation is done destroy DebuffEffect Gameobject
         /// </summary>
-        private IEnumerator DestroyDebuffIcon(DebuffEffect debuff, DebuffIcon iconToRemove)
+        private IEnumerator DestroyDebuff(DebuffEffect debuff, DebuffIcon iconToRemove)
         {
             yield return new WaitForSeconds(debuff.fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
 
@@ -281,7 +281,7 @@ namespace AuraSystem
             }
             else
             {
-                Debug.LogError("Was unable to find debuff type on " + gameObject.name + "debuff was invalid");
+                Debug.LogError("Was unable to find debuff type on " + gameObject.name + " debuff was invalid");
                 return null;
             }
         }
