@@ -31,7 +31,9 @@ namespace PlayerCharacter.Controller
             healthComponent.OnDeath.AddListener(OnDeath);
             healthComponent.onTakeAnyDamage.AddListener(OnTakeAnyDamage);
         }
-
+        /// <summary>
+        /// Look for any player input
+        /// </summary>
         private void Update()
         {
             if (!GeneralFunctions.IsPlayerDead())
@@ -74,7 +76,9 @@ namespace PlayerCharacter.Controller
                 }
             }
         }
-
+        /// <summary>
+        /// Check for jump input if true set movement state to jumping
+        /// </summary>
         private void FixedUpdate()
         {
             playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);

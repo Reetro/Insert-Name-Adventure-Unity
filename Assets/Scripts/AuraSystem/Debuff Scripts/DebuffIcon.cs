@@ -26,7 +26,7 @@ namespace PlayerUI.Icons
 
         void Update()
         {
-            if (hasFillAmount)
+            if (hasFillAmount && duration > 0)
             {
                 durationImage.fillAmount -= 1 / Debuff.GetTotalTime() * Time.deltaTime;
 

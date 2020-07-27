@@ -117,28 +117,51 @@ namespace AuraSystem
         /// <summary>
         /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
         /// </summary>
-        public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
+        public void StartBuffRemoval(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
         {
             if (buffEffectObject)
             {
-                Destroy(buffEffectObject);
-
                 MyCurrentBuffs.Remove(effect);
-            }
 
-            if (iconToRemove)
-            {
-                MyUIManager.RemoveBuffIcon(iconToRemove);
-            }
-            else
-            {
-                Debug.LogError("Failed to remove " + buffEffectObject.name + "buff Icon is invalid");
+                if (iconToRemove)
+                {
+                    var buffEffect = buffEffectObject.GetComponent<BuffEffect>();
+
+                    if (buffEffect)
+                    {
+                        if (buffEffect.fadeOutAnimation)
+                        {
+                            buffEffect.IsCurrentlyActive = false;
+                            buffEffect.IsFading = true;
+
+                            buffEffect.fadeOutAnimation.Play();
+
+                            StartCoroutine(DestroyBuff(buffEffect, iconToRemove));
+                        }
+                        else
+                        {
+                            MyUIManager.RemoveBuffIcon(iconToRemove);
+
+                            Destroy(buffEffectObject.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to StartBuffRemoval on " + buffEffectObject.name.ToString() + " does not have a BuffEffect component");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fade out " + buffEffectObject.name.ToString() + " icon was invalid");
+
+                    Destroy(buffEffectObject.gameObject);
+                }
             }
         }
         /// <summary>
         /// Removes then destroy the given debuff from the aura manager
         /// </summary>
-        public void RemoveBuff(GameObject buffEffectObject, BuffEffect effect)
+        public void StartBuffRemoval(GameObject buffEffectObject, BuffEffect effect)
         {
             if (buffEffectObject)
             {
@@ -146,6 +169,17 @@ namespace AuraSystem
 
                 MyCurrentBuffs.Remove(effect);
             }
+        }
+        /// <summary>
+        /// After the fade out animation is done destroy DebuffEffect Gameobject and removes the buff icon from screen
+        /// </summary>
+        private IEnumerator DestroyBuff(BuffEffect buff, BuffIcon iconToRemove)
+        {
+            yield return new WaitForSeconds(buff.fadeOutAnimation.GetClip("Buff_Fade_Out").length);
+
+            MyUIManager.RemoveBuffIcon(iconToRemove);
+
+            Destroy(buff.gameObject);
         }
         /// <summary>
         /// Will spawn the given debuff into the scene then start the debuff
@@ -241,7 +275,7 @@ namespace AuraSystem
             }
         }
         /// <summary>
-        /// After the fade out animation is done destroy DebuffEffect Gameobject
+        /// After the fade out animation is done destroy DebuffEffect Gameobject and removes the debuff icon from screen
         /// </summary>
         private IEnumerator DestroyDebuff(DebuffEffect debuff, DebuffIcon iconToRemove)
         {

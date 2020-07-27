@@ -54,7 +54,7 @@ namespace PlayerUI.Icons
 
         void Update()
         {
-            if (canFill)
+            if (canFill && duration > 0)
             {
                 durationImage.fillAmount -= 1 / Buff.duration * Time.deltaTime;
 

@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbbbfdb9c9f1727458634450399821a1, type: 3}
   m_Name: Breather_B
   m_EditorClassIdentifier: 
-  title: Breather
-  titleFontSize: 36
   name: Breather
   description: Take a breath and heal some health
   artwork: {fileID: 21300000, guid: 411f88b287eb8504aa08edb04c1443c6, type: 3}

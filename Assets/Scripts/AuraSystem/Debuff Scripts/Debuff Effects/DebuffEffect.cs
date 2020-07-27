@@ -12,9 +12,6 @@ namespace AuraSystem.Effects
         private bool firstRun = false;
         private bool shouldTick = true;
 
-        [HideInInspector]
-        public Animation fadeOutAnimation = null;
-
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
@@ -168,6 +165,7 @@ namespace AuraSystem.Effects
             while (Ticks > 0)
             {
                 yield return new WaitForSecondsRealtime(Occurrence);
+
                 Ticks--;
 
                 ApplyDebuffEffect();
@@ -414,5 +412,9 @@ namespace AuraSystem.Effects
         /// Checks to see if the fade out animation is currently played
         /// </summary>
         public bool IsFading { get; set; } = false;
-}
+        /// <summary>
+        /// Gets the icon's fade out animation
+        /// </summary>
+        public Animation fadeOutAnimation { get; private set;} = null;
+    }
 }

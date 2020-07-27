@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 4993373258369533981}
   - component: {fileID: -7411804147481041329}
   - component: {fileID: 507175789647243246}
-  - component: {fileID: 9127380793869020295}
+  - component: {fileID: 8972086844773849785}
   m_Layer: 5
   m_Name: Buff Icon
   m_TagString: Untagged
@@ -278,25 +278,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39523b0c0d0a50d498387df3f4a2c950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &9127380793869020295
-Animator:
-  serializedVersion: 3
+--- !u!111 &8972086844773849785
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2386488643816730369}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3ccd71c2ecea47d4da213d03602a25fc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 56dd9ddfa95caac41864736481fd70c0, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &2908020132695896898
 GameObject:
   m_ObjectHideFlags: 0

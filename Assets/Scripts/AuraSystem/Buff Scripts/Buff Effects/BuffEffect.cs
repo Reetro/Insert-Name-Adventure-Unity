@@ -32,7 +32,9 @@ namespace AuraSystem.Effects
 
                 MyID = GeneralFunctions.GenID();
 
-                IsBuffRunning = true;
+                IsCurrentlyActive = true;
+
+                fadeOutAnimation = icon.GetComponent<Animation>();
 
                 return this;
             }
@@ -86,7 +88,7 @@ namespace AuraSystem.Effects
 
                 MyID = GeneralFunctions.GenID();
 
-                IsBuffRunning = true;
+                IsCurrentlyActive = true;
 
                 return this;
             }
@@ -137,17 +139,17 @@ namespace AuraSystem.Effects
 
             if (icon)
             {
-                MyAuraManager.RemoveBuff(gameObject, this, icon);
+                MyAuraManager.StartBuffRemoval(gameObject, this, icon);
             }
             else
             {
-                MyAuraManager.RemoveBuff(gameObject, this);
+                MyAuraManager.StartBuffRemoval(gameObject, this);
             }
         }
 
         private void Update()
         {
-            if (IsBuffRunning)
+            if (IsCurrentlyActive)
             {
                 Buff.UpdateToolTip(StackCount);
 
@@ -158,7 +160,7 @@ namespace AuraSystem.Effects
                 }
                 else
                 {
-                    IsBuffRunning = false;
+                    IsCurrentlyActive = false;
                     Duration = 0;
                     OnBuffEnd();
                 }
@@ -195,7 +197,7 @@ namespace AuraSystem.Effects
             {
                 var localBuff = auraManager.FindBuffOfType(scriptableBuff);
 
-                localBuff.IsBuffRunning = false;
+                localBuff.IsCurrentlyActive = false;
 
                 if (useIcon)
                 {
@@ -208,17 +210,17 @@ namespace AuraSystem.Effects
                 {
                     localBuff.icon.ResetFill();
 
-                    localBuff.IsBuffRunning = true;
+                    localBuff.IsCurrentlyActive = true;
 
                     localBuff.icon.UpdatePause();
 
-                    auraManager.RemoveBuff(gameObject, this, icon);
+                    auraManager.StartBuffRemoval(gameObject, this, icon);
                 }
                 else
                 {
-                    localBuff.IsBuffRunning = true;
+                    localBuff.IsCurrentlyActive = true;
 
-                    auraManager.RemoveBuff(gameObject, this);
+                    auraManager.StartBuffRemoval(gameObject, this);
                 }
             }
             else
@@ -241,11 +243,11 @@ namespace AuraSystem.Effects
                 {
                     localBuff.icon.UpdateStackCount(localBuff.StackCount);
 
-                    auraManager.RemoveBuff(gameObject, this, icon);
+                    auraManager.StartBuffRemoval(gameObject, this, icon);
                 }
                 else
                 {
-                    auraManager.RemoveBuff(gameObject, this);
+                    auraManager.StartBuffRemoval(gameObject, this);
                 }
             }
             else
@@ -273,11 +275,11 @@ namespace AuraSystem.Effects
                 {
                     if (useIcon)
                     {
-                        buffEffect.MyAuraManager.RemoveBuff(buffEffect.gameObject, buffEffect, buffEffect.icon);
+                        buffEffect.MyAuraManager.StartBuffRemoval(buffEffect.gameObject, buffEffect, buffEffect.icon);
                     }
                     else
                     {
-                        buffEffect.MyAuraManager.RemoveBuff(buffEffect.gameObject, buffEffect);
+                        buffEffect.MyAuraManager.StartBuffRemoval(buffEffect.gameObject, buffEffect);
                     }
                 }
             }
@@ -325,11 +327,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Looks to see if the buff is currently active
         /// </summary>
-        public bool IsCurrentlyActive { get; private set; } = true;
-        /// <summary>
-        /// Checks to see if the buff is running
-        /// </summary>
-        public bool IsBuffRunning { get; private set; } = false;
+        public bool IsCurrentlyActive { get; set; } = true;
         /// <summary>
         /// Get the current duration of the buff
         /// </summary>
@@ -350,5 +348,13 @@ namespace AuraSystem.Effects
         /// Gets this buff id
         /// </summary>
         public int MyID { get; private set; } = 0;
+        /// <summary>
+        /// Checks to see if the fade out animation is currently played
+        /// </summary>
+        public bool IsFading { get; set; } = false;
+        /// <summary>
+        /// Gets the icon's fade out animation
+        /// </summary>
+        public Animation fadeOutAnimation { get; private set; } = null;
     }
 }

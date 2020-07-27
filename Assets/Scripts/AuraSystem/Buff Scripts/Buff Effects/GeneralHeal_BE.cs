@@ -4,7 +4,10 @@
     {
         public override void ApplyBuffEffect(float buffAmount)
         {
-            GeneralFunctions.HealTarget(Target, buffAmount);
+            if (IsCurrentlyActive)
+            {
+                GeneralFunctions.HealTarget(Target, buffAmount);
+            }
         }
     }
 }
