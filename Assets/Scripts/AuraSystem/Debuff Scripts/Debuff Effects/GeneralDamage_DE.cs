@@ -4,7 +4,10 @@
     {
         public override void ApplyDebuffEffect()
         {
-            GeneralFunctions.DamageTarget(Target, Damage * StackCount, true);
+            if (IsCurrentlyActive)
+            {
+                GeneralFunctions.DamageTarget(Target, Damage * StackCount, true);
+            }
         }
     }
 }

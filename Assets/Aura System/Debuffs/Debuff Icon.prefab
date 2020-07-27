@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 6851637741438254873}
   - component: {fileID: -1454863360295872971}
   - component: {fileID: 3637891184082993221}
+  - component: {fileID: 2861754056391508053}
   m_Layer: 5
-  m_Name: Debuff
+  m_Name: Debuff Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,6 +122,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39523b0c0d0a50d498387df3f4a2c950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!111 &2861754056391508053
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2386488643816730369}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: df59b30d7caf6d34fa98cd058644d1cc, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &5025922271247628112
 GameObject:
   m_ObjectHideFlags: 0

@@ -190,18 +190,9 @@ namespace AuraSystem
         {
             if (debuffEffectObject)
             {
-                Destroy(debuffEffectObject);
+                debuffEffectObject.GetComponent<DebuffEffect>().StartRemove();
 
                 MyCurrentDebuffs.Remove(effect);
-            }
-
-            if (iconToRemove)
-            {
-                MyUIManager.RemoveDebuffIcon(iconToRemove);
-            }
-            else
-            {
-                Debug.LogError("Failed to remove " + debuffEffectObject.name + "debuff Icon is invalid");
             }
         }
         /// <summary>

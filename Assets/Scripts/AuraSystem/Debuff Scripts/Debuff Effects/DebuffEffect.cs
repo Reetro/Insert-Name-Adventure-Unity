@@ -7,10 +7,12 @@ namespace AuraSystem.Effects
     public class DebuffEffect : MonoBehaviour
     {
         private float maxTicks = 9999999f;
+        private Animation fadeOutAnimation = null;
         protected DebuffIcon icon = null;
 
         private bool firstRun = false;
         private bool shouldTick = true;
+        private bool isFading = false;
 
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
@@ -35,12 +37,15 @@ namespace AuraSystem.Effects
                 Target = target;
 
                 firstRun = true;
+                IsCurrentlyActive = true;
 
                 debuff.UpdateToolTip(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
                 VisualEffect = SpawnVisualEffect(effect, target.transform);
+
+                fadeOutAnimation = icon.GetComponent<Animation>();
 
                 if (!shouldTick)
                 {
@@ -219,7 +224,21 @@ namespace AuraSystem.Effects
 
                 debuffEffect = debuff;
 
-                return debuff;
+                if (debuffEffect)
+                {
+                    if (!debuffEffect.isFading)
+                    {
+                        return debuff;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -345,6 +364,37 @@ namespace AuraSystem.Effects
             {
                 Ticks = maxTicks;
             }
+        }
+        /// <summary>
+        /// Plays debuff fade out animation and starts destroy delay
+        /// </summary>
+        public void StartRemove()
+        {
+            if (icon)
+            {
+                IsCurrentlyActive = false;
+
+                isFading = true;
+
+                fadeOutAnimation.Play();
+
+                StartCoroutine(RemoveDebuff());
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        /// <summary>
+        /// After the fade out animation is done destroy DebuffEffect Gameobject
+        /// </summary>
+        private IEnumerator RemoveDebuff()
+        {
+            yield return new WaitForSeconds(fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
+
+            MyAuraManager.MyUIManager.RemoveDebuffIcon(icon);
+
+            Destroy(gameObject);
         }
         /// <summary>
         /// Gets the current stack count

@@ -696,7 +696,6 @@ MonoBehaviour:
   loadCheckpointBTN: {fileID: 5282076970713725880}
   gameOverText: {fileID: 6882351876974062472}
   healthBar: {fileID: 8175054867234241931}
-  toolTipTextPadding: 4
 --- !u!1001 &2692788307307675913
 PrefabInstance:
   m_ObjectHideFlags: 0
