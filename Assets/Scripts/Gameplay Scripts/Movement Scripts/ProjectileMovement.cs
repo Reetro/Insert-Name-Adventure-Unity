@@ -89,7 +89,7 @@ namespace LevelObjects.MovingObjects
             }
         }
 
-        public void OnProjectileImpact()
+        public virtual void OnProjectileImpact()
         {
             Destroy(gameObject);
         }

@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using LevelObjects.MovingObjects;
+using System.Collections;
 
 namespace EnemyCharacter.AI
 {
     public class Boomerang : ProjectileMovement
     {
         private Shaman currentShaman = null;
-        private int currentHitCount = 0;
         private int maxHitsBeforeTeleport = 0;
         private float offSet = 0.5f;
+        private bool justSpawned = true;
+
+        public int CurrentHitCount { get; set; }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -18,15 +21,18 @@ namespace EnemyCharacter.AI
 
             UpdateDirection(newDirection);
 
-            currentHitCount++;
-
             GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
 
-            if (currentHitCount >= maxHitsBeforeTeleport)
+            if (!justSpawned)
+            {
+                CurrentHitCount++;
+            }
+
+            if (CurrentHitCount >= maxHitsBeforeTeleport)
             {
                 TeleportShaman(collision.GetContact(0).point);
 
-                currentHitCount = 0;
+                CurrentHitCount = 0;
             }
         }
 
@@ -46,22 +52,24 @@ namespace EnemyCharacter.AI
             transform.rotation = lookAt;
 
             currentShaman.MyRigidBody2D.velocity = Vector2.zero;
+
+            DestroyBoomerang(true, false);
         }
 
-        public void DestroyBoomerang(bool throwBoomerang)
+        public void DestroyBoomerang(bool throwBoomerang, bool randomThrow)
         {
             if (currentShaman)
             {
                 if (throwBoomerang)
                 {
-                    currentShaman.ThrowBoomerang();
+                    currentShaman.ThrowBoomerang(randomThrow);
                 }
 
                 Destroy(gameObject);
             }
             else
             {
-                Debug.LogError("Unable to destroy boomerang " + name + "currentShaman is invalid");
+                Debug.LogError("Unable to destroy boomerang " + name.ToString() + " currentShaman is invalid");
             }
         }
 
@@ -75,8 +83,10 @@ namespace EnemyCharacter.AI
             return point;
         }
 
-        public void SetCurrentShaman(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
+        public void SetupBoomerang(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
         {
+            justSpawned = true;
+
             currentShaman = shamanToSet;
 
             this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
@@ -84,6 +94,20 @@ namespace EnemyCharacter.AI
             this.offSet = offSet;
 
             MyRigidBody2D.AddForce(LaunchDirection * MoveSpeed);
+
+            StartCoroutine(SpawnTimer());
+        }
+
+        private IEnumerator SpawnTimer()
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            justSpawned = false;
+        }
+
+        public override void OnProjectileImpact()
+        {
+            // Do nothing on default impact
         }
     }
 }

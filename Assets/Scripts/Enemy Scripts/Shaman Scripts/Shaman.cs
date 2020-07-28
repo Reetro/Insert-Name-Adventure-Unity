@@ -19,6 +19,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private float MaxNoise = 600f;
         [Tooltip("How much to offset the shaman teleport location by")]
         [SerializeField] private float teleportOffset = 0.5f;
+        [Tooltip("Speed multiplier used when shaman throws the boomerang towards the player with no random velocity")]
+        [SerializeField] private float bommerangSpeedMultipler = 2f;
 
         private Boomerang boomerangToSpawn = null;
         private Boomerang currentBoomrang = null;
@@ -34,10 +36,10 @@ namespace EnemyCharacter.AI
 
         private void Start()
         {
-            ThrowBoomerang();
+            ThrowBoomerang(true);
         }
 
-        public void ThrowBoomerang()
+        public void ThrowBoomerang(bool randomThrow)
         {
             var playerLocation = GeneralFunctions.GetPlayerGameObject().transform.position;
 
@@ -45,9 +47,18 @@ namespace EnemyCharacter.AI
 
             var startDirection = GeneralFunctions.GetDirectionVectorFrom2Vectors(playerLocation, currentBoomrang.transform.position);
 
-            currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, MinNoise, MaxNoise);
+            if (randomThrow)
+            {
+                currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, MinNoise, MaxNoise);
+            }
+            else
+            {
+                currentBoomrang.ConstructProjectile(boomerangSpeed * bommerangSpeedMultipler, boomerangDamage, startDirection);
+            }
 
-            currentBoomrang.SetCurrentShaman(this, maxHitsBeforeTeleport, teleportOffset);
+            currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset);
+
+            currentBoomrang.CurrentHitCount = 0; 
         }
 
         protected override void OnDeath()
@@ -56,7 +67,7 @@ namespace EnemyCharacter.AI
 
             if (currentBoomrang)
             {
-                currentBoomrang.DestroyBoomerang(false);
+                currentBoomrang.DestroyBoomerang(false, false);
             }
 
             Destroy(gameObject);

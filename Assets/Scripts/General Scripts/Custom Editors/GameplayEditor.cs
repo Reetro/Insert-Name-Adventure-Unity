@@ -73,9 +73,6 @@ namespace CustomEditors
         private SerializedProperty _LeechFlySpeed;
         private SerializedProperty _LeechRandomYmin;
         private SerializedProperty _LeechRandomYmax;
-        private SerializedProperty _LeechForceMultipler;
-        private SerializedProperty _LeechPushTimer;
-        private SerializedProperty _LeechForceLayer;
         #endregion
 
         #region Leech Objects
@@ -97,9 +94,6 @@ namespace CustomEditors
         private SerializedProperty _LeechFatherFlySpeed;
         private SerializedProperty _LeechFatherRandomYmin;
         private SerializedProperty _LeechFatherRandomYmax;
-        private SerializedProperty _LeechFatherForceMultipler;
-        private SerializedProperty _LeechFatherPushTimer;
-        private SerializedProperty _LeechFatherForceLayer;
         #endregion
 
         #region Leech Father Objects
@@ -129,9 +123,6 @@ namespace CustomEditors
         private SerializedProperty _LeechMotherFlySpeed;
         private SerializedProperty _LeechMotherRandomYmin;
         private SerializedProperty _LeechMotherRandomYmax;
-        private SerializedProperty _LeechMotherForceMultipler;
-        private SerializedProperty _LeechMotherPushTimer;
-        private SerializedProperty _LeechMotherForceLayer;
         #endregion
 
         #region Leech Mother Objects
@@ -168,6 +159,7 @@ namespace CustomEditors
         private SerializedProperty _ShamanDamage;
         private SerializedProperty _ShamanMinNoise;
         private SerializedProperty _ShamanMaxNoise;
+        private SerializedProperty _ShamanBommerangSpeedMultipler;
         #endregion
 
         #region Shaman Editors
@@ -330,9 +322,6 @@ namespace CustomEditors
             _LeechFlySpeed = leechMovementObject.FindProperty("leechFlySpeed");
             _LeechRandomYmin = leechMovementObject.FindProperty("randomYMin");
             _LeechRandomYmax = leechMovementObject.FindProperty("randomYMax");
-            _LeechForceMultipler = leechMovementObject.FindProperty("forceMultipler");
-            _LeechPushTimer = leechMovementObject.FindProperty("pushTimer");
-            _LeechForceLayer = leechMovementObject.FindProperty("ForceLayer");
         }
         #endregion
 
@@ -375,9 +364,6 @@ namespace CustomEditors
             _LeechFatherFlySpeed = leechFatherMovementObject.FindProperty("leechFlySpeed");
             _LeechFatherRandomYmin = leechFatherMovementObject.FindProperty("randomYMin");
             _LeechFatherRandomYmax = leechFatherMovementObject.FindProperty("randomYMax");
-            _LeechFatherForceMultipler = leechFatherMovementObject.FindProperty("forceMultipler");
-            _LeechFatherPushTimer = leechFatherMovementObject.FindProperty("pushTimer");
-            _LeechFatherForceLayer = leechFatherMovementObject.FindProperty("ForceLayer");
         }
         #endregion
 
@@ -421,9 +407,6 @@ namespace CustomEditors
             _LeechMotherFlySpeed = leechMotherMovementObject.FindProperty("leechFlySpeed");
             _LeechMotherRandomYmin = leechMotherMovementObject.FindProperty("randomYMin");
             _LeechMotherRandomYmax = leechMotherMovementObject.FindProperty("randomYMax");
-            _LeechMotherForceMultipler = leechMotherMovementObject.FindProperty("forceMultipler");
-            _LeechMotherPushTimer = leechMotherMovementObject.FindProperty("pushTimer");
-            _LeechMotherForceLayer = leechMotherMovementObject.FindProperty("ForceLayer");
         }
         #endregion
 
@@ -459,6 +442,7 @@ namespace CustomEditors
             _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
             _ShamanMinNoise = shamanObject.FindProperty("MinNoise");
             _ShamanMaxNoise = shamanObject.FindProperty("MaxNoise");
+            _ShamanBommerangSpeedMultipler = shamanObject.FindProperty("bommerangSpeedMultipler");
         }
         #endregion
 
