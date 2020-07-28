@@ -123,6 +123,8 @@ MonoBehaviour:
   shootIntervale: 2
   projectileSpeed: 400
   projectileDamage: 1
+  projectileToSpawn: {fileID: 8857225106022265614, guid: 5cfd7a1b8a66ea940af69f446c22fc52,
+    type: 3}
   sightLayers:
     serializedVersion: 2
     m_Bits: 768

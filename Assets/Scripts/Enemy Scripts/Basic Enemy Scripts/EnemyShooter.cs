@@ -12,11 +12,9 @@ namespace EnemyCharacter.AI
         [SerializeField] private float projectileSpeed = 400f;
         [Tooltip("How much damage the spawned projectile does")]
         [SerializeField] private float projectileDamage = 1f;
+        [Tooltip("The projectile the shooter will spawn")]
+        [SerializeField] private GameObject projectileToSpawn = null;
 
-        /// <summary>
-        /// Where to find the shooter projectile prefab in resources folder
-        /// </summary>
-        protected virtual string ProjectilePath { get; set; } = "";
         /// <summary>
         /// The transform to fire the spawned projectile from
         /// </summary>
@@ -52,13 +50,11 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void ConstructShooter()
         {
-            var projectileObject = Resources.Load(ProjectilePath) as GameObject;
-
-            if (projectileObject)
+            if (projectileToSpawn)
             {
-                ProjectileToShoot = projectileObject.GetComponent<ProjectileMovement>();
+                _ProjectileMovement = projectileToSpawn.GetComponent<ProjectileMovement>();
 
-                if (ProjectileToShoot)
+                if (_ProjectileMovement)
                 {
                     if (CurrentFireTransform)
                     {
@@ -71,12 +67,12 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    Debug.LogError(gameObject.name + " failed to get projectile movement");
+                    Debug.LogError(gameObject.ToString() + " failed to set ProjectileToShoot projectile to spawn does not have a projectile movement component");
                 }
             }
             else
             {
-                Debug.LogError(gameObject.name + " failed to get projectile prefab invalid path");
+                Debug.LogError(gameObject.ToString() + " failed to set ProjectileToShoot projectile to spawn was invalid");
             }
         }
         /// <summary>
@@ -88,9 +84,9 @@ namespace EnemyCharacter.AI
             Debug.LogWarning(gameObject.name + "shoot script has no implementation");
         }
         /// <summary>
-        /// Gets the current projectile prefab
+        /// Gets the current projectile prefab projectile movement component
         /// </summary>
-        public ProjectileMovement ProjectileToShoot { get; private set; } = null;
+        public ProjectileMovement _ProjectileMovement { get; private set; } = null;
         /// <summary>
         /// Gets current shoot intervals
         /// </summary>

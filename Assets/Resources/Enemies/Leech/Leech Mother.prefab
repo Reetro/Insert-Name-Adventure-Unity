@@ -156,11 +156,6 @@ MonoBehaviour:
   leechFlySpeed: 3
   randomYMin: 0.005
   randomYMax: 0.007
-  forceMultipler: 0.8
-  pushTimer: 2
-  ForceLayer:
-    serializedVersion: 2
-    m_Bits: 1280
 --- !u!114 &5899286072162422531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +171,8 @@ MonoBehaviour:
   shootIntervale: 2
   projectileSpeed: 500
   projectileDamage: 1
+  projectileToSpawn: {fileID: 8857225106022265614, guid: c0c51ddd683319c4c8eb82cf56e0163c,
+    type: 3}
 --- !u!114 &8627691463657521404
 MonoBehaviour:
   m_ObjectHideFlags: 0

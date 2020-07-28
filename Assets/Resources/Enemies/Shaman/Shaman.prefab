@@ -106,6 +106,7 @@ MonoBehaviour:
   MinNoise: 0.8
   MaxNoise: 3
   teleportOffset: 0.2
+  bommerangSpeedMultipler: 2
 --- !u!114 &2099811738
 MonoBehaviour:
   m_ObjectHideFlags: 0

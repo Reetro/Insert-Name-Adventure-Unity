@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 
-namespace EnemyCharacter.SceneObject
+namespace LevelObjects.MovingObjects
 {
-    public class ShootableLeechEgg : MonoBehaviour
+    public class ShootableLeechEgg : ProjectileMovement
     {
         [SerializeField] private GameObject leechToSpawn = null;
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            SpawnLeech();
+        }
 
         public void SpawnLeech()
         {

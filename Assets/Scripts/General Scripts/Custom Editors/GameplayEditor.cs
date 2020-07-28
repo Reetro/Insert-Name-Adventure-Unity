@@ -112,6 +112,7 @@ namespace CustomEditors
         private SerializedProperty _LeechFatherShootIntervale;
         private SerializedProperty _LeechFatherProjectileDamage;
         private SerializedProperty _LeechFatherProjectileSpeed;
+        private SerializedProperty _LeechFatherProjectileToSpawn;
         #endregion
 
         #region Leech Mother Health Varaibles
@@ -141,6 +142,7 @@ namespace CustomEditors
         private SerializedProperty _LeechMotherShootIntervale;
         private SerializedProperty _LeechMotherProjectileDamage;
         private SerializedProperty _LeechMotherProjectileSpeed;
+        private SerializedProperty _LeechMotherProjectileToSpawn;
         #endregion
 
         #region Shaman Objects
@@ -177,6 +179,7 @@ namespace CustomEditors
         private SerializedProperty _AxeThrowerProjectileDamage;
         private SerializedProperty _AxeThrowerProjectileSpeed;
         private SerializedProperty _AxeThrowerSightLayers;
+        private SerializedProperty _AxeThrowerProjectileToSpawn;
         #endregion
 
         #region Axe Thrower Health Varaibles
@@ -351,6 +354,7 @@ namespace CustomEditors
             _LeechFatherShootIntervale = leechFatherObject.FindProperty("shootIntervale");
             _LeechFatherProjectileSpeed = leechFatherObject.FindProperty("projectileSpeed");
             _LeechFatherProjectileDamage = leechFatherObject.FindProperty("projectileDamage");
+            _LeechFatherProjectileToSpawn = leechFatherObject.FindProperty("projectileToSpawn");
         }
 
         private void SetupLeechFatherHealth()
@@ -394,6 +398,7 @@ namespace CustomEditors
             _LeechMotherShootIntervale = leechMotherObject.FindProperty("shootIntervale");
             _LeechMotherProjectileSpeed = leechMotherObject.FindProperty("projectileSpeed");
             _LeechMotherProjectileDamage = leechMotherObject.FindProperty("projectileDamage");
+            _LeechMotherProjectileToSpawn = leechMotherObject.FindProperty("projectileToSpawn");
         }
 
         private void SetupLeechMotherHealth()
@@ -476,6 +481,7 @@ namespace CustomEditors
             _AxeThrowerProjectileSpeed = axeThrowerObject.FindProperty("projectileSpeed");
             _AxeThrowerProjectileDamage = axeThrowerObject.FindProperty("projectileDamage");
             _AxeThrowerSightLayers = axeThrowerObject.FindProperty("sightLayers");
+            _AxeThrowerProjectileToSpawn = axeThrowerObject.FindProperty("projectileToSpawn");
         }
         #endregion
         #endregion

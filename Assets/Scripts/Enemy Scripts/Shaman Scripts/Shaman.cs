@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using LevelObjects.MovingObjects;
 
 namespace EnemyCharacter.AI
 {

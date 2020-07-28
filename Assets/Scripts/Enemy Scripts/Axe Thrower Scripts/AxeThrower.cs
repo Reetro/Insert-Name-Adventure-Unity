@@ -18,7 +18,6 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            ProjectilePath = "Enemy Projectiles/Axe";
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = false;
         }
@@ -63,7 +62,7 @@ namespace EnemyCharacter.AI
 
         protected override void Shoot()
         {
-            ProjectileMovement axe = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
+            ProjectileMovement axe = Instantiate(_ProjectileMovement, FireTransform.position, Quaternion.identity);
 
             Vector2 launchDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
 

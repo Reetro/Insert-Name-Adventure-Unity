@@ -11,14 +11,13 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            ProjectilePath = "Enemy Projectiles/Shootable Egg";
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = true;
         }
 
         protected override void Shoot()
         {
-            ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
+            ProjectileMovement bulllet = Instantiate(_ProjectileMovement, FireTransform.position, Quaternion.identity);
 
             Vector2 launchDirection = gameObject.transform.TransformDirection(FireTransform.position);
 

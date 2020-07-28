@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8857225106022265602}
   - component: {fileID: 8857225106022265601}
   - component: {fileID: 8857225106022265600}
-  - component: {fileID: 8857225106022265615}
+  - component: {fileID: 7467421789593871757}
   m_Layer: 13
   m_Name: PH Leech Goo
   m_TagString: Untagged
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1268276299
-  m_SortingLayer: 6
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 202d06cd0293bf44e882ccd86111135e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.57533264, y: 0.54240274}
   m_EdgeRadius: 0
---- !u!114 &8857225106022265615
+--- !u!114 &7467421789593871757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,20 +140,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8857225106022265614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6d09ad8e79dc342abe4d720c03cbe7, type: 3}
+  m_Script: {fileID: 11500000, guid: e0f85c90d07b56a4d9aa120d11960dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnImpact:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8857225106022265615}
-        m_MethodName: OnProjectileImpact
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

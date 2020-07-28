@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using LevelObjects.MovingObjects;
 using System.Collections;
+using EnemyCharacter.AI;
 
-namespace EnemyCharacter.AI
+namespace LevelObjects.MovingObjects
 {
     public class Boomerang : ProjectileMovement
     {

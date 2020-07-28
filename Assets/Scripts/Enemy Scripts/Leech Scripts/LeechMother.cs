@@ -11,7 +11,6 @@ namespace EnemyCharacter.AI
         {
             base.Awake();
 
-            ProjectilePath = "Enemy Projectiles/PH Leech Goo";
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = true;
         }
@@ -20,7 +19,7 @@ namespace EnemyCharacter.AI
         {
             if (!GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
             {
-                ProjectileMovement bulllet = Instantiate(ProjectileToShoot, FireTransform.position, Quaternion.identity);
+                ProjectileMovement bulllet = Instantiate(_ProjectileMovement, FireTransform.position, Quaternion.identity);
 
                 Vector2 launchDirection = GeneralFunctions.GetDistanceBetweenVectors(PlayerTransform.position, transform.position);
 
