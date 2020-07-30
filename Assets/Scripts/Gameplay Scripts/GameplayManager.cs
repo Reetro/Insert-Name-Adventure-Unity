@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using PlayerControls;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 namespace GameplayManagement
 {
@@ -37,17 +37,17 @@ namespace GameplayManagement
         [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
 
-        private Controls controls = null;
-
         /// <summary>
-        /// Create new player controls object
+        /// Checks to see if a Gamepad is connected
+        /// </summary>
+        public bool _IsGamepadActive { get; private set; } = false;
+        /// <summary>
+        /// Check to see if a Gamepad is active when game starts
         /// </summary>
         private void Awake()
         {
-            foreach (InputDevice inputDevice in InputSystem.devices)
-            {
-                print(inputDevice.name);
-            }
+            _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
+            UpdateMouseCursor();
         }
         /// <summary>
         /// Generates a random number between 1 and 1000000 then adds to the gameIDS array
@@ -73,5 +73,39 @@ namespace GameplayManagement
         /// Get all current gameIDS
         /// </summary>
         public List<int> gameIDS { get; } = new List<int>();
+        /// <summary>
+        /// Bind onInputDeviceChange to input user onChange event
+        /// </summary>
+        private void OnEnable()  { InputUser.onChange += IsGamepadActive; }
+        /// <summary>
+        /// Unbind onInputDeviceChange to input user onChange event
+        /// </summary>
+        private void OnDisable() { InputUser.onChange -= IsGamepadActive; }
+        /// <summary>
+        /// Checks to see if a Gamepad is connected and updates cursor state
+        /// </summary>
+        private void IsGamepadActive(InputUser user, InputUserChange change, InputDevice device)
+        {
+            _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
+            UpdateMouseCursor();
+        }
+        /// <summary>
+        /// Show / Hide mouse cursor depending on if a Gamepad is active
+        /// </summary>
+        private void UpdateMouseCursor()
+        {
+            if (_IsGamepadActive)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+
+                Cursor.visible = true;
+            }
+        }
     }
 }

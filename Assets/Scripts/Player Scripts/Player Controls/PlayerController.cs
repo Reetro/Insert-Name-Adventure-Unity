@@ -3,6 +3,7 @@ using PlayerUI;
 using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
+using GameplayManagement;
 
 namespace PlayerCharacter.Controller
 {
@@ -11,7 +12,7 @@ namespace PlayerCharacter.Controller
         [SerializeField] private PlayerGun currentGun = null;
 
         #region Player Controls
-        private Controls controls = null;
+        public Controls controls = null;
         private float horizontalMove = 0f;
         private bool jump = false;
         private bool jumpHeldDown = false;

@@ -25,7 +25,6 @@ namespace PlayerCharacter.Controller
 
         #region Local Varabiles
         private float gunAngle = 0f;
-        private bool gamepadActive = false;
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
@@ -41,7 +40,6 @@ namespace PlayerCharacter.Controller
 
             SetupGun();
         }
-
         /// <summary>
         /// Enable player input
         /// </summary>
@@ -56,17 +54,22 @@ namespace PlayerCharacter.Controller
         {
             controls.Player.Disable();
         }
-
+        /// <summary>
+        /// Make player look in the direction of the provided input and rotate player gun
+        /// </summary>
         void Update()
         {
             RotateGun();
 
-            if (!gamepadActive)
+            if (!gameplayManager._IsGamepadActive)
             {
                 RotatePlayerWithMouse();
             }
-        }
+            else
+            {
 
+            }
+        }
         /// <summary>
         /// Will try to spawn the player projectile to damage Gameobjects
         /// </summary>
@@ -102,13 +105,13 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Rotate the gun either to the mouse location or to the gamepad joystick position
+        /// Rotate the gun either to the mouse location or to the Gamepad joystick position
         /// </summary>
         private void RotateGun()
         {
             if (!playerHealthComp.IsCurrentlyDead)
             {
-                if (!gamepadActive)
+                if (!gameplayManager._IsGamepadActive)
                 {
                     RotateGunWithMouse();
                 }
@@ -146,7 +149,7 @@ namespace PlayerCharacter.Controller
         {
             if (!playerHealthComp.IsCurrentlyDead)
             {
-                if (!gamepadActive)
+                if (!gameplayManager._IsGamepadActive)
                 {
                     if (MouseLeftOrRight())
                     {
@@ -160,23 +163,16 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// If a gamepad is active get value from right stick and calculate gun rotation
+        /// Rotate player with right Gamepad joy stick
         /// </summary>
-        private void RotateGunWithGamepad()
+        private void RotatePlayerWithGamepad()
         {
-            //Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
 
-            //if (stickInput.magnitude > 0)
-            //{
-            //    var lookAt = GeneralFunctions.LookAt2D(transform.position, transform.position + (Vector3)stickInput);
-
-            //    transform.rotation = Quaternion.Inverse(lookAt);
-            //}
         }
         /// <summary>
-        /// Check to see if there is a gamepad active if not default input to mouse
+        /// If a Gamepad is active get value from right stick and calculate gun rotation
         /// </summary>
-        public void UpdateInput(bool gamepadActive)
+        private void RotateGunWithGamepad()
         {
             
         }
