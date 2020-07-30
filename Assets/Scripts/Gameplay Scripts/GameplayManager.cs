@@ -46,7 +46,7 @@ namespace GameplayManagement
         /// </summary>
         private void Awake()
         {
-            _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
+            UpdateGamepadState();
             UpdateMouseCursor();
         }
         /// <summary>
@@ -57,7 +57,7 @@ namespace GameplayManagement
         {
             var newID = UnityEngine.Random.Range(1, 1000000);
 
-            for (int index = 0; index < gameIDS.Count; index++)
+            foreach (int currentID in gameIDS)
             {
                 if (gameIDS.Contains(newID))
                 {
@@ -86,8 +86,15 @@ namespace GameplayManagement
         /// </summary>
         private void IsGamepadActive(InputUser user, InputUserChange change, InputDevice device)
         {
-            _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
+            UpdateGamepadState();
             UpdateMouseCursor();
+        }
+        /// <summary>
+        /// Check to see if a Gamepad is currently connected
+        /// </summary>
+        private void UpdateGamepadState()
+        {
+            _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
         }
         /// <summary>
         /// Show / Hide mouse cursor depending on if a Gamepad is active

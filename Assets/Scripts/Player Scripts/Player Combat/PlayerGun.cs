@@ -31,6 +31,13 @@ namespace PlayerCharacter.Controller
         private Controls controls = null;
         #endregion
 
+        #region JoyStick Rotation
+        private Vector2 stickInput;
+        private float gunRotation = 0f;
+        private float gunRotationX = 0f;
+        private bool facingRight = true;
+        #endregion
+
         /// <summary>
         /// Create new player controls object
         /// </summary>
@@ -64,10 +71,6 @@ namespace PlayerCharacter.Controller
             if (!gameplayManager._IsGamepadActive)
             {
                 RotatePlayerWithMouse();
-            }
-            else
-            {
-
             }
         }
         /// <summary>
@@ -117,6 +120,8 @@ namespace PlayerCharacter.Controller
                 }
                 else
                 {
+                    UpdateJoystick();
+
                     RotateGunWithGamepad();
                 }
             }
@@ -167,14 +172,47 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void RotatePlayerWithGamepad()
         {
+            facingRight = !facingRight;
 
+            GeneralFunctions.FlipObject(controller.gameObject);
         }
         /// <summary>
         /// If a Gamepad is active get value from right stick and calculate gun rotation
         /// </summary>
         private void RotateGunWithGamepad()
         {
-            
+            if (stickInput.sqrMagnitude > 0)
+            {
+                gunRotationX = stickInput.x;
+
+                if (facingRight)
+                {
+                    gunRotation = stickInput.x + stickInput.y * 90;
+                    gameObject.transform.rotation = Quaternion.Euler(0, 0, gunRotation);
+                }
+                else
+                {
+                    gunRotation = stickInput.x + stickInput.y * -90;
+                    gameObject.transform.rotation = Quaternion.Euler(0, 180f, -gunRotation);
+                }
+
+                if (gunRotationX < 0 && facingRight)
+                {
+                    RotatePlayerWithGamepad();
+                }
+                else if (gunRotationX > 0 && !facingRight)
+                {
+                    RotatePlayerWithGamepad();
+                }
+            }
+        }
+        /// <summary>
+        /// Update rotation value when right joystick is moved
+        /// </summary>
+        /// <param name="RotationValue"></param>
+        private void UpdateJoystick()
+        {
+            stickInput = controls.Player.Rotate.ReadValue<Vector2>();
         }
         /// <summary>
         /// Checks to see if the gun is being block by ground

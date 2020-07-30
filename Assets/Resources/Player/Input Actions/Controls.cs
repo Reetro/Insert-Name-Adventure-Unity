@@ -51,6 +51,14 @@ namespace PlayerControls
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""18bf463d-0ca0-4133-bb1b-6a4263c06b78"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -218,6 +226,17 @@ namespace PlayerControls
                     ""action"": ""Mouse Postion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a1c7c07-b0ef-4ed5-8c6b-2f70c1f41546"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -230,6 +249,7 @@ namespace PlayerControls
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_MousePostion = m_Player.FindAction("Mouse Postion", throwIfNotFound: true);
+            m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -283,6 +303,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Movement;
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_MousePostion;
+        private readonly InputAction m_Player_Rotate;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -291,6 +312,7 @@ namespace PlayerControls
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @MousePostion => m_Wrapper.m_Player_MousePostion;
+            public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -312,6 +334,9 @@ namespace PlayerControls
                     @MousePostion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePostion;
                     @MousePostion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePostion;
                     @MousePostion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePostion;
+                    @Rotate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
+                    @Rotate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
+                    @Rotate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -328,6 +353,9 @@ namespace PlayerControls
                     @MousePostion.started += instance.OnMousePostion;
                     @MousePostion.performed += instance.OnMousePostion;
                     @MousePostion.canceled += instance.OnMousePostion;
+                    @Rotate.started += instance.OnRotate;
+                    @Rotate.performed += instance.OnRotate;
+                    @Rotate.canceled += instance.OnRotate;
                 }
             }
         }
@@ -338,6 +366,7 @@ namespace PlayerControls
             void OnMovement(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
             void OnMousePostion(InputAction.CallbackContext context);
+            void OnRotate(InputAction.CallbackContext context);
         }
     }
 }
