@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using PlayerControls;
+using UnityEngine.InputSystem;
 
 namespace GameplayManagement
 {
@@ -35,6 +37,18 @@ namespace GameplayManagement
         [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
 
+        private Controls controls = null;
+
+        /// <summary>
+        /// Create new player controls object
+        /// </summary>
+        private void Awake()
+        {
+            foreach (InputDevice inputDevice in InputSystem.devices)
+            {
+                print(inputDevice.name);
+            }
+        }
         /// <summary>
         /// Generates a random number between 1 and 1000000 then adds to the gameIDS array
         /// </summary>

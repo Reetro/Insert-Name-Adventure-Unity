@@ -32,6 +32,9 @@ namespace PlayerCharacter.Controller
         private Controls controls = null;
         #endregion
 
+        /// <summary>
+        /// Create new player controls object
+        /// </summary>
         private void Awake()
         {
             controls = new Controls();

@@ -2,6 +2,7 @@
 using TMPro;
 using System.Text;
 using UnityEngine.UI;
+using PlayerControls;
 
 namespace PlayerUI.ToolTipUI
 {
@@ -14,22 +15,46 @@ namespace PlayerUI.ToolTipUI
         [SerializeField] private float padding = 0f;
 
         private Canvas popupCanvas = null;
+        private Controls controls = null;
 
+        /// <summary>
+        /// Create new player controls object
+        /// </summary>
         private void Awake()
         {
+            controls = new Controls();
+
             popupCanvas = popupCanvasObject.GetComponent<Canvas>();
         }
-
+        /// <summary>
+        /// Enable player input
+        /// </summary>
+        private void OnEnable()
+        {
+            controls.Player.Enable();
+        }
+        /// <summary>
+        /// Disable player input
+        /// </summary>
+        private void OnDisable()
+        {
+            controls.Player.Disable();
+        }
+        /// <summary>
+        /// Make Tooltip follow mouse position
+        /// </summary>
         private void Update()
         {
             FollowCursor();
         }
-
+        /// <summary>
+        /// Calculate screen edges
+        /// </summary>
         private void FollowCursor()
         {
             if (!popupCanvasObject.activeSelf) { return; }
 
-            Vector3 newPos = Input.mousePosition + offset;
+            Vector3 newPos = (Vector3)controls.Player.MousePostion.ReadValue<Vector2>() + offset;
             newPos.z = 0f;
             float rightEdgeToScreenEdgeDistance = Screen.width - (newPos.x + popupObject.rect.width * popupCanvas.scaleFactor / 2) - padding;
             if (rightEdgeToScreenEdgeDistance < 0)
@@ -48,7 +73,10 @@ namespace PlayerUI.ToolTipUI
             }
             popupObject.transform.position = newPos;
         }
-
+        /// <summary>
+        /// Get Tooltip info and display tooltip
+        /// </summary>
+        /// <param name="item"></param>
         public void DisplayInfo(ScriptableItem item)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -60,7 +88,9 @@ namespace PlayerUI.ToolTipUI
             popupCanvasObject.SetActive(true);
             LayoutRebuilder.ForceRebuildLayoutImmediate(popupObject);
         }
-
+        /// <summary>
+        /// Hide Tooltip
+        /// </summary>
         public void HideInfo()
         {
             popupCanvasObject.SetActive(false);

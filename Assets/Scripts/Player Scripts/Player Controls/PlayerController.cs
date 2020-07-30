@@ -31,7 +31,7 @@ namespace PlayerCharacter.Controller
         public PlayerState MyPlayerState { get; set; } = null;
 
         /// <summary>
-        /// Create new player controls
+        /// Create new player controls object
         /// </summary>
         private void Awake()
         {
