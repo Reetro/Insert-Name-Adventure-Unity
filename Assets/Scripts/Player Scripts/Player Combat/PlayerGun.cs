@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
 using GameplayManagement;
 using System;
+using UnityEngine.InputSystem;
+using PlayerControls;
 
 namespace PlayerCharacter.Controller
 {
@@ -28,11 +29,29 @@ namespace PlayerCharacter.Controller
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
+        private Controls controls = null;
         #endregion
 
         private void Awake()
         {
+            controls = new Controls();
+
             SetupGun();
+        }
+
+        /// <summary>
+        /// Enable player input
+        /// </summary>
+        private void OnEnable()
+        {
+            controls.Player.Enable();
+        }
+        /// <summary>
+        /// Disable player input
+        /// </summary>
+        private void OnDisable()
+        {
+            controls.Player.Disable();
         }
 
         void Update()
@@ -101,7 +120,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void RotateGunWithMouse()
         {
-            Vector3 mousePos = Input.mousePosition;
+            Vector3 mousePos = controls.Player.MousePostion.ReadValue<Vector2>();
             Vector3 gunPos = Camera.main.WorldToScreenPoint(transform.position);
 
             mousePos.x = mousePos.x - gunPos.x;
@@ -142,36 +161,21 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void RotateGunWithGamepad()
         {
-            Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
+            //Vector2 stickInput = new Vector2(CrossPlatformInputManager.GetAxis("Joy X"), CrossPlatformInputManager.GetAxis("Joy Y"));
 
-            if (stickInput.magnitude > 0)
-            {
-                var lookAt = GeneralFunctions.LookAt2D(transform.position, transform.position + (Vector3)stickInput);
+            //if (stickInput.magnitude > 0)
+            //{
+            //    var lookAt = GeneralFunctions.LookAt2D(transform.position, transform.position + (Vector3)stickInput);
 
-                transform.rotation = Quaternion.Inverse(lookAt);
-            }
+            //    transform.rotation = Quaternion.Inverse(lookAt);
+            //}
         }
         /// <summary>
         /// Check to see if there is a gamepad active if not default input to mouse
         /// </summary>
         public void UpdateInput(bool gamepadActive)
         {
-            if (gamepadActive)
-            {
-                this.gamepadActive = true;
-
-                Cursor.visible = false;
-
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                this.gamepadActive = false;
-
-                Cursor.visible = true;
-
-                Cursor.lockState = CursorLockMode.None;
-            }
+            
         }
         /// <summary>
         /// Checks to see if the gun is being block by ground
@@ -217,7 +221,7 @@ namespace PlayerCharacter.Controller
         private bool MouseLeftOrRight()
         {
             var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);
-            float mouseX = Input.mousePosition.x;
+            float mouseX = controls.Player.MousePostion.ReadValue<Vector2>().x;
 
             return mouseX < playerScreenPoint.x ? true : false;
         }

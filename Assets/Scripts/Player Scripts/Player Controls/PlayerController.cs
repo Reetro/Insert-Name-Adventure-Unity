@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 using PlayerUI;
 using PlayerCharacter.GameSaving;
+using PlayerControls;
+using UnityEngine.InputSystem;
 
 namespace PlayerCharacter.Controller
 {
@@ -9,18 +10,56 @@ namespace PlayerCharacter.Controller
     {
         [SerializeField] private PlayerGun currentGun = null;
 
-        private PlayerUIManager uiManager = null;
+        #region Player Controls
+        private Controls controls = null;
         private float horizontalMove = 0f;
         private bool jump = false;
+        private bool jumpHeldDown = false;
+        private bool fireGun = false;
+        #endregion
+
+        #region Player Components
         private Animator myAnimator = null;
         private PlayerMovement playerMovement = null;
         private HealthComponent healthComponent = null;
+        private PlayerUIManager uiManager = null;
+        #endregion
 
         /// <summary>
         /// Reference to player currently in the world
         /// </summary>
         public PlayerState MyPlayerState { get; set; } = null;
 
+        /// <summary>
+        /// Create new player controls
+        /// </summary>
+        private void Awake()
+        {
+            controls = new Controls();
+
+            controls.Player.Jump.started += OnJumpHeld;
+            controls.Player.Jump.canceled += OnJumpReleased;
+
+            controls.Player.Fire.started += OnFirePressed;
+            controls.Player.Fire.canceled += OnFireReleased;
+        }
+        /// <summary>
+        /// Enable player input
+        /// </summary>
+        private void OnEnable()
+        {
+            controls.Player.Enable();
+        }
+        /// <summary>
+        /// Disable player input
+        /// </summary>
+        private void OnDisable()
+        {
+            controls.Player.Disable();
+        }
+        /// <summary>
+        /// Get a reference to all player components
+        /// </summary>
         private void Start()
         {
             myAnimator = GetComponent<Animator>();
@@ -30,15 +69,57 @@ namespace PlayerCharacter.Controller
 
             healthComponent.OnDeath.AddListener(OnDeath);
             healthComponent.onTakeAnyDamage.AddListener(OnTakeAnyDamage);
+
+            Move();
         }
         /// <summary>
-        /// Look for any player input
+        /// Called when player presses the fire key
         /// </summary>
-        private void Update()
+        /// <param name="context"></param>
+        private void OnFirePressed(InputAction.CallbackContext context)
+        {
+            fireGun = true;
+        }
+        /// <summary>
+        /// Called when fire button is released
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnFireReleased(InputAction.CallbackContext context)
+        {
+            fireGun = false;
+        }
+        /// <summary>
+        /// Called when jump button is pressed
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnJumpHeld(InputAction.CallbackContext context)
+        {
+            jumpHeldDown = true;
+        }
+        /// <summary>
+        /// Called when jump button is released
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnJumpReleased(InputAction.CallbackContext context)
+        {
+            jumpHeldDown = false;
+        }
+        /// <summary>
+        /// Event to tell the player to start jumping
+        /// </summary>
+        public void Jump()
+        {
+            jump = true;
+            myAnimator.SetBool("IsJumping", true);
+        }
+        /// <summary>
+        /// Move the player character
+        /// </summary>
+        private void Move()
         {
             if (!GeneralFunctions.IsPlayerDead())
             {
-                horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+                horizontalMove = controls.Player.Movement.ReadValue<Vector2>().x;
 
                 switch (transform.localEulerAngles.y >= 180)
                 {
@@ -58,23 +139,28 @@ namespace PlayerCharacter.Controller
                 {
                     myAnimator.SetBool("Idle", false);
                 }
-
-                if (CrossPlatformInputManager.GetButtonDown("Jump"))
-                {
-                    jump = true;
-                    myAnimator.SetBool("IsJumping", true);
-                }
-
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-                {
-                    currentGun.FireGun();
-                }
-
-                if (CrossPlatformInputManager.GetAxis("Fire1") > 0)
+            }
+        }
+        /// <summary>
+        /// Fires the player's current gun
+        /// </summary>
+        private void FireGun()
+        {
+            if (!GeneralFunctions.IsPlayerDead())
+            {
+                if (fireGun)
                 {
                     currentGun.FireGun();
                 }
             }
+        }
+        /// <summary>
+        /// Check for player movement input and gun input
+        /// </summary>
+        private void Update()
+        {
+            Move();
+            FireGun();
         }
         /// <summary>
         /// Check for jump input if true set movement state to jumping
@@ -91,7 +177,7 @@ namespace PlayerCharacter.Controller
         {
             myAnimator.SetBool("IsJumping", false);
 
-            if (CrossPlatformInputManager.GetButton("Jump"))
+            if (jumpHeldDown)
             {
                 jump = true;
             }
