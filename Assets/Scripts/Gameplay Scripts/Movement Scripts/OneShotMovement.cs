@@ -1,5 +1,4 @@
-﻿using PlayerCharacter.Controller;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LevelObjects.MovingObjects
 {
@@ -9,13 +8,15 @@ namespace LevelObjects.MovingObjects
 
         private Vector3 normalizeDirection;
         private bool canMove = true;
-        private bool touchingGround = false;
 
         private void Awake()
         {
+            // Get direction to move in
             normalizeDirection = (targetDirection.position - transform.position).normalized;
         }
-
+        /// <summary>
+        /// If the platform is able to move then move platform towards normalizeDirection 
+        /// </summary>
         private void Update()
         {
             if (canMove)
@@ -23,34 +24,34 @@ namespace LevelObjects.MovingObjects
                 transform.position += normalizeDirection * speed * Time.deltaTime;
             }
         }
-
+        /// <summary>
+        /// Check to see if the ground or player is blocking the platforms path if so stop moving
+        /// </summary>
+        /// <param name="collision"></param>
         protected override void OnTriggerEnter2D(Collider2D collision)
         {
             base.OnTriggerEnter2D(collision);
 
-            if (collision.gameObject.CompareTag("Ground") || IsPlayerBlockingPath)
+            if (TouchingGround || IsPlayerBlockingPath)
             {
                 canMove = false;
-                touchingGround = true;
             }
         }
-
-        private void OnTriggerExit2D(Collider2D collision)
+        /// <summary>
+        /// Check to see if the ground or player is blocking the platforms path if not start moving
+        /// </summary>
+        /// <param name="collision"></param>
+        protected override void OnTriggerExit2D(Collider2D collision)
         {
+            base.OnTriggerExit2D(collision);
+
             if (collision.gameObject.CompareTag("Ground"))
             {
                 canMove = true;
-                touchingGround = false;
             }
-            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            else if (!IsPlayerBlockingPath && !TouchingGround)
             {
-                var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
-
-                if (playerLegs.TouchingGround() && !touchingGround)
-                {
-                    canMove = true;
-                    IsPlayerBlockingPath = false;
-                }
+                canMove = true;
             }
         }
     }

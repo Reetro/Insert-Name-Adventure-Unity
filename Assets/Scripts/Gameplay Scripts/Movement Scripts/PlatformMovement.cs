@@ -13,7 +13,14 @@ namespace LevelObjects.MovingObjects
         /// Checks to see if player is currently blocking the platforms path
         /// </summary>
         public bool IsPlayerBlockingPath { get; protected set; } = false;
-
+        /// <summary>
+        /// Checks to see if the platform is touching the ground
+        /// </summary>
+        public bool TouchingGround { get; protected set; } = false;
+        /// <summary>
+        /// When an object collides with the platform check to see if can be attached then attach object to the platform
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
@@ -28,7 +35,10 @@ namespace LevelObjects.MovingObjects
                 }
             }
         }
-
+        /// <summary>
+        /// Check to see if a given object was attached then de parent it 
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnCollisionExit2D(Collision2D collision)
         {
             if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
@@ -43,7 +53,10 @@ namespace LevelObjects.MovingObjects
                 }
             }
         }
-
+        /// <summary>
+        /// Checks to see if a enemy is blocking it's path if it hits a enemy that's close to ground enemy is killed if a player is blocking it's path it will set IsPlayerBlockingPath to true
+        /// </summary>
+        /// <param name="collision"></param>
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
             if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
@@ -68,8 +81,35 @@ namespace LevelObjects.MovingObjects
                     IsPlayerBlockingPath = false;
                 }
             }
+            else if (collision.gameObject.CompareTag("Ground"))
+            {
+                TouchingGround = true;
+            }
         }
+        /// <summary>
+        /// If player has stopped overlapping the platform and was touching the ground IsPlayerBlockingPath is set to false
+        /// </summary>
+        /// <param name="collision"></param>
+        protected virtual void OnTriggerExit2D(Collider2D collision)
+        {
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
+                if (playerLegs.TouchingGround() && !TouchingGround)
+                {
+                    IsPlayerBlockingPath = false;
+                }
+            }
+            else if (collision.gameObject.CompareTag("Ground"))
+            {
+                TouchingGround = false;
+            }
+        }
+        /// <summary>
+        /// Checks to see if a enemy is blocking it's path if it hits a enemy that's close to ground enemy is killed if a player is blocking it's path it will set IsPlayerBlockingPath to true
+        /// </summary>
+        /// <param name="collision"></param>
         protected virtual void OnTriggerStay2D(Collider2D collision)
         {
             if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
@@ -93,6 +133,10 @@ namespace LevelObjects.MovingObjects
                 {
                     IsPlayerBlockingPath = false;
                 }
+            }
+            else if (collision.gameObject.CompareTag("Ground"))
+            {
+                TouchingGround = true;
             }
         }
     }
