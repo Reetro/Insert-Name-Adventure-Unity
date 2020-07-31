@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
+using PlayerCharacter.Controller;
 
 namespace LevelObjects.MovingObjects
 {
@@ -7,6 +8,11 @@ namespace LevelObjects.MovingObjects
     {
         public float speed;
         public Transform startPos;
+
+        /// <summary>
+        /// Checks to see if player is currently blocking the platforms path
+        /// </summary>
+        public bool IsPlayerBlockingPath { get; protected set; } = false;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -49,6 +55,19 @@ namespace LevelObjects.MovingObjects
                     GeneralFunctions.KillTarget(collision.gameObject);
                 }
             }
+            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
+
+                if (playerLegs.TouchingGround())
+                {
+                    IsPlayerBlockingPath = true;
+                }
+                else
+                {
+                    IsPlayerBlockingPath = false;
+                }
+            }
         }
 
         protected virtual void OnTriggerStay2D(Collider2D collision)
@@ -60,6 +79,19 @@ namespace LevelObjects.MovingObjects
                 if (enemy.TouchingGround())
                 {
                     GeneralFunctions.KillTarget(collision.gameObject);
+                }
+            }
+            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
+
+                if (playerLegs.TouchingGround())
+                {
+                    IsPlayerBlockingPath = true;
+                }
+                else
+                {
+                    IsPlayerBlockingPath = false;
                 }
             }
         }

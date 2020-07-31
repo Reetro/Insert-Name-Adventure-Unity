@@ -31,7 +31,7 @@ namespace LevelObjects.MovingObjects
         {
             base.OnTriggerEnter2D(collision);
 
-            if (collision.gameObject.CompareTag("Ground"))
+            if (collision.gameObject.CompareTag("Ground") || IsPlayerBlockingPath)
             {
                 if (transform.position.x > oldPosition || transform.position.x < oldPosition)
                 {

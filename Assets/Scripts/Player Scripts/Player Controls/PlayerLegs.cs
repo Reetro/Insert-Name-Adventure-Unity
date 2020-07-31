@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Pathfinding.Util;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace PlayerCharacter.Controller
@@ -7,6 +8,7 @@ namespace PlayerCharacter.Controller
     {
         [HideInInspector]
         public bool isGrounded = true;
+        const float k_GroundedRadius = .5f;
 
         private GameObject player = null;
 
@@ -61,6 +63,30 @@ namespace PlayerCharacter.Controller
             {
                 GeneralFunctions.DetachFromParent(player);
             }
+        }
+        /// <summary>
+        /// Checks to see if the player is touching the ground layer
+        /// </summary>
+        public bool TouchingGround()
+        {
+            var hitGround = false;
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
+
+            for (int index = 0; index < colliders.Length; index++)
+            {
+                if (colliders[index].gameObject.CompareTag("Ground"))
+                {
+                    hitGround = true;
+                    break;
+                }
+                else
+                {
+                    hitGround = false;
+                    continue;
+                }
+            }
+            return hitGround;
         }
     }
 }
