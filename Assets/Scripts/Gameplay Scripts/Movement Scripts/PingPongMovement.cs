@@ -4,7 +4,9 @@ namespace LevelObjects.MovingObjects
 {
     public class PingPongMovement : PlatformMovement
     {
+        [Tooltip("Points to move in between")]
         public Transform pos1, pos2;
+        [Tooltip("How close the platform should get to a point")]
         public float distanceTolerance = 1f;
 
         private Vector3 nextPos;
@@ -14,8 +16,10 @@ namespace LevelObjects.MovingObjects
         /// <summary>
         /// Set all local values
         /// </summary>
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             nextPos = pos2.position;
 
             oldPosition = transform.position.x;
@@ -27,9 +31,12 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         void Update()
         {
-            InvertDirection();
+            if (IsPlatformActive)
+            {
+                InvertDirection();
 
-            transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
+            }
         }
         /// <summary>
         /// Checks to see if the ground or player is blocking the platforms path if so change direction
@@ -39,7 +46,21 @@ namespace LevelObjects.MovingObjects
         {
             base.OnTriggerEnter2D(collision);
 
-            if (TouchingGround || IsPlayerBlockingPath)
+            if (!usePresurePlate)
+            {
+                UpdateMovement();
+            }
+            else if (hasPlateBeenPreesed)
+            {
+                UpdateMovement();
+            }
+        }
+        /// <summary>
+        /// Makes platform move in opposite direction when movement is blocked
+        /// </summary>
+        private void UpdateMovement()
+        {
+            if (TouchingGround || IsPathBlocked)
             {
                 if (transform.position.x > oldPosition || transform.position.x < oldPosition)
                 {

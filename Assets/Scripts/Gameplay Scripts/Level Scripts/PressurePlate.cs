@@ -6,19 +6,17 @@ namespace LevelObjects.Trap
     public class PressurePlate : MonoBehaviour
     {
         [Header("Settings")]
-        public string[] whatCanPressPlate;
+        [Tooltip("The layers that can activate this pressure plate")]
+        public LayerMask whatCanPressPlate;
 
         [Header("Events")]
         public UnityEvent onPressurePlatePressed;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            foreach (string currentTag in whatCanPressPlate)
+            if (GeneralFunctions.IsObjectOnLayer(whatCanPressPlate, collision.gameObject))
             {
-                if (collision.gameObject.CompareTag(currentTag))
-                {
-                    onPressurePlatePressed.Invoke();
-                }
+                onPressurePlatePressed.Invoke();
             }
         }
     }

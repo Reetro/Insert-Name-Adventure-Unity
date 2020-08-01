@@ -5,9 +5,7 @@ namespace LevelObjects.MovingObjects
     public class OneShotMovement : PlatformMovement
     {
         public Transform targetDirection;
-
         private Vector3 normalizeDirection;
-        private bool canMove = true;
 
         private void Awake()
         {
@@ -19,7 +17,7 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         private void Update()
         {
-            if (canMove)
+            if (IsPlatformActive)
             {
                 transform.position += normalizeDirection * speed * Time.deltaTime;
             }
@@ -32,9 +30,9 @@ namespace LevelObjects.MovingObjects
         {
             base.OnTriggerEnter2D(collision);
 
-            if (TouchingGround || IsPlayerBlockingPath)
+            if (TouchingGround || IsPathBlocked)
             {
-                canMove = false;
+                IsPlatformActive = false;
             }
         }
         /// <summary>
@@ -45,13 +43,28 @@ namespace LevelObjects.MovingObjects
         {
             base.OnTriggerExit2D(collision);
 
+            if (!usePresurePlate)
+            {
+                RestartMovement(collision);
+            }
+            else if (hasPlateBeenPreesed)
+            {
+                RestartMovement(collision);
+            }
+        }
+        /// <summary>
+        /// Restarts the platforms movement when platform stops overlapping touching an object
+        /// </summary>
+        /// <param name="collision"></param>
+        private void RestartMovement(Collider2D collision)
+        {
             if (collision.gameObject.CompareTag("Ground"))
             {
-                canMove = true;
+                IsPlatformActive = true;
             }
-            else if (!IsPlayerBlockingPath && !TouchingGround)
+            else if (!IsPathBlocked && !TouchingGround)
             {
-                canMove = true;
+                IsPlatformActive = true;
             }
         }
     }
