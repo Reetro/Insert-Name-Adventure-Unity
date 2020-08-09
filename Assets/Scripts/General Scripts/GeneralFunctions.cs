@@ -435,6 +435,17 @@ public class GeneralFunctions
         objectToAttach.transform.parent = transform;
     }
     /// <summary>
+    /// Will parent the given object to the provided transform forces Gameobject to keep it's current rotation
+    /// </summary>
+    /// <param name="platform"></param>
+    /// <param name="objectToAttach"></param>
+    public static void AttachObjectToTransfrom(Transform transform, GameObject objectToAttach, Quaternion rotation)
+    {
+        objectToAttach.transform.parent = transform;
+
+        objectToAttach.transform.rotation = rotation;
+    }
+    /// <summary>
     /// Will detach the given object from its parent
     /// </summary>
     /// <param name="objectToDetach"></param>

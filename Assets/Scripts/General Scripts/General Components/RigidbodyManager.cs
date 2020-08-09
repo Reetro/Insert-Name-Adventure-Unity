@@ -25,10 +25,8 @@ public class RigidbodyManager : MonoBehaviour
 
         if (!isZFrozen)
         {
-            myRigidBody2D.freezeRotation = true;
+            myRigidBody2D.freezeRotation = false;
             wasFrozenByPlatfrom = true;
-
-            myRigidBody2D.gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 0);
         }
     }
 

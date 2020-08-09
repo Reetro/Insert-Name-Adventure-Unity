@@ -67,7 +67,7 @@ namespace LevelObjects.MovingObjects
         {
             if (!GeneralFunctions.IsObjectPlayer(collision.gameObject) && !GeneralFunctions.IsObjectOnLayer("Attached Leech", collision.gameObject))
             {
-                GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject);
+                GeneralFunctions.AttachObjectToTransfrom(gameObject.transform, collision.gameObject, collision.gameObject.transform.rotation);
 
                 RigidbodyManager rigidbodyManager = collision.gameObject.GetComponent<RigidbodyManager>();
 
