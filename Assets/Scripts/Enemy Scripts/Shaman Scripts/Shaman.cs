@@ -18,20 +18,11 @@ namespace EnemyCharacter.AI
         [SerializeField] private float teleportOffset = 0.5f;
         [Tooltip("Speed multiplier used when shaman throws the boomerang towards the player with no random velocity")]
         [SerializeField] private float bommerangSpeedMultipler = 2f;
+        [Tooltip("Boomerang Asset to spawn")]
+        [SerializeField] private Boomerang boomerangToSpawn = null;
 
-        private Boomerang boomerangToSpawn = null;
         private Boomerang currentBoomrang = null;
-        /// <summary>
-        /// Find boomerang asset in game files
-        /// </summary>
-        protected override void Awake()
-        {
-            base.Awake();
 
-            var boomerangObject = Resources.Load("Enemy Projectiles/Boomerang") as GameObject;
-
-            boomerangToSpawn = boomerangObject.GetComponent<Boomerang>();
-        }
         /// <summary>
         /// Throw boomerang when game starts
         /// </summary>
