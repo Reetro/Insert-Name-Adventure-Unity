@@ -75,20 +75,20 @@ namespace LevelObjects.MovingObjects
 
             currentShaman.MyRigidBody2D.velocity = Vector2.zero;
 
-            DestroyBoomerang(true, false);
+            DestroyBoomerang(true);
         }
         /// <summary>
         /// Destroys this boomerang and can tell the shaman to throw a new one
         /// </summary>
         /// <param name="throwBoomerang"></param>
         /// <param name="randomThrow"></param>
-        public void DestroyBoomerang(bool throwBoomerang, bool randomThrow)
+        public void DestroyBoomerang(bool throwBoomerang)
         {
             if (currentShaman)
             {
                 if (throwBoomerang)
                 {
-                    currentShaman.ThrowBoomerang(randomThrow);
+                    currentShaman.ThrowBoomerang();
                 }
 
                 Destroy(gameObject);

@@ -14,10 +14,6 @@ namespace EnemyCharacter.AI
         [SerializeField] private float boomerangSpeed = 300f;
         [Tooltip("How much damage the spawned boomerang does")]
         [SerializeField] private float boomerangDamage = 2f;
-        [Tooltip("Minimum amount of noise to add the Initial spawn of the boomerang")]
-        [SerializeField] private float MinNoise = 300f;
-        [Tooltip("Maximum amount of noise to add the Initial spawn of the boomerang")]
-        [SerializeField] private float MaxNoise = 600f;
         [Tooltip("How much to offset the shaman teleport location by")]
         [SerializeField] private float teleportOffset = 0.5f;
         [Tooltip("Speed multiplier used when shaman throws the boomerang towards the player with no random velocity")]
@@ -25,7 +21,9 @@ namespace EnemyCharacter.AI
 
         private Boomerang boomerangToSpawn = null;
         private Boomerang currentBoomrang = null;
-
+        /// <summary>
+        /// Find boomerang asset in game files
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -34,13 +32,17 @@ namespace EnemyCharacter.AI
 
             boomerangToSpawn = boomerangObject.GetComponent<Boomerang>();
         }
-
+        /// <summary>
+        /// Throw boomerang when game starts
+        /// </summary>
         private void Start()
         {
-            ThrowBoomerang(true);
+            ThrowBoomerang();
         }
-
-        public void ThrowBoomerang(bool randomThrow)
+        /// <summary>
+        /// Throw boomerang in direction of the player
+        /// </summary>
+        public void ThrowBoomerang()
         {
             var playerLocation = GeneralFunctions.GetPlayerGameObject().transform.position;
 
@@ -48,27 +50,22 @@ namespace EnemyCharacter.AI
 
             var startDirection = GeneralFunctions.GetDirectionVectorFrom2Vectors(playerLocation, currentBoomrang.transform.position);
 
-            if (randomThrow)
-            {
-                currentBoomrang.ConstructProjectileWithNoise(boomerangSpeed, boomerangDamage, startDirection, MinNoise, MaxNoise);
-            }
-            else
-            {
-                currentBoomrang.ConstructProjectile(boomerangSpeed * bommerangSpeedMultipler, boomerangDamage, startDirection);
-            }
+            currentBoomrang.ConstructProjectile(boomerangSpeed * bommerangSpeedMultipler, boomerangDamage, startDirection);
 
             currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset);
 
             currentBoomrang.CurrentHitCount = 0; 
         }
-
+        /// <summary>
+        /// Destroy thrown boomerang on death and this Gameobject
+        /// </summary>
         protected override void OnDeath()
         {
             base.OnDeath();
 
             if (currentBoomrang)
             {
-                currentBoomrang.DestroyBoomerang(false, false);
+                currentBoomrang.DestroyBoomerang(false);
             }
 
             Destroy(gameObject);
