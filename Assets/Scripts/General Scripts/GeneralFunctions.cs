@@ -201,7 +201,7 @@ public class GeneralFunctions
     /// <param name="target"></param>
     /// <param name="amount"></param>
     /// <param name="showText"></param>
-    public static void DamageTarget(GameObject target, float amount, bool showText)
+    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
     {
         if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
         {
@@ -213,7 +213,7 @@ public class GeneralFunctions
             }
             else
             {
-                Debug.LogError("Failed to damage " + target.name.ToString() + " does not have a health component");
+                Debug.LogError(damageDealer.name.ToString() + " Failed to damage " + target.name.ToString() + " does not have a health component");
             }
         }
     }

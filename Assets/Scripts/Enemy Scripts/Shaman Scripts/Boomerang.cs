@@ -38,7 +38,7 @@ namespace LevelObjects.MovingObjects
 
             UpdateDirection(newDirection);
 
-            GeneralFunctions.DamageTarget(collision.gameObject, damage, true);
+            GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
 
             if (!justSpawned)
             {

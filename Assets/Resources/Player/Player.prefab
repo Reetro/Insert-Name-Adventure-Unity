@@ -82,12 +82,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4066560135074363130}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4157925455522904731}
   - {fileID: 4157925457032491725}
   - {fileID: 1201614001105091756}
+  - {fileID: 2107590066652072689}
   m_Father: {fileID: 4157925456995496925}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -155,8 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spearDamage: 3.5
   spearCooldown: 1
-  bigSpearUpTime: 0.1
-  bigSpearPrefab: {fileID: 4913921127784919490, guid: c556209394fa6054ea63f075fb6262f8,
+  spearReturnDelay: 0.2
+  spearTravelDistance: 0.6
+  damageToSpawn: {fileID: 2090107201930584366, guid: d317207843666514aa2993e5942e65be,
     type: 3}
 --- !u!61 &1121136768
 BoxCollider2D:
@@ -171,7 +173,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.3137247, y: -0.006000817}
+  m_Offset: {x: 0.2744432, y: -0.006000817}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -182,7 +184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.82120574, y: 0.18402946}
+  m_Size: {x: 0.74264276, y: 0.18402946}
   m_EdgeRadius: 0
 --- !u!1 &4157925455522904728
 GameObject:
@@ -815,6 +817,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 198862918234902953}
+--- !u!1 &7149462982510789707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2107590066652072689}
+  m_Layer: 0
+  m_Name: Spear Damage Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2107590066652072689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7149462982510789707}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0055, y: -0.002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7335817594842804118}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &169122922364978079
 PrefabInstance:
   m_ObjectHideFlags: 0

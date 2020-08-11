@@ -13,8 +13,9 @@ namespace PlayerCharacter.Controller
         [Header("Spear Settings")]
         [SerializeField] private float spearDamage = 3.5f;
         [SerializeField] private float spearCooldown = 1f;
-        [SerializeField] private float bigSpearUpTime = 1f;
-        [SerializeField] private GameObject bigSpearPrefab = null;
+        [SerializeField] private float spearReturnDelay = 1f;
+        [SerializeField] private float spearTravelDistance = 1f;
+        [SerializeField] private GameObject damageToSpawn = null;
 
         #region Gun Components
         private PlayerController controller = null;
@@ -27,11 +28,11 @@ namespace PlayerCharacter.Controller
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
+        private PlayerDamage playerDamage = null;
+        private Transform damageSpawn = null;
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
-        private SpriteRenderer spriteRenderer;
-        private PlayerDamage bigSpear = null;
         #endregion
 
         #region JoyStick Rotation
@@ -89,8 +90,8 @@ namespace PlayerCharacter.Controller
                 isSpearOut = true;
                 canRotate = false;
 
-                var spawnSpear = Instantiate(bigSpearPrefab, transform);
-                bigSpear = spawnSpear.GetComponent<PlayerDamage>();
+                var damage = Instantiate(damageToSpawn, damageSpawn);
+                playerDamage = damage.GetComponent<PlayerDamage>();
 
                 cooldownBar.StartCooldown(spearCooldown);
 
@@ -110,16 +111,14 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
-            spriteRenderer.enabled = false;
+            playerDamage.ConstructBox(spearDamage);
+            transform.Translate(spearTravelDistance, 0, 0);
 
-            bigSpear.ConstructBox(spearDamage);
+            yield return new WaitForSeconds(spearReturnDelay);
 
-            yield return new WaitForSeconds(bigSpearUpTime);
+            transform.Translate(-spearTravelDistance, 0, 0);
 
-            spriteRenderer.enabled = true;
-
-            Destroy(bigSpear.gameObject);
-            
+            Destroy(playerDamage.gameObject);
             canRotate = true;
             isSpearOut = false;
         }
@@ -132,7 +131,7 @@ namespace PlayerCharacter.Controller
 
             if (hit)
             {
-                GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true);
+                GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true, gameObject);
             }
         }
         /// <summary>
@@ -306,7 +305,7 @@ namespace PlayerCharacter.Controller
             cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            damageSpawn = transform.GetChild(3).transform.GetComponent<Transform>();
 
             canRotate = true;
         }

@@ -12,7 +12,7 @@ namespace LevelObjects.Trap
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true);
+                GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true, gameObject);
 
                 GeneralFunctions.ApplyKnockback(collision.gameObject, collision.transform.up * knockbackForceY);
 
