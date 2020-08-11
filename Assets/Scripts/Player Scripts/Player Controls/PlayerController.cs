@@ -9,7 +9,7 @@ namespace PlayerCharacter.Controller
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerGun currentGun = null;
+        [SerializeField] private PlayerSpear currentGun = null;
 
         #region Player Controls
         public Controls controls = null;
@@ -151,7 +151,7 @@ namespace PlayerCharacter.Controller
             {
                 if (fireGun)
                 {
-                    currentGun.FireGun();
+                    currentGun.StartPushSpear();
                 }
             }
         }

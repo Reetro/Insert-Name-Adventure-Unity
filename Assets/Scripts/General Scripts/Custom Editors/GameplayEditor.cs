@@ -39,13 +39,12 @@ namespace CustomEditors
         private SerializedProperty _PlayerAccleration;
         #endregion
 
-        #region Player Gun Varaibles
-        private SerializedProperty _PlayerLaserUpTime;
-        private SerializedProperty _PlayerGunDumage;
-        private SerializedProperty _PlayerGunCooldown;
-        private SerializedProperty _GunFireLocation;
-        private SerializedProperty _GunController;
+        #region Player Spear Varaibles
+        private SerializedProperty _PlayerSpearDumage;
+        private SerializedProperty _PlayerSpearUpTime;
+        private SerializedProperty _PlayerSpearCooldown;
         private SerializedProperty _CooldownBar;
+        private SerializedProperty _PlayerSpearBigPrefab;
         private SerializedProperty _PlayerHealthComp;
         #endregion
 
@@ -511,11 +510,9 @@ namespace CustomEditors
 
         private void SetPlayerGun()
         {
-            _PlayerLaserUpTime = playerGunOject.FindProperty("laserUpTime");
-            _PlayerGunDumage = playerGunOject.FindProperty("gunDamage");
-            _PlayerGunCooldown = playerGunOject.FindProperty("gunCooldown");
-            _GunFireLocation = playerGunOject.FindProperty("gunFireLocation");
-            _GunController = playerGunOject.FindProperty("controller");
+            _PlayerSpearUpTime = playerGunOject.FindProperty("bigSpearUpTime");
+            _PlayerSpearDumage = playerGunOject.FindProperty("spearDamage");
+            _PlayerSpearCooldown = playerGunOject.FindProperty("spearCooldown");
             _CooldownBar = playerGunOject.FindProperty("cooldownBar");
             _PlayerHealthComp = playerGunOject.FindProperty("playerHealthComp");
         }
@@ -528,11 +525,11 @@ namespace CustomEditors
             {
                 playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
                 playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
-                playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerGun>());
+                playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerSpear>());
 
                 playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
                 playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
-                playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerGun>());
+                playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
             }
             else
             {

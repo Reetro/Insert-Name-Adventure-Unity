@@ -2,39 +2,42 @@
 using PlayerUI;
 using GameplayManagement;
 using System;
-using UnityEngine.InputSystem;
 using PlayerControls;
+using System.Collections;
 
 namespace PlayerCharacter.Controller
 {
     [Serializable]
-    public class PlayerGun : MonoBehaviour
+    public class PlayerSpear : MonoBehaviour
     {
-        [Header("Gun Settings")]
-        [SerializeField] private float laserUpTime = 0.02f;
-        [SerializeField] private float gunDamage = 3.5f;
-        [SerializeField] private float gunCooldown = 1f;
-        
+        [Header("Spear Settings")]
+        [SerializeField] private float spearDamage = 3.5f;
+        [SerializeField] private float spearCooldown = 1f;
+        [SerializeField] private float bigSpearUpTime = 1f;
+        [SerializeField] private GameObject bigSpearPrefab = null;
+
         #region Gun Components
-        private Transform gunFireLocation = null;
-        private PlayerProjectile projectileToSpawn = null;
         private PlayerController controller = null;
         private CooldownBar cooldownBar = null;
         private HealthComponent playerHealthComp = null;
         #endregion
 
         #region Local Varabiles
-        private float gunAngle = 0f;
+        private float spearAngle = 0f;
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
         private Controls controls = null;
+        private bool canRotate = false;
+        private bool isSpearOut = false;
+        private SpriteRenderer spriteRenderer;
+        private PlayerDamage bigSpear = null;
         #endregion
 
         #region JoyStick Rotation
         private Vector2 stickInput;
-        private float gunRotation = 0f;
-        private float gunRotationX = 0f;
+        private float spearRotation = 0f;
+        private float spearRotationX = 0f;
         private bool facingRight = true;
         #endregion
 
@@ -45,7 +48,7 @@ namespace PlayerCharacter.Controller
         {
             controls = new Controls();
 
-            SetupGun();
+            SetupSpear();
         }
         /// <summary>
         /// Enable player input
@@ -62,11 +65,14 @@ namespace PlayerCharacter.Controller
             controls.Player.Disable();
         }
         /// <summary>
-        /// Make player look in the direction of the provided input and rotate player gun
+        /// Make player look in the direction of the provided input and rotate player spear
         /// </summary>
         void Update()
         {
-            RotateGun();
+            if (canRotate)
+            {
+                RotateSpear();
+            }
 
             if (!gameplayManager._IsGamepadActive)
             {
@@ -74,26 +80,48 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Will try to spawn the player projectile to damage Gameobjects
+        /// Will try to push the spear in the direction its facing
         /// </summary>
-        public void FireGun()
+        public void StartPushSpear()
         {
-            if (CanGunSpawnProjectile())
+            if (CanPushSpear())
             {
-                PlayerProjectile gunHit = Instantiate(projectileToSpawn, (Vector2)gunFireLocation.position, gunFireLocation.rotation);
+                isSpearOut = true;
+                canRotate = false;
 
-                gunHit.ConstructBox(gunDamage, laserUpTime);
+                var spawnSpear = Instantiate(bigSpearPrefab, transform);
+                bigSpear = spawnSpear.GetComponent<PlayerDamage>();
 
-                cooldownBar.StartCooldown(gunCooldown);
+                cooldownBar.StartCooldown(spearCooldown);
+
+                StartCoroutine(PushSpear());
             }
             else
             {
                 if (!GeneralFunctions.IsPlayerDead())
                 {
-                    // if a projectile was not able to be fired check to see if there is in front of the player and damage it
+                    // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
                     CheckForEnemy();
                 }
             }
+        }
+        /// <summary>
+        /// Push spear forward
+        /// </summary>
+        private IEnumerator PushSpear()
+        {
+            spriteRenderer.enabled = false;
+
+            bigSpear.ConstructBox(spearDamage);
+
+            yield return new WaitForSeconds(bigSpearUpTime);
+
+            spriteRenderer.enabled = true;
+
+            Destroy(bigSpear.gameObject);
+            
+            canRotate = true;
+            isSpearOut = false;
         }
         /// <summary>
         /// Fire a raycast to check for enemies around the player if player projectile failed to spawn
@@ -104,51 +132,51 @@ namespace PlayerCharacter.Controller
 
             if (hit)
             {
-                GeneralFunctions.DamageTarget(hit.transform.gameObject, gunDamage, true);
+                GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true);
             }
         }
         /// <summary>
-        /// Rotate the gun either to the mouse location or to the Gamepad joystick position
+        /// Rotate the spear either to the mouse location or to the Gamepad joystick position
         /// </summary>
-        private void RotateGun()
+        private void RotateSpear()
         {
             if (!playerHealthComp.IsCurrentlyDead)
             {
                 if (!gameplayManager._IsGamepadActive)
                 {
-                    RotateGunWithMouse();
+                    RotateSpearWithMouse();
                 }
                 else
                 {
                     UpdateJoystick();
 
-                    RotateGunWithGamepad();
+                    RotateSpearWithGamepad();
                 }
             }
         }
         /// <summary>
-        /// If a Gamepad is not active get mouse location and rotate gun around the player character with mouse
+        /// If a Gamepad is not active get mouse location and rotate spear around the player character with mouse
         /// </summary>
-        private void RotateGunWithMouse()
+        private void RotateSpearWithMouse()
         {
             Vector3 mousePos = controls.Player.MousePostion.ReadValue<Vector2>();
-            Vector3 gunPos = Camera.main.WorldToScreenPoint(transform.position);
+            Vector3 spearPos = Camera.main.WorldToScreenPoint(transform.position);
 
-            mousePos.x = mousePos.x - gunPos.x;
-            mousePos.y = mousePos.y - gunPos.y;
-            gunAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+            mousePos.x = mousePos.x - spearPos.x;
+            mousePos.y = mousePos.y - spearPos.y;
+            spearAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
             if (MouseLeftOrRight())
             {
-                transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -gunAngle));
+                transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, -spearAngle));
             }
             else
             {
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, gunAngle));
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, spearAngle));
             }
         }
         /// <summary>
-        /// Rotate the player left or right to match the direction the gun is facing with mouse controls
+        /// Rotate the player left or right to match the direction the spear is facing with mouse controls
         /// </summary>
         private void RotatePlayerWithMouse()
         {
@@ -177,30 +205,30 @@ namespace PlayerCharacter.Controller
             GeneralFunctions.FlipObject(controller.gameObject);
         }
         /// <summary>
-        /// If a Gamepad is active get value from right stick and calculate gun rotation
+        /// If a Gamepad is active get value from right stick and calculate spear rotation
         /// </summary>
-        private void RotateGunWithGamepad()
+        private void RotateSpearWithGamepad()
         {
             if (stickInput.sqrMagnitude > 0)
             {
-                gunRotationX = stickInput.x;
+                spearRotationX = stickInput.x;
 
                 if (facingRight)
                 {
-                    gunRotation = stickInput.x + stickInput.y * 90;
-                    gameObject.transform.rotation = Quaternion.Euler(0, 0, gunRotation);
+                    spearRotation = stickInput.x + stickInput.y * 90;
+                    gameObject.transform.rotation = Quaternion.Euler(0, 0, spearRotation);
                 }
                 else
                 {
-                    gunRotation = stickInput.x + stickInput.y * -90;
-                    gameObject.transform.rotation = Quaternion.Euler(0, 180f, -gunRotation);
+                    spearRotation = stickInput.x + stickInput.y * -90;
+                    gameObject.transform.rotation = Quaternion.Euler(0, 180f, -spearRotation);
                 }
 
-                if (gunRotationX < 0 && facingRight)
+                if (spearRotationX < 0 && facingRight)
                 {
                     RotatePlayerWithGamepad();
                 }
-                else if (gunRotationX > 0 && !facingRight)
+                else if (spearRotationX > 0 && !facingRight)
                 {
                     RotatePlayerWithGamepad();
                 }
@@ -215,22 +243,29 @@ namespace PlayerCharacter.Controller
             stickInput = controls.Player.Rotate.ReadValue<Vector2>();
         }
         /// <summary>
-        /// Checks to see if the gun is being block by ground
+        /// Checks to see if the spear is being block by ground
         /// </summary>
-        /// <returns>A bool that determines if the player projectile can spawn</returns>
-        private bool CanGunSpawnProjectile()
+        /// <returns>A bool that determines if the player can push the spear</returns>
+        private bool CanPushSpear()
         {
             if (!GeneralFunctions.IsPlayerDead())
             {
-                if (!cooldownBar.GetIsActive())
+                if (!isSpearOut)
                 {
-                    if (!touchingGround)
+                    if (!cooldownBar.GetIsActive())
                     {
-                        return true;
+                        if (!touchingGround)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            cooldownBar.StartCooldown(spearCooldown);
+                            return false;
+                        }
                     }
                     else
                     {
-                        cooldownBar.StartCooldown(gunCooldown);
                         return false;
                     }
                 }
@@ -263,28 +298,17 @@ namespace PlayerCharacter.Controller
             return mouseX < playerScreenPoint.x ? true : false;
         }
         /// <summary>
-        /// Collects all need components for the gun to work
+        /// Collects all need components for the spear to work
         /// </summary>
-        private void SetupGun()
+        private void SetupSpear()
         {
-            gunFireLocation = transform.GetChild(2).transform;
             controller = GetComponentInParent<PlayerController>();
-            cooldownBar = transform.GetChild(3).transform.GetChild(0).GetComponent<CooldownBar>();
+            cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
-            GetPlayerProjectile();
-        }
-        /// <summary>
-        /// Finds the player projectile asset in the resource folder
-        /// </summary>
-        private void GetPlayerProjectile()
-        {
-            var prefab = Resources.Load("Player/Gun Laser") as GameObject;
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
-            if (prefab)
-            {
-                projectileToSpawn = prefab.GetComponent<PlayerProjectile>();
-            }
+            canRotate = true;
         }
     }
 }

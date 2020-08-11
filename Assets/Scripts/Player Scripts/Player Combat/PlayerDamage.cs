@@ -2,7 +2,7 @@
 using UnityEngine;
 using EnemyCharacter.SceneObject;
 
-public class PlayerProjectile : MonoBehaviour
+public class PlayerDamage : MonoBehaviour
 {
     private float damage = 1;
     private bool appliedDamage = false;
@@ -12,11 +12,22 @@ public class PlayerProjectile : MonoBehaviour
 
     public virtual void ConstructBox(float damage, float despawnTime)
     {
+        gameObject.SetActive(true);
+
         this.damage = damage;
 
         appliedDamage = false;
 
         Destroy(gameObject, despawnTime);
+    }
+
+    public virtual void ConstructBox(float damage)
+    {
+        gameObject.SetActive(true);
+
+        this.damage = damage;
+
+        appliedDamage = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

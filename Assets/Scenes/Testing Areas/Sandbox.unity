@@ -3159,6 +3159,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1635639793, guid: cc246d770541c064c815f693d2e76fd1, type: 3}
+      propertyPath: bigSpearUpTime
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 4157925456995496915, guid: cc246d770541c064c815f693d2e76fd1,
         type: 3}
       propertyPath: m_Name
