@@ -73,8 +73,6 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
-            print(touchingGround.ToString());
-
             if (canRotate)
             {
                 RotateSpear();

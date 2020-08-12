@@ -46,6 +46,7 @@ namespace CustomEditors
         private SerializedProperty _CooldownBar;
         private SerializedProperty _PlayerSpearBigPrefab;
         private SerializedProperty _PlayerHealthComp;
+        private SerializedProperty _PlayerSpearGround;
         #endregion
 
         #region Player Health Varaibles
@@ -55,7 +56,7 @@ namespace CustomEditors
         #region Player Objects
         private SerializedObject playerMovementObject;
         private SerializedObject playerHealthObject;
-        private SerializedObject playerGunOject;
+        private SerializedObject playerSpearObject;
         #endregion
 
         #region Player Editors
@@ -510,11 +511,12 @@ namespace CustomEditors
 
         private void SetPlayerGun()
         {
-            _PlayerSpearUpTime = playerGunOject.FindProperty("bigSpearUpTime");
-            _PlayerSpearDumage = playerGunOject.FindProperty("spearDamage");
-            _PlayerSpearCooldown = playerGunOject.FindProperty("spearCooldown");
-            _CooldownBar = playerGunOject.FindProperty("cooldownBar");
-            _PlayerHealthComp = playerGunOject.FindProperty("playerHealthComp");
+            _PlayerSpearUpTime = playerSpearObject.FindProperty("bigSpearUpTime");
+            _PlayerSpearDumage = playerSpearObject.FindProperty("spearDamage");
+            _PlayerSpearCooldown = playerSpearObject.FindProperty("spearCooldown");
+            _CooldownBar = playerSpearObject.FindProperty("cooldownBar");
+            _PlayerHealthComp = playerSpearObject.FindProperty("playerHealthComp");
+            _PlayerSpearGround = playerSpearObject.FindProperty("whatIsGround");
         }
 
         private void SetupPlayerEditor()
@@ -529,7 +531,7 @@ namespace CustomEditors
 
                 playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
                 playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
-                playerGunOject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
+                playerSpearObject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
             }
             else
             {
@@ -584,7 +586,7 @@ namespace CustomEditors
                 }
 
                 // fetch current values from the target
-                playerGunOject.Update();
+                playerSpearObject.Update();
 
                 if (playerGunEditor)
                 {
@@ -598,7 +600,7 @@ namespace CustomEditors
                 playerHealthObject.ApplyModifiedProperties();
 
                 // Apply values to the target
-                playerGunOject.ApplyModifiedProperties();
+                playerSpearObject.ApplyModifiedProperties();
 
                 GUILayout.Space(foldoutSpaceing);
             }
