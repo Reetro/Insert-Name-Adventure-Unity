@@ -111,8 +111,8 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
-            playerDamage.ConstructBox(spearDamage);
             transform.Translate(spearTravelDistance, 0, 0);
+            playerDamage.ConstructBox(spearDamage);
 
             yield return new WaitForSeconds(spearReturnDelay);
 

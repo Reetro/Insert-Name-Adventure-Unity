@@ -12,6 +12,15 @@ namespace EnemyCharacter.SceneObject
 
         private bool isOnPlatform = false;
         private bool hasPlatformEntered = false;
+        private RigidbodyManager rigidbodyManager = null;
+
+        private void Start()
+        {
+            rigidbodyManager = GetComponent<RigidbodyManager>();
+
+            rigidbodyManager.OnPlatformEnter.AddListener(OnPlatformEnter);
+            rigidbodyManager.OnPlatformExit.AddListener(OnPlatformExit);
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -27,13 +36,13 @@ namespace EnemyCharacter.SceneObject
             }
         }
 
-        public void OnPlatformEnter()
+        private void OnPlatformEnter()
         {
             hasPlatformEntered = true;
             isOnPlatform = true;
         }
 
-        public void OnPlatformExit()
+        private void OnPlatformExit()
         {
             isOnPlatform = false;
         }

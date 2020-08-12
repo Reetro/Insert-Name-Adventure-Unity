@@ -7,10 +7,9 @@ public class RigidbodyManager : MonoBehaviour
     private bool isZFrozen = false;
     private bool wasFrozenByPlatfrom = false;
 
-    [Header("Events")]
-    [Space]
+    [HideInInspector]
     public UnityEvent OnPlatformEnter;
-    [Space]
+    [HideInInspector]
     public UnityEvent OnPlatformExit;
 
     void Awake()
@@ -19,7 +18,7 @@ public class RigidbodyManager : MonoBehaviour
         isZFrozen = myRigidBody2D.freezeRotation;
     }
 
-    public void OnPlatfromEnter()
+    public void OnPlatfromEnterCall()
     {
         OnPlatformEnter.Invoke();
 
@@ -30,7 +29,7 @@ public class RigidbodyManager : MonoBehaviour
         }
     }
 
-    public void OnPlatfromExit()
+    public void OnPlatfromExitCall()
     {
         OnPlatformExit.Invoke();
 

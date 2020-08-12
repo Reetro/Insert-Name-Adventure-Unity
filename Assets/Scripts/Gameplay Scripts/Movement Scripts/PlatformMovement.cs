@@ -73,7 +73,7 @@ namespace LevelObjects.MovingObjects
 
                 if (rigidbodyManager)
                 {
-                    rigidbodyManager.OnPlatfromEnter();
+                    rigidbodyManager.OnPlatfromEnterCall();
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace LevelObjects.MovingObjects
 
                 if (rigidbodyManager)
                 {
-                    rigidbodyManager.OnPlatfromExit();
+                    rigidbodyManager.OnPlatfromExitCall();
                 }
             }
         }
