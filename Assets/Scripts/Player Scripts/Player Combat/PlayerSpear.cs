@@ -16,6 +16,9 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearReturnDelay = 1f;
         [SerializeField] private float spearTravelDistance = 1f;
         [SerializeField] private GameObject damageToSpawn = null;
+        [Space]
+        [Header("Layer Settings")]
+        public LayerMask whatIsGround;  // A mask determining what is ground to the spear
 
         #region Gun Components
         private PlayerController controller = null;
@@ -85,7 +88,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         public void StartPushSpear()
         {
-            if (CanPushSpear()) 
+            if (CanPushSpear())
             {
                 isSpearOut = true;
                 canRotate = false;
@@ -97,13 +100,12 @@ namespace PlayerCharacter.Controller
 
                 StartCoroutine(PushSpear());
             }
-            else
+            else if (!GeneralFunctions.IsPlayerDead())
             {
-                if (!GeneralFunctions.IsPlayerDead())
-                {
-                    // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
-                    CheckForEnemy();
-                }
+                // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
+                CheckForEnemy();
+
+                cooldownBar.StartCooldown(spearCooldown);
             }
         }
         /// <summary>
@@ -262,7 +264,6 @@ namespace PlayerCharacter.Controller
                         }
                         else
                         {
-                            cooldownBar.StartCooldown(spearCooldown);
                             return false;
                         }
                     }
@@ -283,11 +284,17 @@ namespace PlayerCharacter.Controller
         }
         private void OnTriggerStay2D(Collider2D collision)
         {
-            touchingGround = true;
+            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
+            {
+                touchingGround = true;
+            }
         }
         private void OnTriggerExit2D(Collider2D collision)
         {
-            touchingGround = false;
+            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
+            {
+                touchingGround = false;
+            }
         }
         /// <summary>
         /// Look see if the mouse is on the left or right of the screen

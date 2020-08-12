@@ -103,10 +103,10 @@ MonoBehaviour:
   maxHitsBeforeTeleport: 2
   boomerangSpeed: 22
   boomerangDamage: 2
-  MinNoise: 0.8
-  MaxNoise: 3
   teleportOffset: 0.2
   bommerangSpeedMultipler: 2
+  boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
+    type: 3}
 --- !u!114 &2099811738
 MonoBehaviour:
   m_ObjectHideFlags: 0

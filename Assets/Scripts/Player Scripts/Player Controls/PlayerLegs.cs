@@ -1,5 +1,4 @@
-﻿using Pathfinding.Util;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace PlayerCharacter.Controller
