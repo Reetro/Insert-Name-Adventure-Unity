@@ -73,6 +73,8 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
+            print(touchingGround.ToString());
+
             if (canRotate)
             {
                 RotateSpear();
@@ -96,16 +98,14 @@ namespace PlayerCharacter.Controller
                 var damage = Instantiate(damageToSpawn, damageSpawn);
                 playerDamage = damage.GetComponent<PlayerDamage>();
 
-                cooldownBar.StartCooldown(spearCooldown);
-
                 StartCoroutine(PushSpear());
             }
-            else if (!GeneralFunctions.IsPlayerDead())
+            else if (!GeneralFunctions.IsPlayerDead() && !cooldownBar.GetIsActive())
             {
+                cooldownBar.StartCooldown(spearCooldown);
+
                 // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
                 CheckForEnemy();
-
-                cooldownBar.StartCooldown(spearCooldown);
             }
         }
         /// <summary>
@@ -113,6 +113,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
+            cooldownBar.StartCooldown(spearCooldown);
             transform.Translate(spearTravelDistance, 0, 0);
             playerDamage.ConstructBox(spearDamage);
 
