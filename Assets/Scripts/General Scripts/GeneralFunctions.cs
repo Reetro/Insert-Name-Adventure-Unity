@@ -406,6 +406,15 @@ public class GeneralFunctions
         return objectToGet.GetComponent<HealthComponent>();
     }
     /// <summary>
+    /// Gets the health component from the given Transform
+    /// </summary>
+    /// <param name="objectToGet">The object you want to get component on</param>
+    /// <returns>The objects health component</returns>
+    public static HealthComponent GetGameObjectHealthComponent(Transform objectTransform)
+    {
+        return objectTransform.GetComponent<HealthComponent>();
+    }
+    /// <summary>
     ///  Gets the gameplay manager and generates an ID
     /// </summary>
     /// <returns>A random int that will be unique to this object</returns>

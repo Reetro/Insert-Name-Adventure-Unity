@@ -85,7 +85,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         public void StartPushSpear()
         {
-            if (CanPushSpear())
+            if (CanPushSpear()) 
             {
                 isSpearOut = true;
                 canRotate = false;
@@ -123,7 +123,7 @@ namespace PlayerCharacter.Controller
             isSpearOut = false;
         }
         /// <summary>
-        /// Fire a raycast to check for enemies around the player if player projectile failed to spawn
+        /// Fire a raycast to check for enemies around the player if player damage failed to spawn
         /// </summary>
         private void CheckForEnemy()
         {
@@ -131,7 +131,10 @@ namespace PlayerCharacter.Controller
 
             if (hit)
             {
-                GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true, gameObject);
+                if (GeneralFunctions.GetGameObjectHealthComponent(hit.transform))
+                {
+                    GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true, gameObject);
+                }
             }
         }
         /// <summary>
