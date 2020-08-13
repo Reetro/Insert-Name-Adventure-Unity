@@ -47,15 +47,6 @@ public class GeneralFunctions
         objectToFlip.transform.Rotate(0f, 180f, 0f);
     }
     /// <summary>
-    ///  Gets the directional vector of an angle 
-    /// </summary>
-    /// <param name="angle"></param>
-    /// <returns>A vector2 that is pointing in a direction</returns>
-    public static Vector2 GetDirectionVector2DFromAngle(float angle)
-    {
-        return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-    }
-    /// <summary>
     ///  Get the distance between to vectors
     /// </summary>
     /// <param name="vector1"></param>
@@ -76,30 +67,6 @@ public class GeneralFunctions
         var direction = position1 - position2;
 
         return direction.normalized;
-    }
-    /// <summary>
-    ///  Rotate rigid body to a specified point at a specified speed
-    /// </summary>
-    /// <param name="target">Target location</param>
-    /// <param name="rigidBody">RigidBody to rotate</param>
-    /// <param name="speed">Speed to rotate at</param>
-    /// <param name="gameObject">Game object the rigidBody is on</param>
-    public static void RotateRigidBody(Vector2 target, Rigidbody2D rigidBody, float speed, GameObject gameObject)
-    {
-        if (rigidBody)
-        {
-            Vector2 direction = (Vector2)target - rigidBody.position;
-
-            direction.Normalize();
-
-            float rotateAmount = Vector3.Cross(direction, gameObject.transform.up).z;
-
-            rigidBody.angularVelocity = rotateAmount * speed;
-        }
-        else
-        {
-            Debug.LogError(gameObject.ToString() + "didn't have a a Rigidbody2D was unable to rotate");
-        }
     }
     /// <summary>
     /// Checks to see if position 1 is above position 2
@@ -425,16 +392,6 @@ public class GeneralFunctions
         return manager.GetComponent<GameplayManager>().GenID();
     }
     /// <summary>
-    /// Gets all gameplay IDs from Gameplay Manager
-    /// </summary>
-    /// <returns>A list of integers</returns>
-    public static List<int> GetAllIDs()
-    {
-        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
-
-        return manager.GetComponent<GameplayManager>().gameIDS;
-    }
-    /// <summary>
     /// Will parent the given object to the provided transform
     /// </summary>
     /// <param name="platform"></param>
@@ -479,18 +436,6 @@ public class GeneralFunctions
     public static bool IsObjectOnLayer(string layer, GameObject gameObject)
     {
         bool localBool = gameObject.layer == LayerMask.NameToLayer(layer);
-
-        return localBool;
-    }
-    /// <summary>
-    /// Checks to see if the provided Gameobject is on the provided layer
-    /// </summary>
-    /// <param name="layer"></param>
-    /// <param name="gameObject"></param>
-    /// <returns>A bool that determines if the Gameobject was on the layer</returns>
-    public static bool IsObjectOnLayer(int layer, GameObject gameObject)
-    {
-        bool localBool = LayerMask.LayerToName(gameObject.layer) == LayerMask.LayerToName(layer);
 
         return localBool;
     }
@@ -609,5 +554,31 @@ public class GeneralFunctions
         }
         // finally, let's decrement Array's size by one
         Array.Resize(ref arr, arr.Length - 1);
+    }
+    /// <summary>
+    /// Gets the eye component on the give object and fires a raycast from the objects eyes
+    /// </summary>
+    /// <returns>The hit information</returns>
+    public static RaycastHit2D TraceFromEyes(GameObject objectTraceParent)
+    {
+        if (objectTraceParent)
+        {
+            var eyes = objectTraceParent.GetComponent<EyeTrace>();
+
+            if (eyes)
+            {
+                return eyes.TraceFromEyes();
+            }
+            else
+            {
+                Debug.LogError("Failed to trace from " + objectTraceParent.name + " had no eye component");
+                return new RaycastHit2D();
+            }
+        }
+        else
+        {
+            Debug.LogError("Failed to trace from " + objectTraceParent.name + " was not valid");
+            return new RaycastHit2D();
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace PlayerCharacter.Controller
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
+        private GameObject playerObject = null;
         #endregion
 
         #region JoyStick Rotation
@@ -90,7 +91,8 @@ namespace PlayerCharacter.Controller
         /// </summary>
         public void StartSpearPush()
         {
-            if (CanPushSpear())
+            bool nextToWall;
+            if (CanPushSpear(out nextToWall))
             {
                 isSpearOut = true;
                 canRotate = false;
@@ -101,8 +103,11 @@ namespace PlayerCharacter.Controller
             {
                 cooldownBar.StartCooldown(spearCooldown);
 
-                // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
-                CheckForEnemy();
+                if (nextToWall)
+                {
+                    // if spear was not able to be pushed check to see if there is an enemy in front of the player and damage it
+                    CheckForEnemy();
+                }
             }
         }
         /// <summary>
@@ -247,7 +252,7 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the spear is being block by ground
         /// </summary>
         /// <returns>A bool that determines if the player can push the spear</returns>
-        private bool CanPushSpear()
+        private bool CanPushSpear(out bool nextToWall)
         {
             if (!GeneralFunctions.IsPlayerDead())
             {
@@ -257,25 +262,40 @@ namespace PlayerCharacter.Controller
                     {
                         if (!touchingGround)
                         {
+                            nextToWall = false;
                             return true;
                         }
                         else
                         {
+                            var hit = GeneralFunctions.TraceFromEyes(playerObject);
+
+                            if (hit)
+                            {
+                                nextToWall = true;
+                            }
+                            else
+                            {
+                                nextToWall = false;
+                            }
+
                             return false;
                         }
                     }
                     else
                     {
+                        nextToWall = false;
                         return false;
                     }
                 }
                 else
                 {
+                    nextToWall = false;
                     return false;
                 }
             }
             else
             {
+                nextToWall = false;
                 return false;
             }
         }
@@ -320,11 +340,12 @@ namespace PlayerCharacter.Controller
             cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
+            playerObject = GeneralFunctions.GetPlayerGameObject();
 
             canRotate = true;
         }
         /// <summary>
-        /// Look to see if spear hit an object that can be damaged
+        /// Look to see if spear hit objects that can be damaged
         /// </summary>
         private void CheckForHit()
         {
@@ -332,7 +353,13 @@ namespace PlayerCharacter.Controller
 
             foreach (Collider2D collider2 in colliders2D)
             {
-                colliders.Add(collider2);
+                if (collider2)
+                {
+                    if (!collider2.gameObject.CompareTag("Player"))
+                    {
+                        colliders.Add(collider2);
+                    }
+                }
             }
 
             if (colliders.Count > 0)
@@ -345,14 +372,14 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void DamageAllObjects()
         {
-            for (int index = 0; index < colliders.Count; index++)
-            {
-                if (colliders[index] != null)
+           foreach (Collider2D collider2 in colliders)
+           {
+                if (collider2)
                 {
-                    if (!colliders[index].gameObject.CompareTag("Player"))
+                    if (!collider2.gameObject.CompareTag("Player"))
                     {
-                        var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
-                        var leechEggCold = colliders[index].gameObject.GetComponent<LeechEggCold>();
+                        var leechEggRipe = collider2.gameObject.GetComponent<LeechEggRipe>();
+                        var leechEggCold = collider2.gameObject.GetComponent<LeechEggCold>();
 
                         if (leechEggRipe)
                         {
@@ -364,11 +391,11 @@ namespace PlayerCharacter.Controller
                         }
                         else if (!leechEggRipe && !leechEggCold)
                         {
-                            GeneralFunctions.DamageTarget(colliders[index].gameObject, spearDamage, true, gameObject);
+                            GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                         }
                     }
                 }
-            }
+           }
 
             colliders.Clear();
         }
