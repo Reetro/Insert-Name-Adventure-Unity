@@ -4,6 +4,8 @@ using GameplayManagement;
 using System;
 using PlayerControls;
 using System.Collections;
+using System.Collections.Generic;
+using EnemyCharacter.SceneObject;
 
 namespace PlayerCharacter.Controller
 {
@@ -15,9 +17,12 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearCooldown = 1f;
         [SerializeField] private float spearReturnDelay = 1f;
         [SerializeField] private float spearTravelDistance = 1f;
+        [SerializeField] private Vector2 spearCastSize = new Vector2(1f, 0.1f);
         [Space]
         [Header("Layer Settings")]
         public LayerMask whatIsGround;  // A mask determining what is ground to the spear
+
+        private List<Collider2D> colliders = new List<Collider2D>();
 
         #region Gun Components
         private PlayerController controller = null;
@@ -30,7 +35,6 @@ namespace PlayerCharacter.Controller
         private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
-        private PlayerDamage playerDamage = null;
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
@@ -84,7 +88,7 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Will try to push the spear in the direction its facing
         /// </summary>
-        public void StartPushSpear()
+        public void StartSpearPush()
         {
             if (CanPushSpear())
             {
@@ -106,16 +110,14 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
-            playerDamage.gameObject.SetActive(true);
-            playerDamage.ConstructBox(spearDamage);
             cooldownBar.StartCooldown(spearCooldown);
             transform.Translate(spearTravelDistance, 0, 0);
+            CheckForHit();
 
             yield return new WaitForSeconds(spearReturnDelay);
 
             transform.Translate(-spearTravelDistance, 0, 0);
 
-            playerDamage.gameObject.SetActive(false);
             canRotate = true;
             isSpearOut = false;
         }
@@ -277,6 +279,10 @@ namespace PlayerCharacter.Controller
                 return false;
             }
         }
+        /// <summary>
+        /// Check to see if spear is touching the ground
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerStay2D(Collider2D collision)
         {
             if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
@@ -284,6 +290,10 @@ namespace PlayerCharacter.Controller
                 touchingGround = true;
             }
         }
+        /// <summary>
+        /// Check to see if spear is no longer touching the ground
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
@@ -310,9 +320,57 @@ namespace PlayerCharacter.Controller
             cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
-            playerDamage = transform.GetChild(3).GetComponent<PlayerDamage>();
 
             canRotate = true;
+        }
+        /// <summary>
+        /// Look to see if spear hit an object that can be damaged
+        /// </summary>
+        private void CheckForHit()
+        {
+            Collider2D[] colliders2D = Physics2D.OverlapBoxAll(transform.position, spearCastSize, spearAngle, gameplayManager.whatCanBeDamaged);
+
+            foreach (Collider2D collider2 in colliders2D)
+            {
+                colliders.Add(collider2);
+            }
+
+            if (colliders.Count > 0)
+            {
+                DamageAllObjects();
+            }
+        }
+        /// <summary>
+        /// Damage all overlapped Gameobjects
+        /// </summary>
+        private void DamageAllObjects()
+        {
+            for (int index = 0; index < colliders.Count; index++)
+            {
+                if (colliders[index] != null)
+                {
+                    if (!colliders[index].gameObject.CompareTag("Player"))
+                    {
+                        var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
+                        var leechEggCold = colliders[index].gameObject.GetComponent<LeechEggCold>();
+
+                        if (leechEggRipe)
+                        {
+                            leechEggRipe.SpawnLeech();
+                        }
+                        else if (leechEggCold)
+                        {
+                            leechEggCold.SpawnLeech();
+                        }
+                        else if (!leechEggRipe && !leechEggCold)
+                        {
+                            GeneralFunctions.DamageTarget(colliders[index].gameObject, spearDamage, true, gameObject);
+                        }
+                    }
+                }
+            }
+
+            colliders.Clear();
         }
     }
 }

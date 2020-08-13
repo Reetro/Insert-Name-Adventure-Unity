@@ -151,7 +151,7 @@ namespace PlayerCharacter.Controller
             {
                 if (fireGun)
                 {
-                    currentGun.StartPushSpear();
+                    currentGun.StartSpearPush();
                 }
             }
         }
