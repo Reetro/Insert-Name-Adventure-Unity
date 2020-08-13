@@ -93,7 +93,7 @@ namespace LevelObjects.MovingObjects
         /// Changes the current direction of the projectile
         /// </summary>
         /// <param name="newDirection"></param>
-        public void UpdateDirection(Vector2 newDirection)
+        public virtual void UpdateDirection(Vector2 newDirection)
         {
             launchDirection = newDirection;
         }

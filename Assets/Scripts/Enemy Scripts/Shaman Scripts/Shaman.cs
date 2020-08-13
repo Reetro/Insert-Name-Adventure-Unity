@@ -16,13 +16,16 @@ namespace EnemyCharacter.AI
         [SerializeField] private float boomerangDamage = 2f;
         [Tooltip("How much to offset the shaman teleport location by")]
         [SerializeField] private float teleportOffset = 0.5f;
-        [Tooltip("Speed multiplier used when shaman throws the boomerang towards the player with no random velocity")]
+        [Tooltip("Speed multiplier used when shaman throws the boomerang")]
         [SerializeField] private float bommerangSpeedMultipler = 2f;
+        [Tooltip("The maximum speed the boomerang can go")]
+        [SerializeField] private float bommerangMaxSpeedMagnitude = 8f;
         [Tooltip("Boomerang Asset to spawn")]
         [SerializeField] private Boomerang boomerangToSpawn = null;
-
+        /// <summary>
+        /// The current boomerang spawning the world
+        /// </summary>
         private Boomerang currentBoomrang = null;
-
         /// <summary>
         /// Throw boomerang when game starts
         /// </summary>
@@ -43,7 +46,7 @@ namespace EnemyCharacter.AI
 
             currentBoomrang.ConstructProjectile(boomerangSpeed * bommerangSpeedMultipler, boomerangDamage, startDirection);
 
-            currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset);
+            currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset, bommerangMaxSpeedMagnitude);
 
             currentBoomrang.CurrentHitCount = 0; 
         }

@@ -15,7 +15,6 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearCooldown = 1f;
         [SerializeField] private float spearReturnDelay = 1f;
         [SerializeField] private float spearTravelDistance = 1f;
-        [SerializeField] private GameObject damageToSpawn = null;
         [Space]
         [Header("Layer Settings")]
         public LayerMask whatIsGround;  // A mask determining what is ground to the spear
@@ -32,7 +31,6 @@ namespace PlayerCharacter.Controller
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
         private PlayerDamage playerDamage = null;
-        private Transform damageSpawn = null;
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
@@ -93,9 +91,6 @@ namespace PlayerCharacter.Controller
                 isSpearOut = true;
                 canRotate = false;
 
-                var damage = Instantiate(damageToSpawn, damageSpawn);
-                playerDamage = damage.GetComponent<PlayerDamage>();
-
                 StartCoroutine(PushSpear());
             }
             else if (!GeneralFunctions.IsPlayerDead() && !cooldownBar.GetIsActive())
@@ -111,15 +106,16 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
+            playerDamage.gameObject.SetActive(true);
+            playerDamage.ConstructBox(spearDamage);
             cooldownBar.StartCooldown(spearCooldown);
             transform.Translate(spearTravelDistance, 0, 0);
-            playerDamage.ConstructBox(spearDamage);
 
             yield return new WaitForSeconds(spearReturnDelay);
 
             transform.Translate(-spearTravelDistance, 0, 0);
 
-            Destroy(playerDamage.gameObject);
+            playerDamage.gameObject.SetActive(false);
             canRotate = true;
             isSpearOut = false;
         }
@@ -314,7 +310,7 @@ namespace PlayerCharacter.Controller
             cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
-            damageSpawn = transform.GetChild(3).transform.GetComponent<Transform>();
+            playerDamage = transform.GetChild(3).GetComponent<PlayerDamage>();
 
             canRotate = true;
         }

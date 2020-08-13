@@ -46,22 +46,25 @@ public class PlayerDamage : MonoBehaviour
 
         for (int index = 0; index < colliders.Count; index++)
         {
-            if (!colliders[index].gameObject.CompareTag("Player"))
+            if (colliders[index] != null)
             {
-                var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
-                var leechEggCold = colliders[index].gameObject.GetComponent<LeechEggCold>();
+                if (!colliders[index].gameObject.CompareTag("Player"))
+                {
+                    var leechEggRipe = colliders[index].gameObject.GetComponent<LeechEggRipe>();
+                    var leechEggCold = colliders[index].gameObject.GetComponent<LeechEggCold>();
 
-                if (leechEggRipe)
-                {
-                    leechEggRipe.SpawnLeech();
-                }
-                else if (leechEggCold)
-                {
-                    leechEggCold.SpawnLeech();
-                }
-                else if (!leechEggRipe && !leechEggCold)
-                {
-                    GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true, gameObject);
+                    if (leechEggRipe)
+                    {
+                        leechEggRipe.SpawnLeech();
+                    }
+                    else if (leechEggCold)
+                    {
+                        leechEggCold.SpawnLeech();
+                    }
+                    else if (!leechEggRipe && !leechEggCold)
+                    {
+                        GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true, gameObject);
+                    }
                 }
             }
         }

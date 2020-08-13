@@ -160,6 +160,7 @@ namespace CustomEditors
         private SerializedProperty _ShamanHitsBeforeTeleport;
         private SerializedProperty _ShamanDamage;
         private SerializedProperty _ShamanBommerangSpeedMultipler;
+        private SerializedProperty _ShamanBommerangMaxSpeed;
         private SerializedProperty _ShamanBoomerangToSpawn;
         #endregion
 
@@ -446,6 +447,7 @@ namespace CustomEditors
             _ShamanTeleportOffset = shamanObject.FindProperty("teleportOffset");
             _ShamanBommerangSpeedMultipler = shamanObject.FindProperty("bommerangSpeedMultipler");
             _ShamanBoomerangToSpawn = shamanObject.FindProperty("boomerangToSpawn");
+            _ShamanBommerangMaxSpeed = shamanObject.FindProperty("bommerangMaxSpeedMagnitude");
         }
         #endregion
 

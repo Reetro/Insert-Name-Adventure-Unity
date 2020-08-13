@@ -27,6 +27,10 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         public int CurrentHitCount { get; set; }
         /// <summary>
+        /// The maximum speed this projectile can go
+        /// </summary>
+        private float MaxSpeedMagnitude = 8;
+        /// <summary>
         /// Reflect the projectile when ever it hits a surface
         /// </summary>
         /// <param name="collision"></param>
@@ -57,6 +61,11 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         protected override void FixedUpdate()
         {
+            if (MyRigidBody2D.velocity.magnitude >= MaxSpeedMagnitude || MyRigidBody2D.velocity.magnitude <= MaxSpeedMagnitude)
+            {
+                MyRigidBody2D.velocity = MyRigidBody2D.velocity.normalized * MaxSpeedMagnitude;
+            }
+
             CurrentVelocity = MyRigidBody2D.velocity;
         }
         /// <summary>
@@ -119,11 +128,13 @@ namespace LevelObjects.MovingObjects
         /// <param name="shamanToSet"></param>
         /// <param name="maxHitsBeforeTeleport"></param>
         /// <param name="offSet"></param>
-        public void SetupBoomerang(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet)
+        public void SetupBoomerang(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet, float MaxSpeed)
         {
             justSpawned = true;
 
             currentShaman = shamanToSet;
+
+            this.MaxSpeedMagnitude = MaxSpeed;
 
             this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
 
