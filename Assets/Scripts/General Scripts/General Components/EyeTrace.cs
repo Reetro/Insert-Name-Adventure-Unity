@@ -12,6 +12,11 @@ public class EyeTrace : MonoBehaviour
     [SerializeField] private bool drawDebug = false;
 
     /// <summary>
+    /// Get the layers this object can see
+    /// </summary>
+    public LayerMask EyeLayerMask {get { return whatCanThisObjectSee; } }
+
+    /// <summary>
     /// Will trace left or right (depends on look direction) of the trace origin object
     /// </summary>
     /// <returns>The Raycast Hit</returns>

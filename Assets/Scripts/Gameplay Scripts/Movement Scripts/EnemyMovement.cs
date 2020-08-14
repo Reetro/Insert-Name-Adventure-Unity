@@ -87,5 +87,49 @@ namespace EnemyCharacter.AI
             }
             return hitGround;
         }
+        /// <summary>
+        /// Move the AI in the current direction it's facing
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="speed"></param>
+        public void MoveAIForward(float speed, Rigidbody2D rigidbody)
+        {
+            rigidbody.AddRelativeForce(transform.right * speed, ForceMode2D.Force);
+        }
+        /// <summary>
+        /// Move the AI in the current direction it's facing with a locked speed
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <param name="rigidbody"></param>
+        /// <param name="maxSpeedMagnatuide"></param>
+        public void MoveAIForward(float speed, Rigidbody2D rigidbody, float maxSpeedMagnitude)
+        {
+            rigidbody.AddRelativeForce(transform.right * speed, ForceMode2D.Force);
+
+            if (rigidbody.velocity.magnitude >= maxSpeedMagnitude || rigidbody.velocity.magnitude <= maxSpeedMagnitude)
+            {
+                rigidbody.velocity = rigidbody.velocity.normalized * maxSpeedMagnitude;
+            }
+        }
+        /// <summary>
+        /// Move the AI in the current direction it's facing with no rigidbody
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="moveSpeed"></param>
+        public void MoveAIForward(Vector2 direction, float moveSpeed)
+        {
+            if (direction.y >= 1 || direction.y <= -1)
+            {
+                transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+            }
+            else if (transform.localEulerAngles.z == 180)
+            {
+                transform.Translate(-direction * moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(direction * moveSpeed * Time.deltaTime);
+            }
+        }
     }
 }
