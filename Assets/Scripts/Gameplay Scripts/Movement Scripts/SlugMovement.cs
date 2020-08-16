@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace EnemyCharacter.SceneObject
+namespace EnemyCharacter.AI
 {
     public class SlugMovement : EnemyBase
     {
@@ -114,7 +114,16 @@ namespace EnemyCharacter.SceneObject
             if (lastRotation.Equals(0) && currentRotation.Equals(0))
             {
                 ignoreIsGrounded = true;
-                UpdateRotation(90);
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(90);
+                }
+                else
+                {
+                    UpdateRotation(-90);
+                }
+
                 StartCoroutine(RestartGroundCheck());
             }
             else if (lastRotation.Equals(0) && currentRotation.Equals(90))
@@ -137,7 +146,18 @@ namespace EnemyCharacter.SceneObject
             else if (lastRotation.Equals(90) && currentRotation.Equals(180))
             {
                 ignoreIsGrounded = true;
-                UpdateRotation(-90);
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(-90);
+                }
+                else
+                {
+                    UpdateRotation(90);
+
+                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
+                }
+
                 StartCoroutine(RestartGroundCheck());
             }
             else if (lastRotation.Equals(180) && currentRotation.Equals(-90))
@@ -151,7 +171,7 @@ namespace EnemyCharacter.SceneObject
                 else
                 {
                     UpdateRotation(180);
-                    transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y + 0.05f, 0);
+                    transform.position = new Vector3(transform.position.x - 0.3f, transform.position.y + 0.05f, 0);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -159,7 +179,15 @@ namespace EnemyCharacter.SceneObject
             else if (lastRotation.Equals(-90) && currentRotation.Equals(180))
             {
                 ignoreIsGrounded = true;
-                UpdateRotation(90);
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(-90);
+                }
+                else
+                {
+                    UpdateRotation(90);
+                }
 
                 transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
 
@@ -168,7 +196,18 @@ namespace EnemyCharacter.SceneObject
             else if (lastRotation.Equals(180) && currentRotation.Equals(90))
             {
                 ignoreIsGrounded = true;
-                UpdateRotation(180);
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(180);
+                }
+                else
+                {
+                    UpdateRotation(0);
+
+                    transform.position = new Vector3(transform.position.x + 0.38f, transform.position.y, 0);
+                }
+
                 StartCoroutine(RestartGroundCheck());
             }
             else if (lastRotation.Equals(-90) && currentRotation.Equals(0))
@@ -237,6 +276,8 @@ namespace EnemyCharacter.SceneObject
                 else
                 {
                     UpdateRotation(180);
+
+                    transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -246,6 +287,20 @@ namespace EnemyCharacter.SceneObject
             {
                 print("Current: " + currentRotation + " last: " + lastRotation);
             }
+        }
+        /// <summary>
+        /// Gets the current direction the slug is facing
+        /// </summary>
+        private Vector2 GetFacingDirection()
+        {
+            return transform.rotation * Vector2.right;
+        }
+        /// <summary>
+        /// Gets the current upward direction the slug is facing
+        /// </summary>
+        private Vector2 GetFacingUpward()
+        {
+            return transform.rotation * Vector2.up;
         }
         /// <summary>
         /// Wait 0.2 seconds before starting ground checks 
@@ -313,20 +368,6 @@ namespace EnemyCharacter.SceneObject
 
                 GeneralFunctions.ApplyKnockback(collision.gameObject, -GetFacingDirection() * knockBackForce);
             }
-        }
-        /// <summary>
-        /// Gets the current direction the slug is facing
-        /// </summary>
-        private Vector2 GetFacingDirection()
-        {
-            return transform.rotation * Vector2.right;
-        }
-        /// <summary>
-        /// Gets the current upward direction the slug is facing
-        /// </summary>
-        private Vector2 GetFacingUpward()
-        {
-            return transform.rotation * Vector2.up;
         }
         #endregion
     }
