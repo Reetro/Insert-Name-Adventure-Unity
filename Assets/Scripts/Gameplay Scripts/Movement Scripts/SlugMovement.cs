@@ -1,24 +1,48 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace EnemyCharacter.SceneObject
 {
     public class SlugMovement : EnemyBase
     {
+        [Tooltip("How fast the slug can move")]
         [SerializeField] private float moveSpeed = 2f;
+        [Tooltip("How far the slug can see")]
         [SerializeField] private float traceDistance = 0.6f;
-        [SerializeField] private Vector2 rotateGroundOffset = new Vector2(0.2f, 0.2f);
+        [Tooltip("What layers the slug can rotate on")]
         [SerializeField] private LayerMask whatCanSlugSee = new LayerMask();
+        [Tooltip("Whether or not to draw debug lines")]
+        [SerializeField] private bool drawDebug = false;
 
         private bool canMove = true;
+        private float lastRotation = 0;
+        private float currentRotation = 0;
+        private bool isGrounded = false;
+        private bool ignoreIsGrounded = false;
+        private GameObject traceStartObject = null;
 
         private void Start()
         {
+            traceStartObject = transform.GetChild(0).gameObject;
+
+            currentRotation = transform.localEulerAngles.z;
+
             canMove = true;
         }
 
         private void Update()
         {
             var hit = LookForCollision();
+            isGrounded = IsGrounded();
+            
+            if (!ignoreIsGrounded)
+            {
+                canMove = isGrounded;
+            }
+            else
+            {
+                canMove = true;
+            }
 
             if (hit)
             {
@@ -30,72 +54,217 @@ namespace EnemyCharacter.SceneObject
                 }
             }
 
-            if (!IsGrounded())
-            {
-                canMove = false;
-
-                SnapRotation();
-            }
-
             if (canMove)
             {
                 MovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
             }
+            else if (!isGrounded && !ignoreIsGrounded)
+            {
+                SnapRotation();
+            }
         }
         /// <summary>
-        /// Traces in the direction the slug is facing
+        /// Traces in the direction the slug is facing and check to see if there is a surface to rotate on
         /// </summary>
-        /// <returns></returns>
         private RaycastHit2D LookForCollision()
         {
             Vector2 traceStart = transform.position;
             Vector2 traceEnd = GetFacingDirection();
 
             RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
-            Debug.DrawRay(traceStart, traceEnd, Color.green);
 
-            return raycastHit2D;
-        }
-        /// <summary>
-        /// Check to see if the slug is grounded
-        /// </summary>
-        private bool IsGrounded()
-        {
-            Vector2 traceStart = transform.position;
-            Vector2 traceEnd = -GetFacingUpVector();
-
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
-            Debug.DrawRay(traceStart, traceEnd, Color.green);
-
-            if (raycastHit2D)
+            if (raycastHit2D && drawDebug)
             {
-                return true;
+                Debug.DrawRay(traceStart, traceEnd, Color.green);
             }
             else
             {
-                return false;
+                Debug.DrawRay(traceStart, traceEnd, Color.green);
             }
+
+            return raycastHit2D;
         }
         /// <summary>
         /// Determines the what the current rotation of the slug should be
         /// </summary>
         private void SnapRotation()
         {
-            if (!GeneralFunctions.IsNumberNegative(transform.position.x))
+            if (lastRotation.Equals(0) && currentRotation.Equals(0))
             {
-                transform.Rotate(0, 0, 90);
+                ignoreIsGrounded = true;
+                UpdateRotation(90);
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(0) && currentRotation.Equals(90))
+            {
+                ignoreIsGrounded = true;
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(180);
+                }
+                else
+                {
+                    UpdateRotation(0);
 
-                transform.position = (Vector2)transform.position + rotateGroundOffset;
+                    transform.position = new Vector3(transform.position.x + 0.38f, transform.position.y, 0);
+                }
 
-                canMove = true;
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(90) && currentRotation.Equals(180))
+            {
+                ignoreIsGrounded = true;
+                UpdateRotation(-90);
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(180) && currentRotation.Equals(-90))
+            {
+                ignoreIsGrounded = true;
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(0);
+                }
+                else
+                {
+                    UpdateRotation(180);
+                    transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y + 0.05f, 0);
+                }
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(-90) && currentRotation.Equals(180))
+            {
+                ignoreIsGrounded = true;
+                UpdateRotation(90);
+
+                transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(180) && currentRotation.Equals(90))
+            {
+                ignoreIsGrounded = true;
+                UpdateRotation(180);
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(-90) && currentRotation.Equals(0))
+            {
+                ignoreIsGrounded = true;
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(90);
+                }
+                else
+                {
+                    UpdateRotation(-90);
+                }
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(90) && currentRotation.Equals(180))
+            {
+                ignoreIsGrounded = true;
+                UpdateRotation(0);
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(90) && currentRotation.Equals(0))
+            {
+                ignoreIsGrounded = true;
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(0);
+                }
+                else
+                {
+                    UpdateRotation(-90);
+
+                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                }
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(0) && currentRotation.Equals(-90))
+            {
+                ignoreIsGrounded = true;
+
+                if (isGrounded)
+                {
+                    UpdateRotation(0);
+                }
+                else
+                {
+                    UpdateRotation(-90);
+
+                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                }
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(-90) && currentRotation.Equals(-90))
+            {
+                ignoreIsGrounded = true;
+                UpdateRotation(0);
+                StartCoroutine(RestartGroundCheck());
+            }
+
+            if (drawDebug)
+            {
+                print("Current: " + currentRotation + " last: " + lastRotation);
+            }
+        }
+        /// <summary>
+        /// Wait 0.2 seconds before starting ground checks 
+        /// </summary>
+        private IEnumerator RestartGroundCheck()
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            ignoreIsGrounded = false;
+        }
+        /// <summary>
+        /// Update the current rotation of the Z axis
+        /// </summary>
+        /// <param name="newRotation"></param>
+        private void UpdateRotation(float newRotation)
+        {
+            lastRotation = currentRotation;
+            currentRotation = newRotation;
+
+            transform.eulerAngles = new Vector3(0, 0, newRotation);
+
+            canMove = true;
+        }
+        /// <summary>
+        /// Check to see if slug is touching the ground
+        /// </summary>
+        private bool IsGrounded()
+        {
+            Vector2 traceStart = traceStartObject.transform.position;
+            Vector2 traceEnd = -GetFacingUpward();
+
+            RaycastHit2D raycastHits2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
+
+            if (raycastHits2D)
+            {
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                }
+
+                return true;
             }
             else
             {
-                transform.Rotate(0, 0, 90);
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.red);
+                }
 
-                transform.position = (Vector2)transform.position - rotateGroundOffset;
-
-                canMove = true;
+                return false;
             }
         }
         /// <summary>
@@ -106,9 +275,9 @@ namespace EnemyCharacter.SceneObject
             return transform.rotation * Vector2.right;
         }
         /// <summary>
-        /// Gets the current facing up vector based the direction the slug is facing
+        /// Gets the current upward direction the slug is facing
         /// </summary>
-        private Vector2 GetFacingUpVector()
+        private Vector2 GetFacingUpward()
         {
             return transform.rotation * Vector2.up;
         }

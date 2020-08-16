@@ -112,7 +112,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Move the AI in the current direction it's facing with no rigidbody
+        /// Move the AI in the provided direction with no rigidbody
         /// </summary>
         /// <param name="direction"></param>
         /// <param name="moveSpeed"></param>
