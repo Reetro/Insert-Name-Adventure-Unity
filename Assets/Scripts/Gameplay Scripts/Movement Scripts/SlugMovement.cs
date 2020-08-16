@@ -5,6 +5,8 @@ namespace EnemyCharacter.SceneObject
 {
     public class SlugMovement : EnemyBase
     {
+        [Header("Movement Settings")]
+        [Range(0,4)]
         [Tooltip("How fast the slug can move")]
         [SerializeField] private float moveSpeed = 2f;
         [Tooltip("How far the slug can see")]
@@ -14,13 +16,24 @@ namespace EnemyCharacter.SceneObject
         [Tooltip("Whether or not to draw debug lines")]
         [SerializeField] private bool drawDebug = false;
 
+        [Space]
+
+        [Header("Damage Settings")]
+        [Tooltip("How much damage to apply to the player on hit")]
+        [SerializeField] private float damageToPlayer = 1f;
+        [Tooltip("Amount of knock back force to apply to the player on hit")]
+        [SerializeField] private float knockBackForce = 2f;
+
+        #region Local Vars
         private bool canMove = true;
         private float lastRotation = 0;
         private float currentRotation = 0;
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
+        #endregion
 
+        #region Movement Code
         private void Start()
         {
             traceStartObject = transform.GetChild(0).gameObject;
@@ -63,6 +76,9 @@ namespace EnemyCharacter.SceneObject
                 SnapRotation();
             }
         }
+        #endregion
+
+        #region Rotation Code
         /// <summary>
         /// Traces in the direction the slug is facing and check to see if there is a surface to rotate on
         /// </summary>
@@ -91,7 +107,7 @@ namespace EnemyCharacter.SceneObject
             return raycastHit2D;
         }
         /// <summary>
-        /// Determines the what the current rotation of the slug should be
+        /// Determines what the current rotation of the slug should be
         /// </summary>
         private void SnapRotation()
         {
@@ -253,6 +269,9 @@ namespace EnemyCharacter.SceneObject
 
             canMove = true;
         }
+        #endregion
+
+        #region Collision Code
         /// <summary>
         /// Check to see if slug is touching the ground
         /// </summary>
@@ -283,6 +302,19 @@ namespace EnemyCharacter.SceneObject
             }
         }
         /// <summary>
+        /// Damage and knock back player on hit
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true, gameObject);
+
+                GeneralFunctions.ApplyKnockback(collision.gameObject, -GetFacingDirection() * knockBackForce);
+            }
+        }
+        /// <summary>
         /// Gets the current direction the slug is facing
         /// </summary>
         private Vector2 GetFacingDirection()
@@ -296,5 +328,6 @@ namespace EnemyCharacter.SceneObject
         {
             return transform.rotation * Vector2.up;
         }
+        #endregion
     }
 }

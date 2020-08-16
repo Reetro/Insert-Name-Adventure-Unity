@@ -513,7 +513,7 @@ public class GeneralFunctions
 
         if (rigidbody2D)
         {
-            rigidbody2D.AddForce(force);
+            rigidbody2D.AddForce(force, ForceMode2D.Impulse);
         }
         else
         {

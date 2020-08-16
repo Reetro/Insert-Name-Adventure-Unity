@@ -156,6 +156,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 655617
   drawDebug: 0
+  damageToPlayer: 1
+  knockBackForce: 200
 --- !u!50 &2838650451696758387
 Rigidbody2D:
   serializedVersion: 4
