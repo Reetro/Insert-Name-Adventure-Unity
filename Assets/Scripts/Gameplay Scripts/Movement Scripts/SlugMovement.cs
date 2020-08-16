@@ -73,13 +73,19 @@ namespace EnemyCharacter.SceneObject
 
             RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
 
-            if (raycastHit2D && drawDebug)
+            if (raycastHit2D)
             {
-                Debug.DrawRay(traceStart, traceEnd, Color.green);
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                }
             }
             else
             {
-                Debug.DrawRay(traceStart, traceEnd, Color.green);
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.red);
+                }
             }
 
             return raycastHit2D;
@@ -207,7 +213,16 @@ namespace EnemyCharacter.SceneObject
             else if (lastRotation.Equals(-90) && currentRotation.Equals(-90))
             {
                 ignoreIsGrounded = true;
-                UpdateRotation(0);
+                
+                if (isGrounded)
+                {
+                    UpdateRotation(0);
+                }
+                else
+                {
+                    UpdateRotation(180);
+                }
+
                 StartCoroutine(RestartGroundCheck());
             }
 
