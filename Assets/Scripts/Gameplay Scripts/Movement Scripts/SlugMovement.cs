@@ -3,19 +3,17 @@ using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
+    [RequireComponent(typeof(SlugInstanceSettings))]
     public class SlugMovement : EnemyBase
     {
         [Header("Movement Settings")]
-        [Range(0,4)]
+        [Range(0, 4)]
         [Tooltip("How fast the slug can move")]
         [SerializeField] private float moveSpeed = 2f;
         [Tooltip("How far the slug can see")]
         [SerializeField] private float traceDistance = 0.6f;
         [Tooltip("What layers the slug can rotate on")]
         [SerializeField] private LayerMask whatCanSlugSee = new LayerMask();
-        [Tooltip("Whether or not to draw debug lines")]
-        [SerializeField] private bool drawDebug = false;
-        [SerializeField] private bool onFloatingPlatform = false;
 
         [Space]
 
@@ -32,8 +30,11 @@ namespace EnemyCharacter.AI
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
-        private bool shouldBe180 = false;
-        private bool shouldBe0 = false;
+
+        [HideInInspector]
+        public bool onFloatingPlatform = false;
+        [HideInInspector]
+        public bool drawDebug = false;
         #endregion
 
         #region Movement Code
@@ -46,11 +47,6 @@ namespace EnemyCharacter.AI
             if (currentRotation.Equals(270))
             {
                 currentRotation = -90;
-            }
-
-            if (currentRotation.Equals(0))
-            {
-                shouldBe0 = true;
             }
 
             if (drawDebug)
@@ -102,17 +98,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void SnapRotation()
         {
-            if (currentRotation.Equals(0) && onFloatingPlatform && !shouldBe0)
-            {
-                shouldBe180 = true;
-                shouldBe0 = false;
-            }
-            else
-            {
-                shouldBe180 = false;
-                shouldBe0 = true;
-            }
-
             if (lastRotation.Equals(0) && currentRotation.Equals(0))
             {
                 ignoreIsGrounded = true;
@@ -280,24 +265,9 @@ namespace EnemyCharacter.AI
                     }
                     else
                     {
-                        if (shouldBe0)
-                        {
-                            UpdateRotation(180);
+                        UpdateRotation(180);
 
-                            transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
-
-                            shouldBe0 = false;
-                            shouldBe180 = true;
-                        }
-                        else if (shouldBe180)
-                        {
-                            UpdateRotation(-90);
-
-                            transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
-
-                            shouldBe0 = true;
-                            shouldBe180 = false;
-                        }
+                        transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
                     }
                 }
 

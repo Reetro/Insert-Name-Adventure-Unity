@@ -191,6 +191,31 @@ namespace CustomEditors
         private Editor axeThrowerEditor = null;
         #endregion
 
+        #region Slug Health Varaibles
+        private SerializedProperty __SlugMaxHealth;
+        #endregion
+
+        #region Slug Movement Varaibles
+        private SerializedProperty _SlugMoveSpeed;
+        private SerializedProperty _SlugTraceDistance;
+        private SerializedProperty _SlugCanSee;
+        #endregion
+
+        #region Slug Damage Varaibles
+        private SerializedProperty _SlugDamage;
+        private SerializedProperty _SlugKnockbackForce;
+        #endregion
+
+        #region Slug Objects
+        private SerializedObject slugMovementObject;
+        private SerializedObject slugHealthObject;
+        #endregion
+
+        #region Axe Thrower Editors
+        private Editor slugMovementEditor = null;
+        private Editor slugHealthEditor = null;
+        #endregion
+
         #region Local Varaibles
         private Vector2 scrollPosition = Vector2.zero;
         private static bool showPlayerSettings = false;
@@ -200,6 +225,7 @@ namespace CustomEditors
         private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
         private static bool showManagerSettings = false;
+        private static bool showSlugSettings = false;
         private const float foldoutSpaceing = 20f;
         #endregion
 
@@ -294,6 +320,12 @@ namespace CustomEditors
             SetupAxeThrowerHealth();
 
             SetupAxeThrowerShooting();
+
+            SetupSlugEditor();
+
+            SetupSlugHealthEditor();
+
+            SetupSlugMovementEditor();
         }
 
         #region Leech Functions
@@ -482,6 +514,40 @@ namespace CustomEditors
             _AxeThrowerProjectileDamage = axeThrowerObject.FindProperty("projectileDamage");
             _AxeThrowerSightLayers = axeThrowerObject.FindProperty("sightLayers");
             _AxeThrowerProjectileToSpawn = axeThrowerObject.FindProperty("projectileToSpawn");
+        }
+        #endregion
+
+        #region Slug Functions
+        private void SetupSlugEditor()
+        {
+            var slugPrefab = Resources.Load("Enemies/Slug/Slug") as GameObject;
+
+            if (slugPrefab)
+            {
+                slugMovementEditor = Editor.CreateEditor(slugPrefab.GetComponent<SlugMovement>());
+                slugHealthEditor = Editor.CreateEditor(slugPrefab.GetComponent<HealthComponent>());
+
+                slugHealthObject = new SerializedObject(slugPrefab.GetComponent<HealthComponent>());
+                slugMovementObject = new SerializedObject(slugPrefab.GetComponent<SlugMovement>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get slugPrefab in Gameplay Editor");
+            }
+        }
+
+        private void SetupSlugHealthEditor()
+        {
+            __SlugMaxHealth = slugHealthObject.FindProperty("maxHealth");
+        }
+
+        private void SetupSlugMovementEditor()
+        {
+            _SlugDamage = slugMovementObject.FindProperty("damageToPlayer");
+            _SlugCanSee = slugMovementObject.FindProperty("whatCanSlugSee");
+            _SlugKnockbackForce = slugMovementObject.FindProperty("knockBackForce");
+            _SlugMoveSpeed = slugMovementObject.FindProperty("moveSpeed");
+            _SlugTraceDistance = slugMovementObject.FindProperty("traceDistance");
         }
         #endregion
         #endregion
@@ -788,6 +854,38 @@ namespace CustomEditors
 
                 GUILayout.Space(foldoutSpaceing);
             }
+            #endregion
+
+            #region Slug UI
+            showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings");
+
+            if (showSlugSettings)
+            {
+                // fetch current values from the target
+                slugHealthObject.Update();
+
+                // fetch current values from the target
+                slugMovementObject.Update();
+
+                if (slugMovementEditor)
+                {
+                    slugMovementEditor.OnInspectorGUI();
+                }
+
+                if (slugHealthEditor)
+                {
+                    slugHealthEditor.OnInspectorGUI();
+                }
+
+                // Apply values to the target
+                slugHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                slugMovementObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+
             #endregion
 
             GUILayout.EndScrollView();
