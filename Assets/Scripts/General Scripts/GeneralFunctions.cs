@@ -69,6 +69,18 @@ public class GeneralFunctions
         return direction.normalized;
     }
     /// <summary>
+    /// Gets the directional vector of 2 transforms 
+    /// </summary>
+    /// <param name="position1"></param>
+    /// <param name="position2"></param>
+    /// <returns>A vector2 that is pointing in a direction</returns>
+    public static Vector2 GetDirectionVectorFrom2Vectors(Transform transfrom1, Transform transfrom2)
+    {
+        var direction = transfrom1.position - transfrom2.position;
+
+        return direction.normalized;
+    }
+    /// <summary>
     /// Checks to see if position 1 is above position 2
     /// </summary>
     /// <param name="position1"></param>
@@ -507,13 +519,31 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="target"></param>
     /// <param name="force"></param>
+    public static void ApplyKnockback(GameObject target, Vector2 force, ForceMode2D forceMode2D)
+    {
+        var rigidbody2D = target.GetComponent<Rigidbody2D>();
+
+        if (rigidbody2D)
+        {
+            rigidbody2D.AddForce(force, forceMode2D);
+        }
+        else
+        {
+            Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
+        }
+    }
+    /// <summary>
+    /// Gets the targets rigidbody and applies force
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="force"></param>
     public static void ApplyKnockback(GameObject target, Vector2 force)
     {
         var rigidbody2D = target.GetComponent<Rigidbody2D>();
 
         if (rigidbody2D)
         {
-            rigidbody2D.AddForce(force, ForceMode2D.Impulse);
+            rigidbody2D.AddForce(force);
         }
         else
         {

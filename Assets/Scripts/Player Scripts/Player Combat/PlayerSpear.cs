@@ -76,14 +76,17 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
-            if (canRotate)
+            if (!controller.IsPlayerStuned)
             {
-                RotateSpear();
-            }
+                if (canRotate)
+                {
+                    RotateSpear();
+                }
 
-            if (!gameplayManager._IsGamepadActive)
-            {
-                RotatePlayerWithMouse();
+                if (!gameplayManager._IsGamepadActive)
+                {
+                    RotatePlayerWithMouse();
+                }
             }
         }
         /// <summary>

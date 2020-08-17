@@ -4,6 +4,7 @@ using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
 using GameplayManagement;
+using System.Collections;
 
 namespace PlayerCharacter.Controller
 {
@@ -30,7 +31,10 @@ namespace PlayerCharacter.Controller
         /// Reference to player currently in the world
         /// </summary>
         public PlayerState MyPlayerState { get; set; } = null;
-
+        /// <summary>
+        /// Checks to see if the player is stunned
+        /// </summary>
+        public bool IsPlayerStuned { get; private set; } = false;
         /// <summary>
         /// Create new player controls object
         /// </summary>
@@ -43,6 +47,8 @@ namespace PlayerCharacter.Controller
 
             controls.Player.Fire.started += OnFirePressed;
             controls.Player.Fire.canceled += OnFireReleased;
+
+            IsPlayerStuned = false;
         }
         /// <summary>
         /// Enable player input
@@ -160,16 +166,22 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void Update()
         {
-            Move();
-            FireGun();
+            if (!IsPlayerStuned)
+            {
+                Move();
+                FireGun();
+            }
         }
         /// <summary>
         /// Check for jump input if true set movement state to jumping
         /// </summary>
         private void FixedUpdate()
         {
-            playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
-            jump = false;
+            if (!IsPlayerStuned)
+            {
+                playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
+                jump = false;
+            }
         }
         /// <summary>
         /// Called when player touches ground
@@ -182,6 +194,26 @@ namespace PlayerCharacter.Controller
             {
                 jump = true;
             }
+        }
+        /// <summary>
+        /// Disables player input for the given time
+        /// </summary>
+        /// <param name="stunTime"></param>
+        public void ApplyStun(float stunTime)
+        {
+            IsPlayerStuned = true;
+
+            StartCoroutine(StunTimer(stunTime));
+        }
+        /// <summary>
+        /// The actual stun timer
+        /// </summary>
+        /// <param name="time"></param>
+        private IEnumerator StunTimer(float time)
+        {
+            yield return new WaitForSeconds(time);
+
+            IsPlayerStuned = false;
         }
         /// <summary>
         /// Called when player dies will stop all player movement

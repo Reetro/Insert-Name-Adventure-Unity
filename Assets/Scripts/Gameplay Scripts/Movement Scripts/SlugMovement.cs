@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PlayerCharacter.Controller;
+using System.Collections;
 using UnityEngine;
 
 namespace EnemyCharacter.AI
@@ -31,11 +32,14 @@ namespace EnemyCharacter.AI
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
+        private BoxCollider2D boxCollider2D = null;
         #endregion
 
         #region Movement Code
         private void Start()
         {
+            boxCollider2D = GetComponent<BoxCollider2D>();
+
             traceStartObject = transform.GetChild(0).gameObject;
 
             currentRotation = transform.localEulerAngles.z;
@@ -366,7 +370,29 @@ namespace EnemyCharacter.AI
             {
                 GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true, gameObject);
 
-                GeneralFunctions.ApplyKnockback(collision.gameObject, -GetFacingDirection() * knockBackForce);
+                var player = collision.gameObject.GetComponent<PlayerController>();
+
+                if (player)
+                {
+                    Vector2 direction = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform, transform);
+
+                    if (Mathf.Abs(direction.y) >= Mathf.Abs(direction.x))
+                    {
+                        direction.x = 0;
+                    }
+                    else
+                    {
+                        direction.y = 0;
+                    }
+
+                    GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackForce, ForceMode2D.Impulse);
+
+                    player.ApplyStun(0.1f);
+                }
+                else
+                {
+                    Debug.LogError("Knockback failed couldn't get player controller");
+                }
             }
         }
         #endregion
