@@ -611,4 +611,29 @@ public class GeneralFunctions
             return new RaycastHit2D();
         }
     }
+    /// <summary>
+    /// Will get the player controller then stun the player for the given time
+    /// </summary>
+    /// <param name="playerObject"></param>
+    /// <param name="stunTime"></param>
+    public static void StunPlayer(GameObject playerObject, float stunTime)
+    {
+        if (playerObject)
+        {
+            var playerController = playerObject.GetComponent<PlayerController>();
+
+            if (playerController)
+            {
+                playerController.ApplyStun(stunTime);
+            }
+            else
+            {
+                Debug.LogError("Failed to stun " + playerObject.name + " is not the player object");
+            }
+        }
+        else
+        {
+            Debug.LogError("Failed to stun " + playerObject.name + " was not valid");
+        }
+    }
 }

@@ -370,29 +370,20 @@ namespace EnemyCharacter.AI
             {
                 GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true, gameObject);
 
-                var player = collision.gameObject.GetComponent<PlayerController>();
+                Vector2 direction = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform, transform);
 
-                if (player)
+                if (Mathf.Abs(direction.y) >= Mathf.Abs(direction.x))
                 {
-                    Vector2 direction = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform, transform);
-
-                    if (Mathf.Abs(direction.y) >= Mathf.Abs(direction.x))
-                    {
-                        direction.x = 0;
-                    }
-                    else
-                    {
-                        direction.y = 0;
-                    }
-
-                    GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackForce, ForceMode2D.Impulse);
-
-                    player.ApplyStun(0.1f);
+                    direction.x = 0;
                 }
                 else
                 {
-                    Debug.LogError("Knockback failed couldn't get player controller");
+                    direction.y = 0;
                 }
+
+                GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackForce, ForceMode2D.Impulse);
+
+                GeneralFunctions.StunPlayer(collision.gameObject, 0.1f);
             }
         }
         #endregion
