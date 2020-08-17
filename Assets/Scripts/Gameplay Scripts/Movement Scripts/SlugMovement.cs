@@ -1,5 +1,4 @@
-﻿using PlayerCharacter.Controller;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace EnemyCharacter.AI
@@ -16,6 +15,7 @@ namespace EnemyCharacter.AI
         [SerializeField] private LayerMask whatCanSlugSee = new LayerMask();
         [Tooltip("Whether or not to draw debug lines")]
         [SerializeField] private bool drawDebug = false;
+        [SerializeField] private bool onFloatingPlatform = false;
 
         [Space]
 
@@ -32,17 +32,31 @@ namespace EnemyCharacter.AI
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
-        private BoxCollider2D boxCollider2D = null;
+        private bool shouldBe180 = false;
+        private bool shouldBe0 = false;
         #endregion
 
         #region Movement Code
         private void Start()
         {
-            boxCollider2D = GetComponent<BoxCollider2D>();
-
             traceStartObject = transform.GetChild(0).gameObject;
 
             currentRotation = transform.localEulerAngles.z;
+            
+            if (currentRotation.Equals(270))
+            {
+                currentRotation = -90;
+            }
+
+            if (currentRotation.Equals(0))
+            {
+                shouldBe0 = true;
+            }
+
+            if (drawDebug)
+            {
+                print("Starting Rotation: " + currentRotation.ToString());
+            }
 
             canMove = true;
         }
@@ -84,37 +98,21 @@ namespace EnemyCharacter.AI
 
         #region Rotation Code
         /// <summary>
-        /// Traces in the direction the slug is facing and check to see if there is a surface to rotate on
-        /// </summary>
-        private RaycastHit2D LookForCollision()
-        {
-            Vector2 traceStart = transform.position;
-            Vector2 traceEnd = GetFacingDirection();
-
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
-
-            if (raycastHit2D)
-            {
-                if (drawDebug)
-                {
-                    Debug.DrawRay(traceStart, traceEnd, Color.green);
-                }
-            }
-            else
-            {
-                if (drawDebug)
-                {
-                    Debug.DrawRay(traceStart, traceEnd, Color.red);
-                }
-            }
-
-            return raycastHit2D;
-        }
-        /// <summary>
         /// Determines what the current rotation of the slug should be
         /// </summary>
         private void SnapRotation()
         {
+            if (currentRotation.Equals(0) && onFloatingPlatform && !shouldBe0)
+            {
+                shouldBe180 = true;
+                shouldBe0 = false;
+            }
+            else
+            {
+                shouldBe180 = false;
+                shouldBe0 = true;
+            }
+
             if (lastRotation.Equals(0) && currentRotation.Equals(0))
             {
                 ignoreIsGrounded = true;
@@ -126,7 +124,19 @@ namespace EnemyCharacter.AI
                 else
                 {
                     UpdateRotation(-90);
+
+                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, 0);
                 }
+
+                StartCoroutine(RestartGroundCheck());
+            }
+            else if (lastRotation.Equals(0) && currentRotation.Equals(180))
+            {
+                ignoreIsGrounded = true;
+                
+                UpdateRotation(90);
+
+                transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
 
                 StartCoroutine(RestartGroundCheck());
             }
@@ -217,7 +227,7 @@ namespace EnemyCharacter.AI
             else if (lastRotation.Equals(-90) && currentRotation.Equals(0))
             {
                 ignoreIsGrounded = true;
-                
+
                 if (isGrounded)
                 {
                     UpdateRotation(90);
@@ -262,9 +272,33 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    UpdateRotation(-90);
+                    if (!onFloatingPlatform)
+                    {
+                        UpdateRotation(-90);
 
-                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                        transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                    }
+                    else
+                    {
+                        if (shouldBe0)
+                        {
+                            UpdateRotation(180);
+
+                            transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
+
+                            shouldBe0 = false;
+                            shouldBe180 = true;
+                        }
+                        else if (shouldBe180)
+                        {
+                            UpdateRotation(-90);
+
+                            transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+
+                            shouldBe0 = true;
+                            shouldBe180 = false;
+                        }
+                    }
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -289,7 +323,7 @@ namespace EnemyCharacter.AI
 
             if (drawDebug)
             {
-                print("Current: " + currentRotation + " last: " + lastRotation);
+                print("Current Rotation: " + currentRotation + " last Rotation: " + lastRotation);
             }
         }
         /// <summary>
@@ -385,6 +419,33 @@ namespace EnemyCharacter.AI
 
                 GeneralFunctions.StunPlayer(collision.gameObject, 0.1f);
             }
+        }
+        /// <summary>
+        /// Traces in the direction the slug is facing and check to see if there is a surface to rotate on
+        /// </summary>
+        private RaycastHit2D LookForCollision()
+        {
+            Vector2 traceStart = transform.position;
+            Vector2 traceEnd = GetFacingDirection();
+
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
+
+            if (raycastHit2D)
+            {
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                }
+            }
+            else
+            {
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.red);
+                }
+            }
+
+            return raycastHit2D;
         }
         #endregion
     }
