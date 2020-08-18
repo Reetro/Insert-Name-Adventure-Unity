@@ -199,6 +199,7 @@ namespace CustomEditors
         private SerializedProperty _SlugMoveSpeed;
         private SerializedProperty _SlugTraceDistance;
         private SerializedProperty _SlugCanSee;
+        private SerializedProperty _SlugDebug;
         #endregion
 
         #region Slug Damage Varaibles
@@ -548,6 +549,7 @@ namespace CustomEditors
             _SlugKnockbackForce = slugMovementObject.FindProperty("knockBackForce");
             _SlugMoveSpeed = slugMovementObject.FindProperty("moveSpeed");
             _SlugTraceDistance = slugMovementObject.FindProperty("traceDistance");
+            _SlugDebug = slugMovementObject.FindProperty("drawDebug");
         }
         #endregion
         #endregion
