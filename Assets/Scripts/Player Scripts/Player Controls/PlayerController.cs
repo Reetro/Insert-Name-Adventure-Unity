@@ -116,15 +116,18 @@ namespace PlayerCharacter.Controller
         /// </summary>
         public void Jump()
         {
-            jump = true;
-            myAnimator.SetBool("IsJumping", true);
+            if (!healthComponent.IsCurrentlyDead)
+            {
+                jump = true;
+                myAnimator.SetBool("IsJumping", true);
+            }
         }
         /// <summary>
         /// Move the player character
         /// </summary>
         private void Move()
         {
-            if (!GeneralFunctions.IsPlayerDead())
+            if (!healthComponent.IsCurrentlyDead)
             {
                 horizontalMove = controls.Player.Movement.ReadValue<Vector2>().x;
 
@@ -153,7 +156,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void FireGun()
         {
-            if (!GeneralFunctions.IsPlayerDead())
+            if (!healthComponent.IsCurrentlyDead)
             {
                 if (fireGun)
                 {

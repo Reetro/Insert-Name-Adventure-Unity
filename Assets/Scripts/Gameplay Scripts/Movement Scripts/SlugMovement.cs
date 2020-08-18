@@ -30,7 +30,6 @@ namespace EnemyCharacter.AI
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
-        private bool isDead = false;
 
         [HideInInspector]
         public bool onFloatingPlatform = false;
@@ -60,7 +59,7 @@ namespace EnemyCharacter.AI
 
         private void Update()
         {
-            if (!isDead)
+            if (!MyHealthComponent.IsCurrentlyDead)
             {
                 var hit = LookForCollision();
                 isGrounded = IsGrounded();
@@ -98,8 +97,6 @@ namespace EnemyCharacter.AI
         protected override void OnDeath()
         {
             base.OnDeath();
-
-            isDead = true;
 
             Destroy(gameObject, 0.1f);
         }
