@@ -30,6 +30,7 @@ namespace EnemyCharacter.AI
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
+        private bool isDead = false;
 
         [HideInInspector]
         public bool onFloatingPlatform = false;
@@ -59,36 +60,48 @@ namespace EnemyCharacter.AI
 
         private void Update()
         {
-            var hit = LookForCollision();
-            isGrounded = IsGrounded();
-            
-            if (!ignoreIsGrounded)
+            if (!isDead)
             {
-                canMove = isGrounded;
-            }
-            else
-            {
-                canMove = true;
-            }
+                var hit = LookForCollision();
+                isGrounded = IsGrounded();
 
-            if (hit)
-            {
-                if (GeneralFunctions.IsObjectOnLayer(whatCanSlugSee, hit.transform.gameObject))
+                if (!ignoreIsGrounded)
                 {
-                    canMove = false;
+                    canMove = isGrounded;
+                }
+                else
+                {
+                    canMove = true;
+                }
 
+                if (hit)
+                {
+                    if (GeneralFunctions.IsObjectOnLayer(whatCanSlugSee, hit.transform.gameObject))
+                    {
+                        canMove = false;
+
+                        SnapRotation();
+                    }
+                }
+
+                if (canMove)
+                {
+                    MovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
+                }
+                else if (!isGrounded && !ignoreIsGrounded)
+                {
                     SnapRotation();
                 }
             }
+        }
 
-            if (canMove)
-            {
-                MovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
-            }
-            else if (!isGrounded && !ignoreIsGrounded)
-            {
-                SnapRotation();
-            }
+        protected override void OnDeath()
+        {
+            base.OnDeath();
+
+            isDead = true;
+
+            Destroy(gameObject, 0.1f);
         }
         #endregion
 
