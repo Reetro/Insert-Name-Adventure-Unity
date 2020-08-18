@@ -41,13 +41,13 @@ GameObject:
   - component: {fileID: 2838650451696758391}
   - component: {fileID: 2838650451696758388}
   - component: {fileID: 7261179109479738911}
+  - component: {fileID: 2838650451696758386}
+  - component: {fileID: 2838650451696758389}
   - component: {fileID: 2838650451696758387}
   - component: {fileID: 2838650451696758390}
   - component: {fileID: 2838650451696758382}
   - component: {fileID: 2838650451696758384}
-  - component: {fileID: 2838650451696758389}
   - component: {fileID: 2838650451696758385}
-  - component: {fileID: 2838650451696758386}
   m_Layer: 10
   m_Name: Slug
   m_TagString: Enemy
@@ -134,6 +134,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onFloatingPlatform: 0
   drawDebug: 0
+--- !u!114 &2838650451696758386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838650451696758383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb1388ffe6b36641a2eb1b811f5527a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2.5
+  traceDistance: 0.28
+  whatCanSlugSee:
+    serializedVersion: 2
+    m_Bits: 655617
+  damageToPlayer: 1
+  knockBackForce: 20
+  onFloatingPlatform: 0
+  drawDebug: 0
+--- !u!114 &2838650451696758389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838650451696758383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 6
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &2838650451696758387
 Rigidbody2D:
   serializedVersion: 4
@@ -212,25 +252,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2838650451696758389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2838650451696758383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 6
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  onTakeAnyDamage:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2838650451696758385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,24 +264,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7527ba892a1b739479ee8889da956958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2838650451696758386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2838650451696758383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bb1388ffe6b36641a2eb1b811f5527a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  traceDistance: 0.28
-  whatCanSlugSee:
-    serializedVersion: 2
-    m_Bits: 655617
-  damageToPlayer: 1
-  knockBackForce: 20
-  onFloatingPlatform: 0
-  drawDebug: 0

@@ -120,7 +120,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(-90);
 
-                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, 0);
+                    NudgeSlugDown(0, 0.3f);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -147,7 +147,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(0);
 
-                    transform.position = new Vector3(transform.position.x + 0.38f, transform.position.y, 0);
+                    NudgeSlugUp(0.38f, 0);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -164,7 +164,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(90);
 
-                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
+                    NudgeSlugUp(0, 0.3f);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -180,7 +180,9 @@ namespace EnemyCharacter.AI
                 else
                 {
                     UpdateRotation(180);
-                    transform.position = new Vector3(transform.position.x - 0.3f, transform.position.y + 0.05f, 0);
+
+                    NudgeSlugDown(0.3f, 0);
+                    NudgeSlugUp(0, 0.05f);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -198,7 +200,7 @@ namespace EnemyCharacter.AI
                     UpdateRotation(90);
                 }
 
-                transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
+                NudgeSlugUp(0, 0.3f);
 
                 StartCoroutine(RestartGroundCheck());
             }
@@ -214,7 +216,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(0);
 
-                    transform.position = new Vector3(transform.position.x + 0.38f, transform.position.y, 0);
+                    NudgeSlugUp(0.38f, 0);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -252,7 +254,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(-90);
 
-                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                    NudgeSlugDown(0.05f, 0.2f);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -271,11 +273,13 @@ namespace EnemyCharacter.AI
                     {
                         UpdateRotation(-90);
 
-                        transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y - 0.2f, 0);
+                        NudgeSlugDown(0.05f, 0.2f);
                     }
                     else
                     {
                         UpdateRotation(180);
+
+                        NudgeSlugDown(0.01f, 0);
 
                         transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
                     }
@@ -295,7 +299,7 @@ namespace EnemyCharacter.AI
                 {
                     UpdateRotation(180);
 
-                    transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
+                    NudgeSlugUp(0.38f, 0);
                 }
 
                 StartCoroutine(RestartGroundCheck());
@@ -305,6 +309,24 @@ namespace EnemyCharacter.AI
             {
                 print("Current Rotation: " + currentRotation + " last Rotation: " + lastRotation);
             }
+        }
+        /// <summary>
+        /// Push the slug backward / downward
+        /// </summary>
+        /// <param name="xOffset"></param>
+        /// <param name="yOffset"></param>
+        private void NudgeSlugDown(float xOffset, float yOffset)
+        {
+            transform.position = new Vector3(transform.position.x - xOffset, transform.position.y - yOffset, 0);
+        }
+        /// <summary>
+        /// Push the slug froward / upward
+        /// </summary>
+        /// <param name="xOffset"></param>
+        /// <param name="yOffset"></param>
+        private void NudgeSlugUp(float xOffset, float yOffset)
+        {
+            transform.position = new Vector3(transform.position.x + xOffset, transform.position.y + yOffset, 0);
         }
         /// <summary>
         /// Gets the current direction the slug is facing
