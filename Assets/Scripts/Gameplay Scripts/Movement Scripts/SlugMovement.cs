@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
-    [RequireComponent(typeof(SlugInstanceSettings))]
     public class SlugMovement : EnemyBase
     {
         [Header("Movement Settings")]
@@ -14,6 +13,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private float traceDistance = 0.6f;
         [Tooltip("What layers the slug can rotate on")]
         [SerializeField] private LayerMask whatCanSlugSee = new LayerMask();
+        [Tooltip("Whether or not to draw debug lines")]
+        [SerializeField] private bool drawDebug = false;
 
         [Space]
 
@@ -25,16 +26,10 @@ namespace EnemyCharacter.AI
 
         #region Local Vars
         private bool canMove = true;
-        private float lastRotation = 0;
         private float currentRotation = 0;
         private bool isGrounded = false;
         private bool ignoreIsGrounded = false;
         private GameObject traceStartObject = null;
-
-        [HideInInspector]
-        public bool onFloatingPlatform = false;
-        [HideInInspector]
-        public bool drawDebug = false;
         #endregion
 
         #region Movement Code
@@ -108,206 +103,80 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void SnapRotation()
         {
-            if (lastRotation.Equals(0) && currentRotation.Equals(0))
+            switch (currentRotation)
             {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(90);
-                }
-                else
-                {
-                    UpdateRotation(-90);
+                case 0:
+                    ignoreIsGrounded = true;
 
-                    NudgeSlugDown(0, 0.3f);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(0) && currentRotation.Equals(180))
-            {
-                ignoreIsGrounded = true;
-                
-                UpdateRotation(90);
-
-                transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(0) && currentRotation.Equals(90))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(180);
-                }
-                else
-                {
-                    UpdateRotation(0);
-
-                    NudgeSlugUp(0.38f, 0);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(90) && currentRotation.Equals(180))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(-90);
-                }
-                else
-                {
-                    UpdateRotation(90);
-
-                    NudgeSlugUp(0, 0.3f);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(180) && currentRotation.Equals(-90))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(0);
-                }
-                else
-                {
-                    UpdateRotation(180);
-
-                    NudgeSlugDown(0.3f, 0);
-                    NudgeSlugUp(0, 0.05f);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(-90) && currentRotation.Equals(180))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(-90);
-                }
-                else
-                {
-                    UpdateRotation(90);
-                }
-
-                NudgeSlugUp(0, 0.3f);
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(180) && currentRotation.Equals(90))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(180);
-                }
-                else
-                {
-                    UpdateRotation(0);
-
-                    NudgeSlugUp(0.38f, 0);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(-90) && currentRotation.Equals(0))
-            {
-                ignoreIsGrounded = true;
-
-                if (isGrounded)
-                {
-                    UpdateRotation(90);
-                }
-                else
-                {
-                    UpdateRotation(-90);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(90) && currentRotation.Equals(180))
-            {
-                ignoreIsGrounded = true;
-                UpdateRotation(0);
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(90) && currentRotation.Equals(0))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(0);
-                }
-                else
-                {
-                    UpdateRotation(-90);
-
-                    NudgeSlugDown(0.05f, 0.2f);
-                }
-
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(0) && currentRotation.Equals(-90))
-            {
-                ignoreIsGrounded = true;
-
-                if (isGrounded)
-                {
-                    UpdateRotation(0);
-                }
-                else
-                {
-                    if (!onFloatingPlatform)
+                    if (isGrounded)
+                    {
+                        UpdateRotation(90);
+                    }
+                    else
                     {
                         UpdateRotation(-90);
 
-                        NudgeSlugDown(0.05f, 0.2f);
+                        NudgeSlugDown(0, 0.3f);
+                    }
+
+                    StartCoroutine(RestartGroundCheck());
+                    break;
+
+                case 90:
+                    ignoreIsGrounded = true;
+
+                    if (isGrounded)
+                    {
+                        UpdateRotation(180);
+                    }
+                    else
+                    {
+                        UpdateRotation(0);
+
+                        NudgeSlugUp(0.2f, 0);
+                    }
+
+                    StartCoroutine(RestartGroundCheck());
+                    break;
+
+                case 180:
+                    ignoreIsGrounded = true;
+
+                    if (isGrounded)
+                    {
+                        UpdateRotation(-90);
+                    }
+                    else
+                    {
+                        UpdateRotation(90);
+
+                        NudgeSlugUp(0, 0.2f);
+                    }
+
+                    StartCoroutine(RestartGroundCheck());
+                    break;
+
+                case -90:
+                    ignoreIsGrounded = true;
+
+                    if (isGrounded)
+                    {
+                        UpdateRotation(0);
                     }
                     else
                     {
                         UpdateRotation(180);
 
-                        NudgeSlugDown(0.01f, 0);
-
-                        transform.position = new Vector3(transform.position.x - 0.38f, transform.position.y, 0);
+                        NudgeSlugDown(0.2f, 0);
                     }
-                }
 
-                StartCoroutine(RestartGroundCheck());
-            }
-            else if (lastRotation.Equals(-90) && currentRotation.Equals(-90))
-            {
-                ignoreIsGrounded = true;
-                
-                if (isGrounded)
-                {
-                    UpdateRotation(0);
-                }
-                else
-                {
-                    UpdateRotation(180);
-
-                    NudgeSlugUp(0.38f, 0);
-                }
-
-                StartCoroutine(RestartGroundCheck());
+                    StartCoroutine(RestartGroundCheck());
+                    break;
             }
 
             if (drawDebug)
             {
-                print("Current Rotation: " + currentRotation + " last Rotation: " + lastRotation);
+                print("Current Rotation: " + currentRotation);
             }
         }
         /// <summary>
@@ -357,7 +226,6 @@ namespace EnemyCharacter.AI
         /// <param name="newRotation"></param>
         private void UpdateRotation(float newRotation)
         {
-            lastRotation = currentRotation;
             currentRotation = newRotation;
 
             transform.eulerAngles = new Vector3(0, 0, newRotation);

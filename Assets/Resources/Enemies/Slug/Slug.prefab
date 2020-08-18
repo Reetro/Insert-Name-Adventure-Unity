@@ -40,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2838650451696758391}
   - component: {fileID: 2838650451696758388}
-  - component: {fileID: 7261179109479738911}
   - component: {fileID: 2838650451696758386}
   - component: {fileID: 2838650451696758389}
   - component: {fileID: 2838650451696758387}
@@ -120,20 +119,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7261179109479738911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2838650451696758383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74c65a3d59178cd4984e73316bead35f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onFloatingPlatform: 0
-  drawDebug: 0
 --- !u!114 &2838650451696758386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,11 +135,10 @@ MonoBehaviour:
   traceDistance: 0.28
   whatCanSlugSee:
     serializedVersion: 2
-    m_Bits: 655617
+    m_Bits: 655616
+  drawDebug: 0
   damageToPlayer: 1
   knockBackForce: 20
-  onFloatingPlatform: 0
-  drawDebug: 0
 --- !u!114 &2838650451696758389
 MonoBehaviour:
   m_ObjectHideFlags: 0
