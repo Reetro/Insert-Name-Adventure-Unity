@@ -10,8 +10,15 @@ namespace EnemyCharacter
 
         private DebuffEffect debuffEffect = null;
 
-        public void OnLeechSpawn(float health, GameObject player)
+        /// <summary>
+        /// The old leech ID
+        /// </summary>
+        public int MyID { get; private set; }
+
+        public void OnLeechSpawn(float health, GameObject player, int id)
         {
+            MyID = id;
+
             GeneralFunctions.ConstructHPComponent(gameObject);
 
             leechHealthComp.SetHealth(health);

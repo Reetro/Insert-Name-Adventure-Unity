@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using AuraSystem;
 using EnemyCharacter;
+using EnemyCharacter.AI;
 
 namespace PlayerCharacter.Collision
 {
@@ -11,26 +12,25 @@ namespace PlayerCharacter.Collision
         [SerializeField] private string tagToAttach = "Leech Collision Top";
 
         private GameObject player = null;
-        private AuraManager auraManager = null;
 
         private void Awake()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-
-            auraManager = player.GetComponent<AuraManager>();
+            player = GeneralFunctions.GetPlayerGameObject();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Attachable Leech"))
             {
-                if (GeneralFunctions.CanLeechAttach(tagToAttach) && !GeneralFunctions.IsObjectDead(collision.gameObject))
+                var leechID = collision.gameObject.GetComponent<LeechMovement>().MyID;
+
+                if (GeneralFunctions.CanLeechAttach(tagToAttach, leechID) && !GeneralFunctions.IsObjectDead(collision.gameObject))
                 {
                     var leechHP = collision.gameObject.GetComponent<HealthComponent>();
 
                     var spawnTransform = GeneralFunctions.GetLeechAttachPointByTag(tagToAttach);
 
-                    GeneralFunctions.SpawnLeechAttach(leechToAttach, spawnTransform, leechHP.CurrentHealth, player);
+                    GeneralFunctions.SpawnLeechAttach(leechToAttach, spawnTransform, leechHP.CurrentHealth, player, leechID);
 
                     if (GeneralFunctions.IsObjectOnLayer("Enemy", collision.gameObject))
                     {
@@ -39,6 +39,7 @@ namespace PlayerCharacter.Collision
                 }
             }
         }
+
         private void LateUpdate()
         {
             transform.position = player.transform.position + (Vector3)offset;

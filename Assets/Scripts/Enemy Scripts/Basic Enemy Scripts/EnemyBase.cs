@@ -64,7 +64,7 @@ namespace EnemyCharacter
         /// <summary>
         /// Gets this Gameobjects ID
         /// </summary>
-        public int IdGameObject { get { return IdGameObject; } }
+        public int MyID { get { return idObject.ID; } }
         /// <summary>
         /// Gets this Gameobjects movement component
         /// </summary>

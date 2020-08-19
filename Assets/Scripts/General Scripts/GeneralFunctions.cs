@@ -33,7 +33,10 @@ public class GeneralFunctions
             return false;
         }
     }
-    // Checks to see if the given number is negative
+    /// <summary>
+    /// Checks to see if the given number is negative
+    /// </summary>
+    /// <param name="number"></param>
     public static bool IsNumberNegative(float number)
     {
         return number < 0;
@@ -113,13 +116,13 @@ public class GeneralFunctions
     /// <param name="health">Incoming leech's health</param>
     /// <param name="player">Player reference</param>
     /// <returns>The spawned leech attached to the player</returns>
-    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject target)
+    public static AttachedLeech SpawnLeechAttach(AttachedLeech attachedLeech, Transform transform, float health, GameObject target, int leechID)
     {
         AttachedLeech localLeech = GameObject.Instantiate(attachedLeech, transform.position, Quaternion.identity);
 
         localLeech.transform.parent = transform;
 
-        localLeech.OnLeechSpawn(health, target);
+        localLeech.OnLeechSpawn(health, target, leechID);
 
         return localLeech;
     }
@@ -133,13 +136,58 @@ public class GeneralFunctions
         return GameObject.FindGameObjectWithTag(tag).transform;
     }
     /// <summary>
-    /// Checks to see if leech is already attached on the given tag and checks to see if a new scene is currently loading
+    /// Checks to see if leech is already attached on the given tag and checks to see if a new scene is currently loading then as one final check it sees if an attached leech with the given ID is already attached to the player
     /// </summary>
     /// <param name="tag">the collision tag the leech is attaching to</param>
+    /// <param name="id"></param>
     /// <returns>A bool that determines if a leech can attach to a given point</returns>
-    public static bool CanLeechAttach(string tag)
+    public static bool CanLeechAttach(string tag, int id)
     {
-        return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0 && !GameObject.FindObjectOfType<PlayerState>().IsLoadingScene) ? true : false;
+        return (GameObject.FindGameObjectWithTag(tag).transform.childCount <= 0 && !GameObject.FindObjectOfType<PlayerState>().IsLoadingScene && !DoesAttachedLeechExist(id)) ? true : false;
+    }
+    /// <summary>
+    /// Loops through all attached leeches in the scene and checks to see if one with the same ID exists
+    /// </summary>
+    /// <param name="id"></param>
+    public static bool DoesAttachedLeechExist(int id)
+    {
+        var attachedLeeches = GetAllAttachedLeeches();
+        bool localBool = false;
+
+        foreach (AttachedLeech attachedLeech in attachedLeeches)
+        {
+            if (attachedLeech)
+            {
+                if (attachedLeech.MyID == id)
+                {
+                    localBool = true;
+                    break;
+                }
+            }
+        }
+
+        return localBool;
+    }
+    /// <summary>
+    /// Gets all attached leeches in the current level
+    /// </summary>
+    /// <returns>A list of attached leeches</returns>
+    public static List<AttachedLeech> GetAllAttachedLeeches()
+    {
+        var leechObjects = GetAllObjectsInLayer("Attached Leech");
+        List<AttachedLeech> attachedLeeches = new List<AttachedLeech>();
+
+        foreach (GameObject gameObject in leechObjects)
+        {
+            var attachedLeech = gameObject.GetComponent<AttachedLeech>();
+
+            if (attachedLeech)
+            {
+                attachedLeeches.Add(attachedLeech);
+            }
+        }
+
+        return attachedLeeches;
     }
     /// <summary>
     /// Calls the construct health component function on the given game object
@@ -348,7 +396,7 @@ public class GeneralFunctions
 
         foreach (GameplayObjectID currentGameObject in objects)
         {
-            if (currentGameObject.GetID() == id)
+            if (currentGameObject.ID == id)
             {
                 foundObject = currentGameObject.gameObject;
                 break;
@@ -584,6 +632,20 @@ public class GeneralFunctions
         }
         // finally, let's decrement Array's size by one
         Array.Resize(ref arr, arr.Length - 1);
+    }
+    /// <summary>
+    /// Will add a new item to a array
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Org"></param>
+    /// <param name="New_Value"></param>
+    /// <returns>A new array</returns>
+    public static T[] AddtoArray<T>(T[] Org, T New_Value)
+    {
+        T[] New = new T[Org.Length + 1];
+        Org.CopyTo(New, 0);
+        New[Org.Length] = New_Value;
+        return New;
     }
     /// <summary>
     /// Gets the eye component on the give object and fires a raycast from the objects eyes

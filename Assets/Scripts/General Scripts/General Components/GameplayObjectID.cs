@@ -2,7 +2,7 @@
 
 public class GameplayObjectID : MonoBehaviour
 {
-    private int ID = 0;
+    public int ID { get; private set; }
     /// <summary>
     /// Generate this Gameobjects ID
     /// </summary>
@@ -10,11 +10,5 @@ public class GameplayObjectID : MonoBehaviour
     {
         ID = GeneralFunctions.GenID();
     }
-    /// <summary>
-    /// Get This Gameobjects ID
-    /// </summary>
-    public int GetID()
-    {
-        return ID;
-    }
+
 }
