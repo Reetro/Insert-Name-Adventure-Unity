@@ -43,7 +43,10 @@ namespace EnemyCharacter.AI
             }
             else if (MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug))
             {
-                StartShooting();
+                if (!isCoroutineRuning)
+                {
+                    StartShooting();
+                }
             }
             else
             {
