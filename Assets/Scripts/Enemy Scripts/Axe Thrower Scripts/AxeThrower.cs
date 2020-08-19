@@ -53,7 +53,7 @@ namespace EnemyCharacter.AI
                 if (visible)
                 {
                     isPlayerVisiable = true;
-                    StartShooting();
+                    StartCoroutine(ShootInterval());
                     yield break;
                 }
                 else
@@ -63,7 +63,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Check to see if player is visitable if so start throwing axes 
+        /// Check to see if Axe thrower is dead if so stop shooting
         /// </summary>
         private void Update()
         {
@@ -71,15 +71,6 @@ namespace EnemyCharacter.AI
             {
                 StopShooting();
             }
-        }
-        /// <summary>
-        /// Starts throwing axes at a set interval
-        /// </summary>
-        private void StartShooting()
-        {
-            isPlayerVisiable = true;
-
-            StartCoroutine(ShootInterval());
         }
         /// <summary>
         /// Every X Seconds throw an axe
