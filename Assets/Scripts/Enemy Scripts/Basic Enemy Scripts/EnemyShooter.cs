@@ -25,7 +25,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         protected virtual bool AutoStart { get; set; } = true;
 
-        private void Start()
+        protected virtual void Start()
         {
             ConstructShooter();
 

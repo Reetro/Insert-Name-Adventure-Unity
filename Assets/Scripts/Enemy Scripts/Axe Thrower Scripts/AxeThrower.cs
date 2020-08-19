@@ -8,7 +8,6 @@ namespace EnemyCharacter.AI
     [Serializable]
     public class AxeThrower : EnemyShooter
     {
-        private bool isCoroutineRuning = false;
         private bool isPlayerVisiable = false;
 
         [Header("Sight Settings")]
@@ -33,22 +32,42 @@ namespace EnemyCharacter.AI
             AutoStart = false;
         }
         /// <summary>
+        /// Start player visibility check
+        /// </summary>
+        protected override void Start()
+        {
+            base.Start();
+
+            StartCoroutine(CheckPlayerVisablity());
+        }
+        /// <summary>
+        /// Every 0.001 second check to see if player is visible
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator CheckPlayerVisablity()
+        {
+            while (!isPlayerVisiable)
+            {
+                var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
+
+                if (visible)
+                {
+                    isPlayerVisiable = true;
+                    StartShooting();
+                    yield break;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.001f);
+                }
+            }
+        }
+        /// <summary>
         /// Check to see if player is visitable if so start throwing axes 
         /// </summary>
         private void Update()
         {
             if (MyHealthComponent.IsCurrentlyDead)
-            {
-                StopShooting();
-            }
-            else if (MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug))
-            {
-                if (!isCoroutineRuning)
-                {
-                    StartShooting();
-                }
-            }
-            else
             {
                 StopShooting();
             }
@@ -58,12 +77,9 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void StartShooting()
         {
-            if (!isCoroutineRuning)
-            {
-                isPlayerVisiable = true;
+            isPlayerVisiable = true;
 
-                StartCoroutine(ShootInterval());
-            }
+            StartCoroutine(ShootInterval());
         }
         /// <summary>
         /// Every X Seconds throw an axe
@@ -72,11 +88,18 @@ namespace EnemyCharacter.AI
         {
             while (isPlayerVisiable)
             {
-                isCoroutineRuning = true;
+                var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
 
-                Shoot();
+                if (visible)
+                {
+                    Shoot();
 
-                yield return new WaitForSeconds(shootIntervale);
+                    yield return new WaitForSeconds(shootIntervale);
+                }
+                else
+                {
+                    StopShooting();
+                }
             }
         }
         /// <summary>
@@ -97,12 +120,9 @@ namespace EnemyCharacter.AI
         {
             isPlayerVisiable = false;
 
-            if (isCoroutineRuning)
-            {
-                StopCoroutine(ShootInterval());
+            StopCoroutine(ShootInterval());
 
-                isCoroutineRuning = false;
-            }
+            StartCoroutine(CheckPlayerVisablity());
         }
         /// <summary>
         /// Destroy Axe thrower Gameobject on death
