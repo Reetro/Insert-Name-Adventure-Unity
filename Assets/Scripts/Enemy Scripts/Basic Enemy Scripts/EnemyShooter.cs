@@ -6,6 +6,7 @@ namespace EnemyCharacter.AI
 {
     public class EnemyShooter : EnemyBase
     {
+        [Header("Shooter settings")]
         [Tooltip("How often a projectile is spawned")]
         [SerializeField] protected float shootIntervale = 2f;
         [Tooltip("How fast the spawned projectile goes")]

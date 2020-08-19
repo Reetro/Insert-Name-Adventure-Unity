@@ -180,6 +180,8 @@ namespace CustomEditors
         private SerializedProperty _AxeThrowerProjectileSpeed;
         private SerializedProperty _AxeThrowerSightLayers;
         private SerializedProperty _AxeThrowerProjectileToSpawn;
+        private SerializedProperty _AxeThrowerDebug;
+        private SerializedProperty _AxeThrowerSightRange;
         #endregion
 
         #region Axe Thrower Health Varaibles
@@ -515,6 +517,8 @@ namespace CustomEditors
             _AxeThrowerProjectileDamage = axeThrowerObject.FindProperty("projectileDamage");
             _AxeThrowerSightLayers = axeThrowerObject.FindProperty("sightLayers");
             _AxeThrowerProjectileToSpawn = axeThrowerObject.FindProperty("projectileToSpawn");
+            _AxeThrowerDebug = axeThrowerObject.FindProperty("drawDebug");
+            _AxeThrowerSightRange = axeThrowerObject.FindProperty("sightRange");
         }
         #endregion
 

@@ -127,7 +127,7 @@ MonoBehaviour:
     type: 3}
   sightLayers:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 131840
 --- !u!114 &1401541713555539889
 MonoBehaviour:
   m_ObjectHideFlags: 0

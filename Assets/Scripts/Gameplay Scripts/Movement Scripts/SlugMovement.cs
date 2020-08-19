@@ -13,6 +13,10 @@ namespace EnemyCharacter.AI
         [SerializeField] private float traceDistance = 0.6f;
         [Tooltip("What layers the slug can rotate on")]
         [SerializeField] private LayerMask whatCanSlugSee = new LayerMask();
+
+        [Space]
+
+        [Header("Debug Settings")]
         [Tooltip("Whether or not to draw debug lines")]
         [SerializeField] private bool drawDebug = false;
 
@@ -80,7 +84,7 @@ namespace EnemyCharacter.AI
 
                 if (canMove)
                 {
-                    MovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
+                    MyMovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
                 }
                 else if (!isGrounded && !ignoreIsGrounded)
                 {

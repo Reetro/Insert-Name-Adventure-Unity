@@ -20,12 +20,12 @@ namespace EnemyCharacter.AI
             {
                 if (MyRigidBody2D.velocity.magnitude > 0)
                 {
-                    RotateToMovement();
+                    MyMovementComp.RotateToMovement(MyRigidBody2D);
                 }
 
                 var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
 
-                MovementComp.AddToLeechY(transform, amountToAddToY.y);
+                MyMovementComp.AddToLeechY(transform, amountToAddToY.y);
             }
         }
 
@@ -33,7 +33,7 @@ namespace EnemyCharacter.AI
         {
             if (!MyHealthComponent.IsCurrentlyDead)
             {
-                MovementComp.MoveAITowards(PlayerTransform, MyRigidBody2D, leechFlySpeed);
+                MyMovementComp.MoveAITowards(PlayerTransform, MyRigidBody2D, leechFlySpeed);
             }
         }
 
@@ -43,7 +43,7 @@ namespace EnemyCharacter.AI
 
             MyAnimator.SetBool("IsDead", true);
 
-            MovementComp.StopMovement(MyRigidBody2D);
+            MyMovementComp.StopMovement(MyRigidBody2D);
         }
 
         public void OnDeathAnimationEnd()

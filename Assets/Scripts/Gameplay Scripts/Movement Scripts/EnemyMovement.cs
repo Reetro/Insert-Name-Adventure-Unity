@@ -131,5 +131,66 @@ namespace EnemyCharacter.AI
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
             }
         }
+        /// <summary>
+        /// Make the AI face the direction it's moving in
+        /// </summary>
+        public void RotateToMovement(Rigidbody2D rigidbody2D)
+        {
+            if (rigidbody2D.velocity != Vector2.zero)
+            {
+                var direction = rigidbody2D.velocity.normalized;
+
+                if (GeneralFunctions.IsNumberNegative(direction.x))
+                {
+                    transform.rotation = new Quaternion(0, 180, 0, 0);
+                }
+                else
+                {
+                    transform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+            }
+        }
+        /// <summary>
+        /// Fire a raycast from the current AI to the given transform and checks to if there is ground between the transform and and the enemy
+        /// </summary>
+        /// <returns>A bool that determines enemy sight</returns>
+        public bool IsTransformVisiable(LayerMask layerMask, Transform startTransform, Transform targetTransform, string tag, float sightRange, bool drawDebug)
+        {
+            var direction = GeneralFunctions.GetDistanceBetweenVectors(targetTransform.position, startTransform.position);
+
+            RaycastHit2D hit2D = Physics2D.Raycast(startTransform.position, direction, sightRange, layerMask);
+
+            if (hit2D)
+            {
+                if (hit2D.transform.gameObject.CompareTag(tag))
+                {
+                    if (drawDebug)
+                    {
+                        Debug.DrawLine(startTransform.position, direction * sightRange, Color.green);
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    if (drawDebug)
+                    {
+                        Debug.DrawLine(startTransform.position, direction * sightRange, Color.red);
+                    }
+
+
+                    return false;
+                }
+            }
+            else
+            {
+                if (drawDebug)
+                {
+                    Debug.DrawLine(startTransform.position, direction * sightRange, Color.red);
+                }
+
+                return false;
+            }
+        }
     }
 }

@@ -11,8 +11,16 @@ namespace EnemyCharacter.AI
         private bool isCoroutineRuning = false;
         private bool isPlayerVisiable = false;
 
+        [Header("Sight Settings")]
         [Tooltip("What layers this object can see")]
         public LayerMask sightLayers;
+        [SerializeField] private float sightRange = 10f;
+
+        [Space]
+
+        [Header("Debug Settings")]
+        [Tooltip("Whether or not to draw debug lines")]
+        [SerializeField] private bool drawDebug = false;
 
         protected override void Awake()
         {
@@ -28,7 +36,7 @@ namespace EnemyCharacter.AI
             {
                 StopShooting();
             }
-            else if (IsPlayerVisiable(sightLayers))
+            else if (MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug))
             {
                 StartShooting();
             }
