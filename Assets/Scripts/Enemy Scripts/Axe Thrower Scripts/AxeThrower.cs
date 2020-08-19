@@ -22,6 +22,9 @@ namespace EnemyCharacter.AI
         [Tooltip("Whether or not to draw debug lines")]
         [SerializeField] private bool drawDebug = false;
 
+        /// <summary>
+        /// Get the transform to spawn axes at and disable auto start
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -29,7 +32,9 @@ namespace EnemyCharacter.AI
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = false;
         }
-
+        /// <summary>
+        /// Check to see if player is visitable if so start throwing axes 
+        /// </summary>
         private void Update()
         {
             if (MyHealthComponent.IsCurrentlyDead)
@@ -45,19 +50,9 @@ namespace EnemyCharacter.AI
                 StopShooting();
             }
         }
-
-        protected override IEnumerator ShootInterval()
-        {
-            isCoroutineRuning = true;
-
-            while (isPlayerVisiable)
-            {
-                Shoot();
-
-                yield return new WaitForSeconds(shootIntervale);
-            }
-        }
-        
+        /// <summary>
+        /// Starts throwing axes at a set interval
+        /// </summary>
         private void StartShooting()
         {
             if (!isCoroutineRuning)
@@ -67,7 +62,23 @@ namespace EnemyCharacter.AI
                 StartCoroutine(ShootInterval());
             }
         }
+        /// <summary>
+        /// Every X Seconds throw an axe
+        /// </summary>
+        protected override IEnumerator ShootInterval()
+        {
+            while (isPlayerVisiable)
+            {
+                isCoroutineRuning = true;
 
+                Shoot();
+
+                yield return new WaitForSeconds(shootIntervale);
+            }
+        }
+        /// <summary>
+        /// Spawn an axe and set up damage, speed, and direction
+        /// </summary>
         protected override void Shoot()
         {
             ProjectileMovement axe = Instantiate(_ProjectileMovement, FireTransform.position, Quaternion.identity);
@@ -76,7 +87,9 @@ namespace EnemyCharacter.AI
 
             axe.ConstructProjectile(ProjectileSpeed, ProjectileDamage, launchDirection);
         }
-
+        /// <summary>
+        /// Stop throwing axes
+        /// </summary>
         private void StopShooting()
         {
             isPlayerVisiable = false;
@@ -88,7 +101,9 @@ namespace EnemyCharacter.AI
                 isCoroutineRuning = false;
             }
         }
-
+        /// <summary>
+        /// Destroy Axe thrower Gameobject on death
+        /// </summary>
         protected override void OnDeath()
         {
             base.OnDeath();
