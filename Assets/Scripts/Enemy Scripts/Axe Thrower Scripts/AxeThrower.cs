@@ -43,33 +43,29 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Every 0.001 second check to see if player is visible
         /// </summary>
-        /// <returns></returns>
         private IEnumerator CheckPlayerVisablity()
         {
-            while (!isPlayerVisiable)
+            if (!MyHealthComponent.IsCurrentlyDead)
             {
-                var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
+                while (!isPlayerVisiable)
+                {
+                    var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
 
-                if (visible)
-                {
-                    isPlayerVisiable = true;
-                    StartCoroutine(ShootInterval());
-                    yield break;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(0.001f);
+                    if (visible)
+                    {
+                        isPlayerVisiable = true;
+                        StartCoroutine(ShootInterval());
+                        yield break;
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(0.001f);
+                    }
                 }
             }
-        }
-        /// <summary>
-        /// Check to see if Axe thrower is dead if so stop shooting
-        /// </summary>
-        private void Update()
-        {
-            if (MyHealthComponent.IsCurrentlyDead)
+            else
             {
-                StopShooting();
+                yield break;
             }
         }
         /// <summary>
