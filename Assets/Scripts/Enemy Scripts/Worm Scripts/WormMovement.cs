@@ -4,12 +4,10 @@ namespace EnemyCharacter.AI
 {
     public class WormMovement : EnemyBase
     {
-        //[SerializeField] private float rotationSpeed = 15f;
         [SerializeField] private float damage = 1f;
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
         [SerializeField] private bool drawDebug = false;
 
-        private Quaternion targetRotation;
         private WormSegment[] childSegments;
 
         /// <summary>
@@ -27,16 +25,14 @@ namespace EnemyCharacter.AI
                     wormSegment.DamageToApply = damage;
                     wormSegment.DrawDebug = drawDebug;
 
-                    wormSegment.CheckCollision();
+                    //wormSegment.CheckCollision();
                 }
             }
-
-            //targetRotation = Quaternion.Euler(0, 0, Random.Range(-360, 360));
         }
 
         private void Update()
         {
-            //transform.localRotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            
         }
     }
 }

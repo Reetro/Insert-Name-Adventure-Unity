@@ -32,6 +32,7 @@ namespace EnemyCharacter.AI
         private Vector2 boxSize;
         private float boxAngle = 0;
         private float myWidth = 0;
+
         /// <summary>
         /// Set all needed references and disable physics
         /// </summary>
@@ -49,12 +50,12 @@ namespace EnemyCharacter.AI
 
             myWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
 
-            jointToggler.enabled = false;
-            myBoxCollider2D.enabled = false;
-            myRigidbody2D.isKinematic = true;
+            //jointToggler.enabled = false;
+            //myBoxCollider2D.enabled = false;
+            //myRigidbody2D.isKinematic = true;
         }
         /// <summary>
-        /// Check to see if segment is in the ground if not enable collision
+        /// Check to see if segment is in the ground if not enable collision and physics
         /// </summary>
         public void CheckCollision()
         {
