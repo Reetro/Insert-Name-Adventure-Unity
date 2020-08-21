@@ -698,4 +698,20 @@ public class GeneralFunctions
             Debug.LogError("Failed to stun " + playerObject.name + " was not valid");
         }
     }
+    /// <summary>
+    /// Gets the given object current angle
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A float</returns>
+    public static float GetObjectAngle(GameObject gameObject)
+    {
+        var angle = gameObject.transform.localEulerAngles.z;
+
+        if (angle.Equals(270))
+        {
+            angle = -90;
+        }
+
+        return angle;
+    }
 }

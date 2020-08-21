@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 6882539432330233521}
   - component: {fileID: 6882539432330233533}
   - component: {fileID: 6882539432330233522}
-  - component: {fileID: 6882539432330233523}
   - component: {fileID: 6882539432330233520}
+  - component: {fileID: 6882539432330233523}
   - component: {fileID: 1952867737}
   m_Layer: 10
   m_Name: Worm Mid 2
-  m_TagString: Enemy
+  m_TagString: Worm Segment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6882539432330233526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.015, y: -2.99, z: 0}
+  m_LocalPosition: {x: -0.015, y: -1.171, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6882539433602502948}
@@ -106,6 +106,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!233 &6882539432330233520
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6882539432330233526}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 6882539433534048731}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0.52}
+  m_ConnectedAnchor: {x: 0, y: -0.4749999}
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!61 &6882539432330233523
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -132,30 +156,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!233 &6882539432330233520
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6882539432330233526}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 6882539433534048731}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0.52}
-  m_ConnectedAnchor: {x: 0, y: -0.464}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!114 &1952867737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,13 +179,13 @@ GameObject:
   - component: {fileID: 6882539433185845859}
   - component: {fileID: 6882539433185845856}
   - component: {fileID: 6882539433185845857}
-  - component: {fileID: 6882539433185845858}
   - component: {fileID: 6882539433185845862}
+  - component: {fileID: 6882539433185845858}
   - component: {fileID: 1197916488}
   - component: {fileID: 1197916489}
   m_Layer: 10
   m_Name: Worm Top
-  m_TagString: Enemy
+  m_TagString: Worm Segment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,7 +198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6882539433185845863}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.015, y: -1.008, z: 0}
+  m_LocalPosition: {x: -0.015, y: 0.823, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6882539433602502948}
@@ -268,13 +268,37 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!233 &6882539433185845862
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6882539433185845863}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 6882539433602502949}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: -0.47}
+  m_ConnectedAnchor: {x: -0.015000105, y: 0.35299993}
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!61 &6882539433185845858
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -301,30 +325,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!233 &6882539433185845862
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6882539433185845863}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 6882539433602502949}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0.52}
-  m_ConnectedAnchor: {x: -0.015000105, y: -0.48800004}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!114 &1197916488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,12 +360,12 @@ GameObject:
   - component: {fileID: 6882539433534048295}
   - component: {fileID: 6882539433534048292}
   - component: {fileID: 6882539433534048731}
-  - component: {fileID: 6882539433534048293}
   - component: {fileID: 6882539433534048730}
+  - component: {fileID: 6882539433534048293}
   - component: {fileID: 1017490179}
   m_Layer: 10
   m_Name: Worm Mid
-  m_TagString: Enemy
+  m_TagString: Worm Segment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -378,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6882539433534048728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.015, y: -2.006, z: 0}
+  m_LocalPosition: {x: -0.015, y: -0.176, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6882539433602502948}
@@ -455,6 +455,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!233 &6882539433534048730
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6882539433534048728}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 6882539433185845857}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0.52}
+  m_ConnectedAnchor: {x: 0, y: -0.4790001}
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!61 &6882539433534048293
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -481,30 +505,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!233 &6882539433534048730
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6882539433534048728}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 6882539433185845857}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0.52}
-  m_ConnectedAnchor: {x: 0, y: -0.47800004}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!114 &1017490179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,9 +532,9 @@ GameObject:
   - component: {fileID: 6253593586678801204}
   - component: {fileID: 3360915599794560820}
   - component: {fileID: 6655762108480122276}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Worm Object
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -608,8 +608,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bef8183739f4504db0f1578fa5ed04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 80
+  rotationSpeed: 15
   damage: 1
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 655616
+  drawDebug: 1
 --- !u!114 &6253593586678801204
 MonoBehaviour:
   m_ObjectHideFlags: 0

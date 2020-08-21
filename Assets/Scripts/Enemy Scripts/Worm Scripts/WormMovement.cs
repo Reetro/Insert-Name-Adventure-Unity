@@ -1,7 +1,4 @@
-﻿using EnemyCharacter;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
@@ -9,39 +6,41 @@ namespace EnemyCharacter.AI
     {
         [SerializeField] private float rotationSpeed = 15f;
         [SerializeField] private float damage = 1f;
+        [SerializeField] private LayerMask whatIsGround = new LayerMask();
+        [SerializeField] private bool drawDebug = false;
 
         private Quaternion targetRotation;
         private WormSegment[] childSegments;
 
-
+        /// <summary>
+        /// Get a random rotation to move towards then setup segment damage
+        /// </summary>
         private void Start()
         {
-            targetRotation = Quaternion.Euler(0, 0, Random.Range(-360, 360));
-
             childSegments = GetComponentsInChildren<WormSegment>();
-
             foreach (WormSegment wormSegment in childSegments)
             {
                 if (wormSegment)
                 {
+                    // Disable worm segment
+                    wormSegment.myBoxCollider2D.enabled = false;
+                    wormSegment.myRigidbody2D.isKinematic = true;
+                    wormSegment.DrawDebug = drawDebug;
+
+                    // Set worm segment vars
+                    wormSegment.WhatIsGround = whatIsGround;
                     wormSegment.DamageToApply = damage;
-                    print(wormSegment.DamageToApply);
+
+                    wormSegment.CheckCollision();
                 }
             }
+
+            targetRotation = Quaternion.Euler(0, 0, Random.Range(-360, 360));
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            //transform.localRotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
-            }
+            transform.localRotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
 }
