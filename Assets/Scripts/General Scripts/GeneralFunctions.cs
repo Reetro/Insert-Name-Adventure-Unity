@@ -714,4 +714,13 @@ public class GeneralFunctions
 
         return angle;
     }
+    /// <summary>
+    /// Gets the total width of the given sprite
+    /// </summary>
+    /// <param name="spriteRenderer"></param>
+    /// <returns>A float</returns>
+    public static float GetSpriteWidth(SpriteRenderer spriteRenderer)
+    {
+        return spriteRenderer.bounds.extents.x;
+    }
 }

@@ -24,10 +24,17 @@ namespace EnemyCharacter.AI
         /// Rigidbody2D attached to segment
         /// </summary>
         public Rigidbody2D myRigidbody2D { get; private set; } = null;
+        /// <summary>
+        /// JointToggler attached to segment
+        /// </summary>
+        public JointToggler jointToggler { get; private set; } = null;
 
         private Vector2 boxSize;
         private float boxAngle = 0;
-
+        private float myWidth = 0;
+        /// <summary>
+        /// Set all needed references and disable physics
+        /// </summary>
         private void Awake()
         {
             myBoxCollider2D = GetComponent<BoxCollider2D>();
@@ -36,30 +43,83 @@ namespace EnemyCharacter.AI
 
             boxSize = myBoxCollider2D.size;
 
-            boxAngle = transform.localEulerAngles.z;
+            boxAngle = GeneralFunctions.GetObjectAngle(gameObject);
 
-            if (boxAngle.Equals(270))
-            {
-                boxAngle = -90;
-            }
+            jointToggler = GetComponent<JointToggler>();
+
+            myWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
+
+            jointToggler.enabled = false;
+            myBoxCollider2D.enabled = false;
+            myRigidbody2D.isKinematic = true;
         }
         /// <summary>
         /// Check to see if segment is in the ground if not enable collision
         /// </summary>
         public void CheckCollision()
         {
-            Collider2D collider2D = Physics2D.OverlapBox(transform.position, boxSize, boxAngle, WhatIsGround);
+            var traceDown = (Vector2)transform.position - Vector2.down * myWidth;
 
-            if (collider2D)
+            RaycastHit2D raycastHit2DDown = Physics2D.Raycast(transform.position, traceDown, 1f);
+
+            if (raycastHit2DDown)
             {
-                gameObject.SetActive(false);
+                if (!raycastHit2DDown.transform.gameObject.CompareTag("Worm Segment"))
+                {
+                    if (DrawDebug)
+                    {
+                        Debug.DrawLine(transform.position, traceDown * 1f, Color.green);
+                    }
+
+                    jointToggler.enabled = true;
+                    myBoxCollider2D.enabled = true;
+                    myRigidbody2D.isKinematic = false;
+                }
             }
             else
             {
-                gameObject.SetActive(true);
+                if (DrawDebug)
+                {
+                    Debug.DrawLine(transform.position, traceDown * 1f, Color.red);
+                }
 
-                myBoxCollider2D.enabled = true;
-                myRigidbody2D.isKinematic = false;
+                Collider2D collider2D = Physics2D.OverlapBox(transform.position, boxSize, boxAngle, WhatIsGround);
+
+                if (collider2D)
+                {
+                    jointToggler.enabled = false;
+                    myBoxCollider2D.enabled = false;
+                    myRigidbody2D.isKinematic = true;
+                }
+                else
+                {
+                    var traceUp = (Vector2)transform.position + Vector2.up / myWidth;
+
+                    RaycastHit2D raycastHit2DUp = Physics2D.Raycast(transform.position, traceUp, 1f, WhatIsGround);
+
+                    if (raycastHit2DUp)
+                    {
+                        if (DrawDebug)
+                        {
+                            Debug.DrawLine(transform.position, traceUp * 1f, Color.green);
+                        }
+
+                        jointToggler.enabled = false;
+                        myBoxCollider2D.enabled = false;
+                        myRigidbody2D.isKinematic = true;
+                    }
+                    else
+                    {
+                        if (DrawDebug)
+                        {
+                            Debug.DrawLine(transform.position, traceUp * 1f, Color.red);
+                        }
+
+                        jointToggler.enabled = true;
+                        myBoxCollider2D.enabled = true;
+                        myRigidbody2D.isKinematic = false;
+                    }
+                }
             }
         }
         /// <summary>
