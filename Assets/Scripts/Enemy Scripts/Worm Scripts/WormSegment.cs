@@ -28,7 +28,7 @@ namespace EnemyCharacter.AI
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
         /// <summary>
-        /// Called when segment dies
+        /// Called when segment dies disables both collision and sprite renderer then invokes an OnSegmentDeath event
         /// </summary>
         private void OnDeath()
         {

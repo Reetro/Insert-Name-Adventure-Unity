@@ -3858,6 +3858,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2250575346568329412, guid: cc246d770541c064c815f693d2e76fd1,
+        type: 3}
+      propertyPath: whatCanBeDamaged.m_Bits
+      value: 2115072
+      objectReference: {fileID: 0}
     - target: {fileID: 4157925456995496915, guid: cc246d770541c064c815f693d2e76fd1,
         type: 3}
       propertyPath: m_Name

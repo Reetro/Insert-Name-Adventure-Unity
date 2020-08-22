@@ -160,7 +160,7 @@ public class HealthComponent : MonoBehaviour
         }
     }
     /// <summary>
-    /// Set current health and to the given value
+    /// Set current health to the given value
     /// </summary>
     /// <param name="value"></param>
     public void SetHealth(float value)
@@ -179,7 +179,7 @@ public class HealthComponent : MonoBehaviour
         }
     }
     /// <summary>
-    /// Set current health and to the given values
+    /// Set current health and max health to the given values
     /// </summary>
     /// <param name="currentHP"></param>
     /// <param name="maxHP"></param>

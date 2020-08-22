@@ -6,7 +6,6 @@ using GameplayManagement;
 using EnemyCharacter;
 using AuraSystem.Effects;
 using PlayerCharacter.Controller;
-using System;
 using PlayerCharacter.GameSaving;
 
 /// <summary>
@@ -385,37 +384,6 @@ public class GeneralFunctions
         return objects;
     }
     /// <summary>
-    /// Finds the specific GameObject with the given id in scene
-    /// </summary>
-    /// <param name="id">the ID found on the Gameobject</param>
-    /// <returns>The found GameObject</returns>
-    public static GameObject GetGameObjectByID(int id)
-    {
-        var objects = GetAllGameplayIDObjects();
-        GameObject foundObject = null;
-
-        foreach (GameplayObjectID currentGameObject in objects)
-        {
-            if (currentGameObject.ID == id)
-            {
-                foundObject = currentGameObject.gameObject;
-                break;
-            }
-            else
-            {
-                foundObject = null;
-                continue;
-            }
-        }
-
-        if (!foundObject)
-        {
-            Debug.LogWarning("Failed to find object by ID");
-        }
-
-        return foundObject;
-    }
-    /// <summary>
     ///  Find the Player Gameobject by tag in the current level
     /// </summary>
     /// <returns>The Player Gameobject</returns>
@@ -616,36 +584,6 @@ public class GeneralFunctions
         var player = objectToTest.GetComponentInParent<PlayerController>();
 
         return player;
-    }
-    /// <summary>
-    /// Remove an item from an array at a given index
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="arr"></param>
-    /// <param name="index"></param>
-    public static void RemoveAt<T>(ref T[] arr, int index)
-    {
-        for (int a = index; a < arr.Length - 1; a++)
-        {
-            // moving elements downwards, to fill the gap at [index]
-            arr[a] = arr[a + 1];
-        }
-        // finally, let's decrement Array's size by one
-        Array.Resize(ref arr, arr.Length - 1);
-    }
-    /// <summary>
-    /// Will add a new item to a array
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="Org"></param>
-    /// <param name="New_Value"></param>
-    /// <returns>A new array</returns>
-    public static T[] AddtoArray<T>(T[] Org, T New_Value)
-    {
-        T[] New = new T[Org.Length + 1];
-        Org.CopyTo(New, 0);
-        New[Org.Length] = New_Value;
-        return New;
     }
     /// <summary>
     /// Gets the eye component on the give object and fires a raycast from the objects eyes
