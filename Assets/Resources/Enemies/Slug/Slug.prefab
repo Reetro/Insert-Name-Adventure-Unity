@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 627073599}
-  m_Layer: 10
+  m_Layer: 22
   m_Name: Trace Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 2838650451696758382}
   - component: {fileID: 2838650451696758384}
   - component: {fileID: 2838650451696758385}
-  m_Layer: 10
+  m_Layer: 22
   m_Name: Slug
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
-  onTakeAnyDamage:
+  OnTakeAnyDamage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!50 &2838650451696758387
