@@ -75,7 +75,7 @@ namespace PlayerCharacter.Controller
             healthComponent = GetComponent<HealthComponent>();
 
             healthComponent.OnDeath.AddListener(OnDeath);
-            healthComponent.onTakeAnyDamage.AddListener(OnTakeAnyDamage);
+            healthComponent.OnTakeAnyDamage.AddListener(OnTakeAnyDamage);
 
             Move();
         }

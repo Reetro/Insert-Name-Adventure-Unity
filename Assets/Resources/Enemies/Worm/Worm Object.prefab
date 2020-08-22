@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7847722520187566044}
   - component: {fileID: 7847722520187566040}
+  - component: {fileID: 4567920921139982427}
   - component: {fileID: 7847722520187566041}
   - component: {fileID: 7847722520187566043}
   - component: {fileID: 7847722520187566042}
-  - component: {fileID: 892002003932037282}
   - component: {fileID: 842092965921080253}
-  m_Layer: 10
+  - component: {fileID: 811445998314242388}
+  m_Layer: 21
   m_Name: Worm Mid
   m_TagString: Worm Segment
   m_Icon: {fileID: 0}
@@ -86,6 +87,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4567920921139982427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520187566045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7847722520187566041
 Rigidbody2D:
   serializedVersion: 4
@@ -148,7 +168,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0.51}
-  m_ConnectedAnchor: {x: 0, y: -0.49019212}
+  m_ConnectedAnchor: {x: 0, y: -0.49019232}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 80
@@ -157,19 +177,6 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -360
     m_UpperAngle: 360
---- !u!114 &892002003932037282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847722520187566045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joint: {fileID: 7847722520187566042}
 --- !u!114 &842092965921080253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +189,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &811445998314242388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520187566045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7847722520526387224
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,12 +211,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7847722520526387223}
   - component: {fileID: 7847722520526387219}
+  - component: {fileID: 7507843698822395025}
   - component: {fileID: 7847722520526387220}
   - component: {fileID: 7847722520526387222}
   - component: {fileID: 7847722520526387221}
   - component: {fileID: 4704385637686924811}
-  - component: {fileID: 8261376927811297865}
-  m_Layer: 10
+  - component: {fileID: 3280360326300621045}
+  m_Layer: 21
   m_Name: Worm Top
   m_TagString: Worm Segment
   m_Icon: {fileID: 0}
@@ -268,6 +288,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7507843698822395025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520526387224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7847722520526387220
 Rigidbody2D:
   serializedVersion: 4
@@ -330,7 +369,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0.5}
-  m_ConnectedAnchor: {x: 0, y: -0.5021055}
+  m_ConnectedAnchor: {x: 0, y: -0.50210524}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -351,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8261376927811297865
+--- !u!114 &3280360326300621045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -360,10 +399,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7847722520526387224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
+  m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joint: {fileID: 7847722520526387221}
 --- !u!1 &7847722520749708496
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,10 +413,6 @@ GameObject:
   - component: {fileID: 7847722520749708525}
   - component: {fileID: 7847722520749708527}
   - component: {fileID: 180217536451622882}
-  - component: {fileID: 8007676799657581167}
-  - component: {fileID: 8011316699219067319}
-  - component: {fileID: 8110821473814935604}
-  - component: {fileID: 5702787043868178672}
   m_Layer: 10
   m_Name: Worm Object
   m_TagString: Enemy
@@ -437,72 +471,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 655616
-  drawDebug: 0
---- !u!114 &8007676799657581167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847722520749708496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  onTakeAnyDamage:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!95 &8011316699219067319
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847722520749708496}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8110821473814935604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847722520749708496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5702787043868178672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847722520749708496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7527ba892a1b739479ee8889da956958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7847722521193243329
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,12 +481,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7847722521193243328}
   - component: {fileID: 7847722521193243357}
+  - component: {fileID: 7511011983819308040}
   - component: {fileID: 7847722521193243358}
   - component: {fileID: 7847722521193243359}
   - component: {fileID: 7847722521193243356}
   - component: {fileID: 7796203228488308}
-  - component: {fileID: 7618609393427544287}
-  m_Layer: 10
+  - component: {fileID: 8829478336389819925}
+  m_Layer: 21
   m_Name: Worm Bottom
   m_TagString: Worm Segment
   m_Icon: {fileID: 0}
@@ -589,6 +558,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7511011983819308040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722521193243329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e658deedb296d4cab253d0c9752961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeAnyDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7847722521193243358
 Rigidbody2D:
   serializedVersion: 4
@@ -672,7 +660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7618609393427544287
+--- !u!114 &8829478336389819925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -681,7 +669,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7847722521193243329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
+  m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joint: {fileID: 7847722521193243359}

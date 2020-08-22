@@ -19,7 +19,7 @@ public class HealthComponent : MonoBehaviour
     public UnityEvent OnDeath;
     
     [HideInInspector]
-    public TakeAnyDamge onTakeAnyDamage;
+    public TakeAnyDamge OnTakeAnyDamage;
    
     private GameplayManager gameplayManager = null;
     private HealthBar healthBar = null;
@@ -144,7 +144,7 @@ public class HealthComponent : MonoBehaviour
                         gameplayManager.combatRandomVectorMaxX, gameplayManager.combatRandomVectorMinY, gameplayManager.combatRandomVectorMaxY, gameplayManager.disappearTime);
                 }
 
-                onTakeAnyDamage.Invoke(damage);
+                OnTakeAnyDamage.Invoke(damage);
 
                 if (healthBar)
                 {
