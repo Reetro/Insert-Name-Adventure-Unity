@@ -17,7 +17,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Awake()
         {
-            MyRigidbody2D = GetComponent<Rigidbody2D>();
             idObject = GetComponent<GameplayObjectID>();
             MyHealthComponent = GetComponent<HealthComponent>();
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -52,10 +51,6 @@ namespace EnemyCharacter.AI
         /// Amount of damage to apply to the player
         /// </summary>
         public float DamageToApply { get; set; }
-        /// <summary>
-        /// Rigidbody2D attached to segment
-        /// </summary>
-        public Rigidbody2D MyRigidbody2D { get; private set; } = null;
         /// <summary>
         /// Gets this Gameobjects ID
         /// </summary>
