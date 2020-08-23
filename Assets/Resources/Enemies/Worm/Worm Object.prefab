@@ -175,8 +175,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -95
-    m_UpperAngle: 95
+    m_LowerAngle: -105
+    m_UpperAngle: 105
 --- !u!114 &842092965921080253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnSegmentDeath:
+  SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &811445998314242388
@@ -379,8 +379,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -95
-    m_UpperAngle: 95
+    m_LowerAngle: -100
+    m_UpperAngle: 100
 --- !u!114 &4704385637686924811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnSegmentDeath:
+  SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3280360326300621045
@@ -478,7 +478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   segmentHealth: 6
-  MaxSpeedMagnitude: 5
+  MaxSpeed: 5
+  printDebug: 0
 --- !u!1 &7847722521193243329
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +598,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 4
   m_LinearDrag: 0.1
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
@@ -628,8 +629,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -95
-    m_UpperAngle: 95
+    m_LowerAngle: -100
+    m_UpperAngle: 100
 --- !u!61 &7847722521193243356
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -668,7 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e122435e659224ebfa24dc75058606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnSegmentDeath:
+  SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8829478336389819925

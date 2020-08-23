@@ -9,8 +9,11 @@ namespace EnemyCharacter.AI
         private SpriteRenderer spriteRenderer = null;
         private BoxCollider2D boxCollider2D = null;
 
+        [System.Serializable]
+        public class OnSegmentDeath : UnityEvent<WormSegment> { }
+
         [HideInInspector]
-        public UnityEvent OnSegmentDeath;
+        public OnSegmentDeath SegmentDeath;
 
         /// <summary>
         /// Set all needed references
@@ -34,7 +37,7 @@ namespace EnemyCharacter.AI
             spriteRenderer.enabled = false;
             boxCollider2D.enabled = false;
 
-            OnSegmentDeath.Invoke();
+            SegmentDeath.Invoke(this);
         }
         /// <summary>
         /// When hit by player deal damage
@@ -44,7 +47,7 @@ namespace EnemyCharacter.AI
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                //GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+                GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
             }
         }
         /// <summary>

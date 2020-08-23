@@ -1,15 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
     public class WormMovement : MonoBehaviour
     {
+        [Header("Worm Settings")]
+        [Tooltip("How much damage each segments deals")]
         [SerializeField] private float damage = 1f;
+        [Tooltip("How much health each segment has")]
         [SerializeField] private float segmentHealth = 6f;
-        [SerializeField] private float MaxSpeedMagnitude = 30;
+        [Tooltip("The maximum speed the segments are allowed to go")]
+        [SerializeField] private float MaxSpeed = 5;
 
-        private WormSegment[] childSegments;
+        [Space]
+
+        [Header("Debug Settings")]
+        [Tooltip("Whether or not to print debug messages")]
+        [SerializeField] private bool printDebug = false;
+
+        private List<WormSegment> childSegments = new List<WormSegment>();
         private int segmentCount = 0;
+        private int segementsAboveGroundCount = 0;
         private bool flipFlop = false;
 
         /// <summary>
@@ -17,7 +31,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Start()
         {
-            childSegments = GetComponentsInChildren<WormSegment>();
+            childSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             foreach (WormSegment wormSegment in childSegments)
             {
@@ -27,11 +41,14 @@ namespace EnemyCharacter.AI
                     wormSegment.MyHealthComponent.SetHealth(segmentHealth);
                     wormSegment.GetComponent<Rigidbody2D>().AddForce(wormSegment.transform.position * 2, ForceMode2D.Impulse);
 
-                    wormSegment.OnSegmentDeath.AddListener(OnSegmentDeath);
+                    wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
+
                 }
             }
 
-            segmentCount = childSegments.Length;
+            segmentCount = childSegments.Count;
+
+            //StartCoroutine(PushWormSegmentUp());
         }
         /// <summary>
         /// Add a constant force to each worm segment and clamp it's velocity
@@ -55,9 +72,9 @@ namespace EnemyCharacter.AI
                         wormSegment.GetComponent<Rigidbody2D>().AddForce(wormSegment.transform.position * -0.0001f, ForceMode2D.Impulse);
                     }
 
-                    if (wormBody.velocity.magnitude >= MaxSpeedMagnitude || wormBody.velocity.magnitude <= MaxSpeedMagnitude)
+                    if (wormBody.velocity.magnitude >= MaxSpeed || wormBody.velocity.magnitude <= MaxSpeed)
                     {
-                        wormBody.velocity = wormBody.velocity.normalized * MaxSpeedMagnitude;
+                        wormBody.velocity = wormBody.velocity.normalized * MaxSpeed;
                     }
                 }
             }
@@ -65,14 +82,110 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Called whenever a segment is killed if all segments are destroyed then this object is destroyed
         /// </summary>
-        private void OnSegmentDeath()
+        private void OnSegmentDeath(WormSegment wormSegment)
         {
-            segmentCount--;
+            var segementsToKill = GetSegmentsAboveKilledSegment(wormSegment);
+
+            foreach (WormSegment wormSeg in segementsToKill)
+            {
+                if (wormSeg)
+                {
+                    var health = wormSeg.GetComponent<HealthComponent>();
+
+                    if (health)
+                    {
+                        if (!health.IsCurrentlyDead)
+                        {
+                            segmentCount--;
+
+                            GeneralFunctions.KillTarget(wormSeg.gameObject);
+
+                            if (printDebug)
+                            {
+                                print("Hit: " + wormSegment.name + " Killed: " + wormSeg.name);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning(wormSeg.name + " does not have a health component");
+                    }
+                }
+            }
 
             if (segmentCount <= 0)
             {
                 Destroy(gameObject);
             }
+        }
+        /// <summary>
+        /// Gets all segments above the given segment
+        /// </summary>
+        /// <param name="wormSegment"></param>
+        private List<WormSegment> GetSegmentsAboveKilledSegment(WormSegment wormSegment)
+        {
+            List<WormSegment> localSegments = new List<WormSegment>();
+            int index = FindSegmentInList(wormSegment);
+            int totalCount = childSegments.Count - 1;
+            bool isEqual = index == totalCount;
+
+            while (!isEqual)
+            {
+                isEqual = index == totalCount;
+
+                localSegments.Add(childSegments[index]);
+
+                index = Mathf.Clamp(index + 1, 0, totalCount);
+            }
+
+            return localSegments;
+        }
+        /// <summary>
+        /// Find the given segment in the worm segment list
+        /// </summary>
+        /// <param name="wormSegment"></param>
+        /// <returns>The index of the segment</returns>
+        private int FindSegmentInList(WormSegment wormSegment)
+        {
+            int foundIndex = 0;
+
+            for (int index = 0; index < childSegments.Count; index++)
+            {
+                if (childSegments[index] == wormSegment)
+                {
+                    foundIndex = index;
+                    break;
+                }
+            }
+
+            return foundIndex;
+        }
+        /// <summary>
+        /// Every X seconds push another worm segment up
+        /// </summary>
+        private IEnumerator PushWormSegmentUp()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1f);
+
+                transform.position = transform.position = new Vector3(0, transform.position.y + 1, 0);
+
+                segementsAboveGroundCount++;
+
+                if (AreAllSegmentsUp())
+                {
+                    yield break;
+                }
+            }
+        }
+        /// <summary>
+        /// Checks to see if all worm segments are above ground
+        /// </summary>
+        /// <returns></returns>
+        private bool AreAllSegmentsUp()
+        {
+            return segementsAboveGroundCount >= segmentCount ? true : false;
         }
     }
 }

@@ -661,4 +661,13 @@ public class GeneralFunctions
     {
         return spriteRenderer.bounds.extents.x;
     }
+    /// <summary>
+    /// Gets the total height of the given sprite
+    /// </summary>
+    /// <param name="spriteRenderer"></param>
+    /// <returns>A float</returns>
+    public static float GetSpriteHeight(SpriteRenderer spriteRenderer)
+    {
+        return spriteRenderer.bounds.extents.y;
+    }
 }
