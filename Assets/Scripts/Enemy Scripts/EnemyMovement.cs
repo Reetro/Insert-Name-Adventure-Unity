@@ -21,6 +21,15 @@ namespace EnemyCharacter.AI
             rigidbody.AddRelativeForce(direction.normalized * speed, ForceMode2D.Force);
         }
         /// <summary>
+        /// Move AI towards a fixed target
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="speed"></param>
+        public void MoveAITowards(Vector2 target, float speed)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        }
+        /// <summary>
         /// Makes the AI look at a specific transform
         /// </summary>
         /// <param name="target"></param>

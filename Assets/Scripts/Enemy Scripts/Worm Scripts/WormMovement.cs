@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
+    [RequireComponent(typeof(EnemyMovement))]
     public class WormMovement : MonoBehaviour
     {
         [Header("Worm Settings")]
@@ -14,10 +14,12 @@ namespace EnemyCharacter.AI
         [SerializeField] private float segmentHealth = 6f;
         [Tooltip("The maximum speed the segments are allowed to go")]
         [SerializeField] private float MaxSpeed = 5;
-        [Tooltip("What layers should collision checks collide with")]
-        [SerializeField] private LayerMask whatIsGround = new LayerMask();
         [Tooltip("The delay between each worm push up action")]
         [SerializeField] private float pushDelay = 1f;
+        [Tooltip("How fast Worm Segments are pushed up to the surface")]
+        [SerializeField] private float pushUpSpeed = 0.1f;
+        [Tooltip("What layers should collision checks collide with")]
+        [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
         [Space]
 
@@ -28,13 +30,25 @@ namespace EnemyCharacter.AI
         private List<WormSegment> childSegments = new List<WormSegment>();
         private int segmentCount = 0;
         private bool flipFlop = false;
-        private float pushAmount = 0f;
+        private float defaultDelay = 0;
+        private float defaultPushUpTime = 0;
+        private float spriteHeight = 0;
+        private float pushUpTime = 0;
+
+        /// <summary>
+        /// Get this objects enemy movement component
+        /// </summary>
+        public EnemyMovement MyMovementComp { get; private set; }
 
         /// <summary>
         /// Get a random rotation to move towards then setup segment damage
         /// </summary>
         private void Start()
         {
+            defaultDelay = pushDelay;
+
+            MyMovementComp = GetComponent<EnemyMovement>();
+
             childSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             foreach (WormSegment wormSegment in childSegments)
@@ -46,16 +60,17 @@ namespace EnemyCharacter.AI
                     wormSegment.DrawDebug = printDebug;
                     wormSegment.WhatIsGround = whatIsGround;
 
+                    spriteHeight = GeneralFunctions.GetSpriteHeight(wormSegment.GetComponent<SpriteRenderer>());
+
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
                     wormSegment.CheckCollision();
-
-                    pushAmount = GeneralFunctions.GetSpriteHeight(wormSegment.GetComponent<SpriteRenderer>()) * 2;
                 }
             }
 
+            pushUpTime = CaluclatePushTime();
+     
             segmentCount = childSegments.Count;
-
-            StartCoroutine(PushWormSegmentUp());
+            defaultPushUpTime = pushUpTime;
         }
         /// <summary>
         /// Add a constant force to each worm segment every frame and clamp it's velocity
@@ -82,6 +97,36 @@ namespace EnemyCharacter.AI
                     if (wormBody.velocity.magnitude >= MaxSpeed || wormBody.velocity.magnitude <= MaxSpeed)
                     {
                         wormBody.velocity = wormBody.velocity.normalized * MaxSpeed;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Every X seconds push worm segment up
+        /// </summary>
+        private void Update()
+        {
+            if (!AreAllSegmentsUp())
+            {
+                pushDelay -= Time.deltaTime;
+
+                if (pushDelay <= 0)
+                {
+                    pushUpTime -= Time.deltaTime;
+
+                    if (pushUpTime <= 0)
+                    {
+                        foreach (WormSegment wormSegment in childSegments)
+                        {
+                            wormSegment.CheckCollision();
+                        }
+
+                        pushUpTime = defaultPushUpTime;
+                        pushDelay = defaultDelay;
+                    }
+                    else
+                    {
+                        MyMovementComp.MoveAIForward(Vector2.up, pushUpSpeed);
                     }
                 }
             }
@@ -153,30 +198,6 @@ namespace EnemyCharacter.AI
             return localSegments;
         }
         /// <summary>
-        /// Every X seconds push another worm segment up
-        /// </summary>
-        private IEnumerator PushWormSegmentUp()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(pushDelay);
-
-                transform.Translate(0, pushAmount, 0);
-
-                foreach (WormSegment wormSegment in childSegments)
-                {
-                    wormSegment.CheckCollision();
-                }
-
-                print("Test");
-
-                if (AreAllSegmentsUp())
-                {
-                    yield break;
-                }
-            }
-        }
-        /// <summary>
         /// Checks to see if all worm segments are above ground
         /// </summary>
         private bool AreAllSegmentsUp()
@@ -189,6 +210,13 @@ namespace EnemyCharacter.AI
                 }
             }
             return true;
+        }
+        /// <summary>
+        /// Calculate the amount of time needed to push a worm segment up
+        /// </summary>
+        private float CaluclatePushTime()
+        {
+            return spriteHeight * 2 / pushUpSpeed;
         }
     }
 }

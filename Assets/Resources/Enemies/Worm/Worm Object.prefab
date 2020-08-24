@@ -169,7 +169,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: -0.48}
-  m_ConnectedAnchor: {x: 0, y: 0.5119654}
+  m_ConnectedAnchor: {x: 0, y: 0.511965}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 80
@@ -387,7 +387,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: -0.47}
-  m_ConnectedAnchor: {x: 0, y: 0.53019136}
+  m_ConnectedAnchor: {x: 0, y: 0.5301916}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -447,6 +447,7 @@ GameObject:
   - component: {fileID: 7847722520749708525}
   - component: {fileID: 7847722520749708527}
   - component: {fileID: 180217536451622882}
+  - component: {fileID: 414337131}
   m_Layer: 10
   m_Name: Worm Object
   m_TagString: Enemy
@@ -507,11 +508,24 @@ MonoBehaviour:
   damage: 1
   segmentHealth: 6
   MaxSpeed: 5
+  pushDelay: 5
+  pushUpSpeed: 6
   whatIsGround:
     serializedVersion: 2
     m_Bits: 655616
-  pushDelay: 5
-  printDebug: 0
+  printDebug: 1
+--- !u!114 &414337131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520749708496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7527ba892a1b739479ee8889da956958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7847722521193243329
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,6 @@ namespace EnemyCharacter.AI
         private BoxCollider2D boxCollider2D = null;
         private Vector2 boxSize;
         private float boxAngle = 0;
-        private float myWidth = 0;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -30,6 +29,8 @@ namespace EnemyCharacter.AI
             myBoxCollider2D = GetComponent<BoxCollider2D>();
             myRigidbody2D = GetComponent<Rigidbody2D>();
             jointToggler = GetComponent<JointToggler>();
+
+            MyWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
 
             boxSize = myBoxCollider2D.size;
 
@@ -58,8 +59,25 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void CheckCollision()
         {
-            var traceDown = (Vector2)transform.position - Vector2.down * myWidth;
+            var traceDown = (Vector2)transform.position - Vector2.down * MyWidth;
 
+            if (CheckCast(traceDown))
+            {
+                UnFreezeSegment();
+                AboveGround = true;
+            }
+            else
+            {
+                CheckOverlapBox(traceDown);
+            }
+        }
+        /// <summary>
+        /// Fires a trace downward to check for ground
+        /// </summary>
+        /// <param name="traceDown"></param>
+        /// <returns>A bool</returns>
+        private bool CheckCast(Vector2 traceDown)
+        {
             RaycastHit2D raycastHit2DDown = Physics2D.Raycast(transform.position, traceDown, 1f);
 
             if (raycastHit2DDown)
@@ -71,19 +89,16 @@ namespace EnemyCharacter.AI
                         Debug.DrawLine(transform.position, traceDown * 1f, Color.green);
                     }
 
-                    jointToggler.enabled = true;
-                    myBoxCollider2D.enabled = true;
-                    myRigidbody2D.isKinematic = false;
-                    AboveGround = true;
+                    return true;
                 }
                 else
                 {
-                    CheckOverlapBox(traceDown);
+                    return false;
                 }
             }
             else
             {
-                CheckOverlapBox(traceDown);
+                return false;
             }
         }
         /// <summary>
@@ -101,14 +116,12 @@ namespace EnemyCharacter.AI
 
             if (collider2D)
             {
-                jointToggler.enabled = false;
-                myBoxCollider2D.enabled = false;
-                myRigidbody2D.isKinematic = true;
+                FreezeSegment();
                 AboveGround = false;
             }
             else
             {
-                var traceUp = (Vector2)transform.position + Vector2.up / myWidth;
+                var traceUp = (Vector2)transform.position + Vector2.up / MyWidth;
 
                 RaycastHit2D raycastHit2DUp = Physics2D.Raycast(transform.position, traceUp, 1f, WhatIsGround);
 
@@ -119,9 +132,7 @@ namespace EnemyCharacter.AI
                         Debug.DrawLine(transform.position, traceUp * 1f, Color.green);
                     }
 
-                    jointToggler.enabled = false;
-                    myBoxCollider2D.enabled = false;
-                    myRigidbody2D.isKinematic = true;
+                    FreezeSegment();
                     AboveGround = false;
                 }
                 else
@@ -131,9 +142,7 @@ namespace EnemyCharacter.AI
                         Debug.DrawLine(transform.position, traceUp * 1f, Color.red);
                     }
 
-                    jointToggler.enabled = true;
-                    myBoxCollider2D.enabled = true;
-                    myRigidbody2D.isKinematic = false;
+                    UnFreezeSegment();
                     AboveGround = true;
                 }
             }
@@ -159,6 +168,24 @@ namespace EnemyCharacter.AI
             {
                 GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
             }
+        }
+        /// <summary>
+        /// Freeze this segment in it's current position
+        /// </summary>
+        public void FreezeSegment()
+        {
+            jointToggler.enabled = false;
+            myBoxCollider2D.enabled = false;
+            myRigidbody2D.isKinematic = true;
+        }
+        /// <summary>
+        /// Allow segment to moved again
+        /// </summary>
+        public void UnFreezeSegment()
+        {
+            jointToggler.enabled = true;
+            myBoxCollider2D.enabled = true;
+            myRigidbody2D.isKinematic = false;
         }
         /// <summary>
         /// Amount of damage to apply to the player
@@ -196,5 +223,9 @@ namespace EnemyCharacter.AI
         /// Checks to see if the current segment is above ground
         /// </summary>
         public bool AboveGround { get; private set; }
+        /// <summary>
+        /// Get the width of the worm segment sprite
+        /// </summary>
+        public float MyWidth { get; private set; }
     }
 }
