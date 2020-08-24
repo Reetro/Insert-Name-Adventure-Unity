@@ -42,7 +42,6 @@ namespace EnemyCharacter.AI
                     wormSegment.GetComponent<Rigidbody2D>().AddForce(wormSegment.transform.position * 2, ForceMode2D.Impulse);
 
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
-
                 }
             }
 
@@ -94,10 +93,10 @@ namespace EnemyCharacter.AI
 
                     if (health)
                     {
+                        segmentCount = Mathf.Clamp(segmentCount - 1, 0, childSegments.Count - 1);
+
                         if (!health.IsCurrentlyDead)
                         {
-                            segmentCount--;
-
                             GeneralFunctions.KillTarget(wormSeg.gameObject);
 
                             if (printDebug)
@@ -113,6 +112,11 @@ namespace EnemyCharacter.AI
                 }
             }
 
+            if (printDebug)
+            {
+                print("Current Segment Count: " + segmentCount.ToString());
+            }
+
             if (segmentCount <= 0)
             {
                 Destroy(gameObject);
@@ -125,7 +129,7 @@ namespace EnemyCharacter.AI
         private List<WormSegment> GetSegmentsAboveKilledSegment(WormSegment wormSegment)
         {
             List<WormSegment> localSegments = new List<WormSegment>();
-            int index = FindSegmentInList(wormSegment);
+            int index = childSegments.IndexOf(wormSegment);
             int totalCount = childSegments.Count - 1;
             bool isEqual = index == totalCount;
 
@@ -139,26 +143,6 @@ namespace EnemyCharacter.AI
             }
 
             return localSegments;
-        }
-        /// <summary>
-        /// Find the given segment in the worm segment list
-        /// </summary>
-        /// <param name="wormSegment"></param>
-        /// <returns>The index of the segment</returns>
-        private int FindSegmentInList(WormSegment wormSegment)
-        {
-            int foundIndex = 0;
-
-            for (int index = 0; index < childSegments.Count; index++)
-            {
-                if (childSegments[index] == wormSegment)
-                {
-                    foundIndex = index;
-                    break;
-                }
-            }
-
-            return foundIndex;
         }
         /// <summary>
         /// Every X seconds push another worm segment up
