@@ -25,7 +25,7 @@ namespace EnemyCharacter.AI
 
         [Header("Debug Settings")]
         [Tooltip("Whether or not to print debug messages")]
-        [SerializeField] private bool printDebug = false;
+        [SerializeField] private bool drawDebug = false;
 
         private List<WormSegment> childSegments = new List<WormSegment>();
         private int segmentCount = 0;
@@ -57,7 +57,7 @@ namespace EnemyCharacter.AI
                 {
                     wormSegment.DamageToApply = damage;
                     wormSegment.MyHealthComponent.SetHealth(segmentHealth);
-                    wormSegment.DrawDebug = printDebug;
+                    wormSegment.DrawDebug = drawDebug;
                     wormSegment.WhatIsGround = whatIsGround;
 
                     spriteHeight = GeneralFunctions.GetSpriteHeight(wormSegment.GetComponent<SpriteRenderer>());
@@ -152,7 +152,7 @@ namespace EnemyCharacter.AI
                         {
                             GeneralFunctions.KillTarget(wormSeg.gameObject);
 
-                            if (printDebug)
+                            if (drawDebug)
                             {
                                 print("Hit: " + wormSegment.name + " Killed: " + wormSeg.name);
                             }
@@ -165,7 +165,7 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            if (printDebug)
+            if (drawDebug)
             {
                 print("Current Segment Count: " + segmentCount.ToString());
             }

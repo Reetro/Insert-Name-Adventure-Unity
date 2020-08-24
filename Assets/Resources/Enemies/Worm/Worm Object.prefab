@@ -513,7 +513,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 655616
-  printDebug: 1
+  printDebug: 0
 --- !u!114 &414337131
 MonoBehaviour:
   m_ObjectHideFlags: 0

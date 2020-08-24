@@ -166,7 +166,10 @@ namespace EnemyCharacter.AI
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+                if (!MyHealthComponent.IsCurrentlyDead)
+                {
+                    GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+                }
             }
         }
         /// <summary>
