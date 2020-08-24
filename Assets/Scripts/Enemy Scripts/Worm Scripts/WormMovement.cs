@@ -14,6 +14,10 @@ namespace EnemyCharacter.AI
         [SerializeField] private float segmentHealth = 6f;
         [Tooltip("The maximum speed the segments are allowed to go")]
         [SerializeField] private float MaxSpeed = 5;
+        [Tooltip("What layers should collision checks collide with")]
+        [SerializeField] private LayerMask whatIsGround = new LayerMask();
+        [Tooltip("The delay between each worm push up action")]
+        [SerializeField] private float pushDelay = 1f;
 
         [Space]
 
@@ -23,8 +27,8 @@ namespace EnemyCharacter.AI
 
         private List<WormSegment> childSegments = new List<WormSegment>();
         private int segmentCount = 0;
-        private int segementsAboveGroundCount = 0;
         private bool flipFlop = false;
+        private float pushAmount = 0f;
 
         /// <summary>
         /// Get a random rotation to move towards then setup segment damage
@@ -39,20 +43,24 @@ namespace EnemyCharacter.AI
                 {
                     wormSegment.DamageToApply = damage;
                     wormSegment.MyHealthComponent.SetHealth(segmentHealth);
-                    wormSegment.GetComponent<Rigidbody2D>().AddForce(wormSegment.transform.position * 2, ForceMode2D.Impulse);
+                    wormSegment.DrawDebug = printDebug;
+                    wormSegment.WhatIsGround = whatIsGround;
 
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
+                    wormSegment.CheckCollision();
+
+                    pushAmount = GeneralFunctions.GetSpriteHeight(wormSegment.GetComponent<SpriteRenderer>()) * 2;
                 }
             }
 
             segmentCount = childSegments.Count;
 
-            //StartCoroutine(PushWormSegmentUp());
+            StartCoroutine(PushWormSegmentUp());
         }
         /// <summary>
-        /// Add a constant force to each worm segment and clamp it's velocity
+        /// Add a constant force to each worm segment every frame and clamp it's velocity
         /// </summary>
-        private void Update()
+        private void FixedUpdate()
         {
             foreach (WormSegment wormSegment in childSegments)
             {
@@ -151,11 +159,16 @@ namespace EnemyCharacter.AI
         {
             while (true)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(pushDelay);
 
-                transform.position = transform.position = new Vector3(0, transform.position.y + 1, 0);
+                transform.Translate(0, pushAmount, 0);
 
-                segementsAboveGroundCount++;
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    wormSegment.CheckCollision();
+                }
+
+                print("Test");
 
                 if (AreAllSegmentsUp())
                 {
@@ -166,10 +179,16 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Checks to see if all worm segments are above ground
         /// </summary>
-        /// <returns></returns>
         private bool AreAllSegmentsUp()
         {
-            return segementsAboveGroundCount >= segmentCount ? true : false;
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (!wormSegment.AboveGround)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

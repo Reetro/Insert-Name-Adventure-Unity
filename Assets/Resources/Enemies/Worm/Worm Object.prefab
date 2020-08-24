@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7847722520187566042}
   - component: {fileID: 842092965921080253}
   - component: {fileID: 811445998314242388}
+  - component: {fileID: 3865282014758796694}
   m_Layer: 21
   m_Name: Worm Mid
   m_TagString: Worm Segment
@@ -168,7 +169,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: -0.48}
-  m_ConnectedAnchor: {x: 0, y: 0.511965}
+  m_ConnectedAnchor: {x: 0, y: 0.5119654}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 80
@@ -204,6 +205,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3865282014758796694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520187566045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joint: {fileID: 7847722520187566042}
 --- !u!1 &7847722520526387224
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +234,7 @@ GameObject:
   - component: {fileID: 7847722520526387221}
   - component: {fileID: 4704385637686924811}
   - component: {fileID: 3280360326300621045}
+  - component: {fileID: 2097151635569166304}
   m_Layer: 21
   m_Name: Worm Top
   m_TagString: Worm Segment
@@ -372,7 +387,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: -0.47}
-  m_ConnectedAnchor: {x: 0, y: 0.5301916}
+  m_ConnectedAnchor: {x: 0, y: 0.53019136}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -408,6 +423,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2097151635569166304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722520526387224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joint: {fileID: 7847722520526387221}
 --- !u!1 &7847722520749708496
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,6 +507,10 @@ MonoBehaviour:
   damage: 1
   segmentHealth: 6
   MaxSpeed: 5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 655616
+  pushDelay: 5
   printDebug: 0
 --- !u!1 &7847722521193243329
 GameObject:
@@ -496,6 +528,7 @@ GameObject:
   - component: {fileID: 7847722521193243356}
   - component: {fileID: 7796203228488308}
   - component: {fileID: 8829478336389819925}
+  - component: {fileID: 1457487380}
   m_Layer: 21
   m_Name: Worm Bottom
   m_TagString: Worm Segment
@@ -622,7 +655,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: -0.48}
-  m_ConnectedAnchor: {x: 0, y: 0.51798034}
+  m_ConnectedAnchor: {x: 0, y: 0.5179806}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 80
@@ -684,3 +717,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1457487380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847722521193243329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ecdfbed040b4a5498ac0f77e2aecf4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joint: {fileID: 7847722521193243359}
