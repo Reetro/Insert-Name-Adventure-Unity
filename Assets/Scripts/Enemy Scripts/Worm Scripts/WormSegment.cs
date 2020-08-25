@@ -7,7 +7,6 @@ namespace EnemyCharacter.AI
     {
         private GameplayObjectID idObject = null;
         private SpriteRenderer spriteRenderer = null;
-        private BoxCollider2D boxCollider2D = null;
         private Vector2 boxSize;
         private float boxAngle = 0;
 
@@ -25,13 +24,11 @@ namespace EnemyCharacter.AI
             idObject = GetComponent<GameplayObjectID>();
             MyHealthComponent = GetComponent<HealthComponent>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            boxCollider2D = GetComponent<BoxCollider2D>();
-            myBoxCollider2D = GetComponent<BoxCollider2D>();
-            myRigidbody2D = GetComponent<Rigidbody2D>();
+            MyBoxCollider2D = GetComponent<BoxCollider2D>();
 
             MyWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
 
-            boxSize = myBoxCollider2D.size;
+            boxSize = MyBoxCollider2D.size;
 
             boxAngle = GeneralFunctions.GetObjectAngle(gameObject);
 
@@ -45,7 +42,7 @@ namespace EnemyCharacter.AI
         private void OnDeath()
         {
             spriteRenderer.enabled = false;
-            boxCollider2D.enabled = false;
+            MyBoxCollider2D.enabled = false;
 
             SegmentDeath.Invoke(this);
         }
@@ -73,26 +70,24 @@ namespace EnemyCharacter.AI
         /// <returns>A bool</returns>
         private bool CheckCast(Vector2 traceDown)
         {
-            RaycastHit2D raycastHit2DDown = Physics2D.Raycast(transform.position, traceDown, 1f);
+            RaycastHit2D raycastHit2DDown = Physics2D.Raycast(transform.position, traceDown, 2f, WhatIsGround);
 
             if (raycastHit2DDown)
             {
-                if (!raycastHit2DDown.transform.gameObject.CompareTag("Worm Segment"))
+                if (DrawDebug)
                 {
-                    if (DrawDebug)
-                    {
-                        Debug.DrawLine(transform.position, traceDown * 1f, Color.green);
-                    }
+                    Debug.DrawLine(transform.position, traceDown * 2f, Color.green);
+                }
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             else
             {
+                if (DrawDebug)
+                {
+                    Debug.DrawLine(transform.position, traceDown * 2f, Color.red);
+                }
+
                 return false;
             }
         }
@@ -102,11 +97,6 @@ namespace EnemyCharacter.AI
         /// <param name="traceDown"></param>
         private void CheckOverlapBox(Vector2 traceDown)
         {
-            if (DrawDebug)
-            {
-                Debug.DrawLine(transform.position, traceDown * 1f, Color.red);
-            }
-
             Collider2D collider2D = Physics2D.OverlapBox(transform.position, boxSize, boxAngle, WhatIsGround);
 
             if (collider2D)
@@ -142,7 +132,6 @@ namespace EnemyCharacter.AI
                 }
             }
         }
-
         /// <summary>
         /// If debug is active draw collision cube
         /// </summary>
@@ -172,14 +161,14 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void FreezeSegment()
         {
-            myBoxCollider2D.enabled = false;
+            MyBoxCollider2D.enabled = false;
         }
         /// <summary>
         /// Allow segment to moved again
         /// </summary>
         public void UnFreezeSegment()
         {
-            myBoxCollider2D.enabled = true;
+            MyBoxCollider2D.enabled = true;
         }
         /// <summary>
         /// Amount of damage to apply to the player
@@ -196,11 +185,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// BoxCollider2D attached to segment
         /// </summary>
-        public BoxCollider2D myBoxCollider2D { get; private set; } = null;
-        /// <summary>
-        /// Rigidbody2D attached to segment
-        /// </summary>
-        public Rigidbody2D myRigidbody2D { get; private set; } = null;
+        public BoxCollider2D MyBoxCollider2D { get; private set; } = null;
         /// <summary>
         /// What layers are ground
         /// </summary>

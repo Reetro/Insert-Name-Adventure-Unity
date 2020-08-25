@@ -60,10 +60,22 @@ namespace EnemyCharacter.AI
                     wormSegment.DrawDebug = drawDebug;
                     wormSegment.WhatIsGround = whatIsGround;
 
-                    spriteHeight = GeneralFunctions.GetSpriteHeight(wormSegment.GetComponent<SpriteRenderer>());
+                    spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
 
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
                     wormSegment.CheckCollision();
+
+                    if (drawDebug)
+                    {
+                        if (wormSegment.AboveGround)
+                        {
+                            print("Worm Segment: " + wormSegment.name + " is above ground");
+                        }
+                        else
+                        {
+                            print("Worm Segment: " + wormSegment.name + " is underground");
+                        }
+                    }
                 }
             }
 
@@ -74,10 +86,18 @@ namespace EnemyCharacter.AI
                 print("Sprite Height: " + spriteHeight + " Push Up Time: " + pushUpTime);
             }
 
-            wormSegmentToRotate = GetSegmentToRotate();
-
             segmentCount = childSegments.Count;
             defaultPushUpTime = pushUpTime;
+
+            wormSegmentToRotate = GetSegmentToRotate();
+
+            if (drawDebug)
+            {
+                if (wormSegmentToRotate)
+                {
+                    print("Rotating segment: " + wormSegmentToRotate.name);
+                }
+            }
         }
         /// <summary>
         /// Every X seconds push worm segment up and rotate worm downward to player
@@ -112,6 +132,18 @@ namespace EnemyCharacter.AI
                         pushDelay = defaultDelay;
 
                         wormSegmentToRotate = GetSegmentToRotate();
+
+                        if (drawDebug)
+                        {
+                            if (wormSegmentToRotate)
+                            {
+                                print("Rotating segment: " + wormSegmentToRotate.name);
+                            }
+                            else
+                            {
+                                Debug.LogError("Failed to get next segment to rotate");
+                            }
+                        }
 
                         pushingSegment = false;
                     }
@@ -205,12 +237,11 @@ namespace EnemyCharacter.AI
         /// </summary>
         private WormSegment GetSegmentToRotate()
         {
-            var lastIndex = childSegments.Count - 1;
             WormSegment wormSegment = null;
 
             for (int index = 0; index < childSegments.Count; index++)
             {
-                if (childSegments[index].AboveGround && index <= lastIndex)
+                if (childSegments[index].AboveGround)
                 {
                     wormSegment = childSegments[index];
                     break;
@@ -237,7 +268,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private float CaluclatePushTime()
         {
-            return spriteHeight * 2 / pushUpSpeed * 0.3f;
+            return spriteHeight / pushUpSpeed * 0.1f;
         }
     }
 }
