@@ -28,7 +28,6 @@ namespace EnemyCharacter.AI
             boxCollider2D = GetComponent<BoxCollider2D>();
             myBoxCollider2D = GetComponent<BoxCollider2D>();
             myRigidbody2D = GetComponent<Rigidbody2D>();
-            jointToggler = GetComponent<JointToggler>();
 
             MyWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
 
@@ -39,10 +38,6 @@ namespace EnemyCharacter.AI
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
-
-            jointToggler.enabled = false;
-            myBoxCollider2D.enabled = false;
-            myRigidbody2D.isKinematic = true;
         }
         /// <summary>
         /// Called when segment dies disables both collision and sprite renderer then invokes an OnSegmentDeath event
@@ -177,18 +172,14 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void FreezeSegment()
         {
-            jointToggler.enabled = false;
             myBoxCollider2D.enabled = false;
-            myRigidbody2D.isKinematic = true;
         }
         /// <summary>
         /// Allow segment to moved again
         /// </summary>
         public void UnFreezeSegment()
         {
-            jointToggler.enabled = true;
             myBoxCollider2D.enabled = true;
-            myRigidbody2D.isKinematic = false;
         }
         /// <summary>
         /// Amount of damage to apply to the player
@@ -210,10 +201,6 @@ namespace EnemyCharacter.AI
         /// Rigidbody2D attached to segment
         /// </summary>
         public Rigidbody2D myRigidbody2D { get; private set; } = null;
-        /// <summary>
-        /// JointToggler attached to segment
-        /// </summary>
-        public JointToggler jointToggler { get; private set; } = null;
         /// <summary>
         /// What layers are ground
         /// </summary>

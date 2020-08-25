@@ -92,6 +92,11 @@ public class GeneralFunctions
     {
         return (position1.normalized.y >= position2.normalized.y) ? true : false;
     }
+
+    public static bool isObjectLeftOrRight(Vector2 postion1, Vector2 postion2)
+    {
+        return postion1.normalized.x <= postion2.normalized.x ? true : false;
+    }
     /// <summary>
     /// Will calculate the needed angle to make the current location look at the look at vector
     /// </summary>
