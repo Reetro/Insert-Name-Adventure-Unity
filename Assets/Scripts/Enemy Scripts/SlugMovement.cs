@@ -281,7 +281,7 @@ namespace EnemyCharacter.AI
         private RaycastHit2D LookForCollision()
         {
             Vector2 traceStart = transform.position;
-            Vector2 traceEnd = GeneralFunctions.GetFaceingDirectionY(gameObject);
+            Vector2 traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject);
 
             RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
 
