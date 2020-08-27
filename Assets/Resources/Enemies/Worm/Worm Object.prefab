@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3485621069134675726}
   - component: {fileID: 3485621069134675727}
   - component: {fileID: 3485621069134675712}
+  - component: {fileID: 4110474315345112314}
   m_Layer: 10
   m_Name: Worm Middle
   m_TagString: Worm Segment
@@ -180,6 +181,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &4110474315345112314
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485621069134675714}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.01}
+  m_Size: {x: 0.42, y: 0.88}
+  m_Direction: 0
 --- !u!1 &3485621069359818604
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +212,7 @@ GameObject:
   - component: {fileID: 3485621069359818600}
   - component: {fileID: 3485621069359818601}
   - component: {fileID: 3485621069359818602}
+  - component: {fileID: 6836023560972087159}
   m_Layer: 10
   m_Name: Worm Top
   m_TagString: Worm Segment
@@ -359,6 +377,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &6836023560972087159
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485621069359818604}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.01}
+  m_Size: {x: 0.42, y: 0.88}
+  m_Direction: 0
 --- !u!1 &6681054762503465396
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +408,7 @@ GameObject:
   - component: {fileID: 6681054762503465385}
   - component: {fileID: 3478146148403439873}
   - component: {fileID: 5393045303437337952}
+  - component: {fileID: 8306795630467371400}
   m_Layer: 10
   m_Name: Worm Bottom
   m_TagString: Worm Segment
@@ -389,7 +424,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6681054762503465396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.16, z: 0}
+  m_LocalPosition: {x: 0.21, y: 2.725, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3485621069134675713}
@@ -539,6 +574,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &8306795630467371400
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6681054762503465396}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.01}
+  m_Size: {x: 0.42, y: 0.88}
+  m_Direction: 0
 --- !u!1 &6681054763131576229
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +660,7 @@ MonoBehaviour:
   damage: 1
   segmentHealth: 6
   pushDelay: 5
-  pushUpSpeed: 6
+  pushUpSpeed: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 655616
