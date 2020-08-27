@@ -79,7 +79,7 @@ namespace EnemyCharacter.AI
 
                 if (canMove)
                 {
-                    MyMovementComp.MoveAIForward(GetFacingDirection(), moveSpeed);
+                    MyMovementComp.MoveAIForward(GeneralFunctions.GetFaceingDirectionX(gameObject), moveSpeed);
                 }
                 else if (!isGrounded && !ignoreIsGrounded)
                 {
@@ -197,20 +197,6 @@ namespace EnemyCharacter.AI
             transform.position = new Vector3(transform.position.x + xOffset, transform.position.y + yOffset, 0);
         }
         /// <summary>
-        /// Gets the current direction the slug is facing
-        /// </summary>
-        private Vector2 GetFacingDirection()
-        {
-            return transform.rotation * Vector2.right;
-        }
-        /// <summary>
-        /// Gets the current upward direction the slug is facing
-        /// </summary>
-        private Vector2 GetFacingUpward()
-        {
-            return transform.rotation * Vector2.up;
-        }
-        /// <summary>
         /// Wait 0.2 seconds before starting ground checks 
         /// </summary>
         private IEnumerator RestartGroundCheck()
@@ -240,7 +226,7 @@ namespace EnemyCharacter.AI
         private bool IsGrounded()
         {
             Vector2 traceStart = traceStartObject.transform.position;
-            Vector2 traceEnd = -GetFacingUpward();
+            Vector2 traceEnd = -GeneralFunctions.GetFaceingDirectionY(gameObject);
 
             RaycastHit2D raycastHits2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
 
@@ -295,7 +281,7 @@ namespace EnemyCharacter.AI
         private RaycastHit2D LookForCollision()
         {
             Vector2 traceStart = transform.position;
-            Vector2 traceEnd = GetFacingDirection();
+            Vector2 traceEnd = GeneralFunctions.GetFaceingDirectionY(gameObject);
 
             RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatCanSlugSee);
 

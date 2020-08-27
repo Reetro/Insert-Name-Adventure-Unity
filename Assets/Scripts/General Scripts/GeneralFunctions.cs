@@ -675,4 +675,22 @@ public class GeneralFunctions
     {
         return spriteRenderer.bounds.extents.y;
     }
+    /// <summary>
+    /// Gets the current direction of the X axis
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A Vector2</returns>
+    public static Vector2 GetFaceingDirectionX(GameObject gameObject)
+    {
+        return gameObject.transform.rotation * Vector2.right;
+    }
+    /// <summary>
+    /// Gets the current direction of the Y axis
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A Vector2</returns>
+    public static Vector2 GetFaceingDirectionY(GameObject gameObject)
+    {
+        return gameObject.transform.rotation * Vector2.up;
+    }
 }

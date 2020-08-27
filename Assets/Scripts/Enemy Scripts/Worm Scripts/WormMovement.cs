@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -18,19 +19,17 @@ namespace EnemyCharacter.AI
         [SerializeField] private float pushUpSpeed = 0.1f;
         [Tooltip("What layers should collision checks collide with")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
-
+        
         [Space]
 
         [Header("Debug Settings")]
         [Tooltip("Whether or not to print debug messages")]
         [SerializeField] private bool drawDebug = false;
 
+        #region Local Varaibles
         private List<WormSegment> childSegments = new List<WormSegment>();
         private int segmentCount = 0;
-        private float defaultDelay = 0;
-        private float defaultPushUpTime = 0;
         private float spriteHeight = 0;
-        private float pushUpTime = 0;
         private WormSegment wormSegmentToRotate = null;
         private bool pushingSegment = false;
         private bool segmentRotating = false;
@@ -39,14 +38,14 @@ namespace EnemyCharacter.AI
         /// Get this objects enemy movement component
         /// </summary>
         public EnemyMovement MyMovementComp { get; private set; }
+        #endregion
 
+        #region Setup Functions
         /// <summary>
         /// Get a random rotation to move towards then setup segment damage
         /// </summary>
         private void Start()
         {
-            defaultDelay = pushDelay;
-
             MyMovementComp = GetComponent<EnemyMovement>();
 
             childSegments = GetComponentsInChildren<WormSegment>().ToList();
@@ -79,15 +78,7 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            pushUpTime = CaluclatePushTime();
-
-            if (drawDebug)
-            {
-                print("Sprite Height: " + spriteHeight + " Push Up Time: " + pushUpTime);
-            }
-
             segmentCount = childSegments.Count;
-            defaultPushUpTime = pushUpTime;
 
             wormSegmentToRotate = GetSegmentToRotate();
 
@@ -98,60 +89,54 @@ namespace EnemyCharacter.AI
                     print("Rotating segment: " + wormSegmentToRotate.name);
                 }
             }
+
+            StartCoroutine(PushSegmentsUp());
         }
+        #endregion
+
+        #region Movement Functions
         /// <summary>
         /// Every X seconds push worm segment up and rotate worm downward to player
         /// </summary>
         private void Update()
         {
-            PushSegmentsUp();
-
             PushToPlayer();
         }
         /// <summary>
         /// Will push the next grounded segment up into the world
         /// </summary>
-        private void PushSegmentsUp()
+        private IEnumerator PushSegmentsUp()
         {
-            if (!AreAllSegmentsUp() && !segmentRotating)
+            while (true)
             {
-                pushDelay -= Time.deltaTime;
+                yield return new WaitForSeconds(pushDelay);
 
-                if (pushDelay <= 0)
+                if (AreAllSegmentsUp())
                 {
-                    pushUpTime -= Time.deltaTime;
+                    yield break;
+                }
 
-                    if (pushUpTime <= 0)
+                if (!segmentRotating)
+                {
+                    var direction = GetNextSegmentLocation();
+
+                    Vector3 startingPos = transform.position;
+                    Vector3 finalPos = (Vector2)transform.position + direction;
+                    float elapsedTime = 0;
+
+                    while (elapsedTime < pushUpSpeed)
                     {
-                        foreach (WormSegment wormSegment in childSegments)
-                        {
-                            wormSegment.CheckCollision();
-                        }
-
-                        pushUpTime = defaultPushUpTime;
-                        pushDelay = defaultDelay;
-
-                        wormSegmentToRotate = GetSegmentToRotate();
-
-                        if (drawDebug)
-                        {
-                            if (wormSegmentToRotate)
-                            {
-                                print("Rotating segment: " + wormSegmentToRotate.name);
-                            }
-                            else
-                            {
-                                Debug.LogError("Failed to get next segment to rotate");
-                            }
-                        }
-
-                        pushingSegment = false;
-                    }
-                    else
-                    {
+                        transform.position = Vector3.Lerp(startingPos, finalPos, (elapsedTime / pushUpSpeed));
+                        elapsedTime += Time.deltaTime;
                         pushingSegment = true;
+                        yield return null;
+                    }
 
-                        MyMovementComp.MoveAIForward(Vector2.up, pushUpSpeed);
+                    pushingSegment = false;
+
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        wormSegment.CheckCollision();
                     }
                 }
             }
@@ -166,6 +151,66 @@ namespace EnemyCharacter.AI
 
             }
         }
+        /// <summary>
+        /// Find the bottom most segment
+        /// </summary>
+        private WormSegment GetSegmentToRotate()
+        {
+            WormSegment localWormSegment = null;
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment.AboveGround)
+                {
+                    localWormSegment = wormSegment;
+                    break;
+                }
+            }
+
+            return localWormSegment;
+        }
+        /// <summary>
+        /// Checks to see if all worm segments are above ground
+        /// </summary>
+        private bool AreAllSegmentsUp()
+        {
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (!wormSegment.AboveGround)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Calculates the amount of distance the worm needs to move
+        /// </summary>
+        private Vector2 GetNextSegmentLocation()
+        {
+            var topSegment = GetTopMostSegment();
+
+            var traceEnd = GeneralFunctions.GetFaceingDirectionY(topSegment.gameObject) * spriteHeight;
+
+            if (drawDebug)
+            {
+                Debug.DrawRay(topSegment.transform.position, traceEnd * spriteHeight, Color.red);
+
+                Debug.Log("Translate amount: " + traceEnd);
+            }
+
+            return traceEnd;
+        }
+        /// <summary>
+        /// Gets the top most worm segment
+        /// </summary>
+        private WormSegment GetTopMostSegment()
+        {
+            return childSegments[childSegments.Count - 1];
+        }
+        #endregion
+
+        #region Health Functions
         /// <summary>
         /// Called whenever a segment is killed if all segments are destroyed then this object is destroyed
         /// </summary>
@@ -232,43 +277,6 @@ namespace EnemyCharacter.AI
 
             return localSegments;
         }
-        /// <summary>
-        /// Find the bottom most segment
-        /// </summary>
-        private WormSegment GetSegmentToRotate()
-        {
-            WormSegment wormSegment = null;
-
-            for (int index = 0; index < childSegments.Count; index++)
-            {
-                if (childSegments[index].AboveGround)
-                {
-                    wormSegment = childSegments[index];
-                    break;
-                }
-            }
-            return wormSegment;
-        }
-        /// <summary>
-        /// Checks to see if all worm segments are above ground
-        /// </summary>
-        private bool AreAllSegmentsUp()
-        {
-            foreach (WormSegment wormSegment in childSegments)
-            {
-                if (!wormSegment.AboveGround)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        /// <summary>
-        /// Calculate the amount of time needed to push a worm segment up
-        /// </summary>
-        private float CaluclatePushTime()
-        {
-            return spriteHeight / pushUpSpeed * 0.1f;
-        }
+        #endregion
     }
 }
