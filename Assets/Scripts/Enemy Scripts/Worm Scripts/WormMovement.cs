@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace EnemyCharacter.AI
 {
-    [RequireComponent(typeof(EnemyMovement))]
     public class WormMovement : MonoBehaviour
     {
         [Header("Worm Settings")]
@@ -19,7 +18,9 @@ namespace EnemyCharacter.AI
         [SerializeField] private float pushUpSpeed = 0.1f;
         [Tooltip("What layers should collision checks collide with")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
-        
+        [SerializeField] private float rotationSpeed = 1f;
+        [SerializeField] private float rotationOffset = 0.4f;
+
         [Space]
 
         [Header("Debug Settings")]
@@ -33,11 +34,8 @@ namespace EnemyCharacter.AI
         private WormSegment wormSegmentToRotate = null;
         private bool pushingSegment = false;
         private bool segmentRotating = false;
-
-        /// <summary>
-        /// Get this objects enemy movement component
-        /// </summary>
-        public EnemyMovement MyMovementComp { get; private set; }
+        private Quaternion targetRotation;
+        private bool hookedToGround = false;
         #endregion
 
         #region Setup Functions
@@ -46,8 +44,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Start()
         {
-            MyMovementComp = GetComponent<EnemyMovement>();
-
             childSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             foreach (WormSegment wormSegment in childSegments)
@@ -63,7 +59,7 @@ namespace EnemyCharacter.AI
 
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
                     wormSegment.CheckCollision();
-
+                        
                     if (drawDebug)
                     {
                         if (wormSegment.AboveGround)
@@ -90,18 +86,13 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            StartCoroutine(PushSegmentsUp());
+            //StartCoroutine(PushSegmentsUp());
+
+            targetRotation = Quaternion.AngleAxis(-90f, transform.forward) * transform.rotation;
         }
         #endregion
 
         #region Movement Functions
-        /// <summary>
-        /// Every X seconds push worm segment up and rotate worm downward to player
-        /// </summary>
-        private void Update()
-        {
-            PushToPlayer();
-        }
         /// <summary>
         /// Will push the next grounded segment up into the world
         /// </summary>
@@ -139,16 +130,44 @@ namespace EnemyCharacter.AI
                         wormSegment.CheckCollision();
                     }
                 }
+                else
+                {
+
+                }
             }
         }
         /// <summary>
-        /// Push the current worm segment towards the player
+        /// Rotate the current worm segment towards the player
         /// </summary>
-        private void PushToPlayer()
+        private void Update()
         {
             if (!pushingSegment)
             {
+                HookToGround();
 
+                wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                segmentRotating = true;
+
+                if (wormSegmentToRotate.transform.rotation == targetRotation)
+                {
+
+                    //HookToGround();
+
+                    segmentRotating = false;
+                }
+            }
+        }
+        /// <summary>
+        /// Push the worm segment on to the ground
+        /// </summary>
+        private void HookToGround()
+        {
+            if (!hookedToGround)
+            {
+                wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y - rotationOffset);
+
+                hookedToGround = true;
             }
         }
         /// <summary>

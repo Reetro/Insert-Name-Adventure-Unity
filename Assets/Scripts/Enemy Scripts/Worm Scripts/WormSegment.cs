@@ -47,7 +47,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void CheckCollision()
         {
-            Collider2D collider2D = Physics2D.OverlapCapsule(transform.position, MyCapsuleCollider2D.size, MyCapsuleCollider2D.direction, GeneralFunctions.GetObjectAngle(gameObject), WhatIsGround);
+            Collider2D collider2D = Physics2D.OverlapCapsule(transform.position, MyCapsuleCollider2D.size, MyCapsuleCollider2D.direction, GeneralFunctions.GetObjectEulerAngle(gameObject), WhatIsGround);
 
             if (collider2D)
             {

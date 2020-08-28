@@ -41,7 +41,7 @@ namespace EnemyCharacter.AI
         {
             traceStartObject = transform.GetChild(0).gameObject;
 
-            currentRotation = GeneralFunctions.GetObjectAngle(gameObject);
+            currentRotation = GeneralFunctions.GetObjectEulerAngle(gameObject);
             
             if (drawDebug)
             {

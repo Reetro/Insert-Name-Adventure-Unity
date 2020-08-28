@@ -92,7 +92,11 @@ public class GeneralFunctions
     {
         return (position1.normalized.y >= position2.normalized.y) ? true : false;
     }
-
+    /// <summary>
+    /// Looks to see if postion1 is left or right a postion2
+    /// </summary>
+    /// <param name="postion1"></param>
+    /// <param name="postion2"></param>
     public static bool isObjectLeftOrRight(Vector2 postion1, Vector2 postion2)
     {
         return postion1.normalized.x <= postion2.normalized.x ? true : false;
@@ -646,7 +650,7 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="gameObject"></param>
     /// <returns>A float</returns>
-    public static float GetObjectAngle(GameObject gameObject)
+    public static float GetObjectEulerAngle(GameObject gameObject)
     {
         var angle = gameObject.transform.localEulerAngles.z;
 
