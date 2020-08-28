@@ -18,8 +18,14 @@ namespace EnemyCharacter.AI
         [SerializeField] private float pushUpSpeed = 0.1f;
         [Tooltip("What layers should collision checks collide with")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
+
+        [Space]
+
+        [Header("Rotation Settings")]
         [SerializeField] private float rotationSpeed = 1f;
         [SerializeField] private float rotationOffset = 0.4f;
+        [SerializeField] private float returnHomeDelay = 4f;
+        [SerializeField] private float rotationDelay = 2f;
 
         [Space]
 
@@ -36,6 +42,13 @@ namespace EnemyCharacter.AI
         private bool segmentRotating = false;
         private Quaternion targetRotation;
         private bool hookedToGround = false;
+        private Quaternion homeRotation;
+        private Vector3 homeLocation;
+        private float defaultHomeDelay = 0f;
+        private float defaultRotationDelay = 0f;
+        private bool returningHome = false;
+        private bool unHookedFromGround = false;
+        private GameObject playerObject = null;
         #endregion
 
         #region Setup Functions
@@ -88,7 +101,38 @@ namespace EnemyCharacter.AI
 
             //StartCoroutine(PushSegmentsUp());
 
-            targetRotation = Quaternion.AngleAxis(-90f, transform.forward) * transform.rotation;
+            SetupRotation();
+        }
+        /// <summary>
+        /// Determines the 1st rotation direction and sets all default rotation values
+        /// </summary>
+        private void SetupRotation()
+        {
+            homeRotation = wormSegmentToRotate.transform.rotation;
+
+            homeLocation = wormSegmentToRotate.transform.position;
+
+            defaultHomeDelay = returnHomeDelay;
+
+            defaultRotationDelay = rotationDelay;
+
+            playerObject = GeneralFunctions.GetPlayerGameObject();
+
+            GetNextRotation();
+        }
+        /// <summary>
+        /// Determine the next rotation the current segment will travel in
+        /// </summary>
+        private void GetNextRotation()
+        {
+            if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+            {
+                targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+            }
+            else
+            {
+                targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+            }
         }
         #endregion
 
@@ -145,17 +189,68 @@ namespace EnemyCharacter.AI
             {
                 HookToGround();
 
-                wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-                segmentRotating = true;
-
-                if (wormSegmentToRotate.transform.rotation == targetRotation)
+                if (!returningHome)
                 {
+                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                    //HookToGround();
+                    segmentRotating = true;
 
-                    segmentRotating = false;
+                    if (wormSegmentToRotate.transform.rotation == targetRotation)
+                    {
+                        returningHome = true;
+                    }
                 }
+                else
+                {
+                    returnHomeDelay -= Time.deltaTime;
+
+                    if (returnHomeDelay <= 0)
+                    {
+                        UnHookFromGround();
+
+                        wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, homeRotation, rotationSpeed * Time.deltaTime);
+
+                        if (wormSegmentToRotate.transform.rotation == homeRotation)
+                        {
+                            segmentRotating = false;
+
+                            ReturnHome(true);
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Restarts rotation timer 
+        /// </summary>
+        private void ReturnHome(bool useDelay)
+        {
+            if (useDelay)
+            {
+                rotationDelay -= Time.deltaTime;
+
+                if (rotationDelay <= 0)
+                {
+                    GetNextRotation();
+
+                    returnHomeDelay = defaultHomeDelay;
+                    rotationDelay = defaultRotationDelay;
+
+                    hookedToGround = false;
+                    unHookedFromGround = false;
+                    returningHome = false;
+                }
+            }
+            else
+            {
+                GetNextRotation();
+
+                returnHomeDelay = defaultHomeDelay;
+                rotationDelay = defaultRotationDelay;
+
+                hookedToGround = false;
+                unHookedFromGround = false;
+                returningHome = false;
             }
         }
         /// <summary>
@@ -168,6 +263,18 @@ namespace EnemyCharacter.AI
                 wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y - rotationOffset);
 
                 hookedToGround = true;
+            }
+        }
+        /// <summary>
+        /// Reset worm segment position back to starting position
+        /// </summary>
+        private void UnHookFromGround()
+        {
+            if (!unHookedFromGround)
+            {
+                wormSegmentToRotate.transform.position = homeLocation;
+
+                unHookedFromGround = true;
             }
         }
         /// <summary>
