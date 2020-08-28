@@ -99,7 +99,7 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            //StartCoroutine(PushSegmentsUp());
+            StartCoroutine(PushSegmentsUp());
 
             SetupRotation();
         }
@@ -167,16 +167,18 @@ namespace EnemyCharacter.AI
                         yield return null;
                     }
 
-                    pushingSegment = false;
-
                     foreach (WormSegment wormSegment in childSegments)
                     {
                         wormSegment.CheckCollision();
                     }
+
+                    wormSegmentToRotate = GetSegmentToRotate();
+
+                    pushingSegment = false;
                 }
                 else
                 {
-
+                    //ReturnHome();
                 }
             }
         }
@@ -185,6 +187,8 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
+            print(wormSegmentToRotate.name);
+
             if (!pushingSegment)
             {
                 HookToGround();
