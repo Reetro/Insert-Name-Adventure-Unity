@@ -108,23 +108,26 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void SetupRotation()
         {
-            homeRotation = wormSegmentToRotate.transform.rotation;
-
-            homeLocation = wormSegmentToRotate.transform.position;
-
             defaultHomeDelay = returnHomeDelay;
 
             defaultRotationDelay = rotationDelay;
 
             playerObject = GeneralFunctions.GetPlayerGameObject();
 
-            GetNextRotation();
+            if (wormSegmentToRotate)
+            {
+                GetNextRotation();
+            }
         }
         /// <summary>
         /// Determine the next rotation the current segment will travel in
         /// </summary>
         private void GetNextRotation()
         {
+            homeRotation = wormSegmentToRotate.transform.rotation;
+
+            homeLocation = wormSegmentToRotate.transform.position;
+
             if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
             {
                 targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
@@ -174,6 +177,13 @@ namespace EnemyCharacter.AI
 
                     wormSegmentToRotate = GetSegmentToRotate();
 
+                    if (drawDebug)
+                    {
+                        print(wormSegmentToRotate);
+                    }
+
+                    GetNextRotation();
+
                     pushingSegment = false;
                 }
                 else
@@ -187,38 +197,39 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
-            print(wormSegmentToRotate.name);
-
-            if (!pushingSegment)
+            if (wormSegmentToRotate)
             {
-                HookToGround();
-
-                if (!returningHome)
+                if (!pushingSegment)
                 {
-                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    HookToGround();
 
-                    segmentRotating = true;
-
-                    if (wormSegmentToRotate.transform.rotation == targetRotation)
+                    if (!returningHome)
                     {
-                        returningHome = true;
-                    }
-                }
-                else
-                {
-                    returnHomeDelay -= Time.deltaTime;
+                        wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                    if (returnHomeDelay <= 0)
-                    {
-                        UnHookFromGround();
+                        segmentRotating = true;
 
-                        wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, homeRotation, rotationSpeed * Time.deltaTime);
-
-                        if (wormSegmentToRotate.transform.rotation == homeRotation)
+                        if (wormSegmentToRotate.transform.rotation == targetRotation)
                         {
-                            segmentRotating = false;
+                            returningHome = true;
+                        }
+                    }
+                    else
+                    {
+                        returnHomeDelay -= Time.deltaTime;
 
-                            ReturnHome(true);
+                        if (returnHomeDelay <= 0)
+                        {
+                            UnHookFromGround();
+
+                            wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, homeRotation, rotationSpeed * Time.deltaTime);
+
+                            if (wormSegmentToRotate.transform.rotation == homeRotation)
+                            {
+                                segmentRotating = false;
+
+                                ReturnHome();
+                            }
                         }
                     }
                 }
@@ -227,25 +238,11 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Restarts rotation timer 
         /// </summary>
-        private void ReturnHome(bool useDelay)
+        private void ReturnHome()
         {
-            if (useDelay)
-            {
-                rotationDelay -= Time.deltaTime;
+            rotationDelay -= Time.deltaTime;
 
-                if (rotationDelay <= 0)
-                {
-                    GetNextRotation();
-
-                    returnHomeDelay = defaultHomeDelay;
-                    rotationDelay = defaultRotationDelay;
-
-                    hookedToGround = false;
-                    unHookedFromGround = false;
-                    returningHome = false;
-                }
-            }
-            else
+            if (rotationDelay <= 0)
             {
                 GetNextRotation();
 
