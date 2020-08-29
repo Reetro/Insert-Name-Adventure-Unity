@@ -6,6 +6,7 @@ using PlayerControls;
 using System.Collections;
 using System.Collections.Generic;
 using EnemyCharacter.SceneObject;
+using EnemyCharacter.AI;
 
 namespace PlayerCharacter.Controller
 {
@@ -368,7 +369,7 @@ namespace PlayerCharacter.Controller
             {
                 if (collider2)
                 {
-                    if (!collider2.gameObject.CompareTag("Player") && !IsItemInArray(colliders.ToArray(), collider2) && !collider2.isTrigger)
+                    if (!collider2.gameObject.CompareTag("Player") && !GeneralFunctions.DoesItemExistInArray(colliders.ToArray(), collider2) && !collider2.isTrigger)
                     {
                         colliders.Add(collider2);
                     }
@@ -379,25 +380,6 @@ namespace PlayerCharacter.Controller
             {
                 DamageAllObjects();
             }
-        }
-        /// <summary>
-        /// Check to see if the given collider exist in the given array
-        /// </summary>
-        /// <param name="collider2Ds"></param>
-        /// <param name="collider"></param>
-        private bool IsItemInArray(Collider2D[] collider2Ds, Collider2D collider)
-        {
-            foreach (Collider2D collider2 in collider2Ds)
-            {
-                if (collider2)
-                {
-                    if (collider2 == collider)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
         /// <summary>
         /// Damage all overlapped Gameobjects
@@ -412,6 +394,7 @@ namespace PlayerCharacter.Controller
                     {
                         var leechEggRipe = collider2.gameObject.GetComponent<LeechEggRipe>();
                         var leechEggCold = collider2.gameObject.GetComponent<LeechEggCold>();
+                        var wormSegment = collider2.gameObject.GetComponent<WormSegment>();
 
                         if (leechEggRipe)
                         {
@@ -421,7 +404,14 @@ namespace PlayerCharacter.Controller
                         {
                             leechEggCold.SpawnLeech();
                         }
-                        else if (!leechEggRipe && !leechEggCold)
+                        else if (wormSegment)
+                        {
+                            if (wormSegment.AboveGround)
+                            {
+                                GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
+                            }
+                        }
+                        else if (!leechEggRipe && !leechEggCold && !wormSegment)
                         {
                             GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                         }

@@ -697,4 +697,24 @@ public class GeneralFunctions
     {
         return gameObject.transform.rotation * Vector2.up;
     }
+    /// <summary>
+    /// Loops through the given array and checks to see if the given object exist in the array
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="array"></param>
+    /// <param name="objectToTest"></param>
+    public static bool DoesItemExistInArray<T>(T[] array, T objectToTest)
+    {
+        foreach (T item in array)
+        {
+            if (item != null)
+            {
+                if (item.Equals(objectToTest))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
