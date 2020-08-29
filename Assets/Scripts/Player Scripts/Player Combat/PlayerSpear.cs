@@ -48,6 +48,7 @@ namespace PlayerCharacter.Controller
         private bool facingRight = true;
         #endregion
 
+        #region Setup Functions
         /// <summary>
         /// Create new player controls object
         /// </summary>
@@ -89,6 +90,30 @@ namespace PlayerCharacter.Controller
                 }
             }
         }
+        /// <summary>
+        /// Collects all need components for the spear to work
+        /// </summary>
+        private void SetupSpear()
+        {
+            controller = GetComponentInParent<PlayerController>();
+            cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
+            playerHealthComp = GetComponentInParent<HealthComponent>();
+            gameplayManager = FindObjectOfType<GameplayManager>();
+            playerObject = GeneralFunctions.GetPlayerGameObject();
+
+            canRotate = true;
+        }
+        /// <summary>
+        /// Update rotation value when right joystick is moved
+        /// </summary>
+        /// <param name="RotationValue"></param>
+        private void UpdateJoystick()
+        {
+            stickInput = controls.Player.Rotate.ReadValue<Vector2>();
+        }
+        #endregion
+
+        #region Spear Movement Functions
         /// <summary>
         /// Will try to push the spear in the direction its facing
         /// </summary>
@@ -244,14 +269,6 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Update rotation value when right joystick is moved
-        /// </summary>
-        /// <param name="RotationValue"></param>
-        private void UpdateJoystick()
-        {
-            stickInput = controls.Player.Rotate.ReadValue<Vector2>();
-        }
-        /// <summary>
         /// Checks to see if the spear is being block by ground
         /// </summary>
         /// <returns>A bool that determines if the player can push the spear</returns>
@@ -303,6 +320,19 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
+        /// Look see if the mouse is on the left or right of the screen
+        /// </summary>
+        private bool MouseLeftOrRight()
+        {
+            var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);
+            float mouseX = controls.Player.MousePostion.ReadValue<Vector2>().x;
+
+            return mouseX < playerScreenPoint.x ? true : false;
+        }
+        #endregion
+
+        #region Collision Functions
+        /// <summary>
         /// Check to see if spear is touching the ground
         /// </summary>
         /// <param name="collision"></param>
@@ -324,29 +354,9 @@ namespace PlayerCharacter.Controller
                 touchingGround = false;
             }
         }
-        /// <summary>
-        /// Look see if the mouse is on the left or right of the screen
-        /// </summary>
-        private bool MouseLeftOrRight()
-        {
-            var playerScreenPoint = Camera.main.WorldToScreenPoint(controller.transform.position);
-            float mouseX = controls.Player.MousePostion.ReadValue<Vector2>().x;
+        #endregion
 
-            return mouseX < playerScreenPoint.x ? true : false;
-        }
-        /// <summary>
-        /// Collects all need components for the spear to work
-        /// </summary>
-        private void SetupSpear()
-        {
-            controller = GetComponentInParent<PlayerController>();
-            cooldownBar = transform.GetChild(2).transform.GetChild(0).GetComponent<CooldownBar>();
-            playerHealthComp = GetComponentInParent<HealthComponent>();
-            gameplayManager = FindObjectOfType<GameplayManager>();
-            playerObject = GeneralFunctions.GetPlayerGameObject();
-
-            canRotate = true;
-        }
+        #region Damage Functions
         /// <summary>
         /// Look to see if spear hit objects that can be damaged
         /// </summary>
@@ -358,7 +368,7 @@ namespace PlayerCharacter.Controller
             {
                 if (collider2)
                 {
-                    if (!collider2.gameObject.CompareTag("Player"))
+                    if (!collider2.gameObject.CompareTag("Player") && !IsItemInArray(colliders.ToArray(), collider2) && !collider2.isTrigger)
                     {
                         colliders.Add(collider2);
                     }
@@ -369,6 +379,25 @@ namespace PlayerCharacter.Controller
             {
                 DamageAllObjects();
             }
+        }
+        /// <summary>
+        /// Check to see if the given collider exist in the given array
+        /// </summary>
+        /// <param name="collider2Ds"></param>
+        /// <param name="collider"></param>
+        private bool IsItemInArray(Collider2D[] collider2Ds, Collider2D collider)
+        {
+            foreach (Collider2D collider2 in collider2Ds)
+            {
+                if (collider2)
+                {
+                    if (collider2 == collider)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         /// <summary>
         /// Damage all overlapped Gameobjects
@@ -402,5 +431,6 @@ namespace PlayerCharacter.Controller
 
             colliders.Clear();
         }
+        #endregion
     }
 }
