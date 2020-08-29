@@ -219,8 +219,33 @@ namespace CustomEditors
         private Editor slugHealthEditor = null;
         #endregion
 
+        #region Worm Varaibles
+        private SerializedProperty _WormDamage;
+        private SerializedProperty _WormSegmentHealth;
+        private SerializedProperty _WormPushDelay;
+        private SerializedProperty _WormPushUpSpeed;
+        private SerializedProperty _WormWhatIsGround;
+        #endregion
+
+        #region Worm Rotation Varaibles
+        private SerializedProperty _WormRotationSpeed;
+        private SerializedProperty _WormRotationOffset;
+        private SerializedProperty _WormReturnHomeDelay;
+        private SerializedProperty _WormRotationDelay;
+        private SerializedProperty _WormDrawDebug;
+        #endregion
+
+        #region Worm Objects
+        private SerializedObject wormObject;
+        #endregion
+
+        #region Worm Editors
+        private Editor wormEdior = null;
+        #endregion
+
         #region Local Varaibles
         private Vector2 scrollPosition = Vector2.zero;
+        private static bool showEnemyEditor = false;
         private static bool showPlayerSettings = false;
         private static bool showLeechSettings = false;
         private static bool showLeechFatherSettings = false;
@@ -229,6 +254,7 @@ namespace CustomEditors
         private static bool showShamanSettings = false;
         private static bool showManagerSettings = false;
         private static bool showSlugSettings = false;
+        private static bool showWormSettings = false;
         private const float foldoutSpaceing = 20f;
         #endregion
 
@@ -329,6 +355,10 @@ namespace CustomEditors
             SetupSlugHealthEditor();
 
             SetupSlugMovementEditor();
+
+            SetupWormEditor();
+
+            SetupWormObjectEditor();
         }
 
         #region Leech Functions
@@ -556,6 +586,36 @@ namespace CustomEditors
             _SlugDebug = slugMovementObject.FindProperty("drawDebug");
         }
         #endregion
+
+        #region Worm Functions
+        private void SetupWormEditor()
+        {
+            var wormPrefab = Resources.Load("Enemies/Worm/Worm Object") as GameObject;
+
+            if (wormPrefab)
+            {
+                wormEdior = Editor.CreateEditor(wormPrefab.GetComponent<WormMovement>());
+
+                wormObject = new SerializedObject(wormPrefab.GetComponent<WormMovement>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get wormPrefab in Gameplay Editor");
+            }
+        }
+        private void SetupWormObjectEditor()
+        {
+            _WormDamage = wormObject.FindProperty("damage");
+            _WormSegmentHealth = wormObject.FindProperty("segmentHealth");
+            _WormPushDelay = wormObject.FindProperty("pushDelay");
+            _WormPushUpSpeed = wormObject.FindProperty("pushUpSpeed");
+            _WormWhatIsGround = wormObject.FindProperty("whatIsGround");
+            _WormRotationDelay = wormObject.FindProperty("rotationDelay");
+            _WormReturnHomeDelay = wormObject.FindProperty("returnHomeDelay");
+            _WormRotationOffset = wormObject.FindProperty("rotationOffset");
+            _WormRotationSpeed = wormObject.FindProperty("rotationSpeed");
+        }
+        #endregion
         #endregion
 
         #region Player Functions
@@ -680,216 +740,243 @@ namespace CustomEditors
             }
             #endregion
 
-            #region Leech UI
-            showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings");
+            #region Enemy Editors
 
-            if (showLeechSettings)
+            showEnemyEditor = EditorGUILayout.Foldout(showEnemyEditor, "Enemy Editor");
+
+            if (showEnemyEditor)
             {
-                // fetch current values from the target
-                leechHealthObject.Update();
+                #region Leech UI
+                showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings");
 
-                // fetch current values from the target
-                leechMovementObject.Update();
-
-                if (leechHealthEditor)
+                if (showLeechSettings)
                 {
-                    leechHealthEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    leechHealthObject.Update();
+
+                    // fetch current values from the target
+                    leechMovementObject.Update();
+
+                    if (leechHealthEditor)
+                    {
+                        leechHealthEditor.OnInspectorGUI();
+                    }
+
+                    if (leechMovmentEditor)
+                    {
+                        leechMovmentEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    leechHealthObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    leechMovementObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
                 }
 
-                if (leechMovmentEditor)
+                #endregion
+
+                #region Leech Father UI
+                showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings");
+
+                if (showLeechFatherSettings)
                 {
-                    leechMovmentEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    leechFatherHealthObject.Update();
+
+                    // fetch current values from the target
+                    leechFatherMovementObject.Update();
+
+                    // fetch current values from the target
+                    leechFatherObject.Update();
+
+                    if (leechFatherHealthEditor)
+                    {
+                        leechFatherHealthEditor.OnInspectorGUI();
+                    }
+
+                    if (leechFatherMovmentEditor)
+                    {
+                        leechFatherMovmentEditor.OnInspectorGUI();
+                    }
+
+                    if (leechFatherEditor)
+                    {
+                        GUILayout.Space(5f);
+
+                        leechFatherEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    leechFatherHealthObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    leechFatherMovementObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    leechFatherObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+                #endregion
+
+                #region Leech Mother UI
+                showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings");
+
+                if (showLeechMotherSettings)
+                {
+                    // fetch current values from the target
+                    leechMotherHealthObject.Update();
+
+                    // fetch current values from the target
+                    leechMotherMovementObject.Update();
+
+                    // fetch current values from the target
+                    leechMotherObject.Update();
+
+                    if (leechMotherHealthEditor)
+                    {
+                        leechMotherHealthEditor.OnInspectorGUI();
+                    }
+
+                    if (leechMotherMovmentEditor)
+                    {
+                        leechMotherMovmentEditor.OnInspectorGUI();
+                    }
+
+                    if (leechMotherEditor)
+                    {
+                        GUILayout.Space(5f);
+
+                        leechMotherEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    leechMotherHealthObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    leechMotherMovementObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    leechMotherObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+                #endregion
+
+                #region Shaman UI
+                showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings");
+
+                if (showShamanSettings)
+                {
+                    // fetch current values from the target
+                    shamanObject.Update();
+
+                    // fetch current values from the target
+                    shamanHealthObject.Update();
+
+                    if (shamanHealthEditor)
+                    {
+                        shamanHealthEditor.OnInspectorGUI();
+                    }
+
+                    if (shamanEditor)
+                    {
+                        shamanEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    shamanObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    shamanHealthObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+                #endregion
+
+                #region Axe Thrower UI
+                showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings");
+
+                if (showAxeThrowerSettings)
+                {
+                    // fetch current values from the target
+                    axeThrowerObject.Update();
+
+                    // fetch current values from the target
+                    axeThrowerHealthObject.Update();
+
+                    if (axeThrowerHealthEditor)
+                    {
+                        axeThrowerHealthEditor.OnInspectorGUI();
+                    }
+
+                    if (axeThrowerEditor)
+                    {
+                        axeThrowerEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    axeThrowerObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    axeThrowerHealthObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+                #endregion
+
+                #region Slug UI
+                showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings");
+
+                if (showSlugSettings)
+                {
+                    // fetch current values from the target
+                    slugHealthObject.Update();
+
+                    // fetch current values from the target
+                    slugMovementObject.Update();
+
+                    if (slugMovementEditor)
+                    {
+                        slugMovementEditor.OnInspectorGUI();
+                    }
+
+                    if (slugHealthEditor)
+                    {
+                        slugHealthEditor.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    slugHealthObject.ApplyModifiedProperties();
+
+                    // Apply values to the target
+                    slugMovementObject.ApplyModifiedProperties();
+
+                    GUILayout.Space(foldoutSpaceing);
                 }
 
-                // Apply values to the target
-                leechHealthObject.ApplyModifiedProperties();
+                #endregion
 
-                // Apply values to the target
-                leechMovementObject.ApplyModifiedProperties();
+                #region Worm UI
+                showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings");
 
-                GUILayout.Space(foldoutSpaceing);
-            }
-
-            #endregion
-
-            #region Leech Father UI
-            showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings");
-
-            if (showLeechFatherSettings)
-            {
-                // fetch current values from the target
-                leechFatherHealthObject.Update();
-
-                // fetch current values from the target
-                leechFatherMovementObject.Update();
-
-                // fetch current values from the target
-                leechFatherObject.Update();
-
-                if (leechFatherHealthEditor)
+                if (showWormSettings)
                 {
-                    leechFatherHealthEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    wormObject.Update();
+
+                    if (wormEdior)
+                    {
+                        wormEdior.OnInspectorGUI();
+                    }
+
+                    // Apply values to the target
+                    wormObject.ApplyModifiedProperties();
                 }
-
-                if (leechFatherMovmentEditor)
-                {
-                    leechFatherMovmentEditor.OnInspectorGUI();
-                }
-
-                if (leechFatherEditor)
-                {
-                    GUILayout.Space(5f);
-
-                    leechFatherEditor.OnInspectorGUI();
-                }
-
-                // Apply values to the target
-                leechFatherHealthObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                leechFatherMovementObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                leechFatherObject.ApplyModifiedProperties();
-
-                GUILayout.Space(foldoutSpaceing);
-            }
-            #endregion
-
-            #region Leech Mother UI
-            showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings");
-
-            if (showLeechMotherSettings)
-            {
-                // fetch current values from the target
-                leechMotherHealthObject.Update();
-
-                // fetch current values from the target
-                leechMotherMovementObject.Update();
-
-                // fetch current values from the target
-                leechMotherObject.Update();
-
-                if (leechMotherHealthEditor)
-                {
-                    leechMotherHealthEditor.OnInspectorGUI();
-                }
-
-                if (leechMotherMovmentEditor)
-                {
-                    leechMotherMovmentEditor.OnInspectorGUI();
-                }
-
-                if (leechMotherEditor)
-                {
-                    GUILayout.Space(5f);
-
-                    leechMotherEditor.OnInspectorGUI();
-                }
-
-                // Apply values to the target
-                leechMotherHealthObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                leechMotherMovementObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                leechMotherObject.ApplyModifiedProperties();
-
-                GUILayout.Space(foldoutSpaceing);
-            }
-            #endregion
-
-            #region Shaman UI
-            showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings");
-
-            if (showShamanSettings)
-            {
-                // fetch current values from the target
-                shamanObject.Update();
-
-                // fetch current values from the target
-                shamanHealthObject.Update();
-
-                if (shamanHealthEditor)
-                {
-                    shamanHealthEditor.OnInspectorGUI();
-                }
-
-                if (shamanEditor)
-                {
-                    shamanEditor.OnInspectorGUI();
-                }
-
-                // Apply values to the target
-                shamanObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                shamanHealthObject.ApplyModifiedProperties();
-
-                GUILayout.Space(foldoutSpaceing);
-            }
-            #endregion
-
-            #region Axe Thrower UI
-            showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings");
-
-            if (showAxeThrowerSettings)
-            {
-                // fetch current values from the target
-                axeThrowerObject.Update();
-
-                // fetch current values from the target
-                axeThrowerHealthObject.Update();
-
-                if (axeThrowerHealthEditor)
-                {
-                    axeThrowerHealthEditor.OnInspectorGUI();
-                }
-
-                if (axeThrowerEditor)
-                {
-                    axeThrowerEditor.OnInspectorGUI();
-                }
-
-                // Apply values to the target
-                axeThrowerObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                axeThrowerHealthObject.ApplyModifiedProperties();
-
-                GUILayout.Space(foldoutSpaceing);
-            }
-            #endregion
-
-            #region Slug UI
-            showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings");
-
-            if (showSlugSettings)
-            {
-                // fetch current values from the target
-                slugHealthObject.Update();
-
-                // fetch current values from the target
-                slugMovementObject.Update();
-
-                if (slugMovementEditor)
-                {
-                    slugMovementEditor.OnInspectorGUI();
-                }
-
-                if (slugHealthEditor)
-                {
-                    slugHealthEditor.OnInspectorGUI();
-                }
-
-                // Apply values to the target
-                slugHealthObject.ApplyModifiedProperties();
-
-                // Apply values to the target
-                slugMovementObject.ApplyModifiedProperties();
-
-                GUILayout.Space(foldoutSpaceing);
+                #endregion
             }
 
             #endregion
