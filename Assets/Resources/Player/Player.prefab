@@ -54,7 +54,7 @@ MonoBehaviour:
   descriptionFontSize: 28
   whatCanBeDamaged:
     serializedVersion: 2
-    m_Bits: 6309376
+    m_Bits: 2115072
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,12 +1010,12 @@ PrefabInstance:
     - target: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.041
+      value: -0.0469
       objectReference: {fileID: 0}
     - target: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.03
+      value: 0.0631
       objectReference: {fileID: 0}
     - target: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
@@ -1060,7 +1060,7 @@ PrefabInstance:
     - target: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.004
+      value: 0.0019500002
       objectReference: {fileID: 0}
     - target: {fileID: 1365758332269362995, guid: 61b369c67555f8249a9be31a2a880d85,
         type: 3}
