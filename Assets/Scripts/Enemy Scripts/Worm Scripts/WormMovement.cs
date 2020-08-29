@@ -22,9 +22,13 @@ namespace EnemyCharacter.AI
         [Space]
 
         [Header("Rotation Settings")]
+        [Tooltip("How fast the worm can rotate a segment")]
         [SerializeField] private float rotationSpeed = 1f;
+        [Tooltip("The worm ground offset")]
         [SerializeField] private float rotationOffset = 0.4f;
+        [Tooltip("The amount time the worm segment waits before returning back to it's starting rotation")]
         [SerializeField] private float returnHomeDelay = 4f;
+        [Tooltip("The amount time the worm segment waits before rotating to the player")]
         [SerializeField] private float rotationDelay = 2f;
 
         [Space]
@@ -49,6 +53,7 @@ namespace EnemyCharacter.AI
         private bool returningHome = false;
         private bool unHookedFromGround = false;
         private GameObject playerObject = null;
+        private float currentAngle = 0f;
         #endregion
 
         #region Setup Functions
@@ -99,6 +104,8 @@ namespace EnemyCharacter.AI
                 }
             }
 
+            currentAngle = GeneralFunctions.GetObjectEulerAngle(gameObject);
+
             StartCoroutine(PushSegmentsUp());
 
             SetupRotation();
@@ -128,13 +135,27 @@ namespace EnemyCharacter.AI
 
             homeLocation = wormSegmentToRotate.transform.position;
 
-            if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+            if (currentAngle >= 180)
             {
-                targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+                {
+                    targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                }
+                else
+                {
+                    targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                }
             }
             else
             {
-                targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+                {
+                    targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                }
+                else
+                {
+                    targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                }
             }
         }
         #endregion
@@ -185,10 +206,6 @@ namespace EnemyCharacter.AI
                     GetNextRotation();
 
                     pushingSegment = false;
-                }
-                else
-                {
-                    //ReturnHome();
                 }
             }
         }
@@ -261,9 +278,18 @@ namespace EnemyCharacter.AI
         {
             if (!hookedToGround)
             {
-                wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y - rotationOffset);
+                if (currentAngle >= 180)
+                {
+                    wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y + rotationOffset);
 
-                hookedToGround = true;
+                    hookedToGround = true;
+                }
+                else
+                {
+                    wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y - rotationOffset);
+
+                    hookedToGround = true;
+                }
             }
         }
         /// <summary>

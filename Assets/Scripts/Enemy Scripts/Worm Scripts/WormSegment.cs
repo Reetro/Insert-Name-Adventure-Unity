@@ -52,8 +52,6 @@ namespace EnemyCharacter.AI
             if (collider2D)
             {
                 AboveGround = false;
-
-                print("Hit: " + collider2D.gameObject.name);
             }
             else
             {

@@ -667,4 +667,4 @@ MonoBehaviour:
   rotationOffset: 0.3
   returnHomeDelay: 2
   rotationDelay: 2
-  drawDebug: 1
+  drawDebug: 0
