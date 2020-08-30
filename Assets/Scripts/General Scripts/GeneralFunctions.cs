@@ -13,6 +13,7 @@ using PlayerCharacter.GameSaving;
 /// </summary>
 public class GeneralFunctions
 {
+    #region Vector Functions
     /// <summary>
     ///  will check to see if the given object has a Rigidbody2D and if it does will see if it's velocity is greater than zero
     /// </summary>
@@ -39,14 +40,6 @@ public class GeneralFunctions
     public static bool IsNumberNegative(float number)
     {
         return number < 0;
-    }
-    /// <summary>
-    ///  Will rotate the object the opposite way it's currently facing
-    /// </summary>
-    /// <param name="objectToFlip"></param>
-    public static void FlipObject(GameObject objectToFlip)
-    {
-        objectToFlip.transform.Rotate(0f, 180f, 0f);
     }
     /// <summary>
     ///  Get the distance between to vectors
@@ -102,6 +95,66 @@ public class GeneralFunctions
         return postion1.normalized.x <= postion2.normalized.x ? true : false;
     }
     /// <summary>
+    /// Creates random Vector 2 coordinates
+    /// </summary>
+    /// <param name="minX">minimum amount on the x coordinate</param>
+    /// <param name="maxX">maximum amount on the x coordinate</param>
+    /// <param name="minY">minimum amount on the y coordinate</param>
+    /// <param name="maxY">maximum amount on the y coordinate</param>
+    /// <returns>A a random vector 2</returns>
+    public static Vector2 CreateRandomVector2(float minX, float maxX, float minY, float maxY)
+    {
+        var randomX = UnityEngine.Random.Range(minX, maxX);
+        var randomY = UnityEngine.Random.Range(minY, maxY);
+
+        return new Vector2(randomX, randomY);
+    }
+    /// <summary>
+    /// Creates a random Vector 2 but only on the Y axis
+    /// </summary>
+    /// <param name="minY">minimum amount on the y coordinate</param>
+    /// <param name="maxY">>maximum amount on the y coordinate</param>
+    /// <returns>A vector2 with a random y coordinate</returns>
+    public static Vector2 CreateRandomVector2OnlyY(float minY, float maxY)
+    {
+        var randomY = UnityEngine.Random.Range(minY, maxY);
+
+        return new Vector2(0, randomY);
+    }
+    /// <summary>
+    /// Creates a random Vector 2 but only on the X axis
+    /// </summary>
+    /// <param name="minX">minimum amount on the x coordinate</param>
+    /// <param name="maxX">maximum amount on the x coordinate</param>
+    /// <returns>A vector2 with a random x coordinate</returns>
+    public static Vector2 CreateRandomVector2OnlyX(float minX, float maxX)
+    {
+        var randomX = UnityEngine.Random.Range(minX, maxX);
+
+        return new Vector2(randomX, 0);
+    }
+    /// <summary>
+    /// Gets the current direction of the X axis
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A Vector2</returns>
+    public static Vector2 GetFaceingDirectionX(GameObject gameObject)
+    {
+        return gameObject.transform.rotation * Vector2.right;
+    }
+    /// <summary>
+    /// Gets the current direction of the Y axis
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A Vector2</returns>
+    public static Vector2 GetFaceingDirectionY(GameObject gameObject)
+    {
+        return gameObject.transform.rotation * Vector2.up;
+    }
+    #endregion
+
+    #region Rotation Functions
+    /// <summary>
     /// Will calculate the needed angle to make the current location look at the look at vector
     /// </summary>
     /// <param name="currentLocation">Current objects location</param>
@@ -115,6 +168,33 @@ public class GeneralFunctions
 
         return Quaternion.AngleAxis(angle, Vector3.forward);
     }
+    /// <summary>
+    ///  Will rotate the object the opposite way it's currently facing
+    /// </summary>
+    /// <param name="objectToFlip"></param>
+    public static void FlipObject(GameObject objectToFlip)
+    {
+        objectToFlip.transform.Rotate(0f, 180f, 0f);
+    }
+    /// <summary>
+    /// Gets the given object current angle
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns>A float</returns>
+    public static float GetObjectEulerAngle(GameObject gameObject)
+    {
+        var angle = gameObject.transform.localEulerAngles.z;
+
+        if (angle.Equals(270))
+        {
+            angle = -90;
+        }
+
+        return angle;
+    }
+    #endregion
+
+    #region Leech Functions
     /// <summary>
     /// Spawns a leech and attaches it to the given transform then applies the leeching debuff to the target
     /// </summary>
@@ -197,6 +277,9 @@ public class GeneralFunctions
 
         return attachedLeeches;
     }
+    #endregion
+
+    #region Health Functions
     /// <summary>
     /// Calls the construct health component function on the given game object
     /// </summary>
@@ -300,6 +383,27 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Gets the health component from the given object
+    /// </summary>
+    /// <param name="objectToGet">The object you want to get component on</param>
+    /// <returns>The objects health component</returns>
+    public static HealthComponent GetGameObjectHealthComponent(GameObject objectToGet)
+    {
+        return objectToGet.GetComponent<HealthComponent>();
+    }
+    /// <summary>
+    /// Gets the health component from the given Transform
+    /// </summary>
+    /// <param name="objectToGet">The object you want to get component on</param>
+    /// <returns>The objects health component</returns>
+    public static HealthComponent GetGameObjectHealthComponent(Transform objectTransform)
+    {
+        return objectTransform.GetComponent<HealthComponent>();
+    }
+    #endregion
+
+    #region Gameplay Management Functions
+    /// <summary>
     /// Finds the Gameplay Manager in the current level
     /// </summary>
     public static GameplayManager GetGameplayManager()
@@ -319,45 +423,6 @@ public class GeneralFunctions
     public static void ResumeGame()
     {
         Time.timeScale = 1;
-    }
-    /// <summary>
-    /// Creates random Vector 2 coordinates
-    /// </summary>
-    /// <param name="minX">minimum amount on the x coordinate</param>
-    /// <param name="maxX">maximum amount on the x coordinate</param>
-    /// <param name="minY">minimum amount on the y coordinate</param>
-    /// <param name="maxY">maximum amount on the y coordinate</param>
-    /// <returns>A a random vector 2</returns>
-    public static Vector2 CreateRandomVector2(float minX, float maxX, float minY, float maxY)
-    {
-        var randomX = UnityEngine.Random.Range(minX, maxX);
-        var randomY = UnityEngine.Random.Range(minY, maxY);
-
-        return new Vector2(randomX, randomY);
-    }
-    /// <summary>
-    /// Creates a random Vector 2 but only on the Y axis
-    /// </summary>
-    /// <param name="minY">minimum amount on the y coordinate</param>
-    /// <param name="maxY">>maximum amount on the y coordinate</param>
-    /// <returns>A vector2 with a random y coordinate</returns>
-    public static Vector2 CreateRandomVector2OnlyY(float minY, float maxY)
-    {
-        var randomY = UnityEngine.Random.Range(minY, maxY);
-
-        return new Vector2(0, randomY);
-    }
-    /// <summary>
-    /// Creates a random Vector 2 but only on the X axis
-    /// </summary>
-    /// <param name="minX">minimum amount on the x coordinate</param>
-    /// <param name="maxX">maximum amount on the x coordinate</param>
-    /// <returns>A vector2 with a random x coordinate</returns>
-    public static Vector2 CreateRandomVector2OnlyX(float minX, float maxX)
-    {
-        var randomX = UnityEngine.Random.Range(minX, maxX);
-
-        return new Vector2(randomX, 0);
     }
     /// <summary>
     /// Finds all Gameobjects on the specified layer
@@ -399,24 +464,6 @@ public class GeneralFunctions
     public static GameObject GetPlayerGameObject()
     {
         return GameObject.FindGameObjectWithTag("Player");
-    }
-    /// <summary>
-    /// Gets the health component from the given object
-    /// </summary>
-    /// <param name="objectToGet">The object you want to get component on</param>
-    /// <returns>The objects health component</returns>
-    public static HealthComponent GetGameObjectHealthComponent(GameObject objectToGet)
-    {
-        return objectToGet.GetComponent<HealthComponent>();
-    }
-    /// <summary>
-    /// Gets the health component from the given Transform
-    /// </summary>
-    /// <param name="objectToGet">The object you want to get component on</param>
-    /// <returns>The objects health component</returns>
-    public static HealthComponent GetGameObjectHealthComponent(Transform objectTransform)
-    {
-        return objectTransform.GetComponent<HealthComponent>();
     }
     /// <summary>
     ///  Gets the gameplay manager and generates an ID
@@ -595,32 +642,6 @@ public class GeneralFunctions
         return player;
     }
     /// <summary>
-    /// Gets the eye component on the give object and fires a raycast from the objects eyes
-    /// </summary>
-    /// <returns>The hit information</returns>
-    public static RaycastHit2D TraceFromEyes(GameObject objectTraceParent)
-    {
-        if (objectTraceParent)
-        {
-            var eyes = objectTraceParent.GetComponent<EyeTrace>();
-
-            if (eyes)
-            {
-                return eyes.TraceFromEyes();
-            }
-            else
-            {
-                Debug.LogError("Failed to trace from " + objectTraceParent.name + " had no eye component");
-                return new RaycastHit2D();
-            }
-        }
-        else
-        {
-            Debug.LogError("Failed to trace from " + objectTraceParent.name + " was not valid");
-            return new RaycastHit2D();
-        }
-    }
-    /// <summary>
     /// Will get the player controller then stun the player for the given time
     /// </summary>
     /// <param name="playerObject"></param>
@@ -646,58 +667,6 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Gets the given object current angle
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <returns>A float</returns>
-    public static float GetObjectEulerAngle(GameObject gameObject)
-    {
-        var angle = gameObject.transform.localEulerAngles.z;
-
-        if (angle.Equals(270))
-        {
-            angle = -90;
-        }
-
-        return angle;
-    }
-    /// <summary>
-    /// Gets the total width of the given sprite
-    /// </summary>
-    /// <param name="spriteRenderer"></param>
-    /// <returns>A float</returns>
-    public static float GetSpriteWidth(SpriteRenderer spriteRenderer)
-    {
-        return spriteRenderer.bounds.extents.x;
-    }
-    /// <summary>
-    /// Gets the total height of the given sprite
-    /// </summary>
-    /// <param name="spriteRenderer"></param>
-    /// <returns>A float</returns>
-    public static float GetSpriteHeight(SpriteRenderer spriteRenderer)
-    {
-        return spriteRenderer.bounds.extents.y;
-    }
-    /// <summary>
-    /// Gets the current direction of the X axis
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <returns>A Vector2</returns>
-    public static Vector2 GetFaceingDirectionX(GameObject gameObject)
-    {
-        return gameObject.transform.rotation * Vector2.right;
-    }
-    /// <summary>
-    /// Gets the current direction of the Y axis
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <returns>A Vector2</returns>
-    public static Vector2 GetFaceingDirectionY(GameObject gameObject)
-    {
-        return gameObject.transform.rotation * Vector2.up;
-    }
-    /// <summary>
     /// Loops through the given array and checks to see if the given object exist in the array
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -717,4 +686,53 @@ public class GeneralFunctions
         }
         return false;
     }
+    #endregion
+
+    #region Component Functions
+    /// <summary>
+    /// Gets the eye component on the give object and fires a raycast from the objects eyes
+    /// </summary>
+    /// <returns>The hit information</returns>
+    public static RaycastHit2D TraceFromEyes(GameObject objectTraceParent)
+    {
+        if (objectTraceParent)
+        {
+            var eyes = objectTraceParent.GetComponent<EyeTrace>();
+
+            if (eyes)
+            {
+                return eyes.TraceFromEyes();
+            }
+            else
+            {
+                Debug.LogError("Failed to trace from " + objectTraceParent.name + " had no eye component");
+                return new RaycastHit2D();
+            }
+        }
+        else
+        {
+            Debug.LogError("Failed to trace from " + objectTraceParent.name + " was not valid");
+            return new RaycastHit2D();
+        }
+    }
+
+    /// <summary>
+    /// Gets the total width of the given sprite
+    /// </summary>
+    /// <param name="spriteRenderer"></param>
+    /// <returns>A float</returns>
+    public static float GetSpriteWidth(SpriteRenderer spriteRenderer)
+    {
+        return spriteRenderer.bounds.extents.x;
+    }
+    /// <summary>
+    /// Gets the total height of the given sprite
+    /// </summary>
+    /// <param name="spriteRenderer"></param>
+    /// <returns>A float</returns>
+    public static float GetSpriteHeight(SpriteRenderer spriteRenderer)
+    {
+        return spriteRenderer.bounds.extents.y;
+    }
+    #endregion
 }
