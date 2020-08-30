@@ -14,14 +14,22 @@ namespace PlayerCharacter.Controller
     public class PlayerSpear : MonoBehaviour
     {
         [Header("Spear Settings")]
+        [Tooltip("How much damage the spear deals")]
         [SerializeField] private float spearDamage = 3.5f;
+        [Tooltip("Spear cooldown length")]
         [SerializeField] private float spearCooldown = 1f;
+        [Tooltip("How long till the spear returns to it's starting postilion")]
         [SerializeField] private float spearReturnDelay = 1f;
+        [Tooltip("How far the spear gets pushed out")]
         [SerializeField] private float spearTravelDistance = 1f;
+        [Tooltip("Size of the spear melee hit box")]
         [SerializeField] private Vector2 spearCastSize = new Vector2(1f, 0.1f);
+
         [Space]
+
         [Header("Layer Settings")]
-        public LayerMask whatIsGround;  // A mask determining what is ground to the spear
+        [Tooltip("A mask determining what is ground to the spear")]
+        public LayerMask whatIsGround;
 
         private List<Collider2D> colliders = new List<Collider2D>();
 
