@@ -6,6 +6,7 @@ namespace LevelObjects.MovingObjects
 {
     public class Boomerang : ProjectileMovement
     {
+        #region Properties
         /// <summary>
         /// The shaman that spawned this boomerang
         /// </summary>
@@ -30,6 +31,8 @@ namespace LevelObjects.MovingObjects
         /// The maximum speed this projectile can go
         /// </summary>
         private float MaxSpeedMagnitude = 8;
+        #endregion
+
         /// <summary>
         /// Reflect the projectile when ever it hits a surface
         /// </summary>
@@ -44,7 +47,7 @@ namespace LevelObjects.MovingObjects
 
             GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
 
-            if (!justSpawned)
+            if (!justSpawned && !GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
                 CurrentHitCount++;
             }
