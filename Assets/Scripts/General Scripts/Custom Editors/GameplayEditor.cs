@@ -42,9 +42,8 @@ namespace CustomEditors
         #region Player Spear Varaibles
         private SerializedProperty _PlayerSpearDumage;
         private SerializedProperty _PlayerSpearUpTime;
+        private SerializedProperty _PlayerSpearTravelDistance;
         private SerializedProperty _PlayerSpearCooldown;
-        private SerializedProperty _CooldownBar;
-        private SerializedProperty _PlayerSpearBigPrefab;
         private SerializedProperty _PlayerHealthComp;
         private SerializedProperty _PlayerSpearGround;
         #endregion
@@ -64,6 +63,8 @@ namespace CustomEditors
         private Editor playerHealthEditor = null;
         private Editor playerGunEditor = null;
         #endregion
+
+        #region Enemy Varaibles
 
         #region Leech Health Varaibles
         private SerializedProperty _LeechMaxHealth;
@@ -241,6 +242,8 @@ namespace CustomEditors
 
         #region Worm Editors
         private Editor wormEdior = null;
+        #endregion
+
         #endregion
 
         #region Local Varaibles
@@ -627,8 +630,9 @@ namespace CustomEditors
 
             SetPlayerHealth();
 
-            SetPlayerGun();
+            SetPlayerSpear();
         }
+
         private void SetPlayerMovement()
         {
             _PlayerJumpForce = playerMovementObject.FindProperty("jumpForce");
@@ -643,14 +647,14 @@ namespace CustomEditors
             _PlayerMaxHealth = playerHealthObject.FindProperty("maxHealth");
         }
 
-        private void SetPlayerGun()
+        private void SetPlayerSpear()
         {
-            _PlayerSpearUpTime = playerSpearObject.FindProperty("bigSpearUpTime");
+            _PlayerSpearUpTime = playerSpearObject.FindProperty("spearReturnDelay");
             _PlayerSpearDumage = playerSpearObject.FindProperty("spearDamage");
             _PlayerSpearCooldown = playerSpearObject.FindProperty("spearCooldown");
-            _CooldownBar = playerSpearObject.FindProperty("cooldownBar");
             _PlayerHealthComp = playerSpearObject.FindProperty("playerHealthComp");
             _PlayerSpearGround = playerSpearObject.FindProperty("whatIsGround");
+            _PlayerSpearTravelDistance = playerSpearObject.FindProperty("spearTravelDistance");
         }
 
         private void SetupPlayerEditor()

@@ -33,6 +33,7 @@ namespace LevelObjects.MovingObjects
         private float MaxSpeedMagnitude = 8;
         #endregion
 
+        #region Movement Functions
         /// <summary>
         /// Reflect the projectile when ever it hits a surface
         /// </summary>
@@ -71,6 +72,9 @@ namespace LevelObjects.MovingObjects
 
             CurrentVelocity = MyRigidBody2D.velocity;
         }
+        #endregion
+
+        #region Shaman Teleport Functions
         /// <summary>
         /// Teleports the shaman to the given location
         /// </summary>
@@ -156,5 +160,6 @@ namespace LevelObjects.MovingObjects
 
             justSpawned = false;
         }
+        #endregion
     }
 }

@@ -22,8 +22,6 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearReturnDelay = 1f;
         [Tooltip("How far the spear gets pushed out")]
         [SerializeField] private float spearTravelDistance = 1f;
-        [Tooltip("Size of the spear melee hit box")]
-        [SerializeField] private Vector2 spearCastSize = new Vector2(1f, 0.1f);
 
         [Space]
 
@@ -31,9 +29,20 @@ namespace PlayerCharacter.Controller
         [Tooltip("A mask determining what is ground to the spear")]
         public LayerMask whatIsGround;
 
-        private List<Collider2D> colliders = new List<Collider2D>();
+        /// <summary>
+        /// A list off all colliders to damage
+        /// </summary>
+        private List<Collider2D> collidersToDamage = new List<Collider2D>();
+        /// <summary>
+        /// Looks to see if the spear is touching the ground
+        /// </summary>
+        public bool TouchingGround { get; set; }
+        /// <summary>
+        /// Gets the layers the spear can collide with 
+        /// </summary>
+        public LayerMask WhatIsGround { get { return whatIsGround; } }
 
-        #region Gun Components
+        #region Spear Components
         private PlayerController controller = null;
         private CooldownBar cooldownBar = null;
         private HealthComponent playerHealthComp = null;
@@ -41,13 +50,13 @@ namespace PlayerCharacter.Controller
 
         #region Local Varabiles
         private float spearAngle = 0f;
-        private bool touchingGround = false;
         private const float traceLength = 1f;
         private GameplayManager gameplayManager = null;
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
         private GameObject playerObject = null;
+        private PolygonCollider2D meleeCollision = null;
         #endregion
 
         #region JoyStick Rotation
@@ -109,6 +118,9 @@ namespace PlayerCharacter.Controller
             playerHealthComp = GetComponentInParent<HealthComponent>();
             gameplayManager = FindObjectOfType<GameplayManager>();
             playerObject = GeneralFunctions.GetPlayerGameObject();
+            meleeCollision = GetComponent<PolygonCollider2D>();
+
+            meleeCollision.enabled = false;
 
             canRotate = true;
         }
@@ -152,14 +164,15 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private IEnumerator PushSpear()
         {
+            meleeCollision.enabled = true;
             cooldownBar.StartCooldown(spearCooldown);
             transform.Translate(spearTravelDistance, 0, 0);
-            CheckForHit();
 
             yield return new WaitForSeconds(spearReturnDelay);
 
             transform.Translate(-spearTravelDistance, 0, 0);
 
+            meleeCollision.enabled = false;
             canRotate = true;
             isSpearOut = false;
         }
@@ -289,7 +302,7 @@ namespace PlayerCharacter.Controller
                 {
                     if (!cooldownBar.GetIsActive())
                     {
-                        if (!touchingGround)
+                        if (!TouchingGround)
                         {
                             nextToWall = false;
                             return true;
@@ -340,53 +353,27 @@ namespace PlayerCharacter.Controller
         }
         #endregion
 
-        #region Collision Functions
-        /// <summary>
-        /// Check to see if spear is touching the ground
-        /// </summary>
-        /// <param name="collision"></param>
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
-            {
-                touchingGround = true;
-            }
-        }
-        /// <summary>
-        /// Check to see if spear is no longer touching the ground
-        /// </summary>
-        /// <param name="collision"></param>
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
-            {
-                touchingGround = false;
-            }
-        }
-        #endregion
-
         #region Damage Functions
         /// <summary>
-        /// Look to see if spear hit objects that can be damaged
+        /// If spear collision is active check to see if spear has hit any objects
         /// </summary>
-        private void CheckForHit()
+        /// <param name="collision"></param>
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            Collider2D[] colliders2D = Physics2D.OverlapBoxAll(transform.position, spearCastSize, spearAngle, gameplayManager.whatCanBeDamaged);
-
-            foreach (Collider2D collider2 in colliders2D)
+            if (collision)
             {
-                if (collider2)
+                if (GeneralFunctions.IsObjectOnLayer(gameplayManager.whatCanBeDamaged, collision.gameObject))
                 {
-                    if (!collider2.gameObject.CompareTag("Player") && !GeneralFunctions.DoesItemExistInArray(colliders.ToArray(), collider2) && !collider2.isTrigger)
+                    if (!collision.gameObject.CompareTag("Player") && !GeneralFunctions.DoesItemExistInArray(collidersToDamage.ToArray(), collision) && !collision.isTrigger)
                     {
-                        colliders.Add(collider2);
+                        collidersToDamage.Add(collision);
+                    }
+
+                    if (collidersToDamage.Count > 0)
+                    {
+                        DamageAllObjects();
                     }
                 }
-            }
-
-            if (colliders.Count > 0)
-            {
-                DamageAllObjects();
             }
         }
         /// <summary>
@@ -394,8 +381,8 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void DamageAllObjects()
         {
-           foreach (Collider2D collider2 in colliders)
-           {
+            foreach (Collider2D collider2 in collidersToDamage)
+            {
                 if (collider2)
                 {
                     if (!collider2.gameObject.CompareTag("Player"))
@@ -425,9 +412,9 @@ namespace PlayerCharacter.Controller
                         }
                     }
                 }
-           }
+            }
 
-            colliders.Clear();
+            collidersToDamage.Clear();
         }
         #endregion
     }

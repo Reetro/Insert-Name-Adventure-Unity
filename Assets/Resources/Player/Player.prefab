@@ -1,5 +1,111 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &439509670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 439509671}
+  - component: {fileID: 439509673}
+  - component: {fileID: 439509672}
+  m_Layer: 16
+  m_Name: Spear Ground Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &439509671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439509670}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7335817594842804118}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &439509673
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439509670}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.249, y: 0.36}
+    newSize: {x: 20.73, y: 4.2411475}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.60122603, y: -0.033970352}
+      - {x: 0.6001576, y: -0.016252233}
+      - {x: 0.5943494, y: -0.0063679963}
+      - {x: 0.5777987, y: 0.0016677482}
+      - {x: 0.5534699, y: 0.024688466}
+      - {x: 0.5446535, y: 0.03400894}
+      - {x: 0.5235083, y: 0.056902118}
+      - {x: 0.49346992, y: 0.07836799}
+      - {x: 0.4833713, y: 0.081649885}
+      - {x: 0.46938494, y: 0.081649885}
+      - {x: 0.46356025, y: 0.08139765}
+      - {x: 0.4547055, y: 0.07047481}
+      - {x: 0.45023972, y: 0.058795292}
+      - {x: 0.43401754, y: 0.009880393}
+      - {x: 0.31882888, y: 0.009645004}
+      - {x: 0.30150002, y: 0.011000001}
+      - {x: 0.23816442, y: 0.007638525}
+      - {x: 0.1885, y: 0.009303017}
+      - {x: -0.18817116, y: 0.008632015}
+      - {x: -0.1811644, y: -0.03763852}
+      - {x: 0.17445289, y: -0.03898701}
+      - {x: 0.1828356, y: -0.039316013}
+      - {x: 0.24381538, y: -0.040553458}
+      - {x: 0.32145962, y: -0.040974014}
+      - {x: 0.33582887, y: -0.041322503}
+      - {x: 0.4272153, y: -0.03845779}
+      - {x: 0.42774335, y: -0.070221424}
+      - {x: 0.43630895, y: -0.08438344}
+      - {x: 0.44709173, y: -0.090132326}
+      - {x: 0.46637264, y: -0.08803871}
+      - {x: 0.47652996, y: -0.09500451}
+      - {x: 0.49184462, y: -0.095191725}
+      - {x: 0.52162737, y: -0.08253646}
+      - {x: 0.54977036, y: -0.06433103}
+      - {x: 0.563454, y: -0.0550418}
+      - {x: 0.56745493, y: -0.053880796}
+      - {x: 0.59658504, y: -0.041611295}
+--- !u!114 &439509672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439509670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ae54daa85d2e647aaaca3d34c35e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &922262474478286188
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +194,7 @@ Transform:
   - {fileID: 4157925455522904731}
   - {fileID: 4157925457032491725}
   - {fileID: 1201614001105091756}
-  - {fileID: 7158946724339522849}
+  - {fileID: 439509671}
   m_Father: {fileID: 4157925456995496925}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,7 +264,6 @@ MonoBehaviour:
   spearCooldown: 1
   spearReturnDelay: 0.2
   spearTravelDistance: 0.6
-  spearCastSize: {x: 1, y: 0.1}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 655616
@@ -875,36 +980,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 198862918234902953}
---- !u!1 &5984866397883214063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7158946724339522849}
-  m_Layer: 0
-  m_Name: Box Trace Location
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7158946724339522849
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5984866397883214063}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.015, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7335817594842804118}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6932556947191892030
 GameObject:
   m_ObjectHideFlags: 0
