@@ -16,22 +16,9 @@ namespace LevelObjects.SceneLoading
         /// Will load the scene that corresponds to the given index
         /// </summary>
         /// <param name="index"></param>
-        public void LoadSavedLevel(int levelIndex)
+        public void LoadLevelAtIndex(int levelIndex)
         {
-            bool goBackToStart = levelIndex >= SceneManager.sceneCountInBuildSettings;
-
-            if (!goBackToStart)
-            {
-                playerState.SetSceneLoading(true);
-
-                SceneManager.LoadScene(levelIndex);
-            }
-            else
-            {
-                playerState.SetSceneLoading(true);
-
-                SceneManager.LoadScene(0);
-            }
+            StartCoroutine(LoadLevel(levelIndex));
         }
         /// <summary>
         /// Will reset player health and load the current player checkpoint
@@ -52,7 +39,7 @@ namespace LevelObjects.SceneLoading
         /// Load level after level transition animation is done
         /// </summary>
         /// <param name="levelIndex"></param>
-        IEnumerator LoadLevel(int levelIndex)
+        private IEnumerator LoadLevel(int levelIndex)
         {
             transition.SetTrigger("Start");
 

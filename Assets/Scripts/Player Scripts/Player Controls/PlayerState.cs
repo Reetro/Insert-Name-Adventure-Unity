@@ -112,7 +112,7 @@ namespace PlayerCharacter.GameSaving
             SaveSystem.SaveGame(this, player.gameObject);
         }
         /// <summary>
-        /// Gets saved data then sets all local Variables
+        /// Gets saved data then sets all local Variables and load the saved level
         /// </summary>
         public void LoadGame()
         {
@@ -123,27 +123,14 @@ namespace PlayerCharacter.GameSaving
             currentHealth = loadedData.CurrentHealth;
             maxHealth = loadedData.MaxHealth;
 
-            SetPlayerHealth();
+            SceneManager.sceneLoaded += LoadPlayerPostion;
 
-            SceneManager.sceneLoaded += OnSaveLevelLoaded;
-
-            GeneralFunctions.GetLevelLoader().LoadSavedLevel(levelIndex);
+            GeneralFunctions.GetLevelLoader().LoadLevelAtIndex(levelIndex);
         }
         /// <summary>
-        /// When level is done loading load saved player location
+        /// Set the player position to the saved player position when scene is done loading
         /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="mode"></param>
-        private void OnSaveLevelLoaded(Scene scene, LoadSceneMode mode)
-        {
-            LoadPlayerPostion();
-
-            SceneManager.sceneLoaded -= OnSaveLevelLoaded;
-        }
-        /// <summary>
-        /// Set the player position to the saved player position
-        /// </summary>
-        private void LoadPlayerPostion()
+        private void LoadPlayerPostion(Scene scene, LoadSceneMode mode)
         {
             var loadedData = SaveSystem.LoadGame();
 
@@ -153,6 +140,8 @@ namespace PlayerCharacter.GameSaving
             position.z = loadedData.PlayerPosition[2];
 
             player.transform.position = position;
+
+            SceneManager.sceneLoaded -= LoadPlayerPostion;
         }
         #endregion
     }
