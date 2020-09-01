@@ -3,7 +3,6 @@ using PlayerUI;
 using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
-using GameplayManagement;
 using System.Collections;
 
 namespace PlayerCharacter.Controller
@@ -27,6 +26,7 @@ namespace PlayerCharacter.Controller
         private PlayerUIManager uiManager = null;
         #endregion
 
+        #region Properties
         /// <summary>
         /// Reference to player currently in the world
         /// </summary>
@@ -35,6 +35,9 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the player is stunned
         /// </summary>
         public bool IsPlayerStuned { get; private set; } = false;
+        #endregion
+
+        #region Setup Functions
         /// <summary>
         /// Create new player controls object
         /// </summary>
@@ -82,6 +85,9 @@ namespace PlayerCharacter.Controller
 
             Move();
         }
+        #endregion
+
+        #region Debug Functions
         /// <summary>
         /// Save all player game data
         /// </summary>
@@ -102,6 +108,9 @@ namespace PlayerCharacter.Controller
 
             print("Game Loaded");
         }
+        #endregion
+
+        #region Input Actions
         /// <summary>
         /// Called when player presses the fire key
         /// </summary>
@@ -134,6 +143,7 @@ namespace PlayerCharacter.Controller
         {
             jumpHeldDown = false;
         }
+
         /// <summary>
         /// Event to tell the player to start jumping
         /// </summary>
@@ -145,6 +155,22 @@ namespace PlayerCharacter.Controller
                 myAnimator.SetBool("IsJumping", true);
             }
         }
+        /// <summary>
+        /// Fires the player's current gun
+        /// </summary>
+        private void FireGun()
+        {
+            if (!healthComponent.IsCurrentlyDead)
+            {
+                if (fireGun)
+                {
+                    currentGun.StartSpearPush();
+                }
+            }
+        }
+        #endregion
+
+        #region Movement Functions
         /// <summary>
         /// Move the player character
         /// </summary>
@@ -175,19 +201,6 @@ namespace PlayerCharacter.Controller
             }
         }
         /// <summary>
-        /// Fires the player's current gun
-        /// </summary>
-        private void FireGun()
-        {
-            if (!healthComponent.IsCurrentlyDead)
-            {
-                if (fireGun)
-                {
-                    currentGun.StartSpearPush();
-                }
-            }
-        }
-        /// <summary>
         /// Check for player movement input and gun input
         /// </summary>
         private void Update()
@@ -209,6 +222,9 @@ namespace PlayerCharacter.Controller
                 jump = false;
             }
         }
+        #endregion
+
+        #region Player Events
         /// <summary>
         /// Called when player touches ground
         /// </summary>
@@ -269,5 +285,6 @@ namespace PlayerCharacter.Controller
                 MyPlayerState.UpdatePlayerStateHP(healthComponent.CurrentHealth, healthComponent.MaxHealth);
             }
         }
+        #endregion
     }
 }
