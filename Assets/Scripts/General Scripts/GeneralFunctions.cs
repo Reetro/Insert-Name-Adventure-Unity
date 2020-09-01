@@ -7,6 +7,7 @@ using EnemyCharacter;
 using AuraSystem.Effects;
 using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
+using LevelObjects.SceneLoading;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -707,6 +708,13 @@ public class GeneralFunctions
     public static PlayerState GetPlayerState()
     {
         return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+    }
+    /// <summary>
+    /// Finds the level loader in the game world
+    /// </summary>
+    public static LevelLoader GetLevelLoader()
+    {
+        return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
     }
     #endregion
 

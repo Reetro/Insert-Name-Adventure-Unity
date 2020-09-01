@@ -109,9 +109,7 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         public void SaveGame()
         {
-            var player = GeneralFunctions.GetPlayerGameObject();
-
-            SaveSystem.SaveGame(this, player);
+            SaveSystem.SaveGame(this, player.gameObject);
         }
         /// <summary>
         /// Gets saved data then sets all local Variables
@@ -120,16 +118,40 @@ namespace PlayerCharacter.GameSaving
         {
             var loadedData = SaveSystem.LoadGame();
 
-            currentHealth = loadedData.currentHealth;
-            maxHealth = loadedData.maxHealth;
-            levelIndex = loadedData.levelIndex;
+            levelIndex = loadedData.LevelIndex;
+
+            currentHealth = loadedData.CurrentHealth;
+            maxHealth = loadedData.MaxHealth;
+
+            SetPlayerHealth();
+
+            SceneManager.sceneLoaded += OnSaveLevelLoaded;
+
+            GeneralFunctions.GetLevelLoader().LoadSavedLevel(levelIndex);
+        }
+        /// <summary>
+        /// When level is done loading load saved player location
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
+        private void OnSaveLevelLoaded(Scene scene, LoadSceneMode mode)
+        {
+            LoadPlayerPostion();
+
+            SceneManager.sceneLoaded -= OnSaveLevelLoaded;
+        }
+        /// <summary>
+        /// Set the player position to the saved player position
+        /// </summary>
+        private void LoadPlayerPostion()
+        {
+            var loadedData = SaveSystem.LoadGame();
 
             Vector3 position;
-            position.x = loadedData.position[0];
-            position.y = loadedData.position[1];
-            position.z = loadedData.position[2];
+            position.x = loadedData.PlayerPosition[0];
+            position.y = loadedData.PlayerPosition[1];
+            position.z = loadedData.PlayerPosition[2];
 
-            var player = GeneralFunctions.GetPlayerGameObject();
             player.transform.position = position;
         }
         #endregion

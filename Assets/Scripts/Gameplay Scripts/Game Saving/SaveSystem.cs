@@ -48,5 +48,14 @@ namespace PlayerCharacter.GameSaving
                 return null;
             }
         }
+        /// <summary>
+        /// Checks to see if a save game exist
+        /// </summary>
+        public static bool DoesSaveGameExist()
+        {
+            string path = Application.persistentDataPath + "/player.character";
+
+            return File.Exists(path) ? true : false;
+        }
     }
 }
