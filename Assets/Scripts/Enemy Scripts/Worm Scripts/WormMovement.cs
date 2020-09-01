@@ -16,7 +16,7 @@ namespace EnemyCharacter.AI
         [SerializeField] private float pushDelay = 1f;
         [Tooltip("How fast Worm Segments are pushed up to the surface")]
         [SerializeField] private float pushUpSpeed = 0.1f;
-        [Tooltip("What layers should collision checks collide with")]
+        [Tooltip("What layers should collision test with")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
         [Space]
@@ -39,7 +39,6 @@ namespace EnemyCharacter.AI
 
         #region Local Varaibles
         private List<WormSegment> childSegments = new List<WormSegment>();
-        private int segmentCount = 0;
         private float spriteHeight = 0;
         private WormSegment wormSegmentToRotate = null;
         private bool pushingSegment = false;
@@ -91,8 +90,6 @@ namespace EnemyCharacter.AI
                     }
                 }
             }
-
-            segmentCount = childSegments.Count;
 
             wormSegmentToRotate = GetSegmentToRotate();
 
@@ -379,8 +376,6 @@ namespace EnemyCharacter.AI
 
                     if (health)
                     {
-                        segmentCount = Mathf.Clamp(segmentCount - 1, 0, childSegments.Count - 1);
-
                         if (!health.IsCurrentlyDead)
                         {
                             GeneralFunctions.KillTarget(wormSeg.gameObject);
@@ -398,15 +393,35 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            if (drawDebug)
-            {
-                print("Current Segment Count: " + segmentCount.ToString());
-            }
+            var segemntsDeathState = GetAllSegmentsDeathState();
 
-            if (segmentCount <= 0)
+            if (GeneralFunctions.IsBoolArrayTrue(segemntsDeathState.ToArray()))
             {
                 Destroy(gameObject);
             }
+        }
+        /// <summary>
+        /// Gets all segments health component is dead Variables
+        /// </summary>
+        /// <returns>A bool array</returns>
+        public List<bool> GetAllSegmentsDeathState()
+        {
+            List<bool> isDeadList = new List<bool>();
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    var health = GeneralFunctions.GetGameObjectHealthComponent(wormSegment.gameObject);
+
+                    if (health)
+                    {
+                        isDeadList.Add(health.IsCurrentlyDead);
+                    }
+                }
+            }
+
+            return isDeadList;
         }
         /// <summary>
         /// Gets all segments above the given segment
@@ -416,16 +431,13 @@ namespace EnemyCharacter.AI
         {
             List<WormSegment> localSegments = new List<WormSegment>();
             int index = childSegments.IndexOf(wormSegment);
-            int totalCount = childSegments.Count - 1;
-            bool isEqual = index == totalCount;
 
-            while (!isEqual)
+            for (int currentIndex = index; currentIndex < childSegments.Count; currentIndex++)
             {
-                isEqual = index == totalCount;
-
-                localSegments.Add(childSegments[index]);
-
-                index = Mathf.Clamp(index + 1, 0, totalCount);
+                if (childSegments[currentIndex])
+                {
+                    localSegments.Add(childSegments[currentIndex]);
+                }
             }
 
             return localSegments;

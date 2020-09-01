@@ -9,7 +9,7 @@ namespace CustomEditors
 {
     public class GameplayEditor : CustomEditorBase
     {
-        #region Gameplay Manager Varaibles
+        #region Gameplay Manager Variables
         private SerializedProperty _ManagerTextSpeed;
         private SerializedProperty _ManagerTextUpTime;
         private SerializedProperty _ManagerRandomMinX;
@@ -31,7 +31,7 @@ namespace CustomEditors
         private SerializedObject gameplayManagerObject;
         #endregion
 
-        #region Player Movement Varaibles
+        #region Player Movement Variables
         private SerializedProperty _PlayerJumpForce;
         private SerializedProperty _PlayerRunSpeed;
         private SerializedProperty _MovementSmothing;
@@ -39,7 +39,7 @@ namespace CustomEditors
         private SerializedProperty _PlayerAccleration;
         #endregion
 
-        #region Player Spear Varaibles
+        #region Player Spear Variables
         private SerializedProperty _PlayerSpearDumage;
         private SerializedProperty _PlayerSpearUpTime;
         private SerializedProperty _PlayerSpearTravelDistance;
@@ -48,7 +48,7 @@ namespace CustomEditors
         private SerializedProperty _PlayerSpearGround;
         #endregion
 
-        #region Player Health Varaibles
+        #region Player Health Variables
         private SerializedProperty _PlayerMaxHealth;
         #endregion
 
@@ -64,13 +64,13 @@ namespace CustomEditors
         private Editor playerGunEditor = null;
         #endregion
 
-        #region Enemy Varaibles
+        #region Enemy Variables
 
-        #region Leech Health Varaibles
+        #region Leech Health Variables
         private SerializedProperty _LeechMaxHealth;
         #endregion
 
-        #region Leech Movement Varaibles
+        #region Leech Movement Variables
         private SerializedProperty _LeechFlySpeed;
         private SerializedProperty _LeechRandomYmin;
         private SerializedProperty _LeechRandomYmax;
@@ -86,12 +86,12 @@ namespace CustomEditors
         private Editor leechHealthEditor = null;
         #endregion
 
-        #region Leech Father Health Varaibles
+        #region Leech Father Health Variables
         private SerializedProperty _LeechFatherMaxHealth;
         private SerializedProperty _LeechFatherHealthBar;
         #endregion
 
-        #region Leech Father Movement Varaibles
+        #region Leech Father Movement Variables
         private SerializedProperty _LeechFatherFlySpeed;
         private SerializedProperty _LeechFatherRandomYmin;
         private SerializedProperty _LeechFatherRandomYmax;
@@ -109,19 +109,19 @@ namespace CustomEditors
         private Editor leechFatherEditor = null;
         #endregion
 
-        #region Leech Father Shooting Varaibles
+        #region Leech Father Shooting Variables
         private SerializedProperty _LeechFatherShootIntervale;
         private SerializedProperty _LeechFatherProjectileDamage;
         private SerializedProperty _LeechFatherProjectileSpeed;
         private SerializedProperty _LeechFatherProjectileToSpawn;
         #endregion
 
-        #region Leech Mother Health Varaibles
+        #region Leech Mother Health Variables
         private SerializedProperty _LeechMotherMaxHealth;
         private SerializedProperty _LeechMotherHealthBar;
         #endregion
 
-        #region Leech Mother Movement Varaibles
+        #region Leech Mother Movement Variables
         private SerializedProperty _LeechMotherFlySpeed;
         private SerializedProperty _LeechMotherRandomYmin;
         private SerializedProperty _LeechMotherRandomYmax;
@@ -139,7 +139,7 @@ namespace CustomEditors
         private Editor leechMotherEditor = null;
         #endregion
 
-        #region Leech Mother Shooting Varaibles
+        #region Leech Mother Shooting Variables
         private SerializedProperty _LeechMotherShootIntervale;
         private SerializedProperty _LeechMotherProjectileDamage;
         private SerializedProperty _LeechMotherProjectileSpeed;
@@ -151,11 +151,11 @@ namespace CustomEditors
         private SerializedObject shamanHealthObject;
         #endregion
 
-        #region Shaman Health Varaibles
+        #region Shaman Health Variables
         private SerializedProperty _ShamanMaxHealth;
         #endregion
 
-        #region Shaman Shooting Varaibles
+        #region Shaman Shooting Variables
         private SerializedProperty _ShamanTeleportOffset;
         private SerializedProperty _ShamanBoomerangSpeed;
         private SerializedProperty _ShamanHitsBeforeTeleport;
@@ -175,7 +175,7 @@ namespace CustomEditors
         private SerializedObject axeThrowerHealthObject;
         #endregion
 
-        #region Axe Thrower Shooting Varaibles
+        #region Axe Thrower Shooting Variables
         private SerializedProperty _AxeThrowerShootIntervale;
         private SerializedProperty _AxeThrowerProjectileDamage;
         private SerializedProperty _AxeThrowerProjectileSpeed;
@@ -185,7 +185,7 @@ namespace CustomEditors
         private SerializedProperty _AxeThrowerSightRange;
         #endregion
 
-        #region Axe Thrower Health Varaibles
+        #region Axe Thrower Health Variables
         private SerializedProperty _AxeThrowerMaxHealth;
         #endregion
 
@@ -194,18 +194,18 @@ namespace CustomEditors
         private Editor axeThrowerEditor = null;
         #endregion
 
-        #region Slug Health Varaibles
+        #region Slug Health Variables
         private SerializedProperty __SlugMaxHealth;
         #endregion
 
-        #region Slug Movement Varaibles
+        #region Slug Movement Variables
         private SerializedProperty _SlugMoveSpeed;
         private SerializedProperty _SlugTraceDistance;
         private SerializedProperty _SlugCanSee;
         private SerializedProperty _SlugDebug;
         #endregion
 
-        #region Slug Damage Varaibles
+        #region Slug Damage Variables
         private SerializedProperty _SlugDamage;
         private SerializedProperty _SlugKnockbackForce;
         #endregion
@@ -220,7 +220,7 @@ namespace CustomEditors
         private Editor slugHealthEditor = null;
         #endregion
 
-        #region Worm Varaibles
+        #region Worm Variables
         private SerializedProperty _WormDamage;
         private SerializedProperty _WormSegmentHealth;
         private SerializedProperty _WormPushDelay;
@@ -228,7 +228,7 @@ namespace CustomEditors
         private SerializedProperty _WormWhatIsGround;
         #endregion
 
-        #region Worm Rotation Varaibles
+        #region Worm Rotation Variables
         private SerializedProperty _WormRotationSpeed;
         private SerializedProperty _WormRotationOffset;
         private SerializedProperty _WormReturnHomeDelay;
@@ -246,7 +246,7 @@ namespace CustomEditors
 
         #endregion
 
-        #region Local Varaibles
+        #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
         private static bool showEnemyEditor = false;
         private static bool showPlayerSettings = false;

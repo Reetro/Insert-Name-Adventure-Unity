@@ -39,6 +39,7 @@ namespace EnemyCharacter.AI
         {
             spriteRenderer.enabled = false;
             MyBoxCollider2D.enabled = false;
+            MyCapsuleCollider2D.enabled = false;
 
             SegmentDeath.Invoke(this);
         }

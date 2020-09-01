@@ -686,6 +686,21 @@ public class GeneralFunctions
         }
         return false;
     }
+    /// <summary>
+    /// Loops through a bool array to see if all items are true
+    /// </summary>
+    /// <param name="array"></param>
+    public static bool IsBoolArrayTrue(bool[] array)
+    {
+        foreach (bool index in array)
+        {
+            if (!index)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     #endregion
 
     #region Component Functions
