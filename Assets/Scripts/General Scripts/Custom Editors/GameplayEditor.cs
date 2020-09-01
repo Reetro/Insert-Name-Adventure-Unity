@@ -233,6 +233,8 @@ namespace CustomEditors
         private SerializedProperty _WormRotationOffset;
         private SerializedProperty _WormReturnHomeDelay;
         private SerializedProperty _WormRotationDelay;
+        private SerializedProperty _WormRotationTargetLeft;
+        private SerializedProperty _WormRotationTargetRight;
         private SerializedProperty _WormDrawDebug;
         #endregion
 
@@ -617,6 +619,8 @@ namespace CustomEditors
             _WormReturnHomeDelay = wormObject.FindProperty("returnHomeDelay");
             _WormRotationOffset = wormObject.FindProperty("rotationOffset");
             _WormRotationSpeed = wormObject.FindProperty("rotationSpeed");
+            _WormRotationTargetLeft = wormObject.FindProperty("targetLeftAngle");
+            _WormRotationTargetRight = wormObject.FindProperty("targetRightAngle");
         }
         #endregion
         #endregion

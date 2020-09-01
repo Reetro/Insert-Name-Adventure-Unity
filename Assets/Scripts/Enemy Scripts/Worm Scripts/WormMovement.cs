@@ -30,6 +30,10 @@ namespace EnemyCharacter.AI
         [SerializeField] private float returnHomeDelay = 4f;
         [Tooltip("The amount time the worm segment waits before rotating to the player")]
         [SerializeField] private float rotationDelay = 2f;
+        [Tooltip("The target angle the worm will rotate to when player is on the right of the worm")]
+        [SerializeField] private float targetRightAngle = -90f;
+        [Tooltip("The target angle the worm will rotate to when player is on the left of the worm")]
+        [SerializeField] private float targetLeftAngle = 90f;
 
         [Space]
 
@@ -136,22 +140,22 @@ namespace EnemyCharacter.AI
             {
                 if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
                 {
-                    targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                    targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
                 else
                 {
-                    targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                    targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
             }
             else
             {
                 if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
                 {
-                    targetRotation = Quaternion.AngleAxis(90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                    targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
                 else
                 {
-                    targetRotation = Quaternion.AngleAxis(-90f, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                    targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
             }
         }
