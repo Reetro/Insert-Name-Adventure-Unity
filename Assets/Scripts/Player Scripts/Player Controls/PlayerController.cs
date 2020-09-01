@@ -89,6 +89,8 @@ namespace PlayerCharacter.Controller
         private void OnSavePressed(InputAction.CallbackContext context)
         {
             GeneralFunctions.GetPlayerState().SaveGame();
+
+            print("Game Saved");
         }
         /// <summary>
         /// Load saved player data
@@ -97,6 +99,8 @@ namespace PlayerCharacter.Controller
         private void OnLoadPressed(InputAction.CallbackContext context)
         {
             GeneralFunctions.GetPlayerState().LoadGame();
+
+            print("Game Loaded");
         }
         /// <summary>
         /// Called when player presses the fire key
