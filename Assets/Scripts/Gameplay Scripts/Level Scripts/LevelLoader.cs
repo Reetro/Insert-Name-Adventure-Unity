@@ -43,20 +43,18 @@ namespace LevelObjects.SceneLoading
         {
             transition.SetTrigger("Start");
 
+            playerState.SetSceneLoading(true);
+
             yield return new WaitForSeconds(transitionTime);
 
             bool goBackToStart = levelIndex >= SceneManager.sceneCountInBuildSettings;
 
             if (!goBackToStart)
             {
-                playerState.SetSceneLoading(true);
-
                 SceneManager.LoadScene(levelIndex);
             }
             else
             {
-                playerState.SetSceneLoading(true);
-
                 SceneManager.LoadScene(0);
             }
         }

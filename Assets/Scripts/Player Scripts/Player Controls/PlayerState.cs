@@ -50,7 +50,6 @@ namespace PlayerCharacter.GameSaving
                 DontDestroyOnLoad(gameObject);
             }
         }
-
         public void SetCheckpointIndex(int index)
         {
             levelIndex = index;
