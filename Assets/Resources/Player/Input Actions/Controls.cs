@@ -59,6 +59,22 @@ namespace PlayerControls
                     ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Save Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe6830ac-955c-4944-8d2e-eafbfe4ff877"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Load Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8260e4c-3153-4da9-88d9-2ada5110005f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -237,6 +253,28 @@ namespace PlayerControls
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7a779b3-6a34-4e5d-ad36-505fe31e8e1f"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Save Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a8060ea-66d4-4f66-9edd-1e1559306ea7"",
+                    ""path"": ""<Keyboard>/f7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Load Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -250,6 +288,8 @@ namespace PlayerControls
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_MousePostion = m_Player.FindAction("Mouse Postion", throwIfNotFound: true);
             m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
+            m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
+            m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -304,6 +344,8 @@ namespace PlayerControls
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_MousePostion;
         private readonly InputAction m_Player_Rotate;
+        private readonly InputAction m_Player_SaveGame;
+        private readonly InputAction m_Player_LoadGame;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -313,6 +355,8 @@ namespace PlayerControls
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @MousePostion => m_Wrapper.m_Player_MousePostion;
             public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
+            public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
+            public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -337,6 +381,12 @@ namespace PlayerControls
                     @Rotate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
                     @Rotate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
                     @Rotate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
+                    @SaveGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                    @SaveGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                    @SaveGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                    @LoadGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                    @LoadGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                    @LoadGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -356,6 +406,12 @@ namespace PlayerControls
                     @Rotate.started += instance.OnRotate;
                     @Rotate.performed += instance.OnRotate;
                     @Rotate.canceled += instance.OnRotate;
+                    @SaveGame.started += instance.OnSaveGame;
+                    @SaveGame.performed += instance.OnSaveGame;
+                    @SaveGame.canceled += instance.OnSaveGame;
+                    @LoadGame.started += instance.OnLoadGame;
+                    @LoadGame.performed += instance.OnLoadGame;
+                    @LoadGame.canceled += instance.OnLoadGame;
                 }
             }
         }
@@ -367,6 +423,8 @@ namespace PlayerControls
             void OnFire(InputAction.CallbackContext context);
             void OnMousePostion(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
+            void OnSaveGame(InputAction.CallbackContext context);
+            void OnLoadGame(InputAction.CallbackContext context);
         }
     }
 }

@@ -18,6 +18,7 @@ TagManager:
   - Player Legs
   - Player Hud Canvas
   - Worm Segment
+  - Player State
   layers:
   - Default
   - TransparentFX

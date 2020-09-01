@@ -44,6 +44,22 @@
                     "expectedControlType": "Stick",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Save Game",
+                    "type": "Button",
+                    "id": "fe6830ac-955c-4944-8d2e-eafbfe4ff877",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Load Game",
+                    "type": "Button",
+                    "id": "f8260e4c-3153-4da9-88d9-2ada5110005f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -220,6 +236,28 @@
                     "processors": "StickDeadzone",
                     "groups": "",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7a779b3-6a34-4e5d-ad36-505fe31e8e1f",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5a8060ea-66d4-4f66-9edd-1e1559306ea7",
+                    "path": "<Keyboard>/f7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Load Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

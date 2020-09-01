@@ -701,6 +701,13 @@ public class GeneralFunctions
         }
         return true;
     }
+    /// <summary>
+    /// Finds the player state in the game world
+    /// </summary>
+    public static PlayerState GetPlayerState()
+    {
+        return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+    }
     #endregion
 
     #region Component Functions

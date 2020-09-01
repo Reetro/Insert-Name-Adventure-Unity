@@ -15,7 +15,7 @@ namespace LevelObjects.SceneLoading
         public void LoadCheckpoint()
         {
             playerState.ResetHealthToMax();
-            StartCoroutine(LoadLevel(playerState.CheckpointInedex));
+            StartCoroutine(LoadLevel(playerState.LevelIndex));
         }
 
         public void LoadNextLevel()

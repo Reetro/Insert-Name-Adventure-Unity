@@ -48,6 +48,9 @@ namespace PlayerCharacter.Controller
             controls.Player.Fire.started += OnFirePressed;
             controls.Player.Fire.canceled += OnFireReleased;
 
+            controls.Player.SaveGame.started += OnSavePressed;
+            controls.Player.LoadGame.started += OnLoadPressed;
+
             IsPlayerStuned = false;
         }
         /// <summary>
@@ -78,6 +81,22 @@ namespace PlayerCharacter.Controller
             healthComponent.OnTakeAnyDamage.AddListener(OnTakeAnyDamage);
 
             Move();
+        }
+        /// <summary>
+        /// Save all player game data
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnSavePressed(InputAction.CallbackContext context)
+        {
+            GeneralFunctions.GetPlayerState().SaveGame();
+        }
+        /// <summary>
+        /// Load saved player data
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnLoadPressed(InputAction.CallbackContext context)
+        {
+            GeneralFunctions.GetPlayerState().LoadGame();
         }
         /// <summary>
         /// Called when player presses the fire key
