@@ -703,6 +703,55 @@ public class GeneralFunctions
         return true;
     }
     /// <summary>
+    /// Save the game to the given slot
+    /// </summary>
+    /// <param name="slot"></param>
+    public static void SaveGameToSlot(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.SaveGameToSlot(slot);
+
+            Debug.Log("Saved game to slot " + slot);
+        }
+    }
+    /// <summary>
+    /// Load game data in the given slot
+    /// </summary>
+    /// <param name="slot"></param>
+    public static void LoadGameFromSlot()
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.LoadGame();
+        }
+        else
+        {
+            Debug.LogError("Failed to load game unable to find Player State");
+        }
+    }
+    /// <summary>
+    /// Delete saved game in the given slot
+    /// </summary>
+    /// <param name="slot"></param>
+    public static void DeleteGameInSlot(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.DeleteSaveGame(slot);
+        }
+        else
+        {
+            Debug.LogError("Failed to delete save in slot " + slot + " unable to find Player State");
+        }
+    }
+    /// <summary>
     /// Finds the player state in the game world
     /// </summary>
     public static PlayerState GetPlayerState()

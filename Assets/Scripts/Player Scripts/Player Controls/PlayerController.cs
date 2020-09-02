@@ -96,7 +96,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnSavePressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.GetPlayerState().SaveGame();
+            GeneralFunctions.SaveGameToSlot(2);
 
             print("Game Saved");
         }
@@ -106,7 +106,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnLoadPressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.GetPlayerState().LoadGame();
+            GeneralFunctions.LoadGameFromSlot();
 
             print("Game Loaded");
         }
@@ -116,7 +116,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnDeletePressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.GetPlayerState().DeleteSaveGame();
+            GeneralFunctions.DeleteGameInSlot(2);
 
             print("Saved Game Deleted");
         }

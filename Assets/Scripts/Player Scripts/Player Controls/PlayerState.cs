@@ -10,6 +10,18 @@ namespace PlayerCharacter.GameSaving
         public PlayerController player = null;
         public HealthBar playerHPBar = null;
 
+        public struct SavedGameSlot
+        {
+            public int slot;
+            public bool isActive;
+
+            public SavedGameSlot(int slotToSet, bool isActiveToSet)
+            {
+                slot = slotToSet;
+                isActive = isActiveToSet;
+            }
+        }
+
         #region Local Variables
         private static float currentHealth = 0f;
         private static float maxHealth = 0f;
@@ -34,6 +46,10 @@ namespace PlayerCharacter.GameSaving
         /// Checks to see if a scene is currently loading
         /// </summary>
         public bool IsLoadingScene { get { return isSceneLoading; } }
+        /// <summary>
+        /// All current saved game slots
+        /// </summary>
+        public SavedGameSlot[] SavedGameSlots { get; private set; }
         #endregion
 
         #region Setup Functions
@@ -49,6 +65,14 @@ namespace PlayerCharacter.GameSaving
             {
                 DontDestroyOnLoad(gameObject);
             }
+
+            SavedGameSlots = new SavedGameSlot[3]
+            {
+                new SavedGameSlot(1, false),
+                new SavedGameSlot(2, false),
+                new SavedGameSlot(3, false),
+            };
+            
         }
         public void SetCheckpointIndex(int index)
         {
@@ -106,16 +130,20 @@ namespace PlayerCharacter.GameSaving
         /// <summary>
         /// Saves all player game data
         /// </summary>
-        public void SaveGame()
+        public void SaveGameToSlot(int slot)
         {
-            SaveSystem.SaveGame(this, player.gameObject);
+            SaveSystem.SaveGame(this, player.gameObject, slot);
+
+            SetActiveSlot(slot);
         }
         /// <summary>
         /// Gets saved data then sets all local Variables and load the saved level
         /// </summary>
         public void LoadGame()
         {
-            var loadedData = SaveSystem.LoadGame();
+            var slot = GetActiveSlot();
+
+            var loadedData = SaveSystem.LoadGame(slot);
 
             levelIndex = loadedData.LevelIndex;
 
@@ -127,18 +155,13 @@ namespace PlayerCharacter.GameSaving
             GeneralFunctions.GetLevelLoader().LoadLevelAtIndex(levelIndex);
         }
         /// <summary>
-        /// Delete the current saved game
-        /// </summary>
-        public void DeleteSaveGame()
-        {
-            SaveSystem.DeleteSaveGame();
-        }
-        /// <summary>
         /// Set the player position to the saved player position when scene is done loading
         /// </summary>
         private void LoadPlayerPostion(Scene scene, LoadSceneMode mode)
         {
-            var loadedData = SaveSystem.LoadGame();
+            var slot = GetActiveSlot();
+
+            var loadedData = SaveSystem.LoadGame(slot);
 
             Vector3 position;
             position.x = loadedData.PlayerPosition[0];
@@ -148,6 +171,76 @@ namespace PlayerCharacter.GameSaving
             player.transform.position = position;
 
             SceneManager.sceneLoaded -= LoadPlayerPostion;
+        }
+        /// <summary>
+        /// Delete the current saved game
+        /// </summary>
+        public void DeleteSaveGame(int slot)
+        {
+            DeactivateSlot(slot);
+
+            SaveSystem.DeleteSaveGame(slot);
+        }
+        /// <summary>
+        /// Gets the of the current active slot if no slots are active defaults to 1st save slot
+        /// </summary>
+        /// <returns>The name of the slot as a string</returns>
+        private int GetActiveSlot()
+        {
+            int slot = -1;
+
+            foreach (SavedGameSlot savedGameSlot in SavedGameSlots)
+            {
+                if (savedGameSlot.isActive)
+                {
+                    slot = savedGameSlot.slot;
+                    break;
+                }
+                else
+                {
+                    slot = -1;
+                }
+            }
+
+            if (slot < 0)
+            {
+                slot = SavedGameSlots[0].slot;
+                SetActiveSlot(SavedGameSlots[0].slot);
+            }
+
+            return slot;
+        }
+        /// <summary>
+        /// Sets the given slot to be the only active slot
+        /// </summary>
+        /// <param name="slot"></param>
+        private void SetActiveSlot(int slot)
+        {
+            for (int index = 0; index < SavedGameSlots.Length; index++)
+            {
+                if (SavedGameSlots[index].slot.Equals(slot))
+                {
+                    SavedGameSlots[index].isActive = true;
+                }
+                else
+                {
+                    SavedGameSlots[index].isActive = false;
+                }
+            }
+        }
+        /// <summary>
+        /// Deactivate the given slot
+        /// </summary>
+        /// <param name="slot"></param>
+        private void DeactivateSlot(int slot)
+        {
+            for (int index = 0; index < SavedGameSlots.Length; index++)
+            {
+                if (SavedGameSlots[index].slot.Equals(slot))
+                {
+                    SavedGameSlots[index].isActive = false;
+                }
+            }
         }
         #endregion
     }

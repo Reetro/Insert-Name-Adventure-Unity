@@ -8,7 +8,7 @@ namespace PlayerCharacter.GameSaving
     public static class SaveSystem
     {
         /// <summary>
-        /// File path for where to place the save game file
+        /// File path for where to place the save game files
         /// </summary>
         private static string SaveFilePath
         {
@@ -19,10 +19,10 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         /// <param name="state"></param>
         /// <param name="player"></param>
-        public static void SaveGame(PlayerState state, GameObject player)
+        public static void SaveGame(PlayerState state, GameObject player, int slot)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(SaveFilePath, FileMode.Create);
+            FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Create);
 
             SaveData saveData = new SaveData(state, player);
 
@@ -34,12 +34,12 @@ namespace PlayerCharacter.GameSaving
         /// Loads saved data from the given path
         /// </summary>
         /// <returns>The saved game data</returns>
-        public static SaveData LoadGame()
+        public static SaveData LoadGame(int slot)
         {
-            if (File.Exists(SaveFilePath))
+            if (DoesSaveGameExistInSlot(slot))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream stream = new FileStream(SaveFilePath, FileMode.Open);
+                FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Open);
 
                 SaveData data = formatter.Deserialize(stream) as SaveData;
 
@@ -49,23 +49,33 @@ namespace PlayerCharacter.GameSaving
             }
             else
             {
-                Debug.LogError("Save file not found in " + SaveFilePath);
+                Debug.LogError("Save file not found in " + SaveFilePath + slot);
                 return null;
             }
         }
         /// <summary>
-        /// Delete the saved game file
+        /// Delete the saved game file in the given slot
         /// </summary>
-        public static void DeleteSaveGame()
+        public static void DeleteSaveGame(int slot)
         {
             try
             {
-                File.Delete(SaveFilePath);
+                File.Delete(SaveFilePath + slot);
             }
             catch (Exception ex)
             {
                 Debug.LogException(ex);
             }
+        }
+        /// <summary>
+        /// Check to see if a saved game exist in a given slot
+        /// </summary>
+        /// <param name="slot"></param>
+        public static bool DoesSaveGameExistInSlot(int slot)
+        {
+            var path = SaveFilePath + slot;
+
+            return File.Exists(path) ? true : false;
         }
     }
 }
