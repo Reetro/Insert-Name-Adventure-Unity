@@ -24,7 +24,7 @@ namespace PlayerCharacter.GameSaving
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Create);
 
-            SaveData saveData = new SaveData(state, player);
+            PlayerSaveData saveData = new PlayerSaveData(state, player);
 
             formatter.Serialize(stream, saveData);
 
@@ -48,14 +48,14 @@ namespace PlayerCharacter.GameSaving
         /// Loads saved data from the given path
         /// </summary>
         /// <returns>The saved game data</returns>
-        public static SaveData LoadGame(int slot)
+        public static PlayerSaveData LoadGame(int slot)
         {
             if (DoesSaveGameExistInSlot(slot))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Open);
 
-                SaveData data = formatter.Deserialize(stream) as SaveData;
+                PlayerSaveData data = formatter.Deserialize(stream) as PlayerSaveData;
 
                 stream.Close();
 

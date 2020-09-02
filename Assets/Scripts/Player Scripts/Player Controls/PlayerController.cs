@@ -96,7 +96,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnSavePressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.SaveGameToSlot(2);
+            GeneralFunctions.SaveGameToSlot(1);
         }
         /// <summary>
         /// Load saved player data
@@ -112,7 +112,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnDeletePressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.DeleteGameInSlot(2);
+            GeneralFunctions.DeleteGameInSlot(1);
         }
         #endregion
 

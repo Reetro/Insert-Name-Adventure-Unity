@@ -4,7 +4,7 @@ using UnityEngine;
 namespace PlayerCharacter.GameSaving
 {
     [System.Serializable]
-    public class SaveData
+    public class PlayerSaveData
     {
         #region Data To Save
         /// <summary>
@@ -32,7 +32,7 @@ namespace PlayerCharacter.GameSaving
         /// <summary>
         /// Get all data to save from player state and player Gameobject
         /// </summary>
-        public SaveData (PlayerState state, GameObject player)
+        public PlayerSaveData (PlayerState state, GameObject player)
         {
             CurrentHealth = state.CurrentHealth;
             MaxHealth = state.MaxHealth;
