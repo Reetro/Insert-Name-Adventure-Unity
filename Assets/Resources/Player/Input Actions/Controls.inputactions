@@ -60,6 +60,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Delete Saved Game",
+                    "type": "Button",
+                    "id": "b0c433bb-624c-4def-930d-ec4d1c441617",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -258,6 +266,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Load Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3abf08f-5567-458f-98f2-364755fa299a",
+                    "path": "<Keyboard>/f8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Delete Saved Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

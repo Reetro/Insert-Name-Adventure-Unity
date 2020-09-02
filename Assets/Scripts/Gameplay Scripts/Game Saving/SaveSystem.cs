@@ -1,11 +1,19 @@
 ﻿using System.IO;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 namespace PlayerCharacter.GameSaving
 {
     public static class SaveSystem
     {
+        /// <summary>
+        /// File path for where to place the save game file
+        /// </summary>
+        private static string SaveFilePath
+        {
+            get { return Application.persistentDataPath + "/player.character"; }
+        }
         /// <summary>
         /// Saves all player game data
         /// </summary>
@@ -14,8 +22,7 @@ namespace PlayerCharacter.GameSaving
         public static void SaveGame(PlayerState state, GameObject player)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            string path = Application.persistentDataPath + "/player.character";
-            FileStream stream = new FileStream(path, FileMode.Create);
+            FileStream stream = new FileStream(SaveFilePath, FileMode.Create);
 
             SaveData saveData = new SaveData(state, player);
 
@@ -29,12 +36,10 @@ namespace PlayerCharacter.GameSaving
         /// <returns>The saved game data</returns>
         public static SaveData LoadGame()
         {
-            string path = Application.persistentDataPath + "/player.character";
-
-            if (File.Exists(path))
+            if (File.Exists(SaveFilePath))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream stream = new FileStream(path, FileMode.Open);
+                FileStream stream = new FileStream(SaveFilePath, FileMode.Open);
 
                 SaveData data = formatter.Deserialize(stream) as SaveData;
 
@@ -44,18 +49,23 @@ namespace PlayerCharacter.GameSaving
             }
             else
             {
-                Debug.LogError("Save file not found in " + path);
+                Debug.LogError("Save file not found in " + SaveFilePath);
                 return null;
             }
         }
         /// <summary>
-        /// Checks to see if a save game exist
+        /// Delete the saved game file
         /// </summary>
-        public static bool DoesSaveGameExist()
+        public static void DeleteSaveGame()
         {
-            string path = Application.persistentDataPath + "/player.character";
-
-            return File.Exists(path) ? true : false;
+            try
+            {
+                File.Delete(SaveFilePath);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
         }
     }
 }

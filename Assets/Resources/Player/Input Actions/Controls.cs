@@ -75,6 +75,14 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Delete Saved Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0c433bb-624c-4def-930d-ec4d1c441617"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -275,6 +283,17 @@ namespace PlayerControls
                     ""action"": ""Load Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3abf08f-5567-458f-98f2-364755fa299a"",
+                    ""path"": ""<Keyboard>/f8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Saved Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -290,6 +309,7 @@ namespace PlayerControls
             m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
+            m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -346,6 +366,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Rotate;
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
+        private readonly InputAction m_Player_DeleteSavedGame;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -357,6 +378,7 @@ namespace PlayerControls
             public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
+            public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -387,6 +409,9 @@ namespace PlayerControls
                     @LoadGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
                     @LoadGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
                     @LoadGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                    @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
+                    @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
+                    @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -412,6 +437,9 @@ namespace PlayerControls
                     @LoadGame.started += instance.OnLoadGame;
                     @LoadGame.performed += instance.OnLoadGame;
                     @LoadGame.canceled += instance.OnLoadGame;
+                    @DeleteSavedGame.started += instance.OnDeleteSavedGame;
+                    @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
+                    @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
                 }
             }
         }
@@ -425,6 +453,7 @@ namespace PlayerControls
             void OnRotate(InputAction.CallbackContext context);
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
+            void OnDeleteSavedGame(InputAction.CallbackContext context);
         }
     }
 }

@@ -54,6 +54,8 @@ namespace PlayerCharacter.Controller
             controls.Player.SaveGame.started += OnSavePressed;
             controls.Player.LoadGame.started += OnLoadPressed;
 
+            controls.Player.DeleteSavedGame.started += OnDeletePressed;
+
             IsPlayerStuned = false;
         }
         /// <summary>
@@ -107,6 +109,16 @@ namespace PlayerCharacter.Controller
             GeneralFunctions.GetPlayerState().LoadGame();
 
             print("Game Loaded");
+        }
+        /// <summary>
+        /// Delete the current saved game
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnDeletePressed(InputAction.CallbackContext context)
+        {
+            GeneralFunctions.GetPlayerState().DeleteSaveGame();
+
+            print("Saved Game Deleted");
         }
         #endregion
 

@@ -127,6 +127,13 @@ namespace PlayerCharacter.GameSaving
             GeneralFunctions.GetLevelLoader().LoadLevelAtIndex(levelIndex);
         }
         /// <summary>
+        /// Delete the current saved game
+        /// </summary>
+        public void DeleteSaveGame()
+        {
+            SaveSystem.DeleteSaveGame();
+        }
+        /// <summary>
         /// Set the player position to the saved player position when scene is done loading
         /// </summary>
         private void LoadPlayerPostion(Scene scene, LoadSceneMode mode)
