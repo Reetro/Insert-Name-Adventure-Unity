@@ -161,6 +161,7 @@ MonoBehaviour:
   whatCanBeDamaged:
     serializedVersion: 2
     m_Bits: 2115072
+  debugSave: 1
 --- !u!1 &4066560135074363130
 GameObject:
   m_ObjectHideFlags: 0

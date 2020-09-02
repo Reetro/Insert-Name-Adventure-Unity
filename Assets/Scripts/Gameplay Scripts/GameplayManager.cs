@@ -37,6 +37,12 @@ namespace GameplayManagement
         [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
 
+        [Space]
+
+        [Header("Game Debug")]
+        [Tooltip("Whether or not to print save game debug messages")]
+        public bool debugSave = false;
+
         /// <summary>
         /// Checks to see if a Gamepad is connected
         /// </summary>

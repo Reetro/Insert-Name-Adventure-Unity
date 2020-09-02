@@ -29,6 +29,20 @@ namespace PlayerCharacter.GameSaving
             formatter.Serialize(stream, saveData);
 
             stream.Close();
+
+            var gameplayManager = GeneralFunctions.GetGameplayManager();
+
+            if (gameplayManager)
+            {
+                if (gameplayManager.debugSave)
+                {
+                    Debug.Log("Saved game in slot " + slot);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to get Gameplay Manager in Save Game");
+            }
         }
         /// <summary>
         /// Loads saved data from the given path
@@ -44,6 +58,20 @@ namespace PlayerCharacter.GameSaving
                 SaveData data = formatter.Deserialize(stream) as SaveData;
 
                 stream.Close();
+
+                var gameplayManager = GeneralFunctions.GetGameplayManager();
+
+                if (gameplayManager)
+                {
+                    if (gameplayManager.debugSave)
+                    {
+                        Debug.Log("Loaded saved game in slot " + slot);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to get Gameplay Manager in Load Game");
+                }
 
                 return data;
             }
@@ -61,6 +89,20 @@ namespace PlayerCharacter.GameSaving
             try
             {
                 File.Delete(SaveFilePath + slot);
+
+                var gameplayManager = GeneralFunctions.GetGameplayManager();
+
+                if (gameplayManager)
+                {
+                    if (gameplayManager.debugSave)
+                    {
+                        Debug.Log("Deleted saved game in slot " + slot);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to get Gameplay Manager in Delete Save Game");
+                }
             }
             catch (Exception ex)
             {

@@ -21,6 +21,7 @@ namespace CustomEditors
         private SerializedProperty _ManagerDescriptionFontSize;
         private SerializedProperty _ManagerWhatCanBeDamaged;
         private SerializedProperty _ManagerDefaultControllerCheckTimer;
+        private SerializedProperty _ManagerDebugSave;
         #endregion
 
         #region Gameplay Manager Editors
@@ -315,6 +316,7 @@ namespace CustomEditors
             _ManagerRandomMaxY = gameplayManagerObject.FindProperty("combatRandomVectorMaxY");
             _ManagerTextDisappearTime = gameplayManagerObject.FindProperty("disappearTime");
             _ManagerDefaultControllerCheckTimer = gameplayManagerObject.FindProperty("defaultControllerCheckTimer");
+            _ManagerDebugSave = gameplayManagerObject.FindProperty("debugSave");
         }
         #endregion
 

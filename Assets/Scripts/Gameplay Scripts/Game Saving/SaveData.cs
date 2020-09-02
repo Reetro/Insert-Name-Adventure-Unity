@@ -16,24 +16,28 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         public float MaxHealth { get; private set; }
         /// <summary>
-        /// Saved level current level index
+        /// Saved level current checkpoint level index
         /// </summary>
-        public int LevelIndex { get; private set; }
+        public int CheckpointLevelIndex { get; private set; }
         /// <summary>
         /// Saved player location
         /// </summary>
         public float[] PlayerPosition { get; private set; }
+        /// <summary>
+        /// Saved current level the player is in
+        /// </summary>
+        public int CurrentLevelIndex { get; private set; }
         #endregion
 
         /// <summary>
-        /// Get all data to save from player state
+        /// Get all data to save from player state and player Gameobject
         /// </summary>
-        /// <param name="state"></param>
         public SaveData (PlayerState state, GameObject player)
         {
             CurrentHealth = state.CurrentHealth;
             MaxHealth = state.MaxHealth;
-            LevelIndex = state.LevelIndex;
+            CheckpointLevelIndex = state.CheckpointLevelIndex;
+            CurrentLevelIndex = state.CurrentLevelIndex;
 
             PlayerPosition = new float[3];
             PlayerPosition[0] = player.transform.position.x;

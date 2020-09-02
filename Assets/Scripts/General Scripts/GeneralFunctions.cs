@@ -404,13 +404,8 @@ public class GeneralFunctions
     #endregion
 
     #region Gameplay Management Functions
-    /// <summary>
-    /// Finds the Gameplay Manager in the current level
-    /// </summary>
-    public static GameplayManager GetGameplayManager()
-    {
-        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
-    }
+
+    #region Game pausing functions
     /// <summary>
     /// Pauses the game by setting time scale to 0
     /// </summary>
@@ -425,57 +420,9 @@ public class GeneralFunctions
     {
         Time.timeScale = 1;
     }
-    /// <summary>
-    /// Finds all Gameobjects on the specified layer
-    /// </summary>
-    /// <returns>An array of Gameobjects</returns>
-    public static GameObject[] GetAllObjectsInLayer(string layerName)
-    {
-        var objectArray = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
-        var objectList = new List<GameObject>();
+    #endregion
 
-        for (int index = 0; index < objectArray.Length; index++)
-        {
-            if (objectArray[index].layer == LayerMask.NameToLayer(layerName))
-            {
-                objectList.Add(objectArray[index]);
-            }
-        }
-        if (objectList.Count == 0)
-        {
-            return null;
-        }
-
-        return objectList.ToArray();
-    }
-    /// <summary>
-    /// Finds all gameplay ID scripts in scene
-    /// </summary>
-    /// <returns>An array of all gameplay ID components</returns>
-    public static GameplayObjectID[] GetAllGameplayIDObjects()
-    {
-        var objects = GameObject.FindObjectsOfType<GameplayObjectID>();
-
-        return objects;
-    }
-    /// <summary>
-    ///  Find the Player Gameobject by tag in the current level
-    /// </summary>
-    /// <returns>The Player Gameobject</returns>
-    public static GameObject GetPlayerGameObject()
-    {
-        return GameObject.FindGameObjectWithTag("Player");
-    }
-    /// <summary>
-    ///  Gets the gameplay manager and generates an ID
-    /// </summary>
-    /// <returns>A random int that will be unique to this object</returns>
-    public static int GenID()
-    {
-        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
-
-        return manager.GetComponent<GameplayManager>().GenID();
-    }
+    #region Transform functions
     /// <summary>
     /// Will parent the given object to the provided transform
     /// </summary>
@@ -512,6 +459,9 @@ public class GeneralFunctions
     {
         return objectToTest.CompareTag("Player");
     }
+    #endregion
+
+    #region Layer Functions
     /// <summary>
     /// Checks to see if the provided Gameobject is on the provided layer
     /// </summary>
@@ -541,6 +491,32 @@ public class GeneralFunctions
 
         return localBool;
     }
+    /// <summary>
+    /// Finds all Gameobjects on the specified layer
+    /// </summary>
+    /// <returns>An array of Gameobjects</returns>
+    public static GameObject[] GetAllObjectsInLayer(string layerName)
+    {
+        var objectArray = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        var objectList = new List<GameObject>();
+
+        for (int index = 0; index < objectArray.Length; index++)
+        {
+            if (objectArray[index].layer == LayerMask.NameToLayer(layerName))
+            {
+                objectList.Add(objectArray[index]);
+            }
+        }
+        if (objectList.Count == 0)
+        {
+            return null;
+        }
+
+        return objectList.ToArray();
+    }
+    #endregion
+
+    #region Game action functions
     /// <summary>
     /// Apply a buff to the given target
     /// </summary>
@@ -623,6 +599,9 @@ public class GeneralFunctions
             Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
         }
     }
+    #endregion
+
+    #region Gameobject Functions
     /// <summary>
     /// Find the Player UI Manager in the current scene
     /// </summary>
@@ -668,6 +647,58 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Finds the player state in the game world
+    /// </summary>
+    public static PlayerState GetPlayerState()
+    {
+        return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+    }
+    /// <summary>
+    /// Finds the level loader in the game world
+    /// </summary>
+    public static LevelLoader GetLevelLoader()
+    {
+        return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
+    }
+    /// <summary>
+    /// Finds the Gameplay Manager in the current level
+    /// </summary>
+    public static GameplayManager GetGameplayManager()
+    {
+        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
+    }
+    /// <summary>
+    /// Finds all gameplay ID scripts in scene
+    /// </summary>
+    /// <returns>An array of all gameplay ID components</returns>
+    public static GameplayObjectID[] GetAllGameplayIDObjects()
+    {
+        var objects = GameObject.FindObjectsOfType<GameplayObjectID>();
+
+        return objects;
+    }
+    /// <summary>
+    ///  Find the Player Gameobject by tag in the current level
+    /// </summary>
+    /// <returns>The Player Gameobject</returns>
+    public static GameObject GetPlayerGameObject()
+    {
+        return GameObject.FindGameObjectWithTag("Player");
+    }
+    /// <summary>
+    ///  Gets the gameplay manager and generates an ID
+    /// </summary>
+    /// <returns>A random int that will be unique to this object</returns>
+    public static int GenID()
+    {
+        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
+
+        return manager.GetComponent<GameplayManager>().GenID();
+    }
+    #endregion
+
+    #region Array Functions
+    /// <summary>
     /// Loops through the given array and checks to see if the given object exist in the array
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -702,6 +733,9 @@ public class GeneralFunctions
         }
         return true;
     }
+    #endregion
+
+    #region Save Game Functions
     /// <summary>
     /// Save the game to the given slot
     /// </summary>
@@ -713,8 +747,6 @@ public class GeneralFunctions
         if (state)
         {
             state.SaveGameToSlot(slot);
-
-            Debug.Log("Saved game to slot " + slot);
         }
     }
     /// <summary>
@@ -752,19 +784,23 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Finds the player state in the game world
+    /// Checks to see if any save slot is active
     /// </summary>
-    public static PlayerState GetPlayerState()
+    public static bool IsAnySaveSlotActive()
     {
-        return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            return state.IsAnySlotActive();
+        }
+        else
+        {
+            Debug.LogError("Failed to check IsAnySaveSlotActive unable to find Player State");
+            return false;
+        }
     }
-    /// <summary>
-    /// Finds the level loader in the game world
-    /// </summary>
-    public static LevelLoader GetLevelLoader()
-    {
-        return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
-    }
+    #endregion
     #endregion
 
     #region Component Functions
