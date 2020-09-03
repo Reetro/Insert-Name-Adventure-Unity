@@ -17,6 +17,7 @@ namespace PlayerCharacter.SceneLoading
         [SerializeField] private GameObject levelLoader = null;
         [SerializeField] private HealthComponent myHealthComp = null;
         [SerializeField] private GameObject toolTipObject = null;
+        [SerializeField] private bool createUI = true;
 
         private PlayerController playerController = null;
 
@@ -71,7 +72,10 @@ namespace PlayerCharacter.SceneLoading
                 checkpoint.ConstructCheckpoint();
             }
 
-            playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
+            if (createUI)
+            {
+                playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
+            }
 
             myHealthComp.MyPlayerState = playerState.GetComponent<PlayerState>();
 

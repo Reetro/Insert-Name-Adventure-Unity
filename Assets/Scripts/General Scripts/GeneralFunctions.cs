@@ -753,13 +753,13 @@ public class GeneralFunctions
     /// Load game data in the given slot
     /// </summary>
     /// <param name="slot"></param>
-    public static void LoadGameFromSlot()
+    public static void LoadGameFromSlot(int slot)
     {
         var state = GetPlayerState();
 
         if (state)
         {
-            state.LoadGame();
+            state.LoadGame(slot);
         }
         else
         {
@@ -797,6 +797,24 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to check IsAnySaveSlotActive unable to find Player State");
+            return false;
+        }
+    }
+    /// <summary>
+    /// Checks to see if the given slot is active
+    /// </summary>
+    /// <param name="slot"></param>
+    public static bool IsSlotActive(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            return state.IsSlotActive(slot);
+        }
+        else
+        {
+            Debug.LogError("Failed to check IsSlotActive unable to find Player State");
             return false;
         }
     }

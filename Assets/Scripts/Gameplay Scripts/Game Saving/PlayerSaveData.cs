@@ -1,5 +1,4 @@
-﻿using PlayerCharacter.Controller;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace PlayerCharacter.GameSaving
 {
@@ -27,6 +26,7 @@ namespace PlayerCharacter.GameSaving
         /// Saved current level the player is in
         /// </summary>
         public int CurrentLevelIndex { get; private set; }
+
         #endregion
 
         /// <summary>

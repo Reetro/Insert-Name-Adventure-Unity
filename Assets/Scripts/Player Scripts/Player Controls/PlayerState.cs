@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
+using GameplayManagement;
 
 namespace PlayerCharacter.GameSaving
 {
@@ -15,6 +16,7 @@ namespace PlayerCharacter.GameSaving
         private static float maxHealth = 0f;
         private static int checkpointLevelIndex = 0;
         private static bool isSceneLoading = false;
+
         /// <summary>
         /// Struct that contains base info for every save slot
         /// </summary>
@@ -67,6 +69,10 @@ namespace PlayerCharacter.GameSaving
         /// All current saved game slots
         /// </summary>
         public SavedGameSlot[] SavedGameSlots { get; private set; }
+        /// <summary>
+        /// A reference to the gameplay manager in the world
+        /// </summary>
+        public GameplayManager gameplayManager { get; private set; }
         #endregion
 
         #region Setup Functions
@@ -89,7 +95,8 @@ namespace PlayerCharacter.GameSaving
                 new SavedGameSlot(2, false),
                 new SavedGameSlot(3, false),
             };
-            
+
+            gameplayManager = GeneralFunctions.GetGameplayManager();
         }
         public void SetCheckpointIndex(int index)
         {
@@ -151,20 +158,32 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         public void SaveGameToSlot(int slot)
         {
-            SaveSystem.SaveGame(this, player.gameObject, slot);
-
             SetActiveSlot(slot);
+
+            SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
+
+            if (gameplayManager)
+            {
+                if (gameplayManager.debugSave)
+                {
+                    Debug.Log("Saved game in slot " + slot);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to get Gameplay Manager in Save Game");
+            }
         }
         /// <summary>
         /// Gets saved data then sets all local Variables and load the saved level
         /// </summary>
-        public void LoadGame()
+        public void LoadGame(int slot)
         {
-            var slot = GetActiveSlot();
+            var slotData = SaveSystem.LoadSaveSlot(slot);
 
             if (slot >= 0)
             {
-                var loadedData = SaveSystem.LoadGame(slot);
+                var loadedData = SaveSystem.LoadPlayerFromSlot(slot);
 
                 checkpointLevelIndex = loadedData.CheckpointLevelIndex;
                 CurrentLevelIndex = loadedData.CurrentLevelIndex;
@@ -188,7 +207,7 @@ namespace PlayerCharacter.GameSaving
         {
             var slot = GetActiveSlot();
 
-            var loadedData = SaveSystem.LoadGame(slot);
+            var loadedData = SaveSystem.LoadPlayerFromSlot(slot);
 
             Vector3 position;
             position.x = loadedData.PlayerPosition[0];
@@ -207,20 +226,79 @@ namespace PlayerCharacter.GameSaving
             DeactivateSlot(slot);
 
             SaveSystem.DeleteSaveGame(slot);
+
+            if (gameplayManager)
+            {
+                if (gameplayManager.debugSave)
+                {
+                    Debug.Log("Deleted saved game in slot " + slot);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to get Gameplay Manager in Delete Save Game");
+            }
+        }
+        /// <summary>
+        /// Checks to see if the given is active
+        /// </summary>
+        /// <param name="slot"></param>
+        public bool IsSlotActive(int slot)
+        {
+            for (int index = 0; index < SavedGameSlots.Length; index++)
+            {
+                if (SavedGameSlots[index].slot.Equals(slot))
+                {
+                    if (SaveSystem.DoesPlayerSaveGameExistInSlot(SavedGameSlots[index].slot))
+                    {
+                        var slotData = SaveSystem.LoadSaveSlot(SavedGameSlots[index].slot);
+
+                        SavedGameSlots[index].slot = slotData.Slot;
+                        SavedGameSlots[index].isActive = slotData.IsSlotActive;
+
+                        return SavedGameSlots[index].isActive;
+                    }
+                }
+            }
+            return false;
         }
         /// <summary>
         /// Checks see if any save slot is active
         /// </summary>
         public bool IsAnySlotActive()
         {
-            foreach (SavedGameSlot savedGameSlot in SavedGameSlots)
+            for (int index = 0; index < SavedGameSlots.Length; index++)
             {
-                if (savedGameSlot.isActive)
+                if (SaveSystem.DoesPlayerSaveGameExistInSlot(SavedGameSlots[index].slot))
                 {
-                    return true;
+                    var slotData = SaveSystem.LoadSaveSlot(SavedGameSlots[index].slot);
+
+                    SavedGameSlots[index].slot = slotData.Slot;
+                    SavedGameSlots[index].isActive = slotData.IsSlotActive;
+
+                    return SavedGameSlots[index].isActive;
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// Gets a given slots data
+        /// </summary>
+        /// <param name="slot"></param>
+        private SavedGameSlot GetSavedGameSlotInfo(int slot)
+        {
+            SavedGameSlot savedGameSlot = new SavedGameSlot();
+
+            foreach (SavedGameSlot currentSavedGameSlot in SavedGameSlots)
+            {
+                if (currentSavedGameSlot.slot.Equals(slot))
+                {
+                    savedGameSlot = currentSavedGameSlot;
+                    break;
+                }
+            }
+
+            return savedGameSlot;
         }
         /// <summary>
         /// Gets the of the current active slot if no slots are active defaults to 1st save slot

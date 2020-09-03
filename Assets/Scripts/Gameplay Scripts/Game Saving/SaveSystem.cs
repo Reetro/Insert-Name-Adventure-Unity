@@ -2,85 +2,126 @@
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
+using static PlayerCharacter.GameSaving.PlayerState;
 
 namespace PlayerCharacter.GameSaving
 {
     public static class SaveSystem
     {
+        #region File Paths
         /// <summary>
-        /// File path for where to place the save game files
+        /// File path for where to place player character save game files
         /// </summary>
-        private static string SaveFilePath
+        private static string PlayerSaveFilePath(int slot)
         {
-            get { return Application.persistentDataPath + "/player.character"; }
+            return Application.persistentDataPath + "/playercharacter.save" + slot;
         }
+        /// <summary>
+        /// File path for where to save slot data
+        /// </summary>
+        /// <param name="path"></param>
+        private static string SaveSlotFilePath(int path)
+        {
+            return Application.persistentDataPath + "/slot" + path + ".save";
+        }
+        #endregion
+
+        #region Save Functions
         /// <summary>
         /// Saves all player game data
         /// </summary>
         /// <param name="state"></param>
         /// <param name="player"></param>
-        public static void SaveGame(PlayerState state, GameObject player, int slot)
+        public static void SaveGame(PlayerState state, GameObject player, SavedGameSlot saveSlot)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Create);
-
-            PlayerSaveData saveData = new PlayerSaveData(state, player);
-
-            formatter.Serialize(stream, saveData);
-
-            stream.Close();
-
-            var gameplayManager = GeneralFunctions.GetGameplayManager();
-
-            if (gameplayManager)
-            {
-                if (gameplayManager.debugSave)
-                {
-                    Debug.Log("Saved game in slot " + slot);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to get Gameplay Manager in Save Game");
-            }
+            SaveGameSlot(ref saveSlot);
+            SavePlayerData(ref saveSlot, state, player);
         }
         /// <summary>
-        /// Loads saved data from the given path
+        /// Saves all player data
         /// </summary>
-        /// <returns>The saved game data</returns>
-        public static PlayerSaveData LoadGame(int slot)
+        /// <param name="SaveSlot"></param>
+        /// <param name="state"></param>
+        /// <param name="player"></param>
+        private static void SavePlayerData(ref SavedGameSlot SaveSlot, PlayerState state, GameObject player)
         {
-            if (DoesSaveGameExistInSlot(slot))
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(PlayerSaveFilePath(SaveSlot.slot), FileMode.Create);
+
+            PlayerSaveData playerSaveData = new PlayerSaveData(state, player);
+
+            formatter.Serialize(stream, playerSaveData);
+
+            stream.Close();
+        }
+        /// <summary>
+        /// Save the given slot data
+        /// </summary>
+        /// <param name="SaveSlot"></param>
+        private static void SaveGameSlot(ref SavedGameSlot SaveSlot)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(SaveSlotFilePath(SaveSlot.slot), FileMode.Create);
+
+            SaveSlotData saveSlotData = new SaveSlotData(SaveSlot.slot, SaveSlot.isActive);
+
+            formatter.Serialize(stream, saveSlotData);
+
+            stream.Close();
+        }
+        #endregion
+
+        #region Load Functions
+        /// <summary>
+        /// Loads saved player data from the given path
+        /// </summary>
+        /// <returns>The saved player data</returns>
+        public static PlayerSaveData LoadPlayerFromSlot(int slot)
+        {
+            if (DoesPlayerSaveGameExistInSlot(slot))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream stream = new FileStream(SaveFilePath + slot, FileMode.Open);
+                FileStream stream = new FileStream(PlayerSaveFilePath(slot), FileMode.Open);
 
                 PlayerSaveData data = formatter.Deserialize(stream) as PlayerSaveData;
 
                 stream.Close();
 
-                var gameplayManager = GeneralFunctions.GetGameplayManager();
+                return data;
+            }
+            else
+            {
+                Debug.LogError("Save file not found in " + PlayerSaveFilePath(slot));
+                return null;
+            }
+        }
+        /// <summary>
+        /// Loads
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns>The save slot data</returns>
+        public static SaveSlotData LoadSaveSlot(int slot)
+        {
+            if (File.Exists(SaveSlotFilePath(slot)))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                FileStream stream = new FileStream(SaveSlotFilePath(slot), FileMode.Open);
 
-                if (gameplayManager)
-                {
-                    if (gameplayManager.debugSave)
-                    {
-                        Debug.Log("Loaded saved game in slot " + slot);
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Failed to get Gameplay Manager in Load Game");
-                }
+                SaveSlotData data = formatter.Deserialize(stream) as SaveSlotData;
+
+                stream.Close();
 
                 return data;
             }
             else
             {
-                Debug.LogError("Save file not found in " + SaveFilePath + slot);
+                Debug.LogError("Save file not found in " + SaveSlotFilePath(slot));
                 return null;
             }
         }
+        #endregion
+
+        #region Save Management Functions
         /// <summary>
         /// Delete the saved game file in the given slot
         /// </summary>
@@ -88,21 +129,16 @@ namespace PlayerCharacter.GameSaving
         {
             try
             {
-                File.Delete(SaveFilePath + slot);
+                File.Delete(PlayerSaveFilePath(slot));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
 
-                var gameplayManager = GeneralFunctions.GetGameplayManager();
-
-                if (gameplayManager)
-                {
-                    if (gameplayManager.debugSave)
-                    {
-                        Debug.Log("Deleted saved game in slot " + slot);
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Failed to get Gameplay Manager in Delete Save Game");
-                }
+            try
+            {
+                File.Delete(SaveSlotFilePath(slot));
             }
             catch (Exception ex)
             {
@@ -110,14 +146,26 @@ namespace PlayerCharacter.GameSaving
             }
         }
         /// <summary>
-        /// Check to see if a saved game exist in a given slot
+        /// Check to see if a saved player exist in a given slot
         /// </summary>
         /// <param name="slot"></param>
-        public static bool DoesSaveGameExistInSlot(int slot)
+        public static bool DoesPlayerSaveGameExistInSlot(int slot)
         {
-            var path = SaveFilePath + slot;
+            var path = PlayerSaveFilePath(slot);
 
             return File.Exists(path) ? true : false;
         }
+        /// <summary>
+        /// Checks to see if a saved slot exist in the given slot
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public static bool DoesSaveSlotExist(int slot)
+        {
+            var path = SaveSlotFilePath(slot);
+
+            return File.Exists(path) ? true : false;
+        }
+        #endregion
     }
 }

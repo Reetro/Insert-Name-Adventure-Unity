@@ -104,7 +104,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnLoadPressed(InputAction.CallbackContext context)
         {
-            GeneralFunctions.LoadGameFromSlot();
+            GeneralFunctions.LoadGameFromSlot(1);
         }
         /// <summary>
         /// Delete the current saved game
