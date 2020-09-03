@@ -64,6 +64,8 @@ namespace PlayerCharacter.SceneLoading
 
             playerController.MyPlayerState = playerState.GetComponent<PlayerState>();
 
+            playerState.GetComponent<PlayerState>().ConstructState();
+
             var checkpoint = FindObjectOfType<Checkpoint>();
 
             // Sets the player state in active checkpoint 

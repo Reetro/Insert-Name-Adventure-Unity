@@ -100,13 +100,11 @@ namespace PlayerCharacter.GameSaving
         {
             checkpointLevelIndex = index;
         }
-
         public void SetSceneLoading(bool value)
         {
             isSceneLoading = value;
         }
-
-        private void Start()
+        public void ConstructState()
         {
             gameplayManager = GeneralFunctions.GetGameplayManager();
         }
@@ -176,16 +174,9 @@ namespace PlayerCharacter.GameSaving
                 SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
             }
 
-            if (gameplayManager)
+            if (gameplayManager.debugSave)
             {
-                if (gameplayManager.debugSave)
-                {
-                    Debug.Log("Saved game in slot " + slot);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to get Gameplay Manager in Save Game");
+                Debug.Log("Saved game in slot " + slot);
             }
         }
         /// <summary>
@@ -193,8 +184,6 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         public void LoadGame(int slot)
         {
-            var slotData = SaveSystem.LoadSaveSlot(slot);
-
             if (slot >= 0)
             {
                 var loadedData = SaveSystem.LoadPlayerFromSlot(slot);
@@ -230,6 +219,11 @@ namespace PlayerCharacter.GameSaving
 
             player.transform.position = position;
 
+            if (gameplayManager.debugSave)
+            {
+                Debug.Log("Loaded game in slot " + slot);
+            }
+
             SceneManager.sceneLoaded -= LoadPlayerPostion;
         }
         /// <summary>
@@ -241,16 +235,9 @@ namespace PlayerCharacter.GameSaving
 
             SaveSystem.DeleteSaveGame(slot);
 
-            if (gameplayManager)
+            if (gameplayManager.debugSave)
             {
-                if (gameplayManager.debugSave)
-                {
-                    Debug.Log("Deleted saved game in slot " + slot);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to get Gameplay Manager in Delete Save Game");
+                Debug.Log("Deleted saved game in slot " + slot);
             }
         }
         /// <summary>
