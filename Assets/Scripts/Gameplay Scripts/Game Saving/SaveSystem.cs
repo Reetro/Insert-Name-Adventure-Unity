@@ -23,7 +23,6 @@ namespace PlayerCharacter.GameSaving
         /// <summary>
         /// File path for where to save slot data
         /// </summary>
-        /// <param name="path"></param>
         private static string SaveSlotFilePath(int slot)
         {
             var foldername = "Slot " + slot.ToString();
@@ -31,6 +30,13 @@ namespace PlayerCharacter.GameSaving
             var fileextnison = ".save";
 
             return Application.persistentDataPath + "/" + foldername + "/" + filesavename + fileextnison;
+        }
+        /// <summary>
+        /// File path for where to create the save folder
+        /// </summary>
+        private static string SaveFolderFilePath(ref SavedGameSlot SaveSlot)
+        {
+            return Path.Combine(Application.persistentDataPath, "Slot " + SaveSlot.slot.ToString());
         }
         #endregion
 
@@ -55,11 +61,9 @@ namespace PlayerCharacter.GameSaving
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            var path = Path.Combine(Application.persistentDataPath, "Slot " + SaveSlot.slot.ToString());
-
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(SaveFolderFilePath(ref SaveSlot)))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(SaveFolderFilePath(ref SaveSlot));
             }
 
             FileStream stream = new FileStream(PlayerSaveFilePath(SaveSlot.slot), FileMode.Create);
@@ -78,11 +82,9 @@ namespace PlayerCharacter.GameSaving
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            var path = Path.Combine(Application.persistentDataPath, "Slot " + SaveSlot.slot.ToString());
-
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(SaveFolderFilePath(ref SaveSlot)))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(SaveFolderFilePath(ref SaveSlot));
             }
 
             FileStream stream = new FileStream(SaveSlotFilePath(SaveSlot.slot), FileMode.Create);
