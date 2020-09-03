@@ -95,8 +95,6 @@ namespace PlayerCharacter.GameSaving
                 new SavedGameSlot(2, false),
                 new SavedGameSlot(3, false),
             };
-
-            gameplayManager = GeneralFunctions.GetGameplayManager();
         }
         public void SetCheckpointIndex(int index)
         {
@@ -106,6 +104,11 @@ namespace PlayerCharacter.GameSaving
         public void SetSceneLoading(bool value)
         {
             isSceneLoading = value;
+        }
+
+        private void Start()
+        {
+            gameplayManager = GeneralFunctions.GetGameplayManager();
         }
         #endregion
 
@@ -158,9 +161,20 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         public void SaveGameToSlot(int slot)
         {
-            SetActiveSlot(slot);
+            if (!SaveSystem.DoesSaveSlotExist(slot))
+            {
+                SetActiveSlot(slot);
 
-            SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
+                SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
+            }
+            else
+            {
+                DeleteSaveGame(slot);
+
+                SetActiveSlot(slot);
+
+                SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
+            }
 
             if (gameplayManager)
             {

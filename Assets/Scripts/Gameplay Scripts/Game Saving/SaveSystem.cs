@@ -14,7 +14,7 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         private static string PlayerSaveFilePath(int slot)
         {
-            return Application.persistentDataPath + "/playercharacter.save" + slot;
+            return Application.persistentDataPath + "/playercharacter" + slot + ".save";
         }
         /// <summary>
         /// File path for where to save slot data
@@ -144,6 +144,17 @@ namespace PlayerCharacter.GameSaving
             {
                 Debug.LogException(ex);
             }
+        }
+        /// <summary>
+        /// Checks to see if both a player save and save slot files exit
+        /// </summary>
+        /// <param name="slot"></param>
+        public static bool DoesSaveGameExistInSlot(int slot)
+        {
+            var player = DoesPlayerSaveGameExistInSlot(slot);
+            var saveSlot = DoesSaveSlotExist(slot);
+
+            return player && saveSlot;
         }
         /// <summary>
         /// Check to see if a saved player exist in a given slot
