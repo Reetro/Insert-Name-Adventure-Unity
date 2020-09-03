@@ -14,15 +14,23 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         private static string PlayerSaveFilePath(int slot)
         {
-            return Application.persistentDataPath + "/playercharacter" + slot + ".save";
+            var foldername = "Slot " + slot.ToString();
+            var filesavename = "PlayerCharacter";
+            var fileextnison = ".save";
+
+            return Application.persistentDataPath + "/" + foldername + "/" + filesavename + fileextnison;
         }
         /// <summary>
         /// File path for where to save slot data
         /// </summary>
         /// <param name="path"></param>
-        private static string SaveSlotFilePath(int path)
+        private static string SaveSlotFilePath(int slot)
         {
-            return Application.persistentDataPath + "/slot" + path + ".save";
+            var foldername = "Slot " + slot.ToString();
+            var filesavename = "Slot" + slot.ToString();
+            var fileextnison = ".save";
+
+            return Application.persistentDataPath + "/" + foldername + "/" + filesavename + fileextnison;
         }
         #endregion
 
@@ -46,6 +54,14 @@ namespace PlayerCharacter.GameSaving
         private static void SavePlayerData(ref SavedGameSlot SaveSlot, PlayerState state, GameObject player)
         {
             BinaryFormatter formatter = new BinaryFormatter();
+
+            var path = Path.Combine(Application.persistentDataPath, "Slot " + SaveSlot.slot.ToString());
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             FileStream stream = new FileStream(PlayerSaveFilePath(SaveSlot.slot), FileMode.Create);
 
             PlayerSaveData playerSaveData = new PlayerSaveData(state, player);
@@ -61,6 +77,14 @@ namespace PlayerCharacter.GameSaving
         private static void SaveGameSlot(ref SavedGameSlot SaveSlot)
         {
             BinaryFormatter formatter = new BinaryFormatter();
+
+            var path = Path.Combine(Application.persistentDataPath, "Slot " + SaveSlot.slot.ToString());
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             FileStream stream = new FileStream(SaveSlotFilePath(SaveSlot.slot), FileMode.Create);
 
             SaveSlotData saveSlotData = new SaveSlotData(SaveSlot.slot, SaveSlot.isActive);
