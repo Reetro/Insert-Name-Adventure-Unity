@@ -179,6 +179,8 @@ namespace PlayerCharacter.GameSaving
             }
 
             SaveGameToSlot(currentSlot);
+
+            SceneManager.sceneLoaded -= LoadStartingLevel;
         }
         /// <summary>
         /// Saves all player game data
@@ -373,7 +375,7 @@ namespace PlayerCharacter.GameSaving
         /// Sets the given slot to be the only active slot
         /// </summary>
         /// <param name="slot"></param>
-        private void SetActiveSlot(int slot)
+        public void SetActiveSlot(int slot)
         {
             for (int index = 0; index < SavedGameSlots.Length; index++)
             {

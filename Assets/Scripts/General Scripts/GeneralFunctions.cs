@@ -853,7 +853,10 @@ public class GeneralFunctions
             return false;
         }
     }
-
+    /// <summary>
+    /// Loads the 1st level in the game and creates a new save file
+    /// </summary>
+    /// <param name="slot"></param>
     public static void CreateNewSave(int slot)
     {
         var state = GetPlayerState();
@@ -865,6 +868,23 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Unable to create new save unable to find Player State");
+        }
+    }
+    /// <summary>
+    /// Set the given slot to be the active game slot
+    /// </summary>
+    /// <param name="slot"></param>
+    public static void SetActiveSlot(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.SetActiveSlot(slot);
+        }
+        else
+        {
+            Debug.LogError("Unable to SetActiveSlot unable to find Player State");
         }
     }
     #endregion
