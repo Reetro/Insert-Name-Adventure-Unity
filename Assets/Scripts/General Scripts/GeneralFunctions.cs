@@ -767,6 +767,22 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Finds the current active save file and loads it
+    /// </summary>
+    public static void LoadActiveSave()
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.LoadActiveSave();
+        }
+        else
+        {
+            Debug.LogError("Failed to load active game unable to find Player State");
+        }
+    }
+    /// <summary>
     /// Delete saved game in the given slot
     /// </summary>
     /// <param name="slot"></param>
@@ -816,6 +832,39 @@ public class GeneralFunctions
         {
             Debug.LogError("Failed to check IsSlotActive unable to find Player State");
             return false;
+        }
+    }
+    /// <summary>
+    /// Checks to see if there is a save in the given slot
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns></returns>
+    public static bool DoesSaveExistInSlot(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            return state.DoesSaveExistInSlot(slot);
+        }
+        else
+        {
+            Debug.LogError("Failed to check DoesSaveExistInSlot unable to find Player State");
+            return false;
+        }
+    }
+
+    public static void CreateNewSave(int slot)
+    {
+        var state = GetPlayerState();
+
+        if (state)
+        {
+            state.StartNewGame(slot);
+        }
+        else
+        {
+            Debug.LogError("Unable to create new save unable to find Player State");
         }
     }
     #endregion

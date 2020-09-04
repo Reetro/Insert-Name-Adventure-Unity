@@ -16,6 +16,7 @@ namespace PlayerCharacter.GameSaving
         private static float maxHealth = 0f;
         private static int checkpointLevelIndex = 0;
         private static bool isSceneLoading = false;
+        private static int currentSlot = 0;
 
         /// <summary>
         /// Struct that contains base info for every save slot
@@ -155,6 +156,31 @@ namespace PlayerCharacter.GameSaving
 
         #region Game Saving / Loading Functions
         /// <summary>
+        /// Creates a new save and loads 1st level
+        /// </summary>
+        public void StartNewGame(int slot)
+        {
+            currentSlot = slot;
+
+            GeneralFunctions.GetLevelLoader().LoadLevelAtIndex(0);
+
+            SceneManager.sceneLoaded += LoadStartingLevel;
+        }
+        /// <summary>
+        /// After the starting scene is loaded create a new save file
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
+        private void LoadStartingLevel(Scene scene, LoadSceneMode mode)
+        {
+            if (IsAnySlotActive())
+            {
+                DeactivateAllSlots();
+            }
+
+            SaveGameToSlot(currentSlot);
+        }
+        /// <summary>
         /// Saves all player game data
         /// </summary>
         public void SaveGameToSlot(int slot)
@@ -180,12 +206,23 @@ namespace PlayerCharacter.GameSaving
             }
         }
         /// <summary>
+        /// Finds the current active save file and loads it
+        /// </summary>
+        public void LoadActiveSave()
+        {
+            var slot = GetActiveSlot();
+
+            LoadGame(slot);
+        }
+        /// <summary>
         /// Gets saved data then sets all local Variables and load the saved level
         /// </summary>
         public void LoadGame(int slot)
         {
             if (slot >= 0)
             {
+                currentSlot = slot;
+
                 var loadedData = SaveSystem.LoadPlayerFromSlot(slot);
 
                 checkpointLevelIndex = loadedData.CheckpointLevelIndex;
@@ -208,20 +245,25 @@ namespace PlayerCharacter.GameSaving
         /// </summary>
         private void LoadPlayerPostion(Scene scene, LoadSceneMode mode)
         {
-            var slot = GetActiveSlot();
-
-            var loadedData = SaveSystem.LoadPlayerFromSlot(slot);
+            var loadedData = SaveSystem.LoadPlayerFromSlot(currentSlot);
 
             Vector3 position;
             position.x = loadedData.PlayerPosition[0];
             position.y = loadedData.PlayerPosition[1];
             position.z = loadedData.PlayerPosition[2];
 
+            if (IsAnySlotActive())
+            {
+                DeactivateAllSlots();
+            }
+
+            SetActiveSlot(currentSlot);
+
             player.transform.position = position;
 
             if (gameplayManager.debugSave)
             {
-                Debug.Log("Loaded game in slot " + slot);
+                Debug.Log("Loaded game in slot " + currentSlot);
             }
 
             SceneManager.sceneLoaded -= LoadPlayerPostion;
@@ -277,7 +319,10 @@ namespace PlayerCharacter.GameSaving
                     SavedGameSlots[index].slot = slotData.Slot;
                     SavedGameSlots[index].isActive = slotData.IsSlotActive;
 
-                    return SavedGameSlots[index].isActive;
+                    if (SavedGameSlots[index].isActive)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -335,10 +380,14 @@ namespace PlayerCharacter.GameSaving
                 if (SavedGameSlots[index].slot.Equals(slot))
                 {
                     SavedGameSlots[index].isActive = true;
+
+                    SaveSystem.SaveGameSlot(ref SavedGameSlots[index]);
                 }
                 else
                 {
                     SavedGameSlots[index].isActive = false;
+
+                    SaveSystem.SaveGameSlot(ref SavedGameSlots[index]);
                 }
             }
         }
@@ -355,6 +404,37 @@ namespace PlayerCharacter.GameSaving
                     SavedGameSlots[index].isActive = false;
                 }
             }
+        }
+        /// <summary>
+        /// Deactivate all slots
+        /// </summary>
+        private void DeactivateAllSlots()
+        {
+            for (int index = 0; index < SavedGameSlots.Length; index++)
+            {
+                if (DoesSaveExistInSlot(SavedGameSlots[index].slot))
+                {
+                    var slotData = SaveSystem.LoadSaveSlot(SavedGameSlots[index].slot);
+
+                    SavedGameSlots[index].isActive = slotData.IsSlotActive;
+                    SavedGameSlots[index].slot = slotData.Slot;
+
+                    if (SavedGameSlots[index].isActive)
+                    {
+                        SavedGameSlots[index].isActive = false;
+
+                        SaveSystem.SaveGameSlot(ref SavedGameSlots[index]);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Checks to see if there is a save in the given slot
+        /// </summary>
+        /// <param name="slot"></param>
+        public bool DoesSaveExistInSlot(int slot)
+        {
+            return SaveSystem.DoesSaveGameExistInSlot(slot);
         }
         #endregion
     }

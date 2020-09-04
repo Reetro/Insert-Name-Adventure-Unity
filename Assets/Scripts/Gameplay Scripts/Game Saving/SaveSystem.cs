@@ -57,7 +57,7 @@ namespace PlayerCharacter.GameSaving
         /// <param name="SaveSlot"></param>
         /// <param name="state"></param>
         /// <param name="player"></param>
-        private static void SavePlayerData(ref SavedGameSlot SaveSlot, PlayerState state, GameObject player)
+        public static void SavePlayerData(ref SavedGameSlot SaveSlot, PlayerState state, GameObject player)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
@@ -78,7 +78,7 @@ namespace PlayerCharacter.GameSaving
         /// Save the given slot data
         /// </summary>
         /// <param name="SaveSlot"></param>
-        private static void SaveGameSlot(ref SavedGameSlot SaveSlot)
+        public static void SaveGameSlot(ref SavedGameSlot SaveSlot)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 

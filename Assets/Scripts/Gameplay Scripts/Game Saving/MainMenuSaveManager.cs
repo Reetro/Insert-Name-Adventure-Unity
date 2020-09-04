@@ -21,11 +21,11 @@ public class MainMenuSaveManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// Loads the sandbox test level
+    /// Loads the current active save file
     /// </summary>
-    public void PlayGame()
+    public void LoadActiveSave()
     {
-        SceneManager.LoadScene("Sandbox");
+        GeneralFunctions.LoadActiveSave();
     }
     /// <summary>
     /// Closes the game
