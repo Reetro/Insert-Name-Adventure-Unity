@@ -35,7 +35,7 @@ namespace PlayerCharacter.GameSaving
         {
             slotButton.Select();
 
-            saveManager.OnSlotSelected(this);
+            saveManager.CurrentSaveSlot = this;
         }
         /// <summary>
         /// Checks to see if there is a save slot in the given slot if not set text to empty

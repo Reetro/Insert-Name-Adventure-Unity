@@ -6,15 +6,16 @@ namespace PlayerCharacter.GameSaving
     public class MainMenuSaveManager : MonoBehaviour
     {
         [SerializeField] private Button continueButton = null;
-
-        private SaveSlot currentSelectedSlot = null;
+        /// <summary>
+        /// The current selected save slot
+        /// </summary>
+        public SaveSlot CurrentSaveSlot { get; set; }
         /// <summary>
         /// Check to see if there any active save files if not disable continue button
         /// </summary>
         private void Start()
         {
             CheckContinueButton();
-
         }
         /// <summary>
         /// Checks to see if the continue button can be enabled
@@ -48,25 +49,17 @@ namespace PlayerCharacter.GameSaving
             Application.Quit();
         }
         /// <summary>
-        /// When every a slot is click update the current selected slot
-        /// </summary>
-        /// <param name="slotToActivate"></param>
-        public void OnSlotSelected(SaveSlot slotToActivate)
-        {
-            currentSelectedSlot = slotToActivate;
-        }
-        /// <summary>
         /// Will delete the current selected save slot
         /// </summary>
         public void DeleteSaveSlot()
         {
-            if (currentSelectedSlot)
+            if (CurrentSaveSlot)
             {
-                GeneralFunctions.DeleteGameInSlot(currentSelectedSlot.SlotNumber);
+                GeneralFunctions.DeleteGameInSlot(CurrentSaveSlot.SlotNumber);
 
-                currentSelectedSlot.UpdateSlotText();
+                CurrentSaveSlot.UpdateSlotText();
 
-                currentSelectedSlot = null;
+                CurrentSaveSlot = null;
 
                 UpdateActiveSlot();
 
