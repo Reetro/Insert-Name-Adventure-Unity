@@ -8,6 +8,7 @@ using AuraSystem.Effects;
 using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
+using GameplayManagement.Assets;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -322,13 +323,13 @@ public class GeneralFunctions
     /// <param name="showText"></param>
     public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
     {
-        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
         {
             var health = target.GetComponent<HealthComponent>();
 
             if (health)
             {
-                health.ProccessDamage(amount, showText, GetGameplayManager().whatCanBeDamaged);
+                health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
             }
             else
             {
@@ -342,13 +343,13 @@ public class GeneralFunctions
     /// <param name="target"></param>
     public static void KillTarget(GameObject target)
     {
-        if (IsObjectOnLayer(GetGameplayManager().whatCanBeDamaged, target))
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
         {
             var health = target.GetComponent<HealthComponent>();
 
             if (health)
             {
-                health.ProccessDamage(1000000000, false, GetGameplayManager().whatCanBeDamaged);
+                health.ProccessDamage(1000000000, false, GameAssets.GlobalManager.whatCanBeDamaged);
             }
             else
             {
@@ -659,13 +660,6 @@ public class GeneralFunctions
     public static LevelLoader GetLevelLoader()
     {
         return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
-    }
-    /// <summary>
-    /// Finds the Gameplay Manager in the current level
-    /// </summary>
-    public static GameplayManager GetGameplayManager()
-    {
-        return GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
     }
     /// <summary>
     /// Finds all gameplay ID scripts in scene

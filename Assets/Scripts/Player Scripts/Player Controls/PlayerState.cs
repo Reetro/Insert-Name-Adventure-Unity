@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
 using GameplayManagement;
+using GameplayManagement.Assets;
 
 namespace PlayerCharacter.GameSaving
 {
@@ -70,10 +71,6 @@ namespace PlayerCharacter.GameSaving
         /// All current saved game slots
         /// </summary>
         public SavedGameSlot[] SavedGameSlots { get; private set; }
-        /// <summary>
-        /// A reference to the gameplay manager in the world
-        /// </summary>
-        public GameplayManager gameplayManager { get; private set; }
         #endregion
 
         #region Setup Functions
@@ -105,12 +102,9 @@ namespace PlayerCharacter.GameSaving
         {
             isSceneLoading = value;
         }
-        public void ConstructState()
-        {
-            gameplayManager = GeneralFunctions.GetGameplayManager();
-        }
         #endregion
 
+        
         #region Health Functions
         public void SetPlayerHealth()
         {
@@ -202,7 +196,7 @@ namespace PlayerCharacter.GameSaving
                 SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
             }
 
-            if (gameplayManager.debugSave)
+            if (GameAssets.GlobalManager.debugSave)
             {
                 Debug.Log("Saved game in slot " + slot);
             }
@@ -263,7 +257,7 @@ namespace PlayerCharacter.GameSaving
 
             player.transform.position = position;
 
-            if (gameplayManager.debugSave)
+            if (GameAssets.GlobalManager.debugSave)
             {
                 Debug.Log("Loaded game in slot " + currentSlot);
             }
@@ -279,7 +273,7 @@ namespace PlayerCharacter.GameSaving
 
             SaveSystem.DeleteSaveGame(slot);
 
-            if (gameplayManager.debugSave)
+            if (GameAssets.GlobalManager.debugSave)
             {
                 Debug.Log("Deleted saved game in slot " + slot);
             }
