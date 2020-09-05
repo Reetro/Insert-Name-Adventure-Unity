@@ -103,7 +103,6 @@ namespace PlayerCharacter.GameSaving
             isSceneLoading = value;
         }
         #endregion
-
         
         #region Health Functions
         public void SetPlayerHealth()
