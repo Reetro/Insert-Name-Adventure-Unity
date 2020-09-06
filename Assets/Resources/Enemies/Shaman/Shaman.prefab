@@ -105,6 +105,8 @@ MonoBehaviour:
   boomerangDamage: 2
   teleportOffset: 0.2
   bommerangSpeedMultipler: 2
+  bommerangMaxSpeedMagnitude: 8
+  DamageDelay: 1
   boomerangToSpawn: {fileID: 349727669197819678, guid: 7718c743e0a37534f9cd23c2bf83c485,
     type: 3}
 --- !u!114 &2099811738
@@ -134,7 +136,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onTakeAnyDamage:
+  OnTakeAnyDamage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &6801750043143621378

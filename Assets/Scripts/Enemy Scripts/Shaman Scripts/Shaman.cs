@@ -20,6 +20,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private float bommerangSpeedMultipler = 2f;
         [Tooltip("The maximum speed the boomerang can go")]
         [SerializeField] private float bommerangMaxSpeedMagnitude = 8f;
+        [Tooltip("Once the boomerang has damaged the player this delay is used to determine when damage can be applied again")]
+        [SerializeField] private float DamageDelay = 1f;
         [Tooltip("Boomerang Asset to spawn")]
         [SerializeField] private Boomerang boomerangToSpawn = null;
         /// <summary>
@@ -46,9 +48,9 @@ namespace EnemyCharacter.AI
 
             currentBoomrang.ConstructProjectile(boomerangSpeed * bommerangSpeedMultipler, boomerangDamage, startDirection);
 
-            currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset, bommerangMaxSpeedMagnitude);
+            currentBoomrang.SetupBoomerang(this, maxHitsBeforeTeleport, teleportOffset, bommerangMaxSpeedMagnitude, DamageDelay);
 
-            currentBoomrang.CurrentHitCount = 0; 
+            currentBoomrang.CurrentHitCount = 0;
         }
         /// <summary>
         /// Destroy thrown boomerang on death and this Gameobject

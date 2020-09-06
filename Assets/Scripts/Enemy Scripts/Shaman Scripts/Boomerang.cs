@@ -28,9 +28,17 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         public int CurrentHitCount { get; set; }
         /// <summary>
+        /// Once the boomerang has damaged the player this delay is used to determine when damage can be applied again
+        /// </summary>
+        public float DamageDelay { get; set; }
+        /// <summary>
         /// The maximum speed this projectile can go
         /// </summary>
         private float MaxSpeedMagnitude = 8;
+        /// <summary>
+        /// Determins if the boomerang can damage the player
+        /// </summary>
+        private bool canDamage = true;
         #endregion
 
         #region Movement Functions
@@ -46,7 +54,17 @@ namespace LevelObjects.MovingObjects
 
             UpdateDirection(newDirection);
 
-            GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                if (canDamage)
+                {
+                    GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
+
+                    canDamage = false;
+
+                    StartCoroutine(StartDamageDelay());
+                }
+            }
 
             if (!justSpawned && !GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
@@ -71,6 +89,15 @@ namespace LevelObjects.MovingObjects
             }
 
             CurrentVelocity = MyRigidBody2D.velocity;
+        }
+        /// <summary>
+        /// The damage delay timer
+        /// </summary>
+        private IEnumerator StartDamageDelay()
+        {
+            yield return new WaitForSeconds(DamageDelay);
+
+            canDamage = true;
         }
         #endregion
 
@@ -135,19 +162,23 @@ namespace LevelObjects.MovingObjects
         /// <param name="shamanToSet"></param>
         /// <param name="maxHitsBeforeTeleport"></param>
         /// <param name="offSet"></param>
-        public void SetupBoomerang(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet, float MaxSpeed)
+        public void SetupBoomerang(Shaman shamanToSet, int maxHitsBeforeTeleport, float offSet, float MaxSpeed, float DamageDelay)
         {
             justSpawned = true;
 
             currentShaman = shamanToSet;
 
-            this.MaxSpeedMagnitude = MaxSpeed;
+            MaxSpeedMagnitude = MaxSpeed;
 
             this.maxHitsBeforeTeleport = maxHitsBeforeTeleport;
 
             this.offSet = offSet;
 
             MyRigidBody2D.AddForce(LaunchDirection * MoveSpeed);
+
+            this.DamageDelay = DamageDelay;
+
+            canDamage = true;
 
             StartCoroutine(SpawnTimer());
         }
