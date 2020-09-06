@@ -31,7 +31,6 @@ namespace CustomEditors
             AddScriptableObjects();
         }
 
-        [MenuItem("Window/Aura Editor")]
         public static void ShowWindow()
         {
             GetWindow<AuraEditor>("Aura Editor");

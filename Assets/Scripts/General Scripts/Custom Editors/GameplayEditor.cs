@@ -250,8 +250,16 @@ namespace CustomEditors
 
         #endregion
 
+        #region Buffs / Debuffs Variables
+        private Editor LeechingEditor = null;
+        private Editor BreatherEditor = null;
+        #endregion
+
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
+        private const float foldoutSpaceing = 20f;
+
+        #region Foldout Bools
         private static bool showEnemyEditor = false;
         private static bool showPlayerSettings = false;
         private static bool showLeechSettings = false;
@@ -262,7 +270,12 @@ namespace CustomEditors
         private static bool showManagerSettings = false;
         private static bool showSlugSettings = false;
         private static bool showWormSettings = false;
-        private const float foldoutSpaceing = 20f;
+        private static bool showBuffDebuffSettings = false;
+        private static bool showBuffSettings = false;
+        private static bool showDebuffSettings = false;
+        private static bool showBreatherSettings = false;
+        private static bool showLeechingSettings = false;
+        #endregion
         #endregion
 
         [MenuItem("Window/Gameplay Editor")]
@@ -280,6 +293,10 @@ namespace CustomEditors
             SetupPlayer();
 
             SetupEnemies();
+
+            SetupDebuffs();
+
+            SetupBuffs();
         }
 
         #region Gameplay Manager Functions
@@ -686,6 +703,35 @@ namespace CustomEditors
         }
         #endregion
 
+        #region Buffs / Debuff Functions
+        private void SetupDebuffs()
+        {
+            var leechingDebuff = Resources.Load("Aura System/Debuffs/Leeching_D") as ScriptableDebuff;
+
+            if (leechingDebuff)
+            {
+                LeechingEditor = Editor.CreateEditor(leechingDebuff);
+            }
+            else
+            {
+                Debug.LogError("Failed to get leechingDebuff in SetupDebuffs Function in GameplayEditor");
+            }
+        }
+        private void SetupBuffs()
+        {
+            var breatherBuff = Resources.Load("Aura System/Buffs/Breather_B") as ScriptableBuff;
+
+            if (breatherBuff)
+            {
+                BreatherEditor = Editor.CreateEditor(breatherBuff);
+            }
+            else
+            {
+                Debug.LogError("Failed to get breatherBuff in SetupBuffs Function in GameplayEditor");
+            }
+        }
+        #endregion
+
         private void OnGUI()
         {
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
@@ -989,6 +1035,49 @@ namespace CustomEditors
                     wormObject.ApplyModifiedProperties();
                 }
                 #endregion
+            }
+
+            #endregion
+
+            #region Buff / Debuff Editors
+
+            showBuffDebuffSettings = EditorGUILayout.Foldout(showBuffDebuffSettings, "Buff / Debuff Settings");
+
+            if (showBuffDebuffSettings)
+            {
+                showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings");
+
+                if (showBuffSettings)
+                {
+                    #region Breather Settings
+                    showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings");
+
+                    if (showBreatherSettings)
+                    {
+                        if (BreatherEditor)
+                        {
+                            BreatherEditor.OnInspectorGUI();
+                        }
+                    }
+                    #endregion
+                }
+
+                showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings");
+
+                if (showDebuffSettings)
+                {
+                    #region Leeching Settings
+                    showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings");
+
+                    if (showLeechingSettings)
+                    {
+                        if (LeechingEditor)
+                        {
+                            LeechingEditor.OnInspectorGUI();
+                        }
+                    }
+                    #endregion
+                }
             }
 
             #endregion
