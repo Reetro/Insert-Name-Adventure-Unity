@@ -7,7 +7,7 @@ using GameplayManagement;
 
 namespace CustomEditors
 {
-    public class GameplayEditor : CustomEditorBase
+    public class GameplayEditor : EditorWindow
     {
         #region Gameplay Manager Variables
         private SerializedProperty _ManagerTextSpeed;
@@ -284,10 +284,8 @@ namespace CustomEditors
             GetWindow<GameplayEditor>("Gameplay Editor");
         }
 
-        public override void OnEnable()
+        private void OnEnable()
         {
-            _ShouldTick = false;
-
             SetupGameplayManager();
 
             SetupPlayer();
@@ -737,7 +735,7 @@ namespace CustomEditors
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
             #region Gameplay Manager UI
-            showManagerSettings = EditorGUILayout.Foldout(showManagerSettings, "Gameplay Manager");
+            showManagerSettings = EditorGUILayout.Foldout(showManagerSettings, "Gameplay Manager", true);
 
             if (showManagerSettings)
             {
@@ -757,7 +755,7 @@ namespace CustomEditors
             #endregion
 
             #region PlayerUI
-            showPlayerSettings = EditorGUILayout.Foldout(showPlayerSettings, "Player Settings");
+            showPlayerSettings = EditorGUILayout.Foldout(showPlayerSettings, "Player Settings", true);
 
             if (showPlayerSettings)
             {
@@ -800,12 +798,12 @@ namespace CustomEditors
 
             #region Enemy Editors
 
-            showEnemyEditor = EditorGUILayout.Foldout(showEnemyEditor, "Enemy Editor");
+            showEnemyEditor = EditorGUILayout.Foldout(showEnemyEditor, "Enemy Editor", true);
 
             if (showEnemyEditor)
             {
                 #region Leech UI
-                showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings");
+                showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings", true);
 
                 if (showLeechSettings)
                 {
@@ -837,7 +835,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Leech Father UI
-                showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings");
+                showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings", true);
 
                 if (showLeechFatherSettings)
                 {
@@ -881,7 +879,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Leech Mother UI
-                showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings");
+                showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings", true);
 
                 if (showLeechMotherSettings)
                 {
@@ -925,7 +923,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Shaman UI
-                showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings");
+                showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings", true);
 
                 if (showShamanSettings)
                 {
@@ -956,7 +954,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Axe Thrower UI
-                showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings");
+                showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings", true);
 
                 if (showAxeThrowerSettings)
                 {
@@ -987,7 +985,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Slug UI
-                showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings");
+                showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings", true);
 
                 if (showSlugSettings)
                 {
@@ -1019,7 +1017,7 @@ namespace CustomEditors
                 #endregion
 
                 #region Worm UI
-                showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings");
+                showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
 
                 if (showWormSettings)
                 {
@@ -1041,16 +1039,16 @@ namespace CustomEditors
 
             #region Buff / Debuff Editors
 
-            showBuffDebuffSettings = EditorGUILayout.Foldout(showBuffDebuffSettings, "Buff / Debuff Settings");
+            showBuffDebuffSettings = EditorGUILayout.Foldout(showBuffDebuffSettings, "Buff / Debuff Settings", true);
 
             if (showBuffDebuffSettings)
             {
-                showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings");
+                showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings", true);
 
                 if (showBuffSettings)
                 {
                     #region Breather Settings
-                    showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings");
+                    showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings", true);
 
                     if (showBreatherSettings)
                     {
@@ -1062,12 +1060,12 @@ namespace CustomEditors
                     #endregion
                 }
 
-                showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings");
+                showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings", true);
 
                 if (showDebuffSettings)
                 {
                     #region Leeching Settings
-                    showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings");
+                    showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings", true);
 
                     if (showLeechingSettings)
                     {
