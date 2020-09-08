@@ -308,10 +308,6 @@ namespace AuraSystem.Effects
                     }
                 }
             }
-            else
-            {
-                Debug.LogError("Failed to remove debuff debuffEffect was not valid");
-            }
         }
         /// <summary>
         /// Resets the debuff back to default values
