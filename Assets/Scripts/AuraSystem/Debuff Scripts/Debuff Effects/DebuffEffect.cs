@@ -12,6 +12,7 @@ namespace AuraSystem.Effects
         private bool firstRun = false;
         private bool shouldTick = true;
 
+        #region Setup Functions
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
@@ -31,7 +32,7 @@ namespace AuraSystem.Effects
                 Debuff = debuff;
                 this.icon = icon;
                 shouldTick = useTicks;
-                Damage = debuff.damage;
+                DebuffValue = debuff.debuffValue;
                 Target = target;
 
                 firstRun = true;
@@ -106,7 +107,7 @@ namespace AuraSystem.Effects
                 MyAuraManager = auraManager;
                 Debuff = debuff;
                 shouldTick = useTick;
-                Damage = debuff.damage;
+                DebuffValue = debuff.debuffValue;
                 Target = target;
 
                 debuff.UpdateToolTip(StackCount);
@@ -150,6 +151,9 @@ namespace AuraSystem.Effects
                 return null;
             }
         }
+        #endregion
+
+        #region Timer Functions
         /// <summary>
         /// The actual debuff timer that counts ticks
         /// </summary>
@@ -212,6 +216,9 @@ namespace AuraSystem.Effects
                 MyAuraManager.StartDebuffRemoval(gameObject, this);
             }
         }
+        #endregion
+
+        #region Debuff Functions
         /// <summary>
         /// Checks to see if a debuff of the given type is currently active
         /// </summary>
@@ -364,6 +371,9 @@ namespace AuraSystem.Effects
                 Ticks = maxTicks;
             }
         }
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Gets the current stack count
         /// </summary>
@@ -397,9 +407,9 @@ namespace AuraSystem.Effects
         /// </summary>
         public bool IsCurrentlyActive { get; set; } = false;
         /// <summary>
-        /// Get the damage this debuff applies to it's target
+        /// Get the Debuff value amount
         /// </summary>
-        public float Damage { get; private set; } = 0f;
+        public float DebuffValue { get; private set; } = 0f;
         /// <summary>
         /// Gets the spawned visual effect
         /// </summary>
@@ -416,5 +426,6 @@ namespace AuraSystem.Effects
         /// Gets the icon's fade out animation
         /// </summary>
         public Animation fadeOutAnimation { get; private set;} = null;
+        #endregion
     }
 }
