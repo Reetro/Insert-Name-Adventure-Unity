@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using PlayerUI.ToolTipUI;
+using AuraSystem;
 
 namespace PlayerUI.Icons
 {

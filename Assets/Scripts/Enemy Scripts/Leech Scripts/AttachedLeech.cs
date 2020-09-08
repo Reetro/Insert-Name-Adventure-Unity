@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using AuraSystem.Effects;
+using AuraSystem;
 
 namespace EnemyCharacter
 {

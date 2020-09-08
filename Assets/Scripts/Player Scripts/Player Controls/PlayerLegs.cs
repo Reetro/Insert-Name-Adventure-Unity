@@ -5,8 +5,11 @@ namespace PlayerCharacter.Controller
 {
     public class PlayerLegs : MonoBehaviour
     {
-        [HideInInspector]
-        public bool isGrounded = true;
+        /// <summary>
+        /// Checks to see if the player is touching the ground
+        /// </summary>
+        public bool IsGrounded { get; set; }
+
         const float k_GroundedRadius = .5f;
 
         private GameObject player = null;
@@ -18,23 +21,28 @@ namespace PlayerCharacter.Controller
         [Space]
 
         public UnityEvent OnLandEvent;
-
+        /// <summary>
+        /// When object is spawned in get a reference to the player object
+        /// </summary>
         private void Awake()
         {
             player = GeneralFunctions.GetPlayerGameObject();
         }
-
+        /// <summary>
+        /// Check to see if player is touching the ground every frame
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerStay2D(Collider2D collision)
         {
-            bool wasGrounded = isGrounded;
-            isGrounded = false;
+            bool wasGrounded = IsGrounded;
+            IsGrounded = false;
 
             // Check to see if player is on the ground
             if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
             {
                 if (collision.gameObject != player)
                 {
-                    isGrounded = true;
+                    IsGrounded = true;
                     if (!wasGrounded)
                     {
                         OnLandEvent.Invoke();
@@ -46,7 +54,7 @@ namespace PlayerCharacter.Controller
             {
                 GeneralFunctions.AttachObjectToTransfrom(collision.transform, player);
 
-                isGrounded = true;
+                IsGrounded = true;
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
@@ -54,7 +62,10 @@ namespace PlayerCharacter.Controller
             }
 
         }
-
+        /// <summary>
+        /// If player was on a moving platform detach player from it
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerExit2D(Collider2D collision)
         {
             // Deattach player from a moving platform when they jump off

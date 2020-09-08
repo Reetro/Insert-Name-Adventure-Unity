@@ -4,6 +4,7 @@ using UnityEngine;
 using PlayerCharacter.Controller;
 using EnemyCharacter.AI;
 using GameplayManagement;
+using AuraSystem;
 
 namespace CustomEditors
 {

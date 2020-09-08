@@ -297,17 +297,12 @@ namespace AuraSystem
 
                 foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
                 {
-                    var type = debuffEffect.Debuff.debuffType;
+                    var type = debuffEffect.Debuff.GetType();
 
-                    if (type == debuff.debuffType)
+                    if (type == debuff.GetType())
                     {
                         foundDebuff = debuffEffect;
                         break;
-                    }
-                    else
-                    {
-                        foundDebuff = null;
-                        continue;
                     }
                 }
 

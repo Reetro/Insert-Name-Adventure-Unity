@@ -37,7 +37,7 @@ namespace PlayerCharacter.Controller
             if (!hpComp.IsCurrentlyDead)
             {
                 //only control the player if grounded or airControl is turned on
-                if (myLegs.isGrounded || hasAirControl)
+                if (myLegs.IsGrounded || hasAirControl)
                 {
                     // Move the character by finding the target velocity
                     Vector3 targetVelocity = new Vector2(move * runSpeed * playerAcceleration, myRigidbody2D.velocity.y);
@@ -63,10 +63,10 @@ namespace PlayerCharacter.Controller
                     }
                 }
                 // If the player should jump...
-                if (myLegs.isGrounded && jump)
+                if (myLegs.IsGrounded && jump)
                 {
                     // Add a vertical force to the player.
-                    myLegs.isGrounded = false;
+                    myLegs.IsGrounded = false;
                     myRigidbody2D.AddForce(new Vector2(0f, jumpForce));
                 }
             }

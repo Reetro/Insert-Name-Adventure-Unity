@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using PlayerUI.Icons;
 using LevelObjects.SceneLoading;
+using AuraSystem;
 
 namespace PlayerUI
 {
@@ -100,15 +101,10 @@ namespace PlayerUI
 
             foreach (DebuffIcon icon in debuffIcons)
             {
-                if (icon.Debuff.debuffType == debuff.debuffType)
+                if (icon.Debuff.GetType() == debuff.GetType())
                 {
                     localIcon = icon;
                     break;
-                }
-                else
-                {
-                    localIcon = null;
-                    continue;
                 }
             }
             return localIcon;
