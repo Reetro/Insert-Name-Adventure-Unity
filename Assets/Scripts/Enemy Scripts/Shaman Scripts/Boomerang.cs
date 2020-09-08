@@ -40,7 +40,7 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         private bool canDamage = true;
         /// <summary>
-        /// Checks to see if the shaman can actualy teleport to the given location
+        /// Checks to see if the shaman can actually teleport to the given location
         /// </summary>
         private bool canShamanTeleprot = true;
         #endregion
@@ -100,11 +100,14 @@ namespace LevelObjects.MovingObjects
         /// <param name="collision"></param>
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (GeneralFunctions.IsObjectOnLayer("Ground", collision.gameObject))
+            if (GeneralFunctions.IsObjectOnLayer("Ground", collision.gameObject) || collision.gameObject.CompareTag("Shaman"))
             {
-                canShamanTeleprot = false;
+                if (!justSpawned)
+                {
+                    canShamanTeleprot = false;
 
-                DestroyBoomerang(true);
+                    DestroyBoomerang(true);
+                }
             }
         }
         /// <summary>

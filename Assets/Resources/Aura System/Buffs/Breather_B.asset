@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Breather_B
   m_EditorClassIdentifier: 
   name: Breather
-  description: Take a breath and heal some health 1
+  description: Take a breath and heal some health
   artwork: {fileID: 21300000, guid: 411f88b287eb8504aa08edb04c1443c6, type: 3}
   buffEffect: {fileID: 2832589897876261140, guid: 90e8e2e510de2f34897f1b4fee475627,
     type: 3}
