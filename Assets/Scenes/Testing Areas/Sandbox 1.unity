@@ -5899,6 +5899,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shaman
       objectReference: {fileID: 0}
+    - target: {fileID: 7367770904653533427, guid: e56c704d4e011d74f99d556500c5390c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8871505594260596120, guid: e56c704d4e011d74f99d556500c5390c,
         type: 3}
       propertyPath: m_LocalPosition.x
