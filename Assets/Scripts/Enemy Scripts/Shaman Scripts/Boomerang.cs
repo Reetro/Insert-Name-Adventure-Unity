@@ -36,9 +36,13 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         private float MaxSpeedMagnitude = 8;
         /// <summary>
-        /// Determins if the boomerang can damage the player
+        /// Determines if the boomerang can damage the player
         /// </summary>
         private bool canDamage = true;
+        /// <summary>
+        /// Checks to see if the shaman can actualy teleport to the given location
+        /// </summary>
+        private bool canShamanTeleprot = true;
         #endregion
 
         #region Movement Functions
@@ -91,6 +95,19 @@ namespace LevelObjects.MovingObjects
             CurrentVelocity = MyRigidBody2D.velocity;
         }
         /// <summary>
+        /// If the circle collider overlaps with ground destroy the current boomerang and spawn in a new one
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (GeneralFunctions.IsObjectOnLayer("Ground", collision.gameObject))
+            {
+                canShamanTeleprot = false;
+
+                DestroyBoomerang(true);
+            }
+        }
+        /// <summary>
         /// The damage delay timer
         /// </summary>
         private IEnumerator StartDamageDelay()
@@ -108,17 +125,20 @@ namespace LevelObjects.MovingObjects
         /// <param name="teleportLocation"></param>
         private void TeleportShaman(Vector2 teleportLocation)
         {
-            var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
+            if (canShamanTeleprot)
+            {
+                var newLocation = GetAdjustedTeleportLocation(teleportLocation, offSet);
 
-            currentShaman.transform.position = newLocation;
+                currentShaman.transform.position = newLocation;
 
-            var lookAt = GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position);
+                var lookAt = GeneralFunctions.LookAt2D(currentShaman.transform.position, transform.position);
 
-            transform.rotation = lookAt;
+                transform.rotation = lookAt;
 
-            currentShaman.MyRigidBody2D.velocity = Vector2.zero;
+                currentShaman.MyRigidBody2D.velocity = Vector2.zero;
 
-            DestroyBoomerang(true);
+                DestroyBoomerang(true);
+            }
         }
         /// <summary>
         /// Destroys this boomerang and can tell the shaman to throw a new one
@@ -179,6 +199,8 @@ namespace LevelObjects.MovingObjects
             this.DamageDelay = DamageDelay;
 
             canDamage = true;
+
+            canShamanTeleprot = true;
 
             StartCoroutine(SpawnTimer());
         }

@@ -739,6 +739,7 @@ MonoBehaviour:
   myHealthComp: {fileID: 6037561768107980108}
   toolTipObject: {fileID: 8492254648849075956, guid: d7be695b4aaf5de4ea07b3708b243421,
     type: 3}
+  createUI: 1
 --- !u!114 &7184374223130252982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,6 +1168,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4157925456995496925}
     m_Modifications:
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: whatCanBeDamaged.m_Bits
+      value: 2115072
+      objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: m_Name
