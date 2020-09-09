@@ -12,8 +12,6 @@ namespace PlayerCharacter.Controller
     {
         [SerializeField] private PlayerSpear currentGun = null;
 
-        public ScriptableDebuff scriptableDebuff;
-
         #region Player Controls
         public Controls controls = null;
         private float horizontalMove = 0f;
@@ -56,8 +54,6 @@ namespace PlayerCharacter.Controller
 
             controls.Player.SaveGame.started += OnSavePressed;
             controls.Player.LoadGame.started += OnLoadPressed;
-
-            controls.Player.Debuff.started += OnDebuffPressed;
 
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
 
@@ -118,11 +114,6 @@ namespace PlayerCharacter.Controller
         private void OnDeletePressed(InputAction.CallbackContext context)
         {
             GeneralFunctions.DeleteGameInSlot(1);
-        }
-
-        private void OnDebuffPressed(InputAction.CallbackContext context)
-        {
-            GeneralFunctions.ApplyDebuffToTarget(gameObject, scriptableDebuff, true);
         }
         #endregion
 

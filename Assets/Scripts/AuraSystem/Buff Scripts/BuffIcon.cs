@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using PlayerUI.ToolTipUI;
+using AuraSystem;
 
 namespace PlayerUI.Icons
 {
@@ -16,14 +17,15 @@ namespace PlayerUI.Icons
         private bool canFill = true;
         private float duration = 0f;
         private float defaultDuration = 0f;
-
+        /// <summary>
+        /// Setup tooltips and get starting stack size
+        /// </summary>
         private void Start()
         {
             itemButton = GetComponent<ItemButton>();
 
             UpdateStackCount(1);
         }
-
         /// <summary>
         /// Sets all needed values such as the length of the buff
         /// </summary>
@@ -37,10 +39,10 @@ namespace PlayerUI.Icons
 
             itemButton.SetItem(buff);
 
-            duration = buff.duration;
+            duration = buff.GetTotalTime();
             defaultDuration = duration;
 
-            if (buff.duration > 0)
+            if (buff.GetTotalTime() > 0)
             {
                 timer.enabled = true;
 
@@ -51,12 +53,14 @@ namespace PlayerUI.Icons
                 timer.enabled = false;
             }
         }
-
+        /// <summary>
+        /// Every frame update the fill image
+        /// </summary>
         void Update()
         {
             if (canFill && duration > 0)
             {
-                durationImage.fillAmount -= 1 / Buff.duration * Time.deltaTime;
+                durationImage.fillAmount -= 1 / Buff.GetTotalTime() * Time.deltaTime;
 
                 if (timer.enabled)
                 {

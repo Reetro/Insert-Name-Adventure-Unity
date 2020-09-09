@@ -76,7 +76,7 @@ namespace PlayerUI
 
             foreach (BuffIcon icon in buffIcons)
             {
-                if (icon.Buff.buffType == buff.buffType)
+                if (icon.Buff.GetType() == buff.GetType())
                 {
                     localIcon = icon;
                     break;

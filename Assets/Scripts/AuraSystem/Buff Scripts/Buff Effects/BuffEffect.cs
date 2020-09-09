@@ -1,18 +1,28 @@
 ﻿using UnityEngine;
 using PlayerUI.Icons;
+using System.Collections;
 
 namespace AuraSystem.Effects
 {
     public class BuffEffect : MonoBehaviour
     {
         private float defaultDuration = 0f;
+        private GameObject tempEffect = null;
         protected BuffIcon icon = null;
 
+        private float maxTicks = 9999999f;
+        private float maxTimerTime = 9999999f;
+        private float staticTimer = 0;
+        private bool usingStaticTimer = false;
+
+        private bool firstRun = false;
+
+        #region Setup Functions
         /// <summary>
         /// Sets all needed values and starts buff timer then adds an icon to the player hud
         /// </summary>
         /// <returns>The active BuffEffect</returns>
-        public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target, GameObject effect, bool stack, bool refresh)
+        public virtual BuffEffect StartBuff(AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target)
         {
             BuffEffect buffEffect = null;
 
@@ -20,15 +30,7 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                Duration = duration;
-                defaultDuration = Duration;
-                BuffAmount = buffAmount;
-                MyAuraManager = auraManager;
-                Buff = buff;
-                this.icon = icon;
-                Target = target;
-
-                VisualEffect = SpawnVisualEffect(effect, target.transform);
+                UnpackBuff(auraManager, buff, icon, target);
 
                 MyID = GeneralFunctions.GenID();
 
@@ -36,11 +38,51 @@ namespace AuraSystem.Effects
 
                 fadeOutAnimation = icon.GetComponent<Animation>();
 
+                if (tempEffect)
+                {
+                    VisualEffect = SpawnVisualEffect(tempEffect, target.transform);
+                }
+
+                fadeOutAnimation = icon.GetComponent<Animation>();
+
+                usingStaticTimer = false;
+
+                if (!UseTicks)
+                {
+                    if (buff.GetTotalTime() > 0)
+                    {
+                        staticTimer = buff.GetTotalTime();
+                        usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        staticTimer = maxTimerTime;
+                        usingStaticTimer = true;
+                    }
+                }
+                else
+                {
+                    if (Ticks > 0)
+                    {
+                        staticTimer = buff.GetTotalTime();
+                    }
+                    else
+                    {
+                        Ticks = maxTicks;
+                        DefaultTickCount = Ticks;
+                    }
+                }
+
+                if (!usingStaticTimer)
+                {
+                    StartCoroutine(BuffTimer());
+                }
+
                 return this;
             }
-            else if (refresh)
+            else if (buffEffect.Refreshing)
             {
-                Duration = duration;
+                Duration = buffEffect.Duration;
                 defaultDuration = Duration;
                 MyAuraManager = auraManager;
                 Buff = buff;
@@ -50,7 +92,7 @@ namespace AuraSystem.Effects
 
                 return buffEffect;
             }
-            else if (stack)
+            else if (buffEffect.Stacking)
             {
                 MyAuraManager = auraManager;
                 Buff = buff;
@@ -69,7 +111,7 @@ namespace AuraSystem.Effects
         /// Sets all needed values and starts buff timer
         /// </summary>
         /// <returns>The active BuffEffect</returns>
-        public virtual BuffEffect StartBuff(float buffAmount, float duration, AuraManager auraManager, ScriptableBuff buff, GameObject target, GameObject effect, bool stack, bool refresh)
+        public virtual BuffEffect StartBuff(AuraManager auraManager, ScriptableBuff buff, GameObject target)
         {
             BuffEffect buffEffect = null;
 
@@ -77,24 +119,52 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                Duration = duration;
-                defaultDuration = Duration;
-                BuffAmount = buffAmount;
-                MyAuraManager = auraManager;
-                Buff = buff;
-                Target = target;
+                UnpackBuff(auraManager, buff, target);
 
-                VisualEffect = SpawnVisualEffect(effect, target.transform);
+                VisualEffect = SpawnVisualEffect(tempEffect, target.transform);
 
                 MyID = GeneralFunctions.GenID();
 
                 IsCurrentlyActive = true;
 
+                usingStaticTimer = false;
+
+                if (!UseTicks)
+                {
+                    if (buff.GetTotalTime() > 0)
+                    {
+                        staticTimer = buff.GetTotalTime();
+                        usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        staticTimer = maxTimerTime;
+                        usingStaticTimer = true;
+                    }
+                }
+                else
+                {
+                    if (Ticks > 0)
+                    {
+                        staticTimer = buff.GetTotalTime();
+                    }
+                    else
+                    {
+                        Ticks = maxTicks;
+                        DefaultTickCount = Ticks;
+                    }
+                }
+
+                if (!usingStaticTimer)
+                {
+                    StartCoroutine(BuffTimer());
+                }
+
                 return this;
             }
-            else if (refresh)
+            else if (buffEffect.Refreshing)
             {
-                Duration = duration;
+                Duration = buffEffect.Duration;
                 defaultDuration = Duration;
                 MyAuraManager = auraManager;
                 Buff = buff;
@@ -103,7 +173,7 @@ namespace AuraSystem.Effects
 
                 return buffEffect;
             }
-            else if (stack)
+            else if (buffEffect.Stacking)
             {
                 MyAuraManager = auraManager;
                 Buff = buff;
@@ -118,9 +188,63 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// The effect that is called every second while the buff is active
+        /// Set all internal values inside the effect
         /// </summary>
-        public virtual void ApplyBuffEffect(float buffAmount)
+        /// <param name="auraManager"></param>
+        /// <param name="buff"></param>
+        /// <param name="icon"></param>
+        /// <param name="target"></param>
+        private void UnpackBuff(AuraManager auraManager, ScriptableBuff buff, BuffIcon icon, GameObject target)
+        {
+            Duration = buff.GetTotalTime();
+            Target = target;
+            UseTicks = buff.UseTicks;
+            defaultDuration = Duration;
+            BuffValue = buff.BuffValue;
+            MyAuraManager = auraManager;
+            Buff = buff;
+            this.icon = icon;
+            Stacking = buff.Stacking;
+            Refreshing = buff.Refreshing;
+            IsStatic = buff.IsStatic;
+            Ticks = buff.Ticks;
+            Occurrence = buff.Occurrence;
+
+            firstRun = true;
+        }
+        /// <summary>
+        /// Set all internal values inside the effect
+        /// </summary>
+        /// <param name="auraManager"></param>
+        /// <param name="buff"></param>
+        /// <param name="icon"></param>
+        /// <param name="target"></param>
+        private void UnpackBuff(AuraManager auraManager, ScriptableBuff buff, GameObject target)
+        {
+            Duration = buff.GetTotalTime();
+            Target = target;
+            UseTicks = buff.UseTicks;
+            defaultDuration = Duration;
+            BuffValue = buff.BuffValue;
+            MyAuraManager = auraManager;
+            Buff = buff;
+            Target = target;
+            tempEffect = buff.VisualEffect;
+            Stacking = buff.Stacking;
+            Refreshing = buff.Refreshing;
+            IsStatic = buff.IsStatic;
+            Ticks = buff.Ticks;
+            Occurrence = buff.Occurrence;
+
+            firstRun = true;
+        }
+        #endregion
+
+        #region Buff Timer Functions
+        /// <summary>
+        /// Called when ever the current buff ticks or every frame if using a static timer
+        /// </summary>
+        public virtual void ApplyBuffEffect()
         {
             // To be overridden in children
             Debug.LogWarning("Buff Effect: " + gameObject.name + "has no buff effect being applied");
@@ -146,26 +270,60 @@ namespace AuraSystem.Effects
                 MyAuraManager.StartBuffRemoval(gameObject, this);
             }
         }
-
+        /// <summary>
+        /// Update buff duration every frame
+        /// </summary>
         private void Update()
         {
-            if (IsCurrentlyActive)
-            {
-                Buff.UpdateToolTip(StackCount);
+            Buff.UpdateToolTip(StackCount);
 
-                if (Duration > 0)
+            if (usingStaticTimer)
+            {
+                if (IsCurrentlyActive)
                 {
-                    Duration -= Time.deltaTime;
-                    ApplyBuffEffect(BuffAmount * Time.deltaTime);
-                }
-                else
-                {
-                    IsCurrentlyActive = false;
-                    Duration = 0;
-                    OnBuffEnd();
+                    if (Duration > 0)
+                    {
+                        Duration -= Time.deltaTime;
+                        ApplyBuffEffect();
+                    }
+                    else
+                    {
+                        IsCurrentlyActive = false;
+                        Duration = 0;
+                        OnBuffEnd();
+                    }
                 }
             }
         }
+        /// <summary>
+        /// The actual buff timer that counts ticks
+        /// </summary>
+        private IEnumerator BuffTimer()
+        {
+            if (firstRun)
+            {
+                ApplyBuffEffect();
+
+                firstRun = false;
+            }
+
+            while (Ticks > 0)
+            {
+                yield return new WaitForSecondsRealtime(Occurrence);
+
+                Ticks--;
+
+                ApplyBuffEffect();
+            }
+
+            if (Ticks <= 0)
+            {
+                OnBuffEnd();
+            }
+        }
+        #endregion
+
+        #region Buff Functions
         /// <summary>
         /// Checks to see if the current buff is active
         /// </summary>
@@ -306,16 +464,19 @@ namespace AuraSystem.Effects
             }
         }
         /// <summary>
-        /// Gets the current buff target
-        /// </summary>
-        public GameObject Target { get; private set; } = null;
-        /// <summary>
         /// Resets the buff duration back it's default value
         /// </summary>
         public void ResetDuration()
         {
             Duration = defaultDuration;
         }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Gets the current buff target
+        /// </summary>
+        public GameObject Target { get; private set; } = null;
         /// <summary>
         /// Gets the buff data
         /// </summary>
@@ -335,7 +496,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Gets the actual buff amount
         /// </summary>
-        public float BuffAmount { get; private set; } = 0f;
+        public float BuffValue { get; private set; } = 0f;
         /// <summary>
         /// Get the aura manager on the given buff
         /// </summary>
@@ -356,5 +517,34 @@ namespace AuraSystem.Effects
         /// Gets the icon's fade out animation
         /// </summary>
         public Animation fadeOutAnimation { get; private set; } = null;
+        /// <summary>
+        /// Checks to see if the buff is stacking
+        /// </summary>
+        public bool Stacking { get; private set; } = false;
+        /// <summary>
+        /// Checks to see if the buff is refreshing
+        /// </summary>
+        public bool Refreshing { get; private set; } = false;
+        /// <summary>
+        /// Checks to see if the buff is static
+        /// </summary>
+        public bool IsStatic { get; private set; }
+        /// <summary>
+        /// Gets the current tick count
+        /// </summary>
+        public float Ticks { get; private set; } = 0;
+        /// <summary>
+        /// Gets the interval between each tick count
+        /// </summary>
+        public float Occurrence { get; private set; } = 0;
+        /// <summary>
+        /// Gets the default tick count
+        /// </summary>
+        public float DefaultTickCount { get; private set; } = 0f;
+        /// <summary>
+        /// Check to see if this effect is using ticks
+        /// </summary>
+        public bool UseTicks { get; private set; } = false;
+        #endregion
     }
 }

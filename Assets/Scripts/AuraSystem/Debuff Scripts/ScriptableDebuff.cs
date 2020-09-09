@@ -16,7 +16,7 @@ namespace AuraSystem
         [SerializeField] private bool useTicks = true;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTicks))]
-        [Tooltip("How many times the debuff is fired before it's removed")]
+        [Tooltip("How many times the debuff is fired before it's removed if zero debuff will tick forever")]
         [SerializeField] private float ticks = 1;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTicks))]
@@ -24,8 +24,8 @@ namespace AuraSystem
         [SerializeField] private float occurrence = 1;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(isNotUsingTicks))]
-        [Tooltip("How long the debuff should last for if 0 or below debuff will last forever")]
-        [SerializeField] private float debuffTime = 0f;
+        [Tooltip("How long the debuff should last for if zero or below debuff will last forever")]
+        [SerializeField] private float duration = 0f;
 
         [Tooltip("If a another debuff of this type is applied to the player should the debuff restart")]
         [SerializeField] private bool refresh = false;
@@ -64,10 +64,6 @@ namespace AuraSystem
         /// </summary>
         public bool UseTicks { get { return useTicks; } }
         /// <summary>
-        /// How long the debuff should last for if 0 or below debuff will last forever
-        /// </summary>
-        public float DebuffTime { get { return debuffTime; } }
-        /// <summary>
         /// How many times the debuff is fired before it's removed
         /// </summary>
         public float Ticks { get { return ticks; } }
@@ -96,7 +92,7 @@ namespace AuraSystem
             }
             else
             {
-                return debuffTime;
+                return duration;
             }
         }
         /// <summary>

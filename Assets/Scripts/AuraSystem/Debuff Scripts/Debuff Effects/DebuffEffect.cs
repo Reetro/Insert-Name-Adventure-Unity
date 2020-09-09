@@ -7,12 +7,12 @@ namespace AuraSystem.Effects
     public class DebuffEffect : MonoBehaviour
     {
         private float maxTicks = 9999999f;
+        private float maxTimerTime = 9999999f;
         private float staticTimer = 0;
         private bool usingStaticTimer = false;
         protected DebuffIcon icon = null;
 
         private bool firstRun = false;
-        private bool shouldTick = true;
         private GameObject tempEffect = null;
 
         #region Setup Functions
@@ -28,7 +28,7 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, icon, debuff.UseTicks, target);
+                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, icon, target);
 
                 debuff.UpdateToolTip(StackCount);
 
@@ -43,12 +43,24 @@ namespace AuraSystem.Effects
 
                 usingStaticTimer = false;
 
-                if (!shouldTick)
+                if (!UseTicks)
                 {
-                    if (debuff.DebuffTime > 0)
+                    if (debuff.GetTotalTime() > 0)
                     {
-                        staticTimer = debuff.DebuffTime;
+                        staticTimer = debuff.GetTotalTime();
                         usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        staticTimer = maxTimerTime;
+                        usingStaticTimer = true;
+                    }
+                }
+                else
+                {
+                    if (Ticks > 0)
+                    {
+                        staticTimer = debuff.GetTotalTime();
                     }
                     else
                     {
@@ -110,7 +122,7 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, debuff.UseTicks, target);
+                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, target);
 
                 debuff.UpdateToolTip(StackCount);
 
@@ -123,12 +135,24 @@ namespace AuraSystem.Effects
 
                 usingStaticTimer = false;
 
-                if (!shouldTick)
+                if (!UseTicks)
                 {
-                    if (debuff.DebuffTime > 0)
+                    if (debuff.GetTotalTime() > 0)
                     {
-                        staticTimer = debuff.DebuffTime;
+                        staticTimer = debuff.GetTotalTime();
                         usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        staticTimer = maxTimerTime;
+                        usingStaticTimer = true;
+                    }
+                }
+                else
+                {
+                    if (Ticks > 0)
+                    {
+                        staticTimer = debuff.GetTotalTime();
                     }
                     else
                     {
@@ -177,7 +201,7 @@ namespace AuraSystem.Effects
         /// <param name="icon"></param>
         /// <param name="useTicks"></param>
         /// <param name="target"></param>
-        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, bool useTicks, GameObject target)
+        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target)
         {
             Ticks = ticks;
             DefaultTickCount = ticks;
@@ -185,7 +209,7 @@ namespace AuraSystem.Effects
             MyAuraManager = auraManager;
             Debuff = debuff;
             this.icon = icon;
-            shouldTick = useTicks;
+            UseTicks = debuff.UseTicks;
             DebuffValue = debuff.DebuffValue;
             Target = target;
             Refreshing = debuff.Refreshing;
@@ -206,14 +230,14 @@ namespace AuraSystem.Effects
         /// <param name="icon"></param>
         /// <param name="useTicks"></param>
         /// <param name="target"></param>
-        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, bool useTicks, GameObject target)
+        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target)
         {
             Ticks = ticks;
             DefaultTickCount = ticks;
             Occurrence = occurrence;
             MyAuraManager = auraManager;
             Debuff = debuff;
-            shouldTick = useTicks;
+            UseTicks = debuff.UseTicks;
             DebuffValue = debuff.DebuffValue;
             Target = target;
             Refreshing = debuff.Refreshing;
@@ -262,13 +286,16 @@ namespace AuraSystem.Effects
 
             if (usingStaticTimer)
             {
-                staticTimer -= Time.deltaTime;
-
-                ApplyDebuffEffect();
-
-                if (staticTimer <= 0)
+                if (IsCurrentlyActive)
                 {
-                    OnDebuffEnd();
+                    staticTimer -= Time.deltaTime;
+
+                    ApplyDebuffEffect();
+
+                    if (staticTimer <= 0)
+                    {
+                        OnDebuffEnd();
+                    }
                 }
             }
         }
@@ -519,6 +546,10 @@ namespace AuraSystem.Effects
         /// Checks to see if the debuff is static
         /// </summary>
         public bool IsStatic { get; private set; }
+        /// <summary>
+        /// Check to see if this effect is using ticks
+        /// </summary>
+        public bool UseTicks { get; private set; } = false;
         #endregion
     }
 }

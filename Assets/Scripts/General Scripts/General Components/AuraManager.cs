@@ -17,42 +17,84 @@ namespace AuraSystem
         {
             MyUIManager = playerUIManager;
         }
+
+        #region Buff Functions
         /// <summary>
         /// Will spawn the given buff into the scene then start the buff
         /// </summary>
         /// <returns>The applied buff</returns>
         public BuffEffect ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
         {
-            BuffEffect buff = Instantiate(buffToApply.buffEffect, Vector2.zero, Quaternion.identity);
+            BuffEffect buff = Instantiate(buffToApply.CurrentBuffEffect, Vector2.zero, Quaternion.identity);
 
-            BuffEffect createdBuff = null;
+            BuffEffect staticEffect = null;
 
-            if (createIcon)
+            if (!IsStaticBuffActive(buff, out staticEffect))
             {
-                var buffIcon = CreateBuffIcon(buffToApply);
+                BuffEffect createdBuff = null;
 
-                createdBuff = buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, buffIcon, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
-            }
-            else
-            {
-                createdBuff = buff.StartBuff(buffToApply.buffAmount, buffToApply.duration, this, buffToApply, target, buffToApply.visualEffect, buffToApply.stack, buffToApply.refresh);
-            }
-
-            if (createdBuff)
-            {
-                if (!MyCurrentBuffs.Contains(createdBuff))
+                if (createIcon)
                 {
-                    MyCurrentBuffs.Add(createdBuff);
+                    var buffIcon = CreateBuffIcon(buffToApply);
+
+                    createdBuff = buff.StartBuff(this, buffToApply, buffIcon, target);
+                }
+                else
+                {
+                    createdBuff = buff.StartBuff(this, buffToApply, target);
                 }
 
-                return createdBuff;
+                if (createdBuff)
+                {
+                    if (!MyCurrentBuffs.Contains(createdBuff))
+                    {
+                        MyCurrentBuffs.Add(createdBuff);
+                    }
+
+                    return createdBuff;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + buffToApply.Name + " created buff failed to start");
+
+                    return null;
+                }
             }
             else
             {
-                Debug.LogError("Failed to apply " + buffToApply.Name + " created buff failed to start");
+                if (staticEffect)
+                {
+                    Destroy(buff);
 
-                return null;
+                    return staticEffect;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + buffToApply.Name + " failed to get static debuff");
+
+                    return null;
+                }
             }
+        }
+        /// <summary>
+        /// Check to see if a debuff of the same type is active and is a static debuff
+        /// </summary>
+        /// <param name="buffEffect"></param>
+        private bool IsStaticBuffActive(BuffEffect buff, out BuffEffect activeBuffEffect)
+        {
+            foreach (BuffEffect buffEffect in MyCurrentBuffs)
+            {
+                if (buffEffect)
+                {
+                    if (buffEffect.IsStatic && buffEffect.GetType() == buff.GetType())
+                    {
+                        activeBuffEffect = buffEffect;
+                        return true;
+                    }
+                }
+            }
+            activeBuffEffect = null;
+            return false;
         }
         /// <summary>
         /// Finds a buff of the same type as the given buff
@@ -66,17 +108,12 @@ namespace AuraSystem
 
                 foreach (BuffEffect buffEffect in MyCurrentBuffs)
                 {
-                    var type = buffEffect.Buff.buffEffect;
+                    var type = buffEffect.Buff.GetType();
 
-                    if (type == buff.buffEffect)
+                    if (type == buff.GetType())
                     {
                         foundBuff = buffEffect;
                         break;
-                    }
-                    else
-                    {
-                        foundBuff = null;
-                        continue;
                     }
                 }
 
@@ -155,6 +192,9 @@ namespace AuraSystem
 
             Destroy(buff.gameObject);
         }
+        #endregion
+
+        #region Debuff Functions
         /// <summary>
         /// Will spawn the given debuff into the scene then start the debuff
         /// </summary>
@@ -338,6 +378,9 @@ namespace AuraSystem
                 return null;
             }
         }
+        #endregion
+
+        #region Icon Functions
         /// <summary>
         /// Will add a buff icon to the player UI
         /// </summary>
@@ -354,6 +397,9 @@ namespace AuraSystem
         {
             return MyUIManager.AddDebuffIcon(debuff, hasFillAmount);
         }
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Gets all current buffs on this Gameobject
         /// </summary>
@@ -366,5 +412,6 @@ namespace AuraSystem
         /// Gets the player UI Manager
         /// </summary>
         public PlayerUIManager MyUIManager { get; private set; } = null;
+        #endregion
     }
 }
