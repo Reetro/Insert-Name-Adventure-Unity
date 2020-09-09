@@ -17,9 +17,12 @@ MonoBehaviour:
   artwork: {fileID: 21300000, guid: 411f88b287eb8504aa08edb04c1443c6, type: 3}
   buffEffect: {fileID: 2832589897876261140, guid: 90e8e2e510de2f34897f1b4fee475627,
     type: 3}
-  refresh: 1
+  useTicks: 0
+  ticks: 10
+  occurrence: 1
+  duration: 4
+  refresh: 0
   stack: 0
-  buffAmount: 2
-  duration: 1
+  isStatic: 1
+  buffValue: 1
   visualEffect: {fileID: 0}
-  buffType: 0

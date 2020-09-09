@@ -20,9 +20,9 @@ MonoBehaviour:
   useTicks: 0
   ticks: 0
   occurrence: 0
-  debuffTime: 5
+  duration: 0
   refresh: 0
   stack: 0
   isStatic: 1
-  debuffValue: 0
+  debuffValue: 10
   visualEffect: {fileID: 0}

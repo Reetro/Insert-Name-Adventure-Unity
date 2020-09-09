@@ -67,7 +67,7 @@ namespace EnemyCharacter.AI
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                if (!MyHealthComponent.IsCurrentlyDead)
+                if (!MyHealthComponent.IsCurrentlyDead && IsRotating)
                 {
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
                 }
@@ -112,6 +112,10 @@ namespace EnemyCharacter.AI
         /// Get the width of the worm segment sprite
         /// </summary>
         public float MyWidth { get; private set; }
+        /// <summary>
+        /// Check to see if the worm is rotating
+        /// </summary>
+        public bool IsRotating { get; set; }
         #endregion
     }
 }

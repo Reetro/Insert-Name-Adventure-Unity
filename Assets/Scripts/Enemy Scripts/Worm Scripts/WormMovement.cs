@@ -75,6 +75,7 @@ namespace EnemyCharacter.AI
                     wormSegment.MyHealthComponent.SetHealth(segmentHealth);
                     wormSegment.DrawDebug = drawDebug;
                     wormSegment.WhatIsGround = whatIsGround;
+                    wormSegment.IsRotating = segmentRotating;
 
                     spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
 
@@ -250,6 +251,11 @@ namespace EnemyCharacter.AI
                             }
                         }
                     }
+                }
+
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    wormSegment.IsRotating = segmentRotating;
                 }
             }
         }
