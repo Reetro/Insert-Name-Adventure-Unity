@@ -11,7 +11,7 @@ namespace PlayerCharacter.Controller
         [Tooltip("Amount of force added when the player jumps")]
         [SerializeField] private float jumpForce = 400f;
         [Tooltip("How fast the player can run")]
-        [SerializeField] private float runSpeed = 35f;
+        public float runSpeed = 35f;
         [Tooltip("How much to smooth out the movement")]
         [Range(0, .3f)] [SerializeField] private float movementSmoothing = 0.05f;
         [Tooltip("Whether or not a player can steer while jumping")]
@@ -21,9 +21,9 @@ namespace PlayerCharacter.Controller
 
         private Rigidbody2D myRigidbody2D = null;
         private bool isFacingRight = true; // For determining which way the player is currently facing.
-        private Vector3 currentVelocity = Vector3.zero;
         private HealthComponent hpComp;
         private PlayerLegs myLegs = null;
+        private Vector3 currentVelocity = Vector3.zero;
 
         private void Awake()
         {

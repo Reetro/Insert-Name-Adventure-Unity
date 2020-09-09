@@ -275,7 +275,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Called when ever the current debuff ticks or every frame if using a static timer
         /// </summary>
-        public virtual void ApplyDebuffEffect()
+        protected virtual void ApplyDebuffEffect()
         {
             // To be overridden in child
             Debug.LogWarning("Debuff Effect: " + gameObject.name + " has no debuff effect being applied");
@@ -283,7 +283,7 @@ namespace AuraSystem.Effects
         /// <summary>
         /// Called when tick count is <= 0
         /// </summary>
-        public virtual void OnDebuffEnd()
+        protected virtual void OnDebuffEnd()
         {
             if (VisualEffect)
             {

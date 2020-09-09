@@ -2,7 +2,7 @@
 {
     public class GeneralDamage_DE : DebuffEffect
     {
-        public override void ApplyDebuffEffect()
+        protected override void ApplyDebuffEffect()
         {
             if (IsCurrentlyActive)
             {
