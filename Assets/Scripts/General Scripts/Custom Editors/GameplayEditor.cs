@@ -254,6 +254,7 @@ namespace CustomEditors
         #region Buffs / Debuffs Variables
         private Editor LeechingEditor = null;
         private Editor BreatherEditor = null;
+        private Editor SlowingEditor = null;
         #endregion
 
         #region Local Variables
@@ -276,6 +277,7 @@ namespace CustomEditors
         private static bool showDebuffSettings = false;
         private static bool showBreatherSettings = false;
         private static bool showLeechingSettings = false;
+        private static bool showSlowingSettings = false;
         #endregion
         #endregion
 
@@ -706,6 +708,7 @@ namespace CustomEditors
         private void SetupDebuffs()
         {
             var leechingDebuff = Resources.Load("Aura System/Debuffs/Leeching_D") as ScriptableDebuff;
+            var slowingDebuff = Resources.Load("Aura System/Debuffs/Slowing_D") as ScriptableDebuff;
 
             if (leechingDebuff)
             {
@@ -714,6 +717,15 @@ namespace CustomEditors
             else
             {
                 Debug.LogError("Failed to get leechingDebuff in SetupDebuffs Function in GameplayEditor");
+            }
+
+            if (slowingDebuff)
+            {
+                SlowingEditor = Editor.CreateEditor(slowingDebuff);
+            }
+            else
+            {
+                Debug.LogError("Failed to get slowingDebuff in SetupDebuffs Function in GameplayEditor");
             }
         }
         private void SetupBuffs()
@@ -1073,6 +1085,18 @@ namespace CustomEditors
                         if (LeechingEditor)
                         {
                             LeechingEditor.OnInspectorGUI();
+                        }
+                    }
+                    #endregion
+
+                    #region Slowing Settings
+                    showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Slowing Settings", true);
+
+                    if (showSlowingSettings)
+                    {
+                        if (SlowingEditor)
+                        {
+                            SlowingEditor.OnInspectorGUI();
                         }
                     }
                     #endregion

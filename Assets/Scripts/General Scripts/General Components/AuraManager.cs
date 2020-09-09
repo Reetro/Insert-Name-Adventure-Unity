@@ -161,7 +161,7 @@ namespace AuraSystem
         /// <returns>The applied debuff</returns>
         public DebuffEffect ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
         {
-            DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, Vector2.zero, Quaternion.identity);
+            DebuffEffect debuff = Instantiate(debuffToApply.CurrentDebuffEffect, Vector2.zero, Quaternion.identity);
 
             DebuffEffect staticEffect = null;
 
@@ -352,7 +352,7 @@ namespace AuraSystem
         /// <returns>The created icon</returns>
         private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
         {
-            return MyUIManager.AddDebuffIcon(debuff, hasFillAmount, debuff.useTicks);
+            return MyUIManager.AddDebuffIcon(debuff, hasFillAmount);
         }
         /// <summary>
         /// Gets all current buffs on this Gameobject

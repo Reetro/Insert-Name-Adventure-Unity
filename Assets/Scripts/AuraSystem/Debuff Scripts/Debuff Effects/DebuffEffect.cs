@@ -28,7 +28,7 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                UnPackDebuff(debuff.ticks, debuff.occurrence, auraManager, debuff, icon, debuff.useTicks, target);
+                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, icon, debuff.UseTicks, target);
 
                 debuff.UpdateToolTip(StackCount);
 
@@ -45,9 +45,9 @@ namespace AuraSystem.Effects
 
                 if (!shouldTick)
                 {
-                    if (debuff.debuffTime > 0)
+                    if (debuff.DebuffTime > 0)
                     {
-                        staticTimer = debuff.debuffTime;
+                        staticTimer = debuff.DebuffTime;
                         usingStaticTimer = true;
                     }
                     else
@@ -70,7 +70,7 @@ namespace AuraSystem.Effects
                 Debuff = debuff;
                 this.icon = icon;
 
-                if (Debuff.useTicks)
+                if (Debuff.UseTicks)
                 {
                     DefaultTickCount = Ticks;
                 }
@@ -110,7 +110,7 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                UnPackDebuff(debuff.ticks, debuff.occurrence, auraManager, debuff, debuff.useTicks, target);
+                UnPackDebuff(debuff.Ticks, debuff.Occurrence, auraManager, debuff, debuff.UseTicks, target);
 
                 debuff.UpdateToolTip(StackCount);
 
@@ -125,9 +125,9 @@ namespace AuraSystem.Effects
 
                 if (!shouldTick)
                 {
-                    if (debuff.debuffTime > 0)
+                    if (debuff.DebuffTime > 0)
                     {
-                        staticTimer = debuff.debuffTime;
+                        staticTimer = debuff.DebuffTime;
                         usingStaticTimer = true;
                     }
                     else
@@ -186,12 +186,12 @@ namespace AuraSystem.Effects
             Debuff = debuff;
             this.icon = icon;
             shouldTick = useTicks;
-            DebuffValue = debuff.debuffValue;
+            DebuffValue = debuff.DebuffValue;
             Target = target;
-            Refreshing = debuff.refresh;
-            Stacking = debuff.stack;
-            IsStatic = debuff.isStatic;
-            tempEffect = debuff.visualEffect;
+            Refreshing = debuff.Refreshing;
+            Stacking = debuff.Stacking;
+            IsStatic = debuff.IsStatic;
+            tempEffect = debuff.VisualEffect;
 
             firstRun = true;
             IsCurrentlyActive = true;
@@ -214,12 +214,12 @@ namespace AuraSystem.Effects
             MyAuraManager = auraManager;
             Debuff = debuff;
             shouldTick = useTicks;
-            DebuffValue = debuff.debuffValue;
+            DebuffValue = debuff.DebuffValue;
             Target = target;
-            Refreshing = debuff.refresh;
-            Stacking = debuff.stack;
-            IsStatic = debuff.isStatic;
-            tempEffect = debuff.visualEffect;
+            Refreshing = debuff.Refreshing;
+            Stacking = debuff.Stacking;
+            IsStatic = debuff.IsStatic;
+            tempEffect = debuff.VisualEffect;
 
             firstRun = true;
             IsCurrentlyActive = true;
@@ -403,7 +403,7 @@ namespace AuraSystem.Effects
             {
                 var localDebuff = auraManager.FindDebuffOtype(scriptableDebuff);
 
-                localDebuff.ResetTickCount(localDebuff.Debuff.useTicks);
+                localDebuff.ResetTickCount(localDebuff.Debuff.UseTicks);
 
                 if (useIcon)
                 {
