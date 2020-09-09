@@ -7,8 +7,7 @@ namespace AuraSystem
     [CreateAssetMenu(fileName = "Debuff", menuName = "Create New Debuff")]
     public class ScriptableDebuff : ScriptableItem
     {
-        [HideInInspector]
-        public bool isNotUsingTicks = false;
+        private bool isNotUsingTicks = false;
 
         [Tooltip("This is the actual code that is called that applies the debuff")]
         public DebuffEffect debuffEffect;
@@ -32,7 +31,10 @@ namespace AuraSystem
         public bool refresh = false;
 
         [Tooltip("If a another debuff of this type is applied should stack count be increased")]
-        public bool stack = false;
+        public bool stack = true;
+
+        [Tooltip("If true this debuff will not stack or be refreshed it will remain static")]
+        public bool isStatic = false;
 
         [Tooltip("Value assigned to the debuff used for calculated debuff amount (such as damage or slow amount for example)")]
         public float debuffValue;

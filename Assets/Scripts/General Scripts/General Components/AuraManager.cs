@@ -89,32 +89,6 @@ namespace AuraSystem
             }
         }
         /// <summary>
-        /// Finds a specific buff with the given ID 
-        /// </summary>
-        /// <returns>A BuffEffect</returns>
-        public BuffEffect FindBuffByID(int ID)
-        {
-            BuffEffect foundBuff = null;
-
-            foreach (BuffEffect buffEffect in MyCurrentBuffs)
-            {
-                var localID = buffEffect.MyID;
-
-                if (localID == ID)
-                {
-                    foundBuff = buffEffect;
-                    break;
-                }
-                else
-                {
-                    foundBuff = null;
-                    continue;
-                }
-            }
-
-            return foundBuff;
-        }
-        /// <summary>
         /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
         /// </summary>
         public void StartBuffRemoval(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
@@ -189,47 +163,89 @@ namespace AuraSystem
         {
             DebuffEffect debuff = Instantiate(debuffToApply.debuffEffect, Vector2.zero, Quaternion.identity);
 
-            DebuffEffect createdDebuff = null;
+            DebuffEffect staticEffect = null;
 
-            if (createIcon)
+            if (!IsStaticDebuffActive(debuff, out staticEffect))
             {
-                var debuffIcon = CreateDebuffIcon(debuffToApply, debuffToApply.useTicks);
+                DebuffEffect createdDebuff = null;
 
-                createdDebuff = debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, debuffIcon, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
-            }
-            else
-            {
-                createdDebuff = debuff.StartDebuff(debuffToApply.ticks, debuffToApply.occurrence, this, debuffToApply, target, debuffToApply.visualEffect, debuffToApply.useTicks, debuffToApply.refresh, debuffToApply.stack);
-            }
-
-            if (createdDebuff)
-            {
-                if (!MyCurrentDebuffs.Contains(createdDebuff))
+                if (createIcon)
                 {
-                    MyCurrentDebuffs.Add(createdDebuff);
+                    var hasFillAmount = debuffToApply.GetTotalTime() > 0;
+
+                    var debuffIcon = CreateDebuffIcon(debuffToApply, hasFillAmount);
+
+                    createdDebuff = debuff.StartDebuff(this, debuffToApply, debuffIcon, target);
+                }
+                else
+                {
+                    createdDebuff = debuff.StartDebuff(this, debuffToApply, target);
                 }
 
-                return createdDebuff;
+                if (createdDebuff)
+                {
+                    if (!MyCurrentDebuffs.Contains(createdDebuff))
+                    {
+                        MyCurrentDebuffs.Add(createdDebuff);
+                    }
+
+                    return createdDebuff;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + debuffToApply.Name + " created debuff failed to start");
+
+                    return null;
+                }
             }
             else
             {
-                Debug.LogError("Failed to apply " + debuffToApply.Name + " created debuff failed to start");
+                if (staticEffect)
+                {
+                    Destroy(debuff);
 
-                return null;
+                    return staticEffect;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + debuffToApply.Name + " failed to get static debuff");
+
+                    return null;
+                }
             }
+        }
+        /// <summary>
+        /// Check to see if a debuff of the same type is active and is a static debuff
+        /// </summary>
+        /// <param name="debuff"></param>
+        private bool IsStaticDebuffActive(DebuffEffect debuff, out DebuffEffect activeDebuffEffect)
+        {
+            foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
+            {
+                if (debuffEffect)
+                {
+                    if (debuffEffect.IsStatic && debuffEffect.GetType() == debuff.GetType())
+                    {
+                        activeDebuffEffect = debuffEffect;
+                        return true;
+                    }
+                }
+            }
+            activeDebuffEffect = null;
+            return false;
         }
         /// <summary>
         /// Plays debuff fade out animation if debuff had a Icon and then destroys the DebuffEffect Gameobject
         /// </summary>
-        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffEffect effect, DebuffIcon iconToRemove)
+        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffIcon iconToRemove)
         {
             if (debuffEffectObject)
             {
-                MyCurrentDebuffs.Remove(effect);
-
                 if (iconToRemove)
                 {
                     var debuffEffect = debuffEffectObject.GetComponent<DebuffEffect>();
+
+                    MyCurrentDebuffs.Remove(debuffEffect);
 
                     if (debuffEffect)
                     {
@@ -265,13 +281,15 @@ namespace AuraSystem
         /// <summary>
         /// Removes then destroys the given debuff from the aura manager
         /// </summary>
-        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffEffect effect)
+        public void StartDebuffRemoval(GameObject debuffEffectObject)
         {
             if (debuffEffectObject)
             {
-                Destroy(debuffEffectObject);
+                var effect = debuffEffectObject.GetComponent<DebuffEffect>();
 
                 MyCurrentDebuffs.Remove(effect);
+
+                Destroy(debuffEffectObject);
             }
         }
         /// <summary>
@@ -281,9 +299,15 @@ namespace AuraSystem
         {
             yield return new WaitForSeconds(debuff.fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
 
-            MyUIManager.RemoveDebuffIcon(iconToRemove);
+            if (iconToRemove)
+            {
+                MyUIManager.RemoveDebuffIcon(iconToRemove);
+            }
 
-            Destroy(debuff.gameObject);
+            if (debuff)
+            {
+                Destroy(debuff.gameObject);
+            }
         }
         /// <summary>
         /// Finds a debuff of the same type as the given debuff
@@ -313,32 +337,6 @@ namespace AuraSystem
                 Debug.LogError("Was unable to find debuff type on " + gameObject.name + " debuff was invalid");
                 return null;
             }
-        }
-        /// <summary>
-        /// Finds a specific debuff with the given ID 
-        /// </summary>
-        /// <returns>A DebuffEffect</returns>
-        public DebuffEffect FindDebuffByID(int ID)
-        {
-            DebuffEffect foundDebuff = null;
-
-            foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
-            {
-                var localID = debuffEffect.MyID;
-
-                if (localID == ID)
-                {
-                    foundDebuff = debuffEffect;
-                    break;
-                }
-                else
-                {
-                    foundDebuff = null;
-                    continue;
-                }
-            }
-
-            return foundDebuff;
         }
         /// <summary>
         /// Will add a buff icon to the player UI

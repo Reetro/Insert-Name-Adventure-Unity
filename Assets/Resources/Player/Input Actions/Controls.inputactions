@@ -68,6 +68,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Debuff",
+                    "type": "Button",
+                    "id": "c3a234ca-8ff6-4174-beb7-b99f69c18bc4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -277,6 +285,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Delete Saved Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5988f940-7889-45a7-8887-2a861d3289a8",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Debuff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

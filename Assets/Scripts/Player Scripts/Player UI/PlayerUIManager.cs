@@ -83,16 +83,19 @@ namespace PlayerUI
             DebuffIcon icon = Instantiate(debuffIconPrefab, debuffGridLayoutGroup.transform);
             debuffIcons.Add(icon);
 
-            icon.StartCooldown(debuff, hasFillAmount, useTick);
+            icon.StartCooldown(debuff, hasFillAmount);
 
             return icon;
         }
 
         public void RemoveDebuffIcon(DebuffIcon iconToRemove)
         {
-            debuffIcons.Remove(iconToRemove);
+            if (iconToRemove)
+            {
+                debuffIcons.Remove(iconToRemove);
 
-            Destroy(iconToRemove.gameObject);
+                Destroy(iconToRemove.gameObject);
+            }
         }
 
         public DebuffIcon FindDebuffIconByType(ScriptableDebuff debuff)

@@ -7,17 +7,20 @@ namespace AuraSystem.Effects
     public class DebuffEffect : MonoBehaviour
     {
         private float maxTicks = 9999999f;
+        private float staticTimer = 0;
+        private bool usingStaticTimer = false;
         protected DebuffIcon icon = null;
 
         private bool firstRun = false;
         private bool shouldTick = true;
+        private GameObject tempEffect = null;
 
         #region Setup Functions
         /// <summary>
         /// Sets all needed values for the given debuff and starts debuff ticking then adds an icon to the player hud
         /// </summary>
         /// <returns>The active DebuffEffect</returns>
-        public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target, GameObject effect, bool useTicks, bool refresh, bool stack)
+        public virtual DebuffEffect StartDebuff(AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, GameObject target)
         {
             DebuffEffect debuffEffect = null;
 
@@ -25,38 +28,43 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                Ticks = ticks;
-                DefaultTickCount = ticks;
-                Occurrence = occurrence;
-                MyAuraManager = auraManager;
-                Debuff = debuff;
-                this.icon = icon;
-                shouldTick = useTicks;
-                DebuffValue = debuff.debuffValue;
-                Target = target;
-
-                firstRun = true;
-                IsCurrentlyActive = true;
+                UnPackDebuff(debuff.ticks, debuff.occurrence, auraManager, debuff, icon, debuff.useTicks, target);
 
                 debuff.UpdateToolTip(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
-                VisualEffect = SpawnVisualEffect(effect, target.transform);
+                if (tempEffect)
+                {
+                    VisualEffect = SpawnVisualEffect(tempEffect, target.transform);
+                }
 
                 fadeOutAnimation = icon.GetComponent<Animation>();
 
+                usingStaticTimer = false;
+
                 if (!shouldTick)
                 {
-                    Ticks = maxTicks;
-                    DefaultTickCount = ticks;
+                    if (debuff.debuffTime > 0)
+                    {
+                        staticTimer = debuff.debuffTime;
+                        usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        Ticks = maxTicks;
+                        DefaultTickCount = Ticks;
+                    }
                 }
 
-                StartCoroutine(DebuffTimer());
+                if (!usingStaticTimer)
+                {
+                    StartCoroutine(DebuffTimer());
+                }
 
                 return this;
             }
-            else if (refresh)
+            else if (debuffEffect.Refreshing)
             {
                 MyAuraManager = auraManager;
                 Debuff = debuff;
@@ -64,7 +72,7 @@ namespace AuraSystem.Effects
 
                 if (Debuff.useTicks)
                 {
-                    DefaultTickCount = ticks;
+                    DefaultTickCount = Ticks;
                 }
                 else
                 {
@@ -75,7 +83,7 @@ namespace AuraSystem.Effects
 
                 return debuffEffect;
             }
-            else if (stack)
+            else if (debuffEffect.Stacking)
             {
                 MyAuraManager = auraManager;
                 Debuff = debuff;
@@ -94,7 +102,7 @@ namespace AuraSystem.Effects
         /// Sets all needed values for the given debuff and starts debuff ticking
         /// </summary>
         /// <returns>The active DebuffEffect</returns>
-        public virtual DebuffEffect StartDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, GameObject target, GameObject effect, bool useTick, bool refresh, bool stack)
+        public virtual DebuffEffect StartDebuff(AuraManager auraManager, ScriptableDebuff debuff, GameObject target)
         {
             DebuffEffect debuffEffect = null;
 
@@ -102,33 +110,41 @@ namespace AuraSystem.Effects
 
             if (!IsCurrentlyActive)
             {
-                Ticks = ticks;
-                Occurrence = occurrence;
-                MyAuraManager = auraManager;
-                Debuff = debuff;
-                shouldTick = useTick;
-                DebuffValue = debuff.debuffValue;
-                Target = target;
+                UnPackDebuff(debuff.ticks, debuff.occurrence, auraManager, debuff, debuff.useTicks, target);
 
                 debuff.UpdateToolTip(StackCount);
 
                 MyID = GeneralFunctions.GenID();
 
-                VisualEffect = SpawnVisualEffect(effect, target.transform);
+                if (tempEffect)
+                {
+                    VisualEffect = SpawnVisualEffect(tempEffect, target.transform);
+                }
+
+                usingStaticTimer = false;
 
                 if (!shouldTick)
                 {
-                    Ticks = maxTicks;
+                    if (debuff.debuffTime > 0)
+                    {
+                        staticTimer = debuff.debuffTime;
+                        usingStaticTimer = true;
+                    }
+                    else
+                    {
+                        Ticks = maxTicks;
+                        DefaultTickCount = Ticks;
+                    }
                 }
 
-                firstRun = true;
-                IsCurrentlyActive = true;
-
-                StartCoroutine(DebuffTimer());
+                if (!usingStaticTimer)
+                {
+                    StartCoroutine(DebuffTimer());
+                }
 
                 return this;
             }
-            else if (refresh)
+            else if (debuffEffect.Refreshing)
             {
                 MyAuraManager = auraManager;
                 Debuff = debuff;
@@ -137,7 +153,7 @@ namespace AuraSystem.Effects
 
                 return debuffEffect;
             }
-            else if (stack)
+            else if (debuffEffect.Stacking)
             {
                 MyAuraManager = auraManager;
                 Debuff = debuff;
@@ -150,6 +166,63 @@ namespace AuraSystem.Effects
             {
                 return null;
             }
+        }
+        /// <summary>
+        /// Set all internal values inside the effect
+        /// </summary>
+        /// <param name="ticks"></param>
+        /// <param name="occurrence"></param>
+        /// <param name="auraManager"></param>
+        /// <param name="debuff"></param>
+        /// <param name="icon"></param>
+        /// <param name="useTicks"></param>
+        /// <param name="target"></param>
+        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, DebuffIcon icon, bool useTicks, GameObject target)
+        {
+            Ticks = ticks;
+            DefaultTickCount = ticks;
+            Occurrence = occurrence;
+            MyAuraManager = auraManager;
+            Debuff = debuff;
+            this.icon = icon;
+            shouldTick = useTicks;
+            DebuffValue = debuff.debuffValue;
+            Target = target;
+            Refreshing = debuff.refresh;
+            Stacking = debuff.stack;
+            IsStatic = debuff.isStatic;
+            tempEffect = debuff.visualEffect;
+
+            firstRun = true;
+            IsCurrentlyActive = true;
+        }
+        /// <summary>
+        /// Set all internal values inside the effect
+        /// </summary>
+        /// <param name="ticks"></param>
+        /// <param name="occurrence"></param>
+        /// <param name="auraManager"></param>
+        /// <param name="debuff"></param>
+        /// <param name="icon"></param>
+        /// <param name="useTicks"></param>
+        /// <param name="target"></param>
+        private void UnPackDebuff(float ticks, float occurrence, AuraManager auraManager, ScriptableDebuff debuff, bool useTicks, GameObject target)
+        {
+            Ticks = ticks;
+            DefaultTickCount = ticks;
+            Occurrence = occurrence;
+            MyAuraManager = auraManager;
+            Debuff = debuff;
+            shouldTick = useTicks;
+            DebuffValue = debuff.debuffValue;
+            Target = target;
+            Refreshing = debuff.refresh;
+            Stacking = debuff.stack;
+            IsStatic = debuff.isStatic;
+            tempEffect = debuff.visualEffect;
+
+            firstRun = true;
+            IsCurrentlyActive = true;
         }
         #endregion
 
@@ -186,9 +259,21 @@ namespace AuraSystem.Effects
         private void Update()
         {
             Debuff.UpdateToolTip(StackCount);
+
+            if (usingStaticTimer)
+            {
+                staticTimer -= Time.deltaTime;
+
+                ApplyDebuffEffect();
+
+                if (staticTimer <= 0)
+                {
+                    OnDebuffEnd();
+                }
+            }
         }
         /// <summary>
-        /// Called when ever the current debuff ticks
+        /// Called when ever the current debuff ticks or every frame if using a static timer
         /// </summary>
         public virtual void ApplyDebuffEffect()
         {
@@ -209,11 +294,11 @@ namespace AuraSystem.Effects
 
             if (icon)
             {
-                MyAuraManager.StartDebuffRemoval(gameObject, this, icon);
+                MyAuraManager.StartDebuffRemoval(gameObject, icon);
             }
             else
             {
-                MyAuraManager.StartDebuffRemoval(gameObject, this);
+                MyAuraManager.StartDebuffRemoval(gameObject);
             }
         }
         #endregion
@@ -270,11 +355,11 @@ namespace AuraSystem.Effects
                 {
                     localDebuff.icon.UpdateStackCount(localDebuff.StackCount);
 
-                    auraManager.StartDebuffRemoval(gameObject, this, icon);
+                    auraManager.StartDebuffRemoval(gameObject, icon);
                 }
                 else
                 {
-                    auraManager.StartDebuffRemoval(gameObject, this);
+                    auraManager.StartDebuffRemoval(gameObject);
                 }
             }
             else
@@ -300,11 +385,11 @@ namespace AuraSystem.Effects
                 {
                     if (useIcon)
                     {
-                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject, debuffEffect, debuffEffect.icon);
+                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject, debuffEffect.icon);
                     }
                     else
                     {
-                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject, debuffEffect);
+                        debuffEffect.MyAuraManager.StartDebuffRemoval(debuffEffect.gameObject);
                     }
                 }
             }
@@ -324,11 +409,11 @@ namespace AuraSystem.Effects
                 {
                     localDebuff.icon.ResetFill();
 
-                    auraManager.StartDebuffRemoval(gameObject, this, icon);
+                    auraManager.StartDebuffRemoval(gameObject, icon);
                 }
                 else
                 {
-                    auraManager.StartDebuffRemoval(gameObject, this);
+                    auraManager.StartDebuffRemoval(gameObject);
                 }
             }
             else
@@ -422,6 +507,18 @@ namespace AuraSystem.Effects
         /// Gets the icon's fade out animation
         /// </summary>
         public Animation fadeOutAnimation { get; private set;} = null;
+        /// <summary>
+        /// Checks to see if the debuff is stacking
+        /// </summary>
+        public bool Stacking { get; private set; }
+        /// <summary>
+        /// Checks to see if the debuff is refreshing
+        /// </summary>
+        public bool Refreshing { get; private set; }
+        /// <summary>
+        /// Checks to see if the debuff is static
+        /// </summary>
+        public bool IsStatic { get; private set; }
         #endregion
     }
 }

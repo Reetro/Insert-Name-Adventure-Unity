@@ -83,6 +83,14 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Debuff"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3a234ca-8ff6-4174-beb7-b99f69c18bc4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -294,6 +302,17 @@ namespace PlayerControls
                     ""action"": ""Delete Saved Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5988f940-7889-45a7-8887-2a861d3289a8"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Debuff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -310,6 +329,7 @@ namespace PlayerControls
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
             m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
+            m_Player_Debuff = m_Player.FindAction("Debuff", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -367,6 +387,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
         private readonly InputAction m_Player_DeleteSavedGame;
+        private readonly InputAction m_Player_Debuff;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -379,6 +400,7 @@ namespace PlayerControls
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
+            public InputAction @Debuff => m_Wrapper.m_Player_Debuff;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -412,6 +434,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
+                    @Debuff.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebuff;
+                    @Debuff.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebuff;
+                    @Debuff.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebuff;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -440,6 +465,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
+                    @Debuff.started += instance.OnDebuff;
+                    @Debuff.performed += instance.OnDebuff;
+                    @Debuff.canceled += instance.OnDebuff;
                 }
             }
         }
@@ -454,6 +482,7 @@ namespace PlayerControls
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
             void OnDeleteSavedGame(InputAction.CallbackContext context);
+            void OnDebuff(InputAction.CallbackContext context);
         }
     }
 }

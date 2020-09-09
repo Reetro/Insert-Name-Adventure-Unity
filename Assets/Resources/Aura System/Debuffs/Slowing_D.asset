@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb35c1ae9d8e662438f0270b0ae56f1b, type: 3}
-  m_Name: Leeching_D
+  m_Name: Slowing_D
   m_EditorClassIdentifier: 
-  name: Leeching
-  description: your health is being leeched away take 1 damage every 1 second
-  artwork: {fileID: 21300000, guid: 7df7ef7a23e39fb45a91256052a868e8, type: 3}
-  isNotUsingTicks: 1
-  debuffEffect: {fileID: 4286989297728079738, guid: 54df71a41bd879741910653c6da6b4f8,
+  name: Slowing
+  description: You have been slowed your speed is now halved
+  artwork: {fileID: 21300000, guid: 65d211f55b476254ea778e5c4d2e5735, type: 3}
+  debuffEffect: {fileID: 6637607642000432650, guid: d4096a713aa9f9a4b83eca755cb3c79b,
     type: 3}
   useTicks: 0
-  ticks: 5
-  occurrence: 1
-  debuffTime: 0
+  ticks: 0
+  occurrence: 0
+  debuffTime: 5
   refresh: 0
-  stack: 1
-  isStatic: 0
-  debuffValue: 1
+  stack: 0
+  isStatic: 1
+  debuffValue: 0
   visualEffect: {fileID: 0}

@@ -45,7 +45,7 @@ namespace PlayerUI.Icons
         /// <param name="debuff"></param>
         /// <param name="hasFillAmount"></param>
         /// <param name="useTick"></param>
-        public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount, bool useTick)
+        public void StartCooldown(ScriptableDebuff debuff, bool hasFillAmount)
         {
             Debuff = debuff;
             icon.sprite = Debuff.Artwork;
@@ -53,7 +53,7 @@ namespace PlayerUI.Icons
 
             itemButton.SetItem(debuff);
 
-            if (useTick)
+            if (hasFillAmount)
             {
                 durationImage.enabled = true;
                 durationImage.fillAmount = 1;
