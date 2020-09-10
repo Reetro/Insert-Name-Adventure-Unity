@@ -185,6 +185,9 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
+  SquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3485621069134675712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +383,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  SquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3485621069359818602
@@ -579,6 +585,9 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
+  SquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5393045303437337952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,9 +679,8 @@ MonoBehaviour:
   rotationDelay: 2
   targetRightAngle: -90
   targetLeftAngle: 90
-  slowingDebuff: {fileID: 11400000, guid: 26e352bfca2d1474eaaa228d529d453b, type: 2}
+  debuffToApply: {fileID: 11400000, guid: 26e352bfca2d1474eaaa228d529d453b, type: 2}
   SquishScale: {x: 1, y: 0.5, z: 0}
-  SquishTime: 4
   drawDebug: 0
 --- !u!1 &7303351026954897495
 GameObject:
@@ -856,6 +864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  SquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &248167160917598137
@@ -1053,6 +1064,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  SquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7365113063725882043

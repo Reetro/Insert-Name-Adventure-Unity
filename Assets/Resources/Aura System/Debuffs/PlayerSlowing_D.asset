@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb35c1ae9d8e662438f0270b0ae56f1b, type: 3}
-  m_Name: Slowing_D
+  m_Name: PlayerSlowing_D
   m_EditorClassIdentifier: 
   name: Slowing
   description: You have been slowed your speed is now halved
