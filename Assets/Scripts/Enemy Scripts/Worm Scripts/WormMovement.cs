@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using AuraSystem;
 
 namespace EnemyCharacter.AI
 {
@@ -34,6 +35,12 @@ namespace EnemyCharacter.AI
         [SerializeField] private float targetRightAngle = -90f;
         [Tooltip("The target angle the worm will rotate to when player is on the left of the worm")]
         [SerializeField] private float targetLeftAngle = 90f;
+
+        [Header("Squish Settings")]
+        [Tooltip("The slowing debuff to apply to the player")]
+        [SerializeField] private ScriptableDebuff slowingDebuff = null;
+        [Tooltip("The new scale to apply to the player")]
+        [SerializeField] private Vector3 SquishScale = new Vector3(1f, 0.5f, 0);
 
         [Space]
 
@@ -76,10 +83,14 @@ namespace EnemyCharacter.AI
                     wormSegment.DrawDebug = drawDebug;
                     wormSegment.WhatIsGround = whatIsGround;
                     wormSegment.IsRotating = segmentRotating;
+                    wormSegment.SlowingDebuff = slowingDebuff;
+                    wormSegment.SquishScale = SquishScale;
+                    wormSegment.SquishTime = slowingDebuff.GetTotalTime();
 
                     spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
 
                     wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
+                    wormSegment.SquishedPlayer.AddListener(OnSquishedPlayer);
                     wormSegment.CheckCollision();
                         
                     if (drawDebug)
@@ -248,6 +259,14 @@ namespace EnemyCharacter.AI
                                 segmentRotating = false;
 
                                 ReturnHome();
+
+                                foreach (WormSegment wormSegment in childSegments)
+                                {
+                                    if (wormSegment)
+                                    {
+                                        wormSegment.MyBoxCollider2D.enabled = true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -296,6 +315,19 @@ namespace EnemyCharacter.AI
                     wormSegmentToRotate.transform.position = new Vector3(wormSegmentToRotate.transform.position.x, wormSegmentToRotate.transform.position.y - rotationOffset);
 
                     hookedToGround = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Called when the player Get Squished by a segment will completely disable worm collision with the player
+        /// </summary>
+        private void OnSquishedPlayer()
+        {
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.MyBoxCollider2D.enabled = false;
                 }
             }
         }

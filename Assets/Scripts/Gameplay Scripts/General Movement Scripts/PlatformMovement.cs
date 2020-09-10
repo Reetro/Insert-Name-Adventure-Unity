@@ -120,7 +120,6 @@ namespace LevelObjects.MovingObjects
             else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
                 UpdatePlayerPathBlocking(collision);
-
             }
             else if (collision.gameObject.CompareTag("Ground"))
             {

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using AuraSystem;
+using System.Collections;
+using PlayerCharacter.Controller;
 
 namespace EnemyCharacter.AI
 {
@@ -7,12 +10,16 @@ namespace EnemyCharacter.AI
     {
         private GameplayObjectID idObject = null;
         private SpriteRenderer spriteRenderer = null;
+        private Vector3 defaultPlayerScale = Vector3.zero;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
 
         [HideInInspector]
         public OnSegmentDeath SegmentDeath;
+
+        [HideInInspector]
+        public UnityEvent SquishedPlayer;
 
         #region Collision Functions
         /// <summary>
@@ -27,6 +34,8 @@ namespace EnemyCharacter.AI
             MyCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
 
             MyWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
+
+            defaultPlayerScale = GeneralFunctions.GetPlayerGameObject().transform.localScale;
 
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
@@ -70,7 +79,47 @@ namespace EnemyCharacter.AI
                 if (!MyHealthComponent.IsCurrentlyDead && IsRotating)
                 {
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+
+                    GeneralFunctions.ApplyDebuffToTarget(collision.gameObject, SlowingDebuff, true);
+
+                    var playerLegs = collision.transform.GetChild(0).GetComponent<PlayerLegs>();
+                    
+                    if (playerLegs)
+                    {
+                        if (playerLegs.TouchingGround())
+                        {
+                            SquishPlayer(collision.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError(gameObject.name + " failed to get player legs");
+                    }
                 }
+            }
+        }
+        /// <summary>
+        /// Set player scale to equal the squish scale
+        /// </summary>
+        /// <param name="player"></param>
+        private void SquishPlayer(GameObject player)
+        {
+            player.transform.localScale = SquishScale;
+
+            SquishedPlayer.Invoke();
+
+            StartCoroutine(UnSquishPlayer(player));
+        }
+        /// <summary>
+        /// Return player back to the default scale
+        /// </summary>
+        private IEnumerator UnSquishPlayer(GameObject player)
+        {
+            yield return new WaitForSeconds(SquishTime);
+
+            if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
+            {
+                player.transform.localScale = defaultPlayerScale;
             }
         }
         #endregion
@@ -116,6 +165,18 @@ namespace EnemyCharacter.AI
         /// Check to see if the worm is rotating
         /// </summary>
         public bool IsRotating { get; set; }
+        /// <summary>
+        /// The slowing debuff to apply to the player
+        /// </summary>
+        public ScriptableDebuff SlowingDebuff { get; set; }
+        /// <summary>
+        /// The amount of time the player is squished for
+        /// </summary>
+        public float SquishTime { get; set; }
+        /// <summary>
+        /// The new scale to apply to the player
+        /// </summary>
+        public Vector3 SquishScale { get; set; }
         #endregion
     }
 }
