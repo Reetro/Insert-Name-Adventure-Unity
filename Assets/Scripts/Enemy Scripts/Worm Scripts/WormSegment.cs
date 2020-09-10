@@ -108,11 +108,14 @@ namespace EnemyCharacter.AI
         {
             player.transform.localScale = SquishScale;
 
-            GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
+            if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
+            {
+                GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
 
-            SquishedPlayer.Invoke();
+                SquishedPlayer.Invoke();
 
-            StartCoroutine(UnSquishPlayer(player));
+                StartCoroutine(UnSquishPlayer(player));
+            }
         }
         /// <summary>
         /// Return player back to the default scale
@@ -121,12 +124,10 @@ namespace EnemyCharacter.AI
         {
             yield return new WaitForSeconds(SquishTime);
 
-            if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
-            {
-                player.transform.localScale = defaultPlayerScale;
+            player.transform.localScale = defaultPlayerScale;
 
-                player.transform.GetChild(1).transform.localPosition = deafultSpearLocation;
-            }
+            // Move spear back to it's default location
+            player.transform.GetChild(1).transform.localPosition = deafultSpearLocation;
         }
         #endregion
 
