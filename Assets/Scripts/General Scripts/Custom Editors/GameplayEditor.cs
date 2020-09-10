@@ -241,6 +241,11 @@ namespace CustomEditors
         private SerializedProperty _WormDrawDebug;
         #endregion
 
+        #region Worm Squish Variables
+        private SerializedProperty _WormSquishScale;
+        private SerializedProperty _WormDebuff;
+        #endregion
+
         #region Worm Objects
         private SerializedObject wormObject;
         #endregion
@@ -254,7 +259,7 @@ namespace CustomEditors
         #region Buffs / Debuffs Variables
         private Editor LeechingEditor = null;
         private Editor BreatherEditor = null;
-        private Editor SlowingEditor = null;
+        private Editor PlayerSlowingEditor = null;
         #endregion
 
         #region Local Variables
@@ -643,6 +648,8 @@ namespace CustomEditors
             _WormRotationSpeed = wormObject.FindProperty("rotationSpeed");
             _WormRotationTargetLeft = wormObject.FindProperty("targetLeftAngle");
             _WormRotationTargetRight = wormObject.FindProperty("targetRightAngle");
+            _WormSquishScale = wormObject.FindProperty("SquishScale");
+            _WormDebuff = wormObject.FindProperty("debuffToApply");
         }
         #endregion
         #endregion
@@ -708,7 +715,7 @@ namespace CustomEditors
         private void SetupDebuffs()
         {
             var leechingDebuff = Resources.Load("Aura System/Debuffs/Leeching_D") as ScriptableDebuff;
-            var slowingDebuff = Resources.Load("Aura System/Debuffs/Slowing_D") as ScriptableDebuff;
+            var playerSlowingDebuff = Resources.Load("Aura System/Debuffs/PlayerSlowing_D") as ScriptableDebuff;
 
             if (leechingDebuff)
             {
@@ -719,9 +726,9 @@ namespace CustomEditors
                 Debug.LogError("Failed to get leechingDebuff in SetupDebuffs Function in GameplayEditor");
             }
 
-            if (slowingDebuff)
+            if (playerSlowingDebuff)
             {
-                SlowingEditor = Editor.CreateEditor(slowingDebuff);
+                PlayerSlowingEditor = Editor.CreateEditor(playerSlowingDebuff);
             }
             else
             {
@@ -1090,13 +1097,13 @@ namespace CustomEditors
                     #endregion
 
                     #region Slowing Settings
-                    showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Slowing Settings", true);
+                    showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Player Slowing Settings", true);
 
                     if (showSlowingSettings)
                     {
-                        if (SlowingEditor)
+                        if (PlayerSlowingEditor)
                         {
-                            SlowingEditor.OnInspectorGUI();
+                            PlayerSlowingEditor.OnInspectorGUI();
                         }
                     }
                     #endregion

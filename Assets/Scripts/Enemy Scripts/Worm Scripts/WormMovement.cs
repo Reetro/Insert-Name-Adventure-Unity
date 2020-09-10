@@ -37,8 +37,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private float targetLeftAngle = 90f;
 
         [Header("Squish Settings")]
-        [Tooltip("The slowing debuff to apply to the player")]
-        [SerializeField] private ScriptableDebuff slowingDebuff = null;
+        [Tooltip("The debuff to apply to the player")]
+        [SerializeField] private ScriptableDebuff debuffToApply = null;
         [Tooltip("The new scale to apply to the player")]
         [SerializeField] private Vector3 SquishScale = new Vector3(1f, 0.5f, 0);
 
@@ -83,9 +83,9 @@ namespace EnemyCharacter.AI
                     wormSegment.DrawDebug = drawDebug;
                     wormSegment.WhatIsGround = whatIsGround;
                     wormSegment.IsRotating = segmentRotating;
-                    wormSegment.SlowingDebuff = slowingDebuff;
+                    wormSegment.DebuffToApply = debuffToApply;
                     wormSegment.SquishScale = SquishScale;
-                    wormSegment.SquishTime = slowingDebuff.GetTotalTime();
+                    wormSegment.SquishTime = debuffToApply.GetTotalTime();
 
                     spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
 

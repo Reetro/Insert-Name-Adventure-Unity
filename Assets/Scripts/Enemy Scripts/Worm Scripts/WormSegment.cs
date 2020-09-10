@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using AuraSystem;
 using System.Collections;
 using PlayerCharacter.Controller;
+using System.Collections.Generic;
 
 namespace EnemyCharacter.AI
 {
@@ -11,6 +12,7 @@ namespace EnemyCharacter.AI
         private GameplayObjectID idObject = null;
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector3.zero;
+        private Vector3 deafultSpearLocation = Vector3.zero;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -36,6 +38,8 @@ namespace EnemyCharacter.AI
             MyWidth = GeneralFunctions.GetSpriteWidth(GetComponent<SpriteRenderer>());
 
             defaultPlayerScale = GeneralFunctions.GetPlayerGameObject().transform.localScale;
+
+            deafultSpearLocation = GeneralFunctions.GetPlayerGameObject().transform.GetChild(1).transform.localPosition;
 
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
@@ -80,8 +84,6 @@ namespace EnemyCharacter.AI
                 {
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
 
-                    GeneralFunctions.ApplyDebuffToTarget(collision.gameObject, SlowingDebuff, true);
-
                     var playerLegs = collision.transform.GetChild(0).GetComponent<PlayerLegs>();
                     
                     if (playerLegs)
@@ -106,6 +108,8 @@ namespace EnemyCharacter.AI
         {
             player.transform.localScale = SquishScale;
 
+            GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
+
             SquishedPlayer.Invoke();
 
             StartCoroutine(UnSquishPlayer(player));
@@ -120,6 +124,8 @@ namespace EnemyCharacter.AI
             if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
             {
                 player.transform.localScale = defaultPlayerScale;
+
+                player.transform.GetChild(1).transform.localPosition = deafultSpearLocation;
             }
         }
         #endregion
@@ -166,9 +172,9 @@ namespace EnemyCharacter.AI
         /// </summary>
         public bool IsRotating { get; set; }
         /// <summary>
-        /// The slowing debuff to apply to the player
+        /// The debuff to apply to the player
         /// </summary>
-        public ScriptableDebuff SlowingDebuff { get; set; }
+        public ScriptableDebuff DebuffToApply { get; set; }
         /// <summary>
         /// The amount of time the player is squished for
         /// </summary>
