@@ -166,7 +166,7 @@ namespace EnemyCharacter.AI
 
             if (currentAngle >= 180)
             {
-                if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+                if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
                     targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
@@ -177,7 +177,7 @@ namespace EnemyCharacter.AI
             }
             else
             {
-                if (GeneralFunctions.isObjectLeftOrRight(playerObject.transform.position, wormSegmentToRotate.transform.position))
+                if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
                     targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }

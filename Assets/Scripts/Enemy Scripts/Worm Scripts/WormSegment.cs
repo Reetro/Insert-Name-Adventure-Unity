@@ -2,8 +2,6 @@
 using UnityEngine.Events;
 using AuraSystem;
 using System.Collections;
-using PlayerCharacter.Controller;
-using System.Collections.Generic;
 
 namespace EnemyCharacter.AI
 {
@@ -13,6 +11,7 @@ namespace EnemyCharacter.AI
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
+        private bool isPlayerTouchingSegment = false;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -79,24 +78,36 @@ namespace EnemyCharacter.AI
         /// When hit by player deal damage
         /// </summary>
         /// <param name="collision"></param>
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionStay2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                if (!MyHealthComponent.IsCurrentlyDead && IsRotating)
+                if (CanDamage && IsRotating)
                 {
-                    if (CanDamage)
+                    isPlayerTouchingSegment = true;
+
+                    GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+
+                    DamagedPlayer.Invoke();
+
+                    if (GeneralFunctions.IsPlayerTouchingGround() && isPlayerTouchingSegment)
                     {
-                        GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+                        SquishPlayer(collision.gameObject);
 
-                        DamagedPlayer.Invoke();
-
-                        if (GeneralFunctions.IsPlayerTouchingGround())
-                        {
-                            SquishPlayer(collision.gameObject);
-                        }
+                        SquishedPlayer.Invoke();
                     }
                 }
+            }
+        }
+        /// <summary>
+        /// When player is no longer touching this segment disable squish
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                isPlayerTouchingSegment = false;
             }
         }
         /// <summary>
@@ -110,8 +121,6 @@ namespace EnemyCharacter.AI
             if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
             {
                 GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
-
-                SquishedPlayer.Invoke();
 
                 StartCoroutine(UnSquishPlayer(player));
             }
