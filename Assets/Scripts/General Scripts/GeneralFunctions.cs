@@ -662,22 +662,35 @@ public class GeneralFunctions
         return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
     }
     /// <summary>
-    /// Finds all gameplay ID scripts in scene
-    /// </summary>
-    /// <returns>An array of all gameplay ID components</returns>
-    public static GameplayObjectID[] GetAllGameplayIDObjects()
-    {
-        var objects = GameObject.FindObjectsOfType<GameplayObjectID>();
-
-        return objects;
-    }
-    /// <summary>
     ///  Find the Player Gameobject by tag in the current level
     /// </summary>
     /// <returns>The Player Gameobject</returns>
     public static GameObject GetPlayerGameObject()
     {
         return GameObject.FindGameObjectWithTag("Player");
+    }
+    /// <summary>
+    /// Find the player in the current level and get the player legs component
+    /// </summary>
+    /// <returns>The player legs component</returns>
+    public static PlayerLegs GetPlayerLegs()
+    {
+        return GetPlayerGameObject().transform.GetChild(0).GetComponent<PlayerLegs>();
+    }
+    /// <summary>
+    /// Find the player in the current level and get the player spear component
+    /// </summary>
+    /// <returns>The player spear component</returns>
+    public static PlayerSpear GetPlayerSpear()
+    {
+        return GetPlayerGameObject().transform.GetChild(1).GetComponent<PlayerSpear>();
+    }
+    /// <summary>
+    /// Check to see if the player is touching the ground
+    /// </summary>
+    public static bool IsPlayerTouchingGround()
+    {
+        return GetPlayerLegs().TouchingGround();
     }
     /// <summary>
     ///  Gets the gameplay manager and generates an ID

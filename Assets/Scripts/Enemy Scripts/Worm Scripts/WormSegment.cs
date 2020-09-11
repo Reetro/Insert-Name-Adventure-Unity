@@ -91,18 +91,9 @@ namespace EnemyCharacter.AI
 
                         DamagedPlayer.Invoke();
 
-                        var playerLegs = collision.transform.GetChild(0).GetComponent<PlayerLegs>();
-
-                        if (playerLegs)
+                        if (GeneralFunctions.IsPlayerTouchingGround())
                         {
-                            if (playerLegs.TouchingGround())
-                            {
-                                SquishPlayer(collision.gameObject);
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogError(gameObject.name + " failed to get player legs");
+                            SquishPlayer(collision.gameObject);
                         }
                     }
                 }
@@ -135,7 +126,7 @@ namespace EnemyCharacter.AI
             player.transform.localScale = defaultPlayerScale;
 
             // Move spear back to it's default location
-            player.transform.GetChild(1).transform.localPosition = deafultSpearLocation;
+            GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;
         }
         #endregion
 
