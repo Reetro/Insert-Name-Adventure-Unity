@@ -281,6 +281,7 @@ namespace EnemyCharacter.AI
                                     if (wormSegment)
                                     {
                                         wormSegment.MyBoxCollider2D.enabled = true;
+                                        wormSegment.MyCapsuleCollider2D.enabled = true;
                                     }
                                 }
                             }
@@ -344,6 +345,7 @@ namespace EnemyCharacter.AI
                 if (wormSegment)
                 {
                     wormSegment.MyBoxCollider2D.enabled = false;
+                    wormSegment.MyCapsuleCollider2D.enabled = false;
                 }
             }
         }
@@ -419,8 +421,6 @@ namespace EnemyCharacter.AI
                 if (wormSegment)
                 {
                     wormSegment.CanDamage = false;
-
-                    print(wormSegment.name + " : able to damage " + wormSegment.CanDamage);
                 }
             }
 
@@ -439,8 +439,6 @@ namespace EnemyCharacter.AI
                 if (wormSegment)
                 {
                     wormSegment.CanDamage = true;
-
-                    print(wormSegment.name + " : able to damage " + wormSegment.CanDamage);
                 }
             }
         }
