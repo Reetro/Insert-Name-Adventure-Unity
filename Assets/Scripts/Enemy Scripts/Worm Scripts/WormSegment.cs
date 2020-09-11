@@ -122,6 +122,8 @@ namespace EnemyCharacter.AI
             {
                 GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
 
+                GeneralFunctions.GetPlayerSpear().DisableSpear();
+
                 StartCoroutine(UnSquishPlayer(player));
             }
         }
@@ -133,6 +135,8 @@ namespace EnemyCharacter.AI
             yield return new WaitForSeconds(SquishTime);
 
             player.transform.localScale = defaultPlayerScale;
+
+            GeneralFunctions.GetPlayerSpear().EnableSpear();
 
             // Move spear back to it's default location
             GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;

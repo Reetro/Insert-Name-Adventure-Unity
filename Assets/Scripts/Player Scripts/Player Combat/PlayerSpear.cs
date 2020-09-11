@@ -29,6 +29,7 @@ namespace PlayerCharacter.Controller
         [Tooltip("A mask determining what is ground to the spear")]
         public LayerMask whatIsGround;
 
+        #region Properties
         /// <summary>
         /// A list off all colliders to damage
         /// </summary>
@@ -41,6 +42,7 @@ namespace PlayerCharacter.Controller
         /// Gets the layers the spear can collide with 
         /// </summary>
         public LayerMask WhatIsGround { get { return whatIsGround; } }
+        #endregion
 
         #region Spear Components
         private PlayerController controller = null;
@@ -350,6 +352,20 @@ namespace PlayerCharacter.Controller
             float mouseX = controls.Player.MousePostion.ReadValue<Vector2>().x;
 
             return mouseX < playerScreenPoint.x ? true : false;
+        }
+        /// <summary>
+        /// Disable spear rotation
+        /// </summary>
+        public void DisableSpear()
+        {
+            canRotate = false;
+        }
+        /// <summary>
+        /// Enable spear rotation
+        /// </summary>
+        public void EnableSpear()
+        {
+            canRotate = true;
         }
         #endregion
 
