@@ -17,6 +17,8 @@ namespace EnemyCharacter.AI
         [SerializeField] private float pushDelay = 1f;
         [Tooltip("How fast Worm Segments are pushed up to the surface")]
         [SerializeField] private float pushUpSpeed = 0.1f;
+        [Tooltip("The damage cooldown applied to each segment when segment damages the player")]
+        [SerializeField] private float damageCooldown = 1f;
         [Tooltip("What layers should collision test with")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
@@ -76,35 +78,7 @@ namespace EnemyCharacter.AI
 
             foreach (WormSegment wormSegment in childSegments)
             {
-                if (wormSegment)
-                {
-                    wormSegment.DamageToApply = damage;
-                    wormSegment.MyHealthComponent.SetHealth(segmentHealth);
-                    wormSegment.DrawDebug = drawDebug;
-                    wormSegment.WhatIsGround = whatIsGround;
-                    wormSegment.IsRotating = segmentRotating;
-                    wormSegment.DebuffToApply = debuffToApply;
-                    wormSegment.SquishScale = SquishScale;
-                    wormSegment.SquishTime = debuffToApply.GetTotalTime();
-
-                    spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
-
-                    wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
-                    wormSegment.SquishedPlayer.AddListener(OnSquishedPlayer);
-                    wormSegment.CheckCollision();
-                        
-                    if (drawDebug)
-                    {
-                        if (wormSegment.AboveGround)
-                        {
-                            print("Worm Segment: " + wormSegment.name + " is above ground");
-                        }
-                        else
-                        {
-                            print("Worm Segment: " + wormSegment.name + " is underground");
-                        }
-                    }
-                }
+                SetupWormSegment(wormSegment);
             }
 
             wormSegmentToRotate = GetSegmentToRotate();
@@ -122,6 +96,48 @@ namespace EnemyCharacter.AI
             StartCoroutine(PushSegmentsUp());
 
             SetupRotation();
+        }
+        /// <summary>
+        /// Setup all default worm segments
+        /// </summary>
+        /// <param name="wormSegment"></param>
+        private void SetupWormSegment(WormSegment wormSegment)
+        {
+            if (wormSegment)
+            {
+                wormSegment.DamageToApply = damage;
+                wormSegment.MyHealthComponent.SetHealth(segmentHealth);
+                wormSegment.DrawDebug = drawDebug;
+                wormSegment.WhatIsGround = whatIsGround;
+                wormSegment.IsRotating = segmentRotating;
+                wormSegment.DebuffToApply = debuffToApply;
+                wormSegment.SquishScale = SquishScale;
+                wormSegment.SquishTime = debuffToApply.GetTotalTime();
+                wormSegment.CanDamage = true;
+
+                spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
+
+                wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
+                wormSegment.SquishedPlayer.AddListener(OnSquishedPlayer);
+                wormSegment.DamagedPlayer.AddListener(OnDamagedPlayer);
+                wormSegment.CheckCollision();
+
+                if (drawDebug)
+                {
+                    if (wormSegment.AboveGround)
+                    {
+                        print("Worm Segment: " + wormSegment.name + " is above ground");
+                    }
+                    else
+                    {
+                        print("Worm Segment: " + wormSegment.name + " is underground");
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to setup worm segments");
+            }
         }
         /// <summary>
         /// Determines the 1st rotation direction and sets all default rotation values
@@ -392,6 +408,41 @@ namespace EnemyCharacter.AI
             }
 
             return traceEnd;
+        }
+        /// <summary>
+        /// Called when a worm segments damages the player will place all segments on cooldown
+        /// </summary>
+        private void OnDamagedPlayer()
+        {
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.CanDamage = false;
+
+                    print(wormSegment.name + " : able to damage " + wormSegment.CanDamage);
+                }
+            }
+
+            StartCoroutine(DamageCooldown());
+        }
+        /// <summary>
+        /// The actual cooldown timer
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator DamageCooldown()
+        {
+            yield return new WaitForSeconds(damageCooldown);
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.CanDamage = true;
+
+                    print(wormSegment.name + " : able to damage " + wormSegment.CanDamage);
+                }
+            }
         }
         /// <summary>
         /// Gets the top most worm segment

@@ -229,6 +229,7 @@ namespace CustomEditors
         private SerializedProperty _WormPushDelay;
         private SerializedProperty _WormPushUpSpeed;
         private SerializedProperty _WormWhatIsGround;
+        private SerializedProperty _WormDamageCooldown;
         #endregion
 
         #region Worm Rotation Variables
@@ -650,6 +651,7 @@ namespace CustomEditors
             _WormRotationTargetRight = wormObject.FindProperty("targetRightAngle");
             _WormSquishScale = wormObject.FindProperty("SquishScale");
             _WormDebuff = wormObject.FindProperty("debuffToApply");
+            _WormDamageCooldown = wormObject.FindProperty("damageCooldown");
         }
         #endregion
         #endregion

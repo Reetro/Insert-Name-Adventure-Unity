@@ -23,6 +23,9 @@ namespace EnemyCharacter.AI
         [HideInInspector]
         public UnityEvent SquishedPlayer;
 
+        [HideInInspector]
+        public UnityEvent DamagedPlayer;
+
         #region Collision Functions
         /// <summary>
         /// Set all needed references
@@ -82,20 +85,25 @@ namespace EnemyCharacter.AI
             {
                 if (!MyHealthComponent.IsCurrentlyDead && IsRotating)
                 {
-                    GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
+                    if (CanDamage)
+                    {
+                        GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
 
-                    var playerLegs = collision.transform.GetChild(0).GetComponent<PlayerLegs>();
-                    
-                    if (playerLegs)
-                    {
-                        if (playerLegs.TouchingGround())
+                        DamagedPlayer.Invoke();
+
+                        var playerLegs = collision.transform.GetChild(0).GetComponent<PlayerLegs>();
+
+                        if (playerLegs)
                         {
-                            SquishPlayer(collision.gameObject);
+                            if (playerLegs.TouchingGround())
+                            {
+                                SquishPlayer(collision.gameObject);
+                            }
                         }
-                    }
-                    else
-                    {
-                        Debug.LogError(gameObject.name + " failed to get player legs");
+                        else
+                        {
+                            Debug.LogError(gameObject.name + " failed to get player legs");
+                        }
                     }
                 }
             }
@@ -184,6 +192,10 @@ namespace EnemyCharacter.AI
         /// The new scale to apply to the player
         /// </summary>
         public Vector3 SquishScale { get; set; }
+        /// <summary>
+        /// Check to see if the given segment is currently able to damage the player
+        /// </summary>
+        public bool CanDamage { get; set; }
         #endregion
     }
 }
