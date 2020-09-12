@@ -66,6 +66,7 @@ namespace EnemyCharacter.AI
         private bool unHookedFromGround = false;
         private GameObject playerObject = null;
         private float currentAngle = 0f;
+        private bool appliedDebuff = false;
         #endregion
 
         #region Setup Functions
@@ -75,6 +76,8 @@ namespace EnemyCharacter.AI
         private void Start()
         {
             childSegments = GetComponentsInChildren<WormSegment>().ToList();
+
+            playerObject = GeneralFunctions.GetPlayerGameObject();
 
             foreach (WormSegment wormSegment in childSegments)
             {
@@ -110,16 +113,19 @@ namespace EnemyCharacter.AI
                 wormSegment.DrawDebug = drawDebug;
                 wormSegment.WhatIsGround = whatIsGround;
                 wormSegment.IsRotating = segmentRotating;
-                wormSegment.DebuffToApply = debuffToApply;
                 wormSegment.SquishScale = SquishScale;
                 wormSegment.SquishTime = debuffToApply.GetTotalTime();
                 wormSegment.CanDamage = true;
+                wormSegment.IDObject.ConstructID();
+                wormSegment.PlayerObject = playerObject;
 
                 spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
+                wormSegment.SpriteWidth = wormSegment.MyBoxCollider2D.bounds.size.x;
 
                 wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
-                wormSegment.SquishedPlayer.AddListener(OnSquishedPlayer);
+                wormSegment.OnSquishedPlayer.AddListener(OnSquishedPlayer);
                 wormSegment.DamagedPlayer.AddListener(OnDamagedPlayer);
+                wormSegment.OnUnSquishedPlayer.AddListener(OnUnSquishedPlayer);
                 wormSegment.CheckCollision();
 
                 if (drawDebug)
@@ -180,10 +186,26 @@ namespace EnemyCharacter.AI
                 if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
                     targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = true;
+                        }
+                    }
                 }
                 else
                 {
                     targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = false;
+                        }
+                    }
                 }
             }
         }
@@ -278,7 +300,7 @@ namespace EnemyCharacter.AI
 
                                 foreach (WormSegment wormSegment in childSegments)
                                 {
-                                    if (wormSegment)
+                                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
                                     {
                                         wormSegment.MyBoxCollider2D.enabled = true;
                                         wormSegment.MyCapsuleCollider2D.enabled = true;
@@ -336,18 +358,23 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Called when the player Get Squished by a segment will completely disable worm collision with the player
+        /// Called when the player Get Squished by a segment
         /// </summary>
         private void OnSquishedPlayer()
         {
-            foreach (WormSegment wormSegment in childSegments)
+            if (!appliedDebuff)
             {
-                if (wormSegment)
-                {
-                    wormSegment.MyBoxCollider2D.enabled = false;
-                    wormSegment.MyCapsuleCollider2D.enabled = false;
-                }
+                GeneralFunctions.ApplyDebuffToTarget(playerObject, debuffToApply, true);
+
+                appliedDebuff = true;
             }
+        }
+        /// <summary>
+        /// Called when the player is Unsquished
+        /// </summary>
+        private void OnUnSquishedPlayer()
+        {
+            appliedDebuff = false;
         }
         /// <summary>
         /// Reset worm segment position back to starting position
@@ -399,6 +426,21 @@ namespace EnemyCharacter.AI
         private Vector2 GetNextSegmentLocation()
         {
             var topSegment = GetTopMostSegment();
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    if (wormSegment.Equals(topSegment))
+                    {
+                        wormSegment.IsTopSegment = true;
+                    }
+                    else
+                    {
+                        wormSegment.IsTopSegment = false;
+                    }
+                }
+            }
 
             var traceEnd = GeneralFunctions.GetFaceingDirectionY(topSegment.gameObject) * spriteHeight;
 

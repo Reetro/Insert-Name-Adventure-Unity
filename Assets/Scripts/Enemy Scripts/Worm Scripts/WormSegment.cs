@@ -7,11 +7,11 @@ namespace EnemyCharacter.AI
 {
     public class WormSegment : MonoBehaviour
     {
-        private GameplayObjectID idObject = null;
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
-        private bool isPlayerTouchingSegment = false;
+
+        private const float groundTraceDistance = 0.3f;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -20,7 +20,10 @@ namespace EnemyCharacter.AI
         public OnSegmentDeath SegmentDeath;
 
         [HideInInspector]
-        public UnityEvent SquishedPlayer;
+        public UnityEvent OnSquishedPlayer;
+
+        [HideInInspector]
+        public UnityEvent OnUnSquishedPlayer;
 
         [HideInInspector]
         public UnityEvent DamagedPlayer;
@@ -31,7 +34,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Awake()
         {
-            idObject = GetComponent<GameplayObjectID>();
+            IDObject = GetComponent<GameplayObjectID>();
             MyHealthComponent = GetComponent<HealthComponent>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             MyBoxCollider2D = GetComponent<BoxCollider2D>();
@@ -43,7 +46,6 @@ namespace EnemyCharacter.AI
 
             deafultSpearLocation = GeneralFunctions.GetPlayerGameObject().transform.GetChild(1).transform.localPosition;
 
-            idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
@@ -75,6 +77,48 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
+        /// Does a constant trace to see if segment is touching the ground layer 
+        /// </summary>
+        private void Update()
+        {
+            if (AboveGround)
+            {
+                RaycastHit2D raycastHit2D;
+
+                if (!IsPlayerLeft)
+                {
+                    var traceStart = transform.position;
+                    var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject) * groundTraceDistance;
+
+                    raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, WhatIsGround);
+
+                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                }
+                else
+                {
+                    var traceStart = transform.position;
+                    var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject) * groundTraceDistance;
+
+                    raycastHit2D = Physics2D.Raycast(traceStart, -traceEnd, WhatIsGround);
+
+                    Debug.DrawRay(traceStart, -traceEnd, Color.green);
+                }
+
+                if (raycastHit2D)
+                {
+                    Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
+
+                    if (collider2D)
+                    {
+                        if (GeneralFunctions.IsPlayerTouchingGround() && IsRotating)
+                        {
+                            SquishPlayer(PlayerObject);
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
         /// When hit by player deal damage
         /// </summary>
         /// <param name="collision"></param>
@@ -84,45 +128,25 @@ namespace EnemyCharacter.AI
             {
                 if (CanDamage && IsRotating)
                 {
-                    isPlayerTouchingSegment = true;
-
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
 
                     DamagedPlayer.Invoke();
-
-                    if (GeneralFunctions.IsPlayerTouchingGround() && isPlayerTouchingSegment)
-                    {
-                        SquishPlayer(collision.gameObject);
-
-                        SquishedPlayer.Invoke();
-                    }
                 }
-            }
-        }
-        /// <summary>
-        /// When player is no longer touching this segment disable squish
-        /// </summary>
-        /// <param name="collision"></param>
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                isPlayerTouchingSegment = false;
             }
         }
         /// <summary>
         /// Set player scale to equal the squish scale
         /// </summary>
         /// <param name="player"></param>
-        private void SquishPlayer(GameObject player)
+        public void SquishPlayer(GameObject player)
         {
             player.transform.localScale = SquishScale;
 
             if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
             {
-                GeneralFunctions.ApplyDebuffToTarget(player, DebuffToApply, true);
-
                 GeneralFunctions.GetPlayerSpear().DisableSpear();
+
+                OnSquishedPlayer.Invoke();
 
                 StartCoroutine(UnSquishPlayer(player));
             }
@@ -140,6 +164,8 @@ namespace EnemyCharacter.AI
 
             // Move spear back to it's default location
             GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;
+
+            OnUnSquishedPlayer.Invoke();
         }
         #endregion
 
@@ -151,7 +177,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Gets this Gameobjects ID
         /// </summary>
-        public int MyID { get { return idObject.ID; } }
+        public int MyID { get { return IDObject.ID; } }
         /// <summary>
         /// Get this Gameobjects health component
         /// </summary>
@@ -185,10 +211,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         public bool IsRotating { get; set; }
         /// <summary>
-        /// The debuff to apply to the player
-        /// </summary>
-        public ScriptableDebuff DebuffToApply { get; set; }
-        /// <summary>
         /// The amount of time the player is squished for
         /// </summary>
         public float SquishTime { get; set; }
@@ -200,6 +222,26 @@ namespace EnemyCharacter.AI
         /// Check to see if the given segment is currently able to damage the player
         /// </summary>
         public bool CanDamage { get; set; }
+        /// <summary>
+        /// Checks to see if this is the segment currently the topmost segment
+        /// </summary>
+        public bool IsTopSegment { get; set; }
+        /// <summary>
+        /// Check to see if the player is left of this object if false player is right
+        /// </summary>
+        public bool IsPlayerLeft { get; set; }
+        /// <summary>
+        /// Get this games objects id component
+        /// </summary>
+        public GameplayObjectID IDObject { get; private set; }
+        /// <summary>
+        /// Gets the height of the actual worm sprite
+        /// </summary>
+        public float SpriteWidth { get; set; }
+        /// <summary>
+        /// A reference to the player object in the current level
+        /// </summary>
+        public GameObject PlayerObject { get; set; }
         #endregion
     }
 }

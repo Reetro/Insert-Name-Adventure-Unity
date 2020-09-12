@@ -57,6 +57,7 @@ namespace PlayerCharacter.Controller
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
+        private bool isSpearDisabled = false;
         private GameObject playerObject = null;
         private PolygonCollider2D meleeCollision = null;
         #endregion
@@ -143,16 +144,20 @@ namespace PlayerCharacter.Controller
         public void StartSpearPush()
         {
             bool nextToWall;
-            if (CanPushSpear(out nextToWall))
+            bool doCooldown;
+            if (CanPushSpear(out nextToWall, out doCooldown))
             {
                 isSpearOut = true;
                 canRotate = false;
 
-                StartCoroutine(PushSpear());
+                StartCoroutine(PushSpear(doCooldown));
             }
             else if (!GeneralFunctions.IsPlayerDead() && !cooldownBar.GetIsActive())
             {
-                cooldownBar.StartCooldown(spearCooldown);
+                if (doCooldown)
+                {
+                    cooldownBar.StartCooldown(spearCooldown);
+                }
 
                 if (nextToWall)
                 {
@@ -164,10 +169,15 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Push spear forward
         /// </summary>
-        private IEnumerator PushSpear()
+        private IEnumerator PushSpear(bool doCooldown)
         {
             meleeCollision.enabled = true;
-            cooldownBar.StartCooldown(spearCooldown);
+
+            if (doCooldown)
+            {
+                cooldownBar.StartCooldown(spearCooldown);
+            }
+
             transform.Translate(spearTravelDistance, 0, 0);
 
             yield return new WaitForSeconds(spearReturnDelay);
@@ -296,37 +306,50 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the spear is being block by ground
         /// </summary>
         /// <returns>A bool that determines if the player can push the spear</returns>
-        private bool CanPushSpear(out bool nextToWall)
+        private bool CanPushSpear(out bool nextToWall, out bool doCooldown)
         {
-            if (!GeneralFunctions.IsPlayerDead())
+           if (!isSpearDisabled)
             {
-                if (!isSpearOut)
+                if (!GeneralFunctions.IsPlayerDead())
                 {
-                    if (!cooldownBar.GetIsActive())
+                    if (!isSpearOut)
                     {
-                        if (!TouchingGround)
+                        if (!cooldownBar.GetIsActive())
                         {
-                            nextToWall = false;
-                            return true;
-                        }
-                        else
-                        {
-                            var hit = GeneralFunctions.TraceFromEyes(playerObject);
-
-                            if (hit)
+                            if (!TouchingGround)
                             {
-                                nextToWall = true;
+                                nextToWall = false;
+                                doCooldown = true;
+                                return true;
                             }
                             else
                             {
-                                nextToWall = false;
-                            }
+                                var hit = GeneralFunctions.TraceFromEyes(playerObject);
 
+                                if (hit)
+                                {
+                                    doCooldown = true;
+                                    nextToWall = true;
+                                }
+                                else
+                                {
+                                    doCooldown = true;
+                                    nextToWall = false;
+                                }
+
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            doCooldown = false;
+                            nextToWall = false;
                             return false;
                         }
                     }
                     else
                     {
+                        doCooldown = true;
                         nextToWall = false;
                         return false;
                     }
@@ -334,11 +357,13 @@ namespace PlayerCharacter.Controller
                 else
                 {
                     nextToWall = false;
+                    doCooldown = false;
                     return false;
                 }
             }
-            else
+           else
             {
+                doCooldown = false;
                 nextToWall = false;
                 return false;
             }
@@ -359,6 +384,7 @@ namespace PlayerCharacter.Controller
         public void DisableSpear()
         {
             canRotate = false;
+            isSpearDisabled = true;
         }
         /// <summary>
         /// Enable spear rotation
@@ -366,6 +392,7 @@ namespace PlayerCharacter.Controller
         public void EnableSpear()
         {
             canRotate = true;
+            isSpearDisabled = false;
         }
         #endregion
 
