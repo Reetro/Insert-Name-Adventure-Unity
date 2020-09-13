@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AuraSystem;
+using AuraSystem.Effects;
 
 namespace EnemyCharacter.AI
 {
@@ -372,6 +373,14 @@ namespace EnemyCharacter.AI
 
                 appliedDebuff = true;
             }
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.HasPlayerBeenSquished = true;
+                }
+            }
         }
         /// <summary>
         /// Called when the player is Unsquished
@@ -390,6 +399,14 @@ namespace EnemyCharacter.AI
                 wormSegmentToRotate.transform.position = homeLocation;
 
                 unHookedFromGround = true;
+            }
+
+            foreach (WormSegment wormSegment in childSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.HasPlayerBeenSquished = false;
+                }
             }
         }
         /// <summary>

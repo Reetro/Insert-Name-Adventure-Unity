@@ -144,6 +144,13 @@ namespace EnemyCharacter.AI
                         SquishPlayer(PlayerObject);
                     }
                 }
+                else if (HasPlayerBeenSquished)
+                {
+                    if (IsGrounded)
+                    {
+                        DisableCollision();
+                    }
+                }
             }
         }
         /// <summary>
@@ -290,6 +297,10 @@ namespace EnemyCharacter.AI
         /// Checks to see if the segment is touching the ground
         /// </summary>
         public bool IsGrounded { get; private set; }
+        /// <summary>
+        /// Check to see if the player has been squished
+        /// </summary>
+        public bool HasPlayerBeenSquished { get; set; } = false;
         #endregion
     }
 }
