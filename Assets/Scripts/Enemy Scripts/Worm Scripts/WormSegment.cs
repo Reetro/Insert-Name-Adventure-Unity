@@ -11,7 +11,7 @@ namespace EnemyCharacter.AI
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
 
-        private const float groundTraceDistance = 0.3f;
+        private const float groundTraceDistance = 0.35f;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -83,37 +83,65 @@ namespace EnemyCharacter.AI
         {
             if (AboveGround)
             {
-                RaycastHit2D raycastHit2D;
+                CheckForGround();
 
-                if (!IsPlayerLeft)
+                CheckForSquish();
+            }
+        }
+        /// <summary>
+        /// Raycast towards the current side the player is on and check to see if segment is touching the ground
+        /// </summary>
+        private void CheckForGround()
+        {
+            RaycastHit2D raycastHit2D;
+
+            if (!IsPlayerLeft)
+            {
+                var traceStart = transform.position;
+                var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject);
+
+                raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, groundTraceDistance, WhatIsGround);
+
+                Debug.DrawRay(traceStart, traceEnd * groundTraceDistance, Color.green);
+            }
+            else
+            {
+                var traceStart = transform.position;
+                var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject);
+
+                raycastHit2D = Physics2D.Raycast(traceStart, -traceEnd, groundTraceDistance, WhatIsGround);
+
+                Debug.DrawRay(traceStart, -traceEnd * groundTraceDistance, Color.green);
+            }
+
+            if (raycastHit2D)
+            {
+                IsGrounded = true;
+            }
+            else
+            {
+                IsGrounded = false;
+            }
+        }
+        /// <summary>
+        /// If segment is rotating check to see if player has been hit if so squish the player
+        /// </summary>
+        private void CheckForSquish()
+        {
+            if (IsRotating)
+            {
+                Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
+
+                if (collider2D)
                 {
-                    var traceStart = transform.position;
-                    var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject) * groundTraceDistance;
-
-                    raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, WhatIsGround);
-
-                    Debug.DrawRay(traceStart, traceEnd, Color.green);
-                }
-                else
-                {
-                    var traceStart = transform.position;
-                    var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject) * groundTraceDistance;
-
-                    raycastHit2D = Physics2D.Raycast(traceStart, -traceEnd, WhatIsGround);
-
-                    Debug.DrawRay(traceStart, -traceEnd, Color.green);
-                }
-
-                if (raycastHit2D)
-                {
-                    Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
-
-                    if (collider2D)
+                    if (GeneralFunctions.IsPlayerTouchingGround())
                     {
-                        if (GeneralFunctions.IsPlayerTouchingGround() && IsRotating)
+                        if (IsGrounded)
                         {
-                            SquishPlayer(PlayerObject);
+                            DisableCollision();
                         }
+
+                        SquishPlayer(PlayerObject);
                     }
                 }
             }
@@ -166,6 +194,22 @@ namespace EnemyCharacter.AI
             GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;
 
             OnUnSquishedPlayer.Invoke();
+        }
+        /// <summary>
+        /// Disable both MyBoxCollider2D and MyCapsuleCollider2D
+        /// </summary>
+        public void DisableCollision()
+        {
+            MyBoxCollider2D.enabled = false;
+            MyCapsuleCollider2D.enabled = false;
+        }
+        /// <summary>
+        /// Enable both MyBoxCollider2D and MyCapsuleCollider2D
+        /// </summary>
+        public void EnableCollision()
+        {
+            MyBoxCollider2D.enabled = true;
+            MyCapsuleCollider2D.enabled = true;
         }
         #endregion
 
@@ -242,6 +286,10 @@ namespace EnemyCharacter.AI
         /// A reference to the player object in the current level
         /// </summary>
         public GameObject PlayerObject { get; set; }
+        /// <summary>
+        /// Checks to see if the segment is touching the ground
+        /// </summary>
+        public bool IsGrounded { get; private set; }
         #endregion
     }
 }

@@ -277,6 +277,11 @@ namespace EnemyCharacter.AI
 
                         segmentRotating = true;
 
+                        foreach (WormSegment wormSegment in childSegments)
+                        {
+                            wormSegment.IsRotating = segmentRotating;
+                        }
+
                         if (wormSegmentToRotate.transform.rotation == targetRotation)
                         {
                             returningHome = true;
@@ -296,24 +301,23 @@ namespace EnemyCharacter.AI
                             {
                                 segmentRotating = false;
 
+                                foreach (WormSegment wormSegment in childSegments)
+                                {
+                                    wormSegment.IsRotating = segmentRotating;
+                                }
+
                                 ReturnHome();
 
                                 foreach (WormSegment wormSegment in childSegments)
                                 {
                                     if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
                                     {
-                                        wormSegment.MyBoxCollider2D.enabled = true;
-                                        wormSegment.MyCapsuleCollider2D.enabled = true;
+                                        wormSegment.EnableCollision();
                                     }
                                 }
                             }
                         }
                     }
-                }
-
-                foreach (WormSegment wormSegment in childSegments)
-                {
-                    wormSegment.IsRotating = segmentRotating;
                 }
             }
         }

@@ -124,7 +124,7 @@ Rigidbody2D:
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -185,7 +185,10 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
-  SquishedPlayer:
+  OnSquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
   DamagedPlayer:
@@ -327,7 +330,7 @@ Rigidbody2D:
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -388,7 +391,10 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
-  SquishedPlayer:
+  OnSquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
   DamagedPlayer:
@@ -530,7 +536,7 @@ Rigidbody2D:
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -591,7 +597,10 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
-  SquishedPlayer:
+  OnSquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
   DamagedPlayer:
@@ -659,7 +668,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -815,7 +824,7 @@ Rigidbody2D:
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -876,7 +885,10 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
-  SquishedPlayer:
+  OnSquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
   DamagedPlayer:
@@ -1018,7 +1030,7 @@ Rigidbody2D:
   m_AngularDrag: 0.1
   m_GravityScale: 0.85
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -1079,7 +1091,10 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
-  SquishedPlayer:
+  OnSquishedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSquishedPlayer:
     m_PersistentCalls:
       m_Calls: []
   DamagedPlayer:
