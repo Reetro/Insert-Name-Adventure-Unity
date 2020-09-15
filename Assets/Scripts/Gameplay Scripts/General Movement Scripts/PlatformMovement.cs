@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
 using PlayerCharacter.Controller;
+using UnityEngine.Events;
 
 namespace LevelObjects.MovingObjects
 {
@@ -28,6 +29,7 @@ namespace LevelObjects.MovingObjects
         /// Checks to see if the pressure plate has pressed
         /// </summary>
         public bool hasPlateBeenPreesed { get; protected set; } = false;
+
         /// <summary>
         /// Called when a connected pressure plate is pressed
         /// </summary>
@@ -119,6 +121,8 @@ namespace LevelObjects.MovingObjects
             }
             else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
+                GeneralFunctions.AttachObjectToTransfrom(transform, collision.gameObject);
+
                 UpdatePlayerPathBlocking(collision);
             }
             else if (collision.gameObject.CompareTag("Ground"))
@@ -134,6 +138,8 @@ namespace LevelObjects.MovingObjects
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
+                GeneralFunctions.DetachFromParent(collision.gameObject);
+
                 var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
                 if (playerLegs.TouchingGround() && !TouchingGround)

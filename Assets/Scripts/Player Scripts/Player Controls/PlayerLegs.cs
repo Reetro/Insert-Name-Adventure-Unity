@@ -19,8 +19,12 @@ namespace PlayerCharacter.Controller
 
         [Header("Events")]
         [Space]
-
         public UnityEvent OnLandEvent;
+
+        [Header("Collision Settings")]
+        [SerializeField] private Vector2 boxSize = Vector2.zero;
+        [SerializeField] private Transform collisionTransform = null;
+
         /// <summary>
         /// When object is spawned in get a reference to the player object
         /// </summary>
@@ -29,17 +33,17 @@ namespace PlayerCharacter.Controller
             player = GeneralFunctions.GetPlayerGameObject();
         }
         /// <summary>
-        /// Check to see if player is touching the ground every frame
+        /// Check to see if legs are colliding with anything
         /// </summary>
-        /// <param name="collision"></param>
-        private void OnTriggerStay2D(Collider2D collision)
+        private void FixedUpdate()
         {
-            bool wasGrounded = IsGrounded;
-            IsGrounded = false;
+            var collision = GetLegCollision();
 
-            // Check to see if player is on the ground
-            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
+            if (collision)
             {
+                bool wasGrounded = IsGrounded;
+                IsGrounded = false;
+
                 if (collision.gameObject != player)
                 {
                     IsGrounded = true;
@@ -49,30 +53,16 @@ namespace PlayerCharacter.Controller
                     }
                 }
             }
-            // See if the player is on a platform if so attach player to it
-            else if (collision.gameObject.CompareTag("Platform"))
-            {
-                GeneralFunctions.AttachObjectToTransfrom(collision.transform, player);
-
-                IsGrounded = true;
-                if (!wasGrounded)
-                {
-                    OnLandEvent.Invoke();
-                }
-            }
-
         }
         /// <summary>
-        /// If player was on a moving platform detach player from it
+        /// Draw a overlap box
         /// </summary>
-        /// <param name="collision"></param>
-        private void OnTriggerExit2D(Collider2D collision)
+        /// <returns>The first collider2D it overlaps</returns>
+        public Collider2D GetLegCollision()
         {
-            // Deattach player from a moving platform when they jump off
-            if (collision.gameObject.CompareTag("Platform"))
-            {
-                GeneralFunctions.DetachFromParent(player);
-            }
+            Collider2D collider2D = Physics2D.OverlapBox(collisionTransform.position, boxSize, 0f, whatIsGround);
+
+            return collider2D;
         }
         /// <summary>
         /// Checks to see if the player is touching the ground layer
@@ -97,6 +87,15 @@ namespace PlayerCharacter.Controller
                 }
             }
             return hitGround;
+        }
+        /// <summary>
+        /// Draw overlap box
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+
+            Gizmos.DrawWireCube(collisionTransform.position, boxSize);
         }
     }
 }
