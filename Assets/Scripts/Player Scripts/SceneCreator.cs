@@ -5,6 +5,8 @@ using LevelObjects.SceneLoading;
 using LevelObjects.Saving;
 using PlayerCharacter.GameSaving;
 using PlayerCharacter.Controller;
+using EnemyCharacter;
+using GameplayManagement.Assets;
 
 namespace PlayerCharacter.SceneLoading
 {
@@ -37,10 +39,12 @@ namespace PlayerCharacter.SceneLoading
             SetupGameplayComponents();
         }
         /// <summary>
-        /// Checks if the level loader and level exit currently exist in the spawn
+        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets
         /// </summary>
         private void SetupLevel()
         {
+            FindObjectOfType<GameAssets>().UpdateReferences();
+
             levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
 
             var levelExit = FindObjectOfType<LevelExit>();
@@ -64,6 +68,8 @@ namespace PlayerCharacter.SceneLoading
 
             playerController.MyPlayerState = playerState.GetComponent<PlayerState>();
 
+            FindObjectOfType<PlayerSpear>().OnSceneLoaded();
+
             var checkpoint = FindObjectOfType<Checkpoint>();
 
             // Sets the player state in active checkpoint 
@@ -86,6 +92,16 @@ namespace PlayerCharacter.SceneLoading
         /// </summary>
         private void SetupGameplayComponents()
         {
+            var enemies = FindObjectsOfType<EnemyBase>();
+
+            foreach (EnemyBase enemyBase in enemies)
+            {
+                if (enemyBase)
+                {
+                    enemyBase.OnSceneCreated();
+                }
+            }
+
             Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
 
             var auraManagers = FindObjectsOfType<AuraManager>();

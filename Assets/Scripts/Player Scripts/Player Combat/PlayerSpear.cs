@@ -76,7 +76,12 @@ namespace PlayerCharacter.Controller
         private void Awake()
         {
             controls = new Controls();
-
+        }
+        /// <summary>
+        /// When scene is done loading setup spear references
+        /// </summary>
+        public void OnSceneLoaded()
+        {
             SetupSpear();
         }
         /// <summary>

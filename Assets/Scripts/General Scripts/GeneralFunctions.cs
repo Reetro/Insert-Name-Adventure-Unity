@@ -609,12 +609,11 @@ public class GeneralFunctions
 
     #region Gameobject Functions
     /// <summary>
-    /// Find the Player UI Manager in the current scene
+    /// Get the PlayerUIManager cached in Game Assets
     /// </summary>
-    /// <returns></returns>
     public static PlayerUIManager GetPlayerUIManager()
     {
-        return GameObject.FindGameObjectWithTag("Player Hud Canvas").GetComponent<PlayerUIManager>();
+        return GameAssets.PlayerHUDManager;
     }
     /// <summary>
     /// Checks to see if the given object is on the player character
@@ -632,8 +631,10 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="playerObject"></param>
     /// <param name="stunTime"></param>
-    public static void StunPlayer(GameObject playerObject, float stunTime)
+    public static void StunPlayer(float stunTime)
     {
+        var playerObject = GetPlayerGameObject();
+
         if (playerObject)
         {
             var playerController = playerObject.GetComponent<PlayerController>();
@@ -653,29 +654,29 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Finds the player state in the game world
+    /// Get the PlayerState cached in Game Assets
     /// </summary>
     public static PlayerState GetPlayerState()
     {
-        return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+        return GameAssets.PlayerCurrentState;
     }
     /// <summary>
-    /// Finds the level loader in the game world
+    /// Get the LevelLoader cached in Game Assets
     /// </summary>
     public static LevelLoader GetLevelLoader()
     {
-        return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
+        return GameAssets.CurrentLevelLoader;
     }
     /// <summary>
-    ///  Find the Player Gameobject by tag in the current level
+    ///  Get the Player Gameobject cached in Game Assets
     /// </summary>
     /// <returns>The Player Gameobject</returns>
     public static GameObject GetPlayerGameObject()
     {
-        return GameObject.FindGameObjectWithTag("Player");
+        return GameAssets.PlayerGameObject;
     }
     /// <summary>
-    /// Find the player in the current level and get the player legs component
+    /// Get the Player Gameobject in the current level and get the player legs component
     /// </summary>
     /// <returns>The player legs component</returns>
     public static PlayerLegs GetPlayerLegs()
@@ -683,7 +684,7 @@ public class GeneralFunctions
         return GetPlayerGameObject().transform.GetChild(0).GetComponent<PlayerLegs>();
     }
     /// <summary>
-    /// Find the player in the current level and get the player spear component
+    /// Get the Player Gameobject in the current level and get the player spear component
     /// </summary>
     /// <returns>The player spear component</returns>
     public static PlayerSpear GetPlayerSpear()

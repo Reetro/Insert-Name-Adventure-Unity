@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
-using System;
 
 namespace EnemyCharacter
 {
@@ -10,7 +9,10 @@ namespace EnemyCharacter
     {
         private GameplayObjectID idObject = null;
 
-        protected virtual void Awake()
+        /// <summary>
+        /// Called right after the SceneCreator has setup the Player Gameobject
+        /// </summary>
+        public virtual void OnSceneCreated()
         {
             PlayerTransform = GeneralFunctions.GetPlayerGameObject().transform;
             MyHealthComponent = GetComponent<HealthComponent>();
