@@ -16,9 +16,8 @@ namespace PlayerCharacter.Controller
 
         [Header("Layer Settings")]
         public LayerMask whatIsGround;  // A mask determining what is ground to the character
-
-        [Header("Events")]
-        [Space]
+        
+        [HideInInspector]
         public UnityEvent OnLandEvent;
 
         [Header("Collision Settings")]

@@ -4,13 +4,12 @@ using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
-using AuraSystem;
 
 namespace PlayerCharacter.Controller
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerSpear currentGun = null;
+        [SerializeField] private PlayerSpear currentSpear = null;
 
         #region Player Controls
         public Controls controls = null;
@@ -56,6 +55,8 @@ namespace PlayerCharacter.Controller
             controls.Player.LoadGame.started += OnLoadPressed;
 
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
+
+            transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
 
             IsPlayerStuned = false;
         }
@@ -165,13 +166,13 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Fires the player's current gun
         /// </summary>
-        private void FireGun()
+        private void StartSpearPush()
         {
             if (!healthComponent.IsCurrentlyDead)
             {
                 if (fireGun)
                 {
-                    currentGun.StartSpearPush();
+                    currentSpear.StartSpearPush();
                 }
             }
         }
@@ -215,7 +216,7 @@ namespace PlayerCharacter.Controller
             if (!IsPlayerStuned)
             {
                 Move();
-                FireGun();
+                StartSpearPush();
             }
         }
         /// <summary>

@@ -71,7 +71,6 @@ namespace PlayerCharacter.Controller
                 }
             }
         }
-
         /// <summary>
         /// Completely stop all current movement on player will also completely freeze all incoming movement then sleeps the player rigidbody 
         /// </summary>

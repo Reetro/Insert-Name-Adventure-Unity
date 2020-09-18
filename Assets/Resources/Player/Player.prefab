@@ -239,7 +239,7 @@ MonoBehaviour:
   spearCooldown: 1
   spearReturnDelay: 0.2
   spearTravelDistance: 0.6
-  whatIsGround:
+  BlockLayers:
     serializedVersion: 2
     m_Bits: 655616
 --- !u!60 &5024828201168539564
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71772957482177c42b4bb43758ae7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGun: {fileID: 1635639793}
+  currentSpear: {fileID: 1635639793}
 --- !u!114 &1364893853460561661
 MonoBehaviour:
   m_ObjectHideFlags: 0

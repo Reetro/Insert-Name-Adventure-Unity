@@ -26,8 +26,8 @@ namespace PlayerCharacter.Controller
         [Space]
 
         [Header("Layer Settings")]
-        [Tooltip("A mask determining what is ground to the spear")]
-        public LayerMask whatIsGround;
+        [Tooltip("Which layers will block the spear from moving")]
+        public LayerMask BlockLayers;
 
         #region Properties
         /// <summary>
@@ -41,7 +41,7 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Gets the layers the spear can collide with 
         /// </summary>
-        public LayerMask WhatIsGround { get { return whatIsGround; } }
+        public LayerMask WhatIsGround { get { return BlockLayers; } }
         #endregion
 
         #region Spear Components

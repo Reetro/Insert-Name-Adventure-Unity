@@ -54,16 +54,24 @@ namespace CustomEditors
         private SerializedProperty _PlayerMaxHealth;
         #endregion
 
+        #region Player Leg Variables
+        private SerializedProperty _PlayerLegIsGround;
+        private SerializedProperty _PlayerLegBoxSize;
+        private SerializedProperty _PlayerLegCollisionTransform;
+        #endregion
+
         #region Player Objects
         private SerializedObject playerMovementObject;
         private SerializedObject playerHealthObject;
         private SerializedObject playerSpearObject;
+        private SerializedObject playerLegObject;
         #endregion
 
         #region Player Editors
         private Editor playerMovementEditor = null;
         private Editor playerHealthEditor = null;
-        private Editor playerGunEditor = null;
+        private Editor playerSpearEditor = null;
+        private Editor playerLegEditor = null;
         #endregion
 
         #region Enemy Variables
@@ -265,7 +273,7 @@ namespace CustomEditors
 
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
-        private const float foldoutSpaceing = 20f;
+        private const float foldoutSpaceing = 10f;
 
         #region Foldout Bools
         private static bool showEnemyEditor = false;
@@ -284,6 +292,10 @@ namespace CustomEditors
         private static bool showBreatherSettings = false;
         private static bool showLeechingSettings = false;
         private static bool showSlowingSettings = false;
+        private static bool showPlayerSpear = false;
+        private static bool showPlayerLegs = false;
+        private static bool showPlayerMovement = false;
+        private static bool showPlayerHealth = false;
         #endregion
         #endregion
 
@@ -666,6 +678,8 @@ namespace CustomEditors
             SetPlayerHealth();
 
             SetPlayerSpear();
+
+            SetPlayerLegs();
         }
 
         private void SetPlayerMovement()
@@ -688,8 +702,15 @@ namespace CustomEditors
             _PlayerSpearDumage = playerSpearObject.FindProperty("spearDamage");
             _PlayerSpearCooldown = playerSpearObject.FindProperty("spearCooldown");
             _PlayerHealthComp = playerSpearObject.FindProperty("playerHealthComp");
-            _PlayerSpearGround = playerSpearObject.FindProperty("whatIsGround");
+            _PlayerSpearGround = playerSpearObject.FindProperty("BlockLayers");
             _PlayerSpearTravelDistance = playerSpearObject.FindProperty("spearTravelDistance");
+        }
+
+        private void SetPlayerLegs()
+        {
+            _PlayerLegIsGround = playerLegObject.FindProperty("whatIsGround");
+            _PlayerLegCollisionTransform = playerLegObject.FindProperty("collisionTransform");
+            _PlayerLegBoxSize = playerLegObject.FindProperty("boxSize");
         }
 
         private void SetupPlayerEditor()
@@ -700,11 +721,13 @@ namespace CustomEditors
             {
                 playerMovementEditor = Editor.CreateEditor(playerPrefab.GetComponent<PlayerMovement>());
                 playerHealthEditor = Editor.CreateEditor(playerPrefab.GetComponent<HealthComponent>());
-                playerGunEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerSpear>());
+                playerSpearEditor = Editor.CreateEditor(playerPrefab.GetComponentInChildren<PlayerSpear>());
+                playerLegEditor = Editor.CreateEditor(playerPrefab.transform.GetChild(0).GetComponent<PlayerLegs>());
 
                 playerMovementObject = new SerializedObject(playerPrefab.GetComponent<PlayerMovement>());
                 playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
                 playerSpearObject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
+                playerLegObject = new SerializedObject(playerPrefab.transform.GetChild(0).GetComponent<PlayerLegs>());
             }
             else
             {
@@ -781,28 +804,65 @@ namespace CustomEditors
 
             if (showPlayerSettings)
             {
-                // fetch current values from the target
-                playerMovementObject.Update();
+                showPlayerMovement = EditorGUILayout.Foldout(showPlayerMovement, "Player Movement Settings", true);
 
-                if (playerMovementEditor)
+                if (showPlayerMovement)
                 {
-                    playerMovementEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    playerMovementObject.Update();
+
+                    if (playerMovementEditor)
+                    {
+                        playerMovementEditor.OnInspectorGUI();
+
+                        GUILayout.Space(foldoutSpaceing);
+                    }
                 }
 
-                // fetch current values from the target
-                playerHealthObject.Update();
+                showPlayerHealth = EditorGUILayout.Foldout(showPlayerHealth, "Player Health Settings", true);
 
-                if (playerHealthEditor)
+                if (showPlayerHealth)
                 {
-                    playerHealthEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    playerHealthObject.Update();
+
+                    if (playerHealthEditor)
+                    {
+                        playerHealthEditor.OnInspectorGUI();
+
+                        GUILayout.Space(foldoutSpaceing);
+                    }
+
                 }
 
-                // fetch current values from the target
-                playerSpearObject.Update();
+                showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Player Spear Settings", true);
 
-                if (playerGunEditor)
+                if (showPlayerSpear)
                 {
-                    playerGunEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    playerSpearObject.Update();
+
+                    if (playerSpearEditor)
+                    {
+                        playerSpearEditor.OnInspectorGUI();
+
+                        GUILayout.Space(foldoutSpaceing);
+                    }
+                }
+
+                showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Player Leg Settings", true);
+
+                if (showPlayerLegs)
+                {
+                    // fetch current values from the target
+                    playerLegObject.Update();
+
+                    if (playerLegEditor)
+                    {
+                        playerLegEditor.OnInspectorGUI();
+
+                        GUILayout.Space(foldoutSpaceing);
+                    }
                 }
 
                 // Apply values to the target
@@ -814,7 +874,8 @@ namespace CustomEditors
                 // Apply values to the target
                 playerSpearObject.ApplyModifiedProperties();
 
-                GUILayout.Space(foldoutSpaceing);
+                // Apply values to the target
+                playerLegObject.ApplyModifiedProperties();
             }
             #endregion
 
@@ -1049,6 +1110,8 @@ namespace CustomEditors
                     if (wormEdior)
                     {
                         wormEdior.OnInspectorGUI();
+
+                        GUILayout.Space(foldoutSpaceing);
                     }
 
                     // Apply values to the target
@@ -1115,7 +1178,7 @@ namespace CustomEditors
             #endregion
 
             GUILayout.EndScrollView();
-        }
+        }     
     }
 }
 #endif
