@@ -15,13 +15,16 @@ namespace PlayerCharacter.Controller
         private GameObject player = null;
 
         [Header("Layer Settings")]
-        public LayerMask whatIsGround;  // A mask determining what is ground to the character
+        [Tooltip("A mask determining what is ground to the character")]
+        public LayerMask whatIsGround;
         
         [HideInInspector]
         public UnityEvent OnLandEvent;
 
         [Header("Collision Settings")]
+        [Tooltip("The size of the player ground collision box")]
         [SerializeField] private Vector2 boxSize = Vector2.zero;
+        [Tooltip("The draw location of the ground collision box")]
         [SerializeField] private Transform collisionTransform = null;
 
         /// <summary>

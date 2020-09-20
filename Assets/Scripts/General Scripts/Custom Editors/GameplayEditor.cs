@@ -276,19 +276,16 @@ namespace CustomEditors
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
         private const float foldoutSpaceing = 10f;
+        int tabs = 0;
 
         #region Foldout Bools
-        private static bool showEnemyEditor = false;
-        private static bool showPlayerSettings = false;
         private static bool showLeechSettings = false;
         private static bool showLeechFatherSettings = false;
         private static bool showLeechMotherSettings = false;
         private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
-        private static bool showManagerSettings = false;
         private static bool showSlugSettings = false;
         private static bool showWormSettings = false;
-        private static bool showBuffDebuffSettings = false;
         private static bool showBuffSettings = false;
         private static bool showDebuffSettings = false;
         private static bool showBreatherSettings = false;
@@ -296,8 +293,6 @@ namespace CustomEditors
         private static bool showSlowingSettings = false;
         private static bool showPlayerSpear = false;
         private static bool showPlayerLegs = false;
-        private static bool showPlayerMovement = false;
-        private static bool showPlayerHealth = false;
         #endregion
         #endregion
 
@@ -779,30 +774,254 @@ namespace CustomEditors
 
         public void OnGUI()
         {
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player", "Enemies", "Gameplay Management", "Buff / Debuffs" });
 
-            #region Gameplay Manager UI
-            showManagerSettings = EditorGUILayout.Foldout(showManagerSettings, "Gameplay Manager", true);
+            switch (tabs)
+            {
+                case 0:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
-            if (showManagerSettings)
+                    SetupPlayerUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+
+                case 1:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
+                    SetupEnemyUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+
+                case 2:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
+                    SetupGameplayManagerUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+
+
+                case 3:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
+                    SetupBuffAndDebuffsUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+            }
+        }
+
+        #region Gameplay Manager UI
+        private void SetupGameplayManagerUI()
+        {
+            // fetch current values from the target
+            gameplayManagerObject.Update();
+
+            if (gameplayManagerEditor)
+            {
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                gameplayManagerEditor.OnInspectorGUI();
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    gameplayManagerObject.ApplyModifiedProperties();
+
+                    // fetch current values from the target
+                    gameplayManagerObject.Update();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+            }
+
+            // Apply values to the target
+            gameplayManagerObject.ApplyModifiedProperties();
+
+            GUILayout.Space(foldoutSpaceing);
+        }
+        #endregion
+
+        #region PlayerUI
+        private void SetupPlayerUI()
+        {
+            // fetch current values from the target
+            playerMovementObject.Update();
+
+            if (playerMovementEditor)
+            {
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                playerMovementEditor.OnInspectorGUI();
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    playerMovementObject.ApplyModifiedProperties();
+
+                    // fetch current values from the target
+                    playerMovementObject.Update();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+
+            // fetch current values from the target
+            playerHealthObject.Update();
+
+            if (playerHealthEditor)
+            {
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                playerHealthEditor.OnInspectorGUI();
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    playerHealthObject.ApplyModifiedProperties();
+
+                    // fetch current values from the target
+                    playerHealthObject.Update();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+
+            showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Player Spear Settings", true);
+
+            if (showPlayerSpear)
             {
                 // fetch current values from the target
-                gameplayManagerObject.Update();
+                playerSpearObject.Update();
 
-                if (gameplayManagerEditor)
+                if (playerSpearEditor)
                 {
                     // Start a code block to check for GUI changes
                     EditorGUI.BeginChangeCheck();
 
-                    gameplayManagerEditor.OnInspectorGUI();
+                    playerSpearEditor.OnInspectorGUI();
 
                     if (EditorGUI.EndChangeCheck())
                     {
                         // Apply values to the target
-                        gameplayManagerObject.ApplyModifiedProperties();
+                        playerSpearObject.ApplyModifiedProperties();
 
                         // fetch current values from the target
-                        gameplayManagerObject.Update();
+                        playerSpearObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+            }
+
+            showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Player Leg Settings", true);
+
+            // fetch current values from the target
+            playerLegObject.Update();
+
+            if (showPlayerLegs)
+            {
+                if (playerLegEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    playerLegEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        playerLegObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        playerLegObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+            }
+
+            // Apply values to the target
+            playerMovementObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            playerHealthObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            playerSpearObject.ApplyModifiedProperties();
+
+            // Apply values to the target
+            playerLegObject.ApplyModifiedProperties();
+        }
+        #endregion
+
+        #region Enemy Editors
+        private void SetupEnemyUI()
+        {
+            #region Leech UI
+            showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings", true);
+
+            if (showLeechSettings)
+            {
+                // fetch current values from the target
+                leechHealthObject.Update();
+
+                // fetch current values from the target
+                leechMovementObject.Update();
+
+                if (leechHealthEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechHealthObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechHealthObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                if (leechMovmentEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechMovmentEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechMovementObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechMovementObject.Update();
 
                         // Save Current scene after update
                         EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
@@ -810,687 +1029,475 @@ namespace CustomEditors
                 }
 
                 // Apply values to the target
-                gameplayManagerObject.ApplyModifiedProperties();
+                leechHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechMovementObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+
+            #endregion
+
+            #region Leech Father UI
+            showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings", true);
+
+            if (showLeechFatherSettings)
+            {
+                // fetch current values from the target
+                leechFatherHealthObject.Update();
+
+                // fetch current values from the target
+                leechFatherMovementObject.Update();
+
+                // fetch current values from the target
+                leechFatherObject.Update();
+
+                if (leechFatherHealthEditor)
+                {
+                    // fetch current values from the target
+                    leechFatherHealthObject.Update();
+
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechFatherHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechFatherHealthObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechFatherHealthObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                if (leechFatherMovmentEditor)
+                {
+                    // fetch current values from the target
+                    leechFatherMovementObject.Update();
+
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechFatherMovmentEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechFatherMovementObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechFatherMovementObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                if (leechFatherEditor)
+                {
+                    GUILayout.Space(5f);
+
+                    // fetch current values from the target
+                    leechFatherObject.Update();
+
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechFatherEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechFatherObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechFatherObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                // Apply values to the target
+                leechFatherHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechFatherMovementObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                leechFatherObject.ApplyModifiedProperties();
 
                 GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 
-            #region PlayerUI
-            showPlayerSettings = EditorGUILayout.Foldout(showPlayerSettings, "Player Settings", true);
+            #region Leech Mother UI
+            showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings", true);
 
-            if (showPlayerSettings)
+            if (showLeechMotherSettings)
             {
-                showPlayerMovement = EditorGUILayout.Foldout(showPlayerMovement, "Player Movement Settings", true);
-
-                if (showPlayerMovement)
-                {
-                    // fetch current values from the target
-                    playerMovementObject.Update();
-
-                    if (playerMovementEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        playerMovementEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            playerMovementObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            playerMovementObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-
-                        GUILayout.Space(foldoutSpaceing);
-                    }
-                }
-
-                showPlayerHealth = EditorGUILayout.Foldout(showPlayerHealth, "Player Health Settings", true);
-
-                if (showPlayerHealth)
-                {
-                    // fetch current values from the target
-                    playerHealthObject.Update();
-
-                    if (playerHealthEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        playerHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            playerHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            playerHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-
-
-                        GUILayout.Space(foldoutSpaceing);
-                    }
-
-                }
-
-                showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Player Spear Settings", true);
-
-                if (showPlayerSpear)
-                {
-                    // fetch current values from the target
-                    playerSpearObject.Update();
-
-                    if (playerSpearEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        playerSpearEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            playerSpearObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            playerSpearObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-
-                        GUILayout.Space(foldoutSpaceing);
-                    }
-                }
-
-                showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Player Leg Settings", true);
+                // fetch current values from the target
+                leechMotherHealthObject.Update();
 
                 // fetch current values from the target
-                playerLegObject.Update();
+                leechMotherMovementObject.Update();
 
-                if (showPlayerLegs)
+                // fetch current values from the target
+                leechMotherObject.Update();
+
+                if (leechMotherHealthEditor)
                 {
-                    if (playerLegEditor)
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechMotherHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
+                        // Apply values to the target
+                        leechMotherHealthObject.ApplyModifiedProperties();
 
-                        playerLegEditor.OnInspectorGUI();
+                        // fetch current values from the target
+                        leechMotherHealthObject.Update();
 
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            playerLegObject.ApplyModifiedProperties();
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
 
-                            // fetch current values from the target
-                            playerLegObject.Update();
+                if (leechMotherMovmentEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
 
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
+                    leechMotherMovmentEditor.OnInspectorGUI();
 
-                        GUILayout.Space(foldoutSpaceing);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechMotherMovementObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechMotherMovementObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                if (leechMotherEditor)
+                {
+                    GUILayout.Space(5f);
+
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    leechMotherEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        leechMotherObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        leechMotherObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
                 // Apply values to the target
-                playerMovementObject.ApplyModifiedProperties();
+                leechMotherHealthObject.ApplyModifiedProperties();
 
                 // Apply values to the target
-                playerHealthObject.ApplyModifiedProperties();
+                leechMotherMovementObject.ApplyModifiedProperties();
 
                 // Apply values to the target
-                playerSpearObject.ApplyModifiedProperties();
+                leechMotherObject.ApplyModifiedProperties();
 
-                // Apply values to the target
-                playerLegObject.ApplyModifiedProperties();
+                GUILayout.Space(foldoutSpaceing);
             }
             #endregion
 
-            #region Enemy Editors
+            #region Shaman UI
+            showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings", true);
 
-            showEnemyEditor = EditorGUILayout.Foldout(showEnemyEditor, "Enemy Editor", true);
-
-            if (showEnemyEditor)
+            if (showShamanSettings)
             {
-                #region Leech UI
-                showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings", true);
+                // fetch current values from the target
+                shamanObject.Update();
 
-                if (showLeechSettings)
+                // fetch current values from the target
+                shamanHealthObject.Update();
+
+                if (shamanHealthEditor)
                 {
-                    // fetch current values from the target
-                    leechHealthObject.Update();
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
 
-                    // fetch current values from the target
-                    leechMovementObject.Update();
+                    shamanHealthEditor.OnInspectorGUI();
 
-                    if (leechHealthEditor)
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (leechMovmentEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechMovmentEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechMovementObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechMovementObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    // Apply values to the target
-                    leechHealthObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    leechMovementObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
-                }
-
-                #endregion
-
-                #region Leech Father UI
-                showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings", true);
-
-                if (showLeechFatherSettings)
-                {
-                    // fetch current values from the target
-                    leechFatherHealthObject.Update();
-
-                    // fetch current values from the target
-                    leechFatherMovementObject.Update();
-
-                    // fetch current values from the target
-                    leechFatherObject.Update();
-
-                    if (leechFatherHealthEditor)
-                    {
-                        // fetch current values from the target
-                        leechFatherHealthObject.Update();
-
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechFatherHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechFatherHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechFatherHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (leechFatherMovmentEditor)
-                    {
-                        // fetch current values from the target
-                        leechFatherMovementObject.Update();
-
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechFatherMovmentEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechFatherMovementObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechFatherMovementObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (leechFatherEditor)
-                    {
-                        GUILayout.Space(5f);
+                        // Apply values to the target
+                        shamanHealthObject.ApplyModifiedProperties();
 
                         // fetch current values from the target
-                        leechFatherObject.Update();
+                        shamanHealthObject.Update();
 
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechFatherEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechFatherObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechFatherObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
-
-                    // Apply values to the target
-                    leechFatherHealthObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    leechFatherMovementObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    leechFatherObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
                 }
-                #endregion
 
-                #region Leech Mother UI
-                showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings", true);
-
-                if (showLeechMotherSettings)
+                if (shamanEditor)
                 {
-                    // fetch current values from the target
-                    leechMotherHealthObject.Update();
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
 
-                    // fetch current values from the target
-                    leechMotherMovementObject.Update();
+                    shamanEditor.OnInspectorGUI();
 
-                    // fetch current values from the target
-                    leechMotherObject.Update();
-
-                    if (leechMotherHealthEditor)
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
+                        // Apply values to the target
+                        shamanHealthObject.ApplyModifiedProperties();
 
-                        leechMotherHealthEditor.OnInspectorGUI();
+                        // fetch current values from the target
+                        shamanHealthObject.Update();
 
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechMotherHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechMotherHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
-
-                    if (leechMotherMovmentEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechMotherMovmentEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechMotherMovementObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechMotherMovementObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (leechMotherEditor)
-                    {
-                        GUILayout.Space(5f);
-
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        leechMotherEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            leechMotherObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            leechMotherObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    // Apply values to the target
-                    leechMotherHealthObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    leechMotherMovementObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    leechMotherObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
-                }
-                #endregion
-
-                #region Shaman UI
-                showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings", true);
-
-                if (showShamanSettings)
-                {
-                    // fetch current values from the target
-                    shamanObject.Update();
-
-                    // fetch current values from the target
-                    shamanHealthObject.Update();
-
-                    if (shamanHealthEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        shamanHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            shamanHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            shamanHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (shamanEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        shamanEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            shamanHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            shamanHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    // Apply values to the target
-                    shamanObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    shamanHealthObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
-                }
-                #endregion
-
-                #region Axe Thrower UI
-                showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings", true);
-
-                if (showAxeThrowerSettings)
-                {
-                    // fetch current values from the target
-                    axeThrowerObject.Update();
-
-                    // fetch current values from the target
-                    axeThrowerHealthObject.Update();
-
-                    if (axeThrowerHealthEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        axeThrowerHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            axeThrowerHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            axeThrowerHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (axeThrowerEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        axeThrowerEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            axeThrowerObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            axeThrowerObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    // Apply values to the target
-                    axeThrowerObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    axeThrowerHealthObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
-                }
-                #endregion
-
-                #region Slug UI
-                showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings", true);
-
-                if (showSlugSettings)
-                {
-                    // fetch current values from the target
-                    slugHealthObject.Update();
-
-                    // fetch current values from the target
-                    slugMovementObject.Update();
-
-                    if (slugMovementEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        slugMovementEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            slugMovementObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            slugMovementObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    if (slugHealthEditor)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        slugHealthEditor.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            slugHealthObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            slugHealthObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-                    }
-
-                    // Apply values to the target
-                    slugHealthObject.ApplyModifiedProperties();
-
-                    // Apply values to the target
-                    slugMovementObject.ApplyModifiedProperties();
-
-                    GUILayout.Space(foldoutSpaceing);
                 }
 
-                #endregion
+                // Apply values to the target
+                shamanObject.ApplyModifiedProperties();
 
-                #region Worm UI
-                showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
+                // Apply values to the target
+                shamanHealthObject.ApplyModifiedProperties();
 
-                if (showWormSettings)
-                {
-                    // fetch current values from the target
-                    wormObject.Update();
-
-                    if (wormEdior)
-                    {
-                        // Start a code block to check for GUI changes
-                        EditorGUI.BeginChangeCheck();
-
-                        wormEdior.OnInspectorGUI();
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // Apply values to the target
-                            wormObject.ApplyModifiedProperties();
-
-                            // fetch current values from the target
-                            wormObject.Update();
-
-                            // Save Current scene after update
-                            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                        }
-
-                        GUILayout.Space(foldoutSpaceing);
-                    }
-
-                    // Apply values to the target
-                    wormObject.ApplyModifiedProperties();
-                }
-                #endregion
+                GUILayout.Space(foldoutSpaceing);
             }
-
             #endregion
 
-            #region Buff / Debuff Editors
+            #region Axe Thrower UI
+            showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings", true);
 
-            showBuffDebuffSettings = EditorGUILayout.Foldout(showBuffDebuffSettings, "Buff / Debuff Settings", true);
-
-            if (showBuffDebuffSettings)
+            if (showAxeThrowerSettings)
             {
-                showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings", true);
+                // fetch current values from the target
+                axeThrowerObject.Update();
 
-                if (showBuffSettings)
+                // fetch current values from the target
+                axeThrowerHealthObject.Update();
+
+                if (axeThrowerHealthEditor)
                 {
-                    #region Breather Settings
-                    showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings", true);
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
 
-                    if (showBreatherSettings)
+                    axeThrowerHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        if (BreatherEditor)
-                        {
-                            BreatherEditor.OnInspectorGUI();
-                        }
+                        // Apply values to the target
+                        axeThrowerHealthObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        axeThrowerHealthObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
-                    #endregion
                 }
 
-                showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings", true);
-
-                if (showDebuffSettings)
+                if (axeThrowerEditor)
                 {
-                    #region Leeching Settings
-                    showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings", true);
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
 
-                    if (showLeechingSettings)
+                    axeThrowerEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        if (LeechingEditor)
-                        {
-                            LeechingEditor.OnInspectorGUI();
-                        }
-                    }
-                    #endregion
+                        // Apply values to the target
+                        axeThrowerObject.ApplyModifiedProperties();
 
-                    #region Slowing Settings
-                    showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Player Slowing Settings", true);
+                        // fetch current values from the target
+                        axeThrowerObject.Update();
 
-                    if (showSlowingSettings)
-                    {
-                        if (PlayerSlowingEditor)
-                        {
-                            PlayerSlowingEditor.OnInspectorGUI();
-                        }
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
-                    #endregion
                 }
+
+                // Apply values to the target
+                axeThrowerObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                axeThrowerHealthObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
+            #endregion
+
+            #region Slug UI
+            showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings", true);
+
+            if (showSlugSettings)
+            {
+                // fetch current values from the target
+                slugHealthObject.Update();
+
+                // fetch current values from the target
+                slugMovementObject.Update();
+
+                if (slugMovementEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    slugMovementEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        slugMovementObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        slugMovementObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                if (slugHealthEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    slugHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        slugHealthObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        slugHealthObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+                }
+
+                // Apply values to the target
+                slugHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                slugMovementObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
             }
 
             #endregion
 
-            GUILayout.EndScrollView();
+            #region Worm UI
+            showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
+
+            if (showWormSettings)
+            {
+                // fetch current values from the target
+                wormObject.Update();
+
+                if (wormEdior)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    wormEdior.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        wormObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        wormObject.Update();
+
+                        // Save Current scene after update
+                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                    }
+
+                    GUILayout.Space(foldoutSpaceing);
+                }
+
+                // Apply values to the target
+                wormObject.ApplyModifiedProperties();
+            }
+            #endregion
         }
+        #endregion
+
+        #region Buff / Debuff Editors
+        private void SetupBuffAndDebuffsUI()
+        {
+            showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings", true);
+
+            if (showBuffSettings)
+            {
+                #region Breather Settings
+                showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings", true);
+
+                if (showBreatherSettings)
+                {
+                    if (BreatherEditor)
+                    {
+                        BreatherEditor.OnInspectorGUI();
+                    }
+                }
+                #endregion
+            }
+
+            showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings", true);
+
+            if (showDebuffSettings)
+            {
+                #region Leeching Settings
+                showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings", true);
+
+                if (showLeechingSettings)
+                {
+                    if (LeechingEditor)
+                    {
+                        LeechingEditor.OnInspectorGUI();
+                    }
+                }
+                #endregion
+
+                #region Slowing Settings
+                showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Player Slowing Settings", true);
+
+                if (showSlowingSettings)
+                {
+                    if (PlayerSlowingEditor)
+                    {
+                        PlayerSlowingEditor.OnInspectorGUI();
+                    }
+                }
+                #endregion
+            }
+        }
+        #endregion
+
     }
 }
 #endif
