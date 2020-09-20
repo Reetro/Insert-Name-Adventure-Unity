@@ -900,7 +900,7 @@ namespace CustomEditors
                 GUILayout.Space(foldoutSpaceing);
             }
 
-            showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Player Spear Settings", true);
+            showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Spear Settings", true);
 
             if (showPlayerSpear)
             {
@@ -930,7 +930,7 @@ namespace CustomEditors
                 }
             }
 
-            showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Player Leg Settings", true);
+            showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Leg Settings", true);
 
             // fetch current values from the target
             playerLegObject.Update();
