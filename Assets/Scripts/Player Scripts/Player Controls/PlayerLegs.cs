@@ -14,7 +14,7 @@ namespace PlayerCharacter.Controller
 
         private GameObject player = null;
 
-        [Header("Layer Settings")]
+        [Header("Leg Settings")]
         [Tooltip("What layers are considered to be ground to the legs")]
         public LayerMask whatIsGround;
         

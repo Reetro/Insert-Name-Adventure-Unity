@@ -45,7 +45,7 @@ namespace CustomEditors
 
         #region Player Scale Variables
         private SerializedProperty _PlayerTransformScale;
-        private SerializedObject playerTransformObject;
+        private SerializedObject playerScaleObject;
         #endregion
 
         #region Player Spear Variables
@@ -163,6 +163,16 @@ namespace CustomEditors
         private SerializedProperty _LeechMotherProjectileToSpawn;
         #endregion
 
+        #region Leech Scale Variables
+        private SerializedProperty _LeechScale;
+        private SerializedProperty _LeechFatherScale;
+        private SerializedProperty _LeechMotherScale;
+
+        private SerializedObject leechScaleObject;
+        private SerializedObject leechMotherScaleObject;
+        private SerializedObject leechFatherScaleObject;
+        #endregion
+
         #region Shaman Objects
         private SerializedObject shamanObject;
         private SerializedObject shamanHealthObject;
@@ -188,6 +198,11 @@ namespace CustomEditors
         private Editor shamanEditor = null;
         #endregion
 
+        #region Axe Thrower Scale Variables
+        private SerializedProperty _ShamanScale;
+        private SerializedObject shamanScaleObject;
+        #endregion
+
         #region Axe Thrower Objects
         private SerializedObject axeThrowerObject;
         private SerializedObject axeThrowerHealthObject;
@@ -207,6 +222,11 @@ namespace CustomEditors
         private SerializedProperty _AxeThrowerMaxHealth;
         #endregion
 
+        #region Axe Thrower Scale Variables
+        private SerializedProperty _AxeThrowerScale;
+        private SerializedObject axeThrowerScaleObject;
+        #endregion
+
         #region Axe Thrower Editors
         private Editor axeThrowerHealthEditor = null;
         private Editor axeThrowerEditor = null;
@@ -214,6 +234,11 @@ namespace CustomEditors
 
         #region Slug Health Variables
         private SerializedProperty __SlugMaxHealth;
+        #endregion
+
+        #region Slug Scale Variables
+        private SerializedProperty _SlugScale;
+        private SerializedObject slugScaleObject;
         #endregion
 
         #region Slug Movement Variables
@@ -233,7 +258,7 @@ namespace CustomEditors
         private SerializedObject slugHealthObject;
         #endregion
 
-        #region Axe Thrower Editors
+        #region Slug Editors
         private Editor slugMovementEditor = null;
         private Editor slugHealthEditor = null;
         #endregion
@@ -266,6 +291,11 @@ namespace CustomEditors
         private SerializedObject wormObject;
         #endregion
 
+        #region Worm Scale Variables
+        private SerializedProperty _WormScale;
+        private SerializedObject wormScaleObject;
+        #endregion
+
         #region Worm Editors
         private Editor wormEdior = null;
         #endregion
@@ -296,8 +326,6 @@ namespace CustomEditors
         private static bool showBreatherSettings = false;
         private static bool showLeechingSettings = false;
         private static bool showSlowingSettings = false;
-        private static bool showPlayerSpear = false;
-        private static bool showPlayerLegs = false;
         #endregion
         #endregion
 
@@ -314,6 +342,8 @@ namespace CustomEditors
             SetupPlayer();
 
             SetupEnemies();
+
+            SetupEnemyScale();
 
             SetupDebuffs();
 
@@ -419,6 +449,7 @@ namespace CustomEditors
 
                 leechHealthObject = new SerializedObject(leechPrefab.GetComponent<HealthComponent>());
                 leechMovementObject = new SerializedObject(leechPrefab.GetComponent<LeechMovement>());
+                leechScaleObject = new SerializedObject(leechPrefab.transform.GetComponent<Transform>());
             }
             else
             {
@@ -453,6 +484,7 @@ namespace CustomEditors
                 leechFatherHealthObject = new SerializedObject(leechFatherPrefab.GetComponent<HealthComponent>());
                 leechFatherMovementObject = new SerializedObject(leechFatherPrefab.GetComponent<LeechMovement>());
                 leechFatherObject = new SerializedObject(leechFatherPrefab.GetComponent<LeechFather>());
+                leechFatherScaleObject = new SerializedObject(leechFatherPrefab.transform.GetComponent<Transform>());
             }
             else
             {
@@ -497,6 +529,7 @@ namespace CustomEditors
                 leechMotherMovementObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMovement>());
                 
                 leechMotherObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMother>());
+                leechMotherScaleObject = new SerializedObject(leechMotherPrefab.transform.GetComponent<Transform>());
             }
             else
             {
@@ -538,6 +571,7 @@ namespace CustomEditors
 
                 shamanHealthObject = new SerializedObject(shamanPrefab.GetComponent<HealthComponent>());
                 shamanObject = new SerializedObject(shamanPrefab.GetComponent<Shaman>());
+                shamanScaleObject = new SerializedObject(shamanPrefab.GetComponent<Transform>());
             }
             else
             {
@@ -575,6 +609,7 @@ namespace CustomEditors
 
                 axeThrowerObject = new SerializedObject(axeThrowerPrefab.GetComponent<AxeThrower>());
                 axeThrowerHealthObject = new SerializedObject(axeThrowerPrefab.GetComponent<HealthComponent>());
+                axeThrowerScaleObject = new SerializedObject(axeThrowerPrefab.GetComponent<Transform>());
             }
             else
             {
@@ -611,6 +646,7 @@ namespace CustomEditors
 
                 slugHealthObject = new SerializedObject(slugPrefab.GetComponent<HealthComponent>());
                 slugMovementObject = new SerializedObject(slugPrefab.GetComponent<SlugMovement>());
+                slugScaleObject = new SerializedObject(slugPrefab.GetComponent<Transform>());
             }
             else
             {
@@ -644,6 +680,8 @@ namespace CustomEditors
                 wormEdior = Editor.CreateEditor(wormPrefab.GetComponent<WormMovement>());
 
                 wormObject = new SerializedObject(wormPrefab.GetComponent<WormMovement>());
+
+                wormScaleObject = new SerializedObject(wormPrefab.GetComponent<Transform>());
             }
             else
             {
@@ -668,6 +706,22 @@ namespace CustomEditors
             _WormDamageCooldown = wormObject.FindProperty("damageCooldown");
         }
         #endregion
+
+        private void SetupEnemyScale()
+        {
+            // Set leech scale vars
+            _LeechScale = leechScaleObject.FindProperty("m_LocalScale");
+            _LeechFatherScale = leechFatherScaleObject.FindProperty("m_LocalScale");
+            _LeechMotherScale = leechMotherScaleObject.FindProperty("m_LocalScale");
+            // Set Shaman scale var
+            _ShamanScale = shamanScaleObject.FindProperty("m_LocalScale");
+            // Set Axe Thrower scale var
+            _AxeThrowerScale = axeThrowerScaleObject.FindProperty("m_LocalScale");
+            // Set slug scale var
+            _SlugScale = slugScaleObject.FindProperty("m_LocalScale");
+            // Set worm scale var
+            _WormScale = wormScaleObject.FindProperty("m_LocalScale");
+        }
         #endregion
 
         #region Player Functions
@@ -719,7 +773,7 @@ namespace CustomEditors
 
         private void SetPlayerScale()
         {
-            _PlayerTransformScale = playerTransformObject.FindProperty("m_LocalScale");
+            _PlayerTransformScale = playerScaleObject.FindProperty("m_LocalScale");
         }
 
         private void SetupPlayerEditor()
@@ -737,7 +791,7 @@ namespace CustomEditors
                 playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
                 playerSpearObject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
                 playerLegObject = new SerializedObject(playerPrefab.transform.GetChild(0).GetComponent<PlayerLegs>());
-                playerTransformObject = new SerializedObject(playerPrefab.transform.GetComponent<Transform>());
+                playerScaleObject = new SerializedObject(playerPrefab.transform.GetComponent<Transform>());
             }
             else
             {
@@ -862,6 +916,9 @@ namespace CustomEditors
         #region PlayerUI
         private void SetupPlayerUI()
         {
+            // fetch current values from the target
+            playerScaleObject.Update();
+
             // Start a code block to check for GUI changes
             EditorGUI.BeginChangeCheck();
 
@@ -870,10 +927,7 @@ namespace CustomEditors
             if (EditorGUI.EndChangeCheck())
             {
                 // Apply values to the target
-                playerTransformObject.ApplyModifiedProperties();
-
-                // fetch current values from the target
-                playerTransformObject.Update();
+                playerScaleObject.ApplyModifiedProperties();
 
                 // Save Current scene after update
                 EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
@@ -930,64 +984,54 @@ namespace CustomEditors
                 GUILayout.Space(foldoutSpaceing);
             }
 
-            showPlayerSpear = EditorGUILayout.Foldout(showPlayerSpear, "Spear Settings", true);
+            // fetch current values from the target
+            playerSpearObject.Update();
 
-            if (showPlayerSpear)
+            if (playerSpearEditor)
             {
-                // fetch current values from the target
-                playerSpearObject.Update();
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
 
-                if (playerSpearEditor)
+                playerSpearEditor.OnInspectorGUI();
+
+                if (EditorGUI.EndChangeCheck())
                 {
-                    // Start a code block to check for GUI changes
-                    EditorGUI.BeginChangeCheck();
+                    // Apply values to the target
+                    playerSpearObject.ApplyModifiedProperties();
 
-                    playerSpearEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    playerSpearObject.Update();
 
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        // Apply values to the target
-                        playerSpearObject.ApplyModifiedProperties();
-
-                        // fetch current values from the target
-                        playerSpearObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                    }
-
-                    GUILayout.Space(foldoutSpaceing);
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
-            }
 
-            showPlayerLegs = EditorGUILayout.Foldout(showPlayerLegs, "Leg Settings", true);
+                GUILayout.Space(foldoutSpaceing);
+            }
 
             // fetch current values from the target
             playerLegObject.Update();
 
-            if (showPlayerLegs)
+            if (playerLegEditor)
             {
-                if (playerLegEditor)
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                playerLegEditor.OnInspectorGUI();
+
+                if (EditorGUI.EndChangeCheck())
                 {
-                    // Start a code block to check for GUI changes
-                    EditorGUI.BeginChangeCheck();
+                    // Apply values to the target
+                    playerLegObject.ApplyModifiedProperties();
 
-                    playerLegEditor.OnInspectorGUI();
+                    // fetch current values from the target
+                    playerLegObject.Update();
 
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        // Apply values to the target
-                        playerLegObject.ApplyModifiedProperties();
-
-                        // fetch current values from the target
-                        playerLegObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
-                    }
-
-                    GUILayout.Space(foldoutSpaceing);
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
+
+                GUILayout.Space(foldoutSpaceing);
             }
 
             // Apply values to the target
@@ -1012,6 +1056,23 @@ namespace CustomEditors
 
             if (showLeechSettings)
             {
+                // fetch current values from the target
+                leechScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_LeechScale, new GUIContent("Leech Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    leechScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
                 // fetch current values from the target
                 leechHealthObject.Update();
 
@@ -1074,6 +1135,23 @@ namespace CustomEditors
 
             if (showLeechFatherSettings)
             {
+                // fetch current values from the target
+                leechFatherScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_LeechFatherScale, new GUIContent("Leech Father Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    leechFatherScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
                 // fetch current values from the target
                 leechFatherHealthObject.Update();
 
@@ -1173,6 +1251,23 @@ namespace CustomEditors
             if (showLeechMotherSettings)
             {
                 // fetch current values from the target
+                leechMotherScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_LeechMotherScale, new GUIContent("Leech Father Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    leechMotherScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+                // fetch current values from the target
                 leechMotherHealthObject.Update();
 
                 // fetch current values from the target
@@ -1262,6 +1357,23 @@ namespace CustomEditors
             if (showShamanSettings)
             {
                 // fetch current values from the target
+                shamanScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_ShamanScale, new GUIContent("Shaman Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    shamanScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+                // fetch current values from the target
                 shamanObject.Update();
 
                 // fetch current values from the target
@@ -1322,6 +1434,23 @@ namespace CustomEditors
 
             if (showAxeThrowerSettings)
             {
+                // fetch current values from the target
+                axeThrowerScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_AxeThrowerScale, new GUIContent("Axe Thrower Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    axeThrowerScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
                 // fetch current values from the target
                 axeThrowerObject.Update();
 
@@ -1384,6 +1513,23 @@ namespace CustomEditors
             if (showSlugSettings)
             {
                 // fetch current values from the target
+                slugScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_SlugScale, new GUIContent("Slug Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    slugScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+                // fetch current values from the target
                 slugHealthObject.Update();
 
                 // fetch current values from the target
@@ -1445,6 +1591,23 @@ namespace CustomEditors
 
             if (showWormSettings)
             {
+                // fetch current values from the target
+                wormScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_WormScale, new GUIContent("Worm Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    wormScaleObject.ApplyModifiedProperties();
+
+                    // Save Current scene after update
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
                 // fetch current values from the target
                 wormObject.Update();
 

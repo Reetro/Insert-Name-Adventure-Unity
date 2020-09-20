@@ -22,10 +22,6 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearReturnDelay = 1f;
         [Tooltip("How far the spear gets pushed out")]
         [SerializeField] private float spearTravelDistance = 1f;
-
-        [Space]
-
-        [Header("Layer Settings")]
         [Tooltip("Which layers will block the spear from moving")]
         public LayerMask BlockLayers;
 
