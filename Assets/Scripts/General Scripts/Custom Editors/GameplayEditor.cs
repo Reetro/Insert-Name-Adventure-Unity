@@ -43,6 +43,11 @@ namespace CustomEditors
         private SerializedProperty _PlayerAccleration;
         #endregion
 
+        #region Player Scale Variables
+        private SerializedProperty _PlayerTransformScale;
+        private SerializedObject playerTransformObject;
+        #endregion
+
         #region Player Spear Variables
         private SerializedProperty _PlayerSpearDumage;
         private SerializedProperty _PlayerSpearUpTime;
@@ -677,6 +682,8 @@ namespace CustomEditors
             SetPlayerSpear();
 
             SetPlayerLegs();
+
+            SetPlayerScale();
         }
 
         private void SetPlayerMovement()
@@ -710,6 +717,11 @@ namespace CustomEditors
             _PlayerLegBoxSize = playerLegObject.FindProperty("boxSize");
         }
 
+        private void SetPlayerScale()
+        {
+            _PlayerTransformScale = playerTransformObject.FindProperty("m_LocalScale");
+        }
+
         private void SetupPlayerEditor()
         {
             var playerPrefab = Resources.Load("Player/Player") as GameObject;
@@ -725,6 +737,7 @@ namespace CustomEditors
                 playerHealthObject = new SerializedObject(playerPrefab.GetComponent<HealthComponent>());
                 playerSpearObject = new SerializedObject(playerPrefab.GetComponentInChildren<PlayerSpear>());
                 playerLegObject = new SerializedObject(playerPrefab.transform.GetChild(0).GetComponent<PlayerLegs>());
+                playerTransformObject = new SerializedObject(playerPrefab.transform.GetComponent<Transform>());
             }
             else
             {
@@ -849,6 +862,23 @@ namespace CustomEditors
         #region PlayerUI
         private void SetupPlayerUI()
         {
+            // Start a code block to check for GUI changes
+            EditorGUI.BeginChangeCheck();
+
+            EditorGUILayout.PropertyField(_PlayerTransformScale, new GUIContent("Player Scale"));
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                // Apply values to the target
+                playerTransformObject.ApplyModifiedProperties();
+
+                // fetch current values from the target
+                playerTransformObject.Update();
+
+                // Save Current scene after update
+                EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+            }
+
             // fetch current values from the target
             playerMovementObject.Update();
 
