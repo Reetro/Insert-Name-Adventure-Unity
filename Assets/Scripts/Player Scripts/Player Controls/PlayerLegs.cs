@@ -24,9 +24,16 @@ namespace PlayerCharacter.Controller
         [Header("Collision Settings")]
         [Tooltip("The size of the player ground collision box")]
         [SerializeField] private Vector2 boxSize = Vector2.zero;
-        [Tooltip("The draw location of the ground collision box")]
-        [SerializeField] private Transform collisionTransform = null;
+        /// The draw location of the ground collision box
+        private Transform collisionTransform = null;
 
+        /// <summary>
+        /// Get a ref to the child gameobject
+        /// </summary>
+        private void OnEnable()
+        {
+            collisionTransform = transform.GetChild(0).transform;
+        }
         /// <summary>
         /// When object is spawned in get a reference to the player object
         /// </summary>

@@ -64,7 +64,6 @@ namespace CustomEditors
         #region Player Leg Variables
         private SerializedProperty _PlayerLegIsGround;
         private SerializedProperty _PlayerLegBoxSize;
-        private SerializedProperty _PlayerLegCollisionTransform;
         #endregion
 
         #region Player Objects
@@ -767,7 +766,6 @@ namespace CustomEditors
         private void SetPlayerLegs()
         {
             _PlayerLegIsGround = playerLegObject.FindProperty("whatIsGround");
-            _PlayerLegCollisionTransform = playerLegObject.FindProperty("collisionTransform");
             _PlayerLegBoxSize = playerLegObject.FindProperty("boxSize");
         }
 
