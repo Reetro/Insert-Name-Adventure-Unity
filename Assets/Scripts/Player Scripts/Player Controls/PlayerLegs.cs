@@ -102,6 +102,8 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void OnDrawGizmos()
         {
+            collisionTransform = transform.GetChild(0).transform;
+
             Gizmos.color = Color.green;
 
             Gizmos.DrawWireCube(collisionTransform.position, boxSize);
