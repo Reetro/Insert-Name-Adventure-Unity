@@ -10,8 +10,7 @@ namespace EnemyCharacter.AI
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
-
-        private const float groundTraceDistance = 0.35f;
+        private float defaultOpacity = 0f;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -48,6 +47,8 @@ namespace EnemyCharacter.AI
 
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
+
+            defaultOpacity = spriteRenderer.color.a;
         }
         /// <summary>
         /// Called when segment dies disables both collision and sprite renderer then invokes an OnSegmentDeath event
@@ -100,18 +101,18 @@ namespace EnemyCharacter.AI
                 var traceStart = transform.position;
                 var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject);
 
-                raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, groundTraceDistance, WhatIsGround);
+                raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, GroundTraceDistance, WhatIsGround);
 
-                Debug.DrawRay(traceStart, traceEnd * groundTraceDistance, Color.green);
+                Debug.DrawRay(traceStart, traceEnd * GroundTraceDistance, Color.green);
             }
             else
             {
                 var traceStart = transform.position;
                 var traceEnd = GeneralFunctions.GetFaceingDirectionX(gameObject);
 
-                raycastHit2D = Physics2D.Raycast(traceStart, -traceEnd, groundTraceDistance, WhatIsGround);
+                raycastHit2D = Physics2D.Raycast(traceStart, -traceEnd, GroundTraceDistance, WhatIsGround);
 
-                Debug.DrawRay(traceStart, -traceEnd * groundTraceDistance, Color.green);
+                Debug.DrawRay(traceStart, -traceEnd * GroundTraceDistance, Color.green);
             }
 
             if (raycastHit2D)
@@ -218,6 +219,20 @@ namespace EnemyCharacter.AI
             MyBoxCollider2D.enabled = true;
             MyCapsuleCollider2D.enabled = true;
         }
+
+        private void SetOpacity(float newOpacity)
+        {
+
+        }
+
+        private void ResetOpacity()
+        {
+            Color tmp = spriteRenderer.color;
+
+            tmp.a = defaultOpacity;
+
+            spriteRenderer.color = tmp;
+        }
         #endregion
 
         #region Properties
@@ -301,6 +316,10 @@ namespace EnemyCharacter.AI
         /// Check to see if the player has been squished
         /// </summary>
         public bool HasPlayerBeenSquished { get; set; } = false;
+        /// <summary>
+        /// Trace length for ground collision
+        /// </summary>
+        public float GroundTraceDistance { get; set; } = 0.35f; 
         #endregion
     }
 }
