@@ -34,8 +34,6 @@ namespace EnemyCharacter.AI
         [SerializeField] private float returnHomeDelay = 4f;
         [Tooltip("The amount time the worm segment waits before rotating to the player")]
         [SerializeField] private float rotationDelay = 2f;
-        [Tooltip("Trace length for ground collision")]
-        [SerializeField] private float groundTraceLength = 0.3f;
         [Tooltip("The target angle the worm will rotate to when player is on the right of the worm")]
         [SerializeField] private float targetRightAngle = -90f;
         [Tooltip("The target angle the worm will rotate to when player is on the left of the worm")]
@@ -59,9 +57,9 @@ namespace EnemyCharacter.AI
         private WormSegment wormSegmentToRotate = null;
         private bool pushingSegment = false;
         private bool segmentRotating = false;
+        private Quaternion targetRotation;
         private bool hookedToGround = false;
-        private Quaternion homeAngle;
-        private float targetAngle = 0f;
+        private Quaternion homeRotation;
         private Vector3 homeLocation;
         private float defaultHomeDelay = 0f;
         private float defaultRotationDelay = 0f;
@@ -121,7 +119,6 @@ namespace EnemyCharacter.AI
                 wormSegment.CanDamage = true;
                 wormSegment.IDObject.ConstructID();
                 wormSegment.PlayerObject = playerObject;
-                wormSegment.GroundTraceDistance = groundTraceLength;
 
                 spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
                 wormSegment.SpriteWidth = wormSegment.MyBoxCollider2D.bounds.size.x;
@@ -170,31 +167,45 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void GetNextRotation()
         {
-            homeAngle = wormSegmentToRotate.transform.rotation;
+            homeRotation = wormSegmentToRotate.transform.rotation;
 
             homeLocation = wormSegmentToRotate.transform.position;
 
-            if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
+            if (currentAngle >= 180)
             {
-                targetAngle = targetLeftAngle;
-
-                foreach (WormSegment wormSegment in childSegments)
+                if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
-                    if (wormSegment)
-                    {
-                        wormSegment.IsPlayerLeft = true;
-                    }
+                    targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+                }
+                else
+                {
+                    targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
                 }
             }
             else
             {
-                targetAngle = targetRightAngle;
-
-                foreach (WormSegment wormSegment in childSegments)
+                if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
-                    if (wormSegment)
+                    targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in childSegments)
                     {
-                        wormSegment.IsPlayerLeft = false;
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = true;
+                        }
+                    }
+                }
+                else
+                {
+                    targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = false;
+                        }
                     }
                 }
             }
@@ -250,84 +261,63 @@ namespace EnemyCharacter.AI
                 }
             }
         }
-        ///// <summary>
-        ///// Rotate the current worm segment towards the player
-        ///// </summary>
-        private void FixedUpdate()
+        /// <summary>
+        /// Rotate the current worm segment towards the player
+        /// </summary>
+        private void Update()
         {
             if (wormSegmentToRotate)
             {
                 if (!pushingSegment)
                 {
-                    var bodyToRotate = wormSegmentToRotate.GetComponent<Rigidbody2D>();
+                    HookToGround();
 
-                    if (bodyToRotate)
+                    if (!returningHome)
                     {
-                        HookToGround();
+                        wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                        if (!returningHome)
+                        segmentRotating = true;
+
+                        foreach (WormSegment wormSegment in childSegments)
                         {
-                            foreach (WormSegment seg in childSegments)
-                            {
-                                if (!seg.MyHealthComponent.IsCurrentlyDead)
-                                {
-                                    if (!seg.IsGrounded)
-                                    {
-                                        bodyToRotate.MoveRotation(Mathf.LerpAngle(bodyToRotate.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime));
-
-                                        segmentRotating = true;
-
-                                        foreach (WormSegment wormSegment in childSegments)
-                                        {
-                                            wormSegment.IsRotating = segmentRotating;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        returningHome = true;
-                                    }
-                                }
-                            }
+                            wormSegment.IsRotating = segmentRotating;
                         }
-                        else
+
+                        if (wormSegmentToRotate.transform.rotation == targetRotation)
                         {
-                            returnHomeDelay -= Time.deltaTime;
-
-                            if (returnHomeDelay <= 0)
-                            {
-                                UnHookFromGround();
-
-                                bodyToRotate.MoveRotation(Mathf.LerpAngle(bodyToRotate.rotation, homeAngle.z, rotationSpeed * Time.fixedDeltaTime));
-
-                                float angle = Quaternion.Angle(bodyToRotate.gameObject.transform.rotation, homeAngle);
-
-                                bool sameRotation = Mathf.Abs(angle) < 1e-3f;
-
-                                if (sameRotation)
-                                {
-                                    segmentRotating = false;
-
-                                    foreach (WormSegment wormSegment in childSegments)
-                                    {
-                                        wormSegment.IsRotating = segmentRotating;
-                                    }
-
-                                    ReturnHome();
-
-                                    foreach (WormSegment wormSegment in childSegments)
-                                    {
-                                        if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
-                                        {
-                                            wormSegment.EnableCollision();
-                                        }
-                                    }
-                                }
-                            }
+                            returningHome = true;
                         }
                     }
                     else
                     {
-                        Debug.LogError("Worm Object " + name + " failed to get segment rigidbody");
+                        returnHomeDelay -= Time.deltaTime;
+
+                        if (returnHomeDelay <= 0)
+                        {
+                            UnHookFromGround();
+
+                            wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, homeRotation, rotationSpeed * Time.deltaTime);
+
+                            if (wormSegmentToRotate.transform.rotation == homeRotation)
+                            {
+                                segmentRotating = false;
+
+                                foreach (WormSegment wormSegment in childSegments)
+                                {
+                                    wormSegment.IsRotating = segmentRotating;
+                                }
+
+                                ReturnHome();
+
+                                foreach (WormSegment wormSegment in childSegments)
+                                {
+                                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                                    {
+                                        wormSegment.EnableCollision();
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -389,8 +379,6 @@ namespace EnemyCharacter.AI
                 if (wormSegment)
                 {
                     wormSegment.HasPlayerBeenSquished = true;
-
-                    wormSegment.DisableCollision();
                 }
             }
         }
