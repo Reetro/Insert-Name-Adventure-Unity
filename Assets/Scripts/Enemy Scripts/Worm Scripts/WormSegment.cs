@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using AuraSystem;
 using System.Collections;
 
 namespace EnemyCharacter.AI
@@ -10,6 +9,7 @@ namespace EnemyCharacter.AI
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
+        private float defaultOpacity = 0f;
 
         private const float groundTraceDistance = 0.35f;
 
@@ -48,6 +48,8 @@ namespace EnemyCharacter.AI
 
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
+
+            defaultOpacity = spriteRenderer.color.a;
         }
         /// <summary>
         /// Called when segment dies disables both collision and sprite renderer then invokes an OnSegmentDeath event
@@ -159,7 +161,7 @@ namespace EnemyCharacter.AI
         /// <param name="collision"></param>
         private void OnCollisionStay2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
                 if (CanDamage && IsRotating)
                 {
@@ -217,6 +219,24 @@ namespace EnemyCharacter.AI
         {
             MyBoxCollider2D.enabled = true;
             MyCapsuleCollider2D.enabled = true;
+
+            Color tmp = spriteRenderer.color;
+
+            tmp.a = defaultOpacity;
+
+            spriteRenderer.color = tmp;
+        }
+        /// <summary>
+        /// Set the worm sprites opacity
+        /// </summary>
+        /// <param name="newOpacity"></param>
+        public void SetOpacity(float newOpacity)
+        {
+            Color tmp = spriteRenderer.color;
+
+            tmp.a = newOpacity;
+
+            spriteRenderer.color = tmp;
         }
         #endregion
 

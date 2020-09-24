@@ -38,6 +38,9 @@ namespace EnemyCharacter.AI
         [SerializeField] private float targetRightAngle = -90f;
         [Tooltip("The target angle the worm will rotate to when player is on the left of the worm")]
         [SerializeField] private float targetLeftAngle = 90f;
+        [Tooltip("The opacity worm sprites will have when collision is disabled")]
+        [Range(0, 1)]
+        [SerializeField] private float spriteOpacity = 0.5f;
 
         [Header("Squish Settings")]
         [Tooltip("The debuff to apply to the player")]
@@ -379,6 +382,8 @@ namespace EnemyCharacter.AI
                 if (wormSegment)
                 {
                     wormSegment.HasPlayerBeenSquished = true;
+
+                    wormSegment.SetOpacity(spriteOpacity);
                 }
             }
         }

@@ -279,6 +279,7 @@ namespace CustomEditors
         private SerializedProperty _WormRotationTargetLeft;
         private SerializedProperty _WormRotationTargetRight;
         private SerializedProperty _WormDrawDebug;
+        private SerializedProperty _WormOpacity;
         #endregion
 
         #region Worm Squish Variables
@@ -703,6 +704,7 @@ namespace CustomEditors
             _WormSquishScale = wormObject.FindProperty("SquishScale");
             _WormDebuff = wormObject.FindProperty("debuffToApply");
             _WormDamageCooldown = wormObject.FindProperty("damageCooldown");
+            _WormOpacity = wormObject.FindProperty("spriteOpacity");
         }
         #endregion
 

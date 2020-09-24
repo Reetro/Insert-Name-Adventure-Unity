@@ -696,7 +696,7 @@ public class GeneralFunctions
     /// </summary>
     public static bool IsPlayerTouchingGround()
     {
-        return GetPlayerLegs().TouchingGround();
+        return GetPlayerLegs().IsGrounded;
     }
     /// <summary>
     ///  Gets the gameplay manager and generates an ID

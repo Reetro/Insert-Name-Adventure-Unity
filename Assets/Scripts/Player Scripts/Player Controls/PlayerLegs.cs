@@ -10,8 +10,6 @@ namespace PlayerCharacter.Controller
         /// </summary>
         public bool IsGrounded { get; set; }
 
-        const float k_GroundedRadius = .5f;
-
         private GameObject player = null;
 
         [Header("Leg Settings")]
@@ -74,29 +72,6 @@ namespace PlayerCharacter.Controller
             return collider2D;
         }
         /// <summary>
-        /// Checks to see if the player is touching the ground layer
-        /// </summary>
-        public bool TouchingGround()
-        {
-            var hitGround = false;
-
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
-
-            for (int index = 0; index < colliders.Length; index++)
-            {
-                if (colliders[index].gameObject.CompareTag("Ground"))
-                {
-                    hitGround = true;
-                    break;
-                }
-                else
-                {
-                    hitGround = false;
-                    continue;
-                }
-            }
-            return hitGround;
-        }
         /// <summary>
         /// Draw overlap box
         /// </summary>

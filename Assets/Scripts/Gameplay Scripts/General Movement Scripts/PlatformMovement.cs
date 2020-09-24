@@ -142,7 +142,7 @@ namespace LevelObjects.MovingObjects
 
                 var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
-                if (playerLegs.TouchingGround() && !TouchingGround)
+                if (playerLegs.IsGrounded && !TouchingGround)
                 {
                     IsPathBlocked = false;
                 }
@@ -197,7 +197,7 @@ namespace LevelObjects.MovingObjects
 
             if (playerLegs)
             {
-                if (playerLegs.TouchingGround())
+                if (playerLegs.IsGrounded)
                 {
                     IsPathBlocked = true;
                 }
