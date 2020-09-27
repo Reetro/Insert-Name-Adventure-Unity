@@ -24,17 +24,22 @@ namespace PlayerCharacter.Controller
         private PlayerMovement playerMovement = null;
         private HealthComponent healthComponent = null;
         private PlayerUIManager uiManager = null;
+        private Rigidbody2D myRigidBody2D = null;
         #endregion
 
         #region Properties
         /// <summary>
-        /// Reference to player currently in the world
+        /// Reference to player state currently in the world
         /// </summary>
         public PlayerState MyPlayerState { get; set; } = null;
         /// <summary>
         /// Checks to see if the player is stunned
         /// </summary>
-        public bool IsPlayerStuned { get; private set; } = false;
+        public bool ControlDisabled { get; private set; } = false;
+        /// <summary>
+        /// Reference to the players box collider
+        /// </summary>
+        public BoxCollider2D MyBoxCollider { get; private set; } = null;
         #endregion
 
         #region Setup Functions
@@ -58,7 +63,7 @@ namespace PlayerCharacter.Controller
 
             transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
 
-            IsPlayerStuned = false;
+            ControlDisabled = false;
         }
         /// <summary>
         /// Enable player input
@@ -86,6 +91,9 @@ namespace PlayerCharacter.Controller
 
             healthComponent.OnDeath.AddListener(OnDeath);
             healthComponent.OnTakeAnyDamage.AddListener(OnTakeAnyDamage);
+
+            MyBoxCollider = GetComponent<BoxCollider2D>();
+            myRigidBody2D = GetComponent<Rigidbody2D>();
 
             Move();
         }
@@ -213,7 +221,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void Update()
         {
-            if (!IsPlayerStuned)
+            if (!ControlDisabled)
             {
                 Move();
                 StartSpearPush();
@@ -224,7 +232,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void FixedUpdate()
         {
-            if (!IsPlayerStuned)
+            if (!ControlDisabled)
             {
                 playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
                 jump = false;
@@ -251,7 +259,7 @@ namespace PlayerCharacter.Controller
         /// <param name="stunTime"></param>
         public void ApplyStun(float stunTime)
         {
-            IsPlayerStuned = true;
+            ControlDisabled = true;
 
             StartCoroutine(StunTimer(stunTime));
         }
@@ -263,7 +271,21 @@ namespace PlayerCharacter.Controller
         {
             yield return new WaitForSeconds(time);
 
-            IsPlayerStuned = false;
+            ControlDisabled = false;
+        }
+        /// <summary>
+        /// Completely disable player control
+        /// </summary>
+        public void DisableControl()
+        {
+            ControlDisabled = true;
+        }
+        /// <summary>
+        /// Enable player control
+        /// </summary>
+        public void EnableControl()
+        {
+            ControlDisabled = false;
         }
         /// <summary>
         /// Called when player dies will stop all player movement
@@ -275,6 +297,24 @@ namespace PlayerCharacter.Controller
             myAnimator.SetBool("Idle", true);
 
             playerMovement.StopMovement();
+        }
+        /// <summary>
+        /// Completely disable player collision
+        /// </summary>
+        public void DisableCollision()
+        {
+            MyBoxCollider.enabled = false;
+
+            myRigidBody2D.isKinematic = true;
+        }
+        /// <summary>
+        /// Enable collision on the player
+        /// </summary>
+        public void EnableCollision()
+        {
+            MyBoxCollider.enabled = true;
+
+            myRigidBody2D.isKinematic = false;
         }
         /// <summary>
         /// Update PlayerState health when ever player takes damage

@@ -1,4 +1,5 @@
 ﻿using LevelObjects.SceneLoading;
+using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using PlayerUI;
 using UnityEngine;
@@ -32,6 +33,10 @@ namespace GameplayManagement.Assets
         /// A reference to the current LevelLoader in the world
         /// </summary>
         public static LevelLoader CurrentLevelLoader { get; private set; }
+        /// <summary>
+        /// A reference to the current PlayerController in the world
+        /// </summary>
+        public static PlayerController PlayerGameController { get; private set; }
 
         public Transform damgeText;
         #endregion
@@ -45,6 +50,8 @@ namespace GameplayManagement.Assets
             GlobalManager = FindObjectOfType<GameplayManager>();
 
             PlayerGameObject = GameObject.FindGameObjectWithTag("Player");
+
+            PlayerGameController = PlayerGameObject.GetComponent<PlayerController>();
 
             PlayerHUDManager = FindObjectOfType<PlayerUIManager>();
 

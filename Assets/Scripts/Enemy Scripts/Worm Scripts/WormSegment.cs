@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using GameplayManagement.Assets;
 
 namespace EnemyCharacter.AI
 {
@@ -10,8 +11,14 @@ namespace EnemyCharacter.AI
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
         private float defaultOpacity = 0f;
+        private bool isPlayerAttached = false;
+        private Quaternion playerAttachedRotation;
+        private GameObject playerObject = null;
+        private bool canBeSquished = false;
+        private Collider2D playerCollider = null;
 
         private const float groundTraceDistance = 0.35f;
+        private const float playerSquishCheckDistance = 0.5f;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -87,7 +94,9 @@ namespace EnemyCharacter.AI
             {
                 CheckForGround();
 
-                CheckForSquish();
+                CheckDisable();
+
+                CheckAttachedSquish();
             }
         }
         /// <summary>
@@ -126,32 +135,67 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// If segment is rotating check to see if player has been hit if so squish the player
+        /// Keep player's attached rotation and look for ground under player
         /// </summary>
-        private void CheckForSquish()
+        private void CheckAttachedSquish()
+        {
+            if (isPlayerAttached)
+            {
+                if (playerObject)
+                {
+                    var traceStart = playerObject.transform.position;
+                    var traceEnd = -GeneralFunctions.GetFaceingDirectionY(playerObject);
+
+                    playerObject.transform.rotation = playerAttachedRotation;
+
+                    RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, playerSquishCheckDistance, LayerMask.GetMask("Ground"));
+
+                    if (raycastHit2D)
+                    {
+                        DisableCollision();
+
+                        DeattachPlayer();
+
+                        SquishPlayer(playerObject);
+                    }
+
+                    Debug.DrawRay(traceStart, traceEnd * playerSquishCheckDistance, Color.green);
+                }
+            }
+        }
+        /// <summary>
+        /// Check to see if hit player and if the player is squished if so disable collision
+        /// </summary>
+        private void CheckDisable()
         {
             if (IsRotating)
             {
                 Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
 
-                if (collider2D)
-                {
-                    if (GeneralFunctions.IsPlayerTouchingGround())
-                    {
-                        if (IsGrounded)
-                        {
-                            DisableCollision();
-                        }
-
-                        SquishPlayer(PlayerObject);
-                    }
-                }
-                else if (HasPlayerBeenSquished)
+                if (HasPlayerBeenSquished && !collider2D)
                 {
                     if (IsGrounded)
                     {
                         DisableCollision();
                     }
+                }
+            }
+        }
+        /// <summary>
+        /// If segment is rotating check to see if player has been hit if so squish the player
+        /// </summary>
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            {
+                if (GeneralFunctions.IsPlayerTouchingGround() && canBeSquished)
+                {
+                    if (IsGrounded)
+                    {
+                        DisableCollision();
+                    }
+
+                    SquishPlayer(PlayerObject);
                 }
             }
         }
@@ -168,6 +212,13 @@ namespace EnemyCharacter.AI
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
 
                     DamagedPlayer.Invoke();
+                }
+
+                if (IsRotating && !HasPlayerBeenSquished)
+                {
+                    GameAssets.PlayerGameController.DisableControl();
+
+                    AttachPlayer(collision);
                 }
             }
         }
@@ -237,6 +288,53 @@ namespace EnemyCharacter.AI
             tmp.a = newOpacity;
 
             spriteRenderer.color = tmp;
+        }
+        #endregion
+
+        #region Attachment Code
+        /// <summary>
+        /// Attach player to the worm segment
+        /// </summary>
+        /// <param name="collision"></param>
+        private void AttachPlayer(Collision2D playerCollision)
+        {
+            canBeSquished = false;
+
+            playerObject = playerCollision.gameObject;
+
+            playerAttachedRotation = playerCollision.transform.rotation;
+
+            playerCollider = playerCollision.collider;
+
+            Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
+
+            GameAssets.PlayerGameController.DisableControl();
+
+            GeneralFunctions.AttachObjectToTransfrom(transform, playerCollision.gameObject);
+
+            isPlayerAttached = true;
+        }
+        /// <summary>
+        /// Deattach player from worm segment
+        /// </summary>
+        private void DeattachPlayer()
+        {
+            if (playerObject)
+            {
+                isPlayerAttached = false;
+
+                GeneralFunctions.DetachFromParent(playerObject);
+
+                Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, false);
+
+                GameAssets.PlayerGameController.EnableControl();
+
+                canBeSquished = true;
+            }
+            else
+            {
+                Debug.LogError("Failed to Deattach player from " + name + " player object was not valid");
+            }
         }
         #endregion
 

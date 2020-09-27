@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AuraSystem;
-using AuraSystem.Effects;
 
 namespace EnemyCharacter.AI
 {
@@ -271,6 +270,14 @@ namespace EnemyCharacter.AI
         {
             if (wormSegmentToRotate)
             {
+                if (wormSegmentToRotate.transform.rotation == homeRotation)
+                {
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        wormSegment.IsRotating = false;
+                    }
+                }
+
                 if (!pushingSegment)
                 {
                     HookToGround();
@@ -279,11 +286,9 @@ namespace EnemyCharacter.AI
                     {
                         wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                        segmentRotating = true;
-
                         foreach (WormSegment wormSegment in childSegments)
                         {
-                            wormSegment.IsRotating = segmentRotating;
+                            wormSegment.IsRotating = true;
                         }
 
                         if (wormSegmentToRotate.transform.rotation == targetRotation)
@@ -303,13 +308,6 @@ namespace EnemyCharacter.AI
 
                             if (wormSegmentToRotate.transform.rotation == homeRotation)
                             {
-                                segmentRotating = false;
-
-                                foreach (WormSegment wormSegment in childSegments)
-                                {
-                                    wormSegment.IsRotating = segmentRotating;
-                                }
-
                                 ReturnHome();
 
                                 foreach (WormSegment wormSegment in childSegments)

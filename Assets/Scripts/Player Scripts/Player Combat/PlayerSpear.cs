@@ -99,7 +99,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
-            if (!controller.IsPlayerStuned)
+            if (!controller.ControlDisabled)
             {
                 if (canRotate)
                 {
