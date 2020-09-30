@@ -698,6 +698,7 @@ MonoBehaviour:
   rotationDelay: 2
   targetRightAngle: -90
   targetLeftAngle: 90
+  spriteOpacity: 0.5
   debuffToApply: {fileID: 11400000, guid: 26e352bfca2d1474eaaa228d529d453b, type: 2}
   SquishScale: {x: 1, y: 0.5, z: 0}
   drawDebug: 0

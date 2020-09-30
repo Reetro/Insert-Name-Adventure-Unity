@@ -312,6 +312,7 @@ namespace CustomEditors
         private Vector2 scrollPosition = Vector2.zero;
         private const float foldoutSpaceing = 10f;
         int tabs = 0;
+        private const int indentLevel = 1;
 
         #region Foldout Bools
         private static bool showLeechSettings = false;
@@ -1056,6 +1057,8 @@ namespace CustomEditors
 
             if (showLeechSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 leechScaleObject.Update();
 
@@ -1135,6 +1138,8 @@ namespace CustomEditors
 
             if (showLeechFatherSettings)
             {
+                EditorGUI.indentLevel += 1;
+
                 // fetch current values from the target
                 leechFatherScaleObject.Update();
 
@@ -1250,6 +1255,8 @@ namespace CustomEditors
 
             if (showLeechMotherSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 leechMotherScaleObject.Update();
 
@@ -1356,6 +1363,8 @@ namespace CustomEditors
 
             if (showShamanSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 shamanScaleObject.Update();
 
@@ -1434,6 +1443,8 @@ namespace CustomEditors
 
             if (showAxeThrowerSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 axeThrowerScaleObject.Update();
 
@@ -1512,6 +1523,8 @@ namespace CustomEditors
 
             if (showSlugSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 slugScaleObject.Update();
 
@@ -1591,6 +1604,8 @@ namespace CustomEditors
 
             if (showWormSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 // fetch current values from the target
                 wormScaleObject.Update();
 
@@ -1647,11 +1662,15 @@ namespace CustomEditors
 
             if (showBuffSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 #region Breather Settings
                 showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings", true);
 
                 if (showBreatherSettings)
                 {
+                    EditorGUI.indentLevel += indentLevel;
+
                     if (BreatherEditor)
                     {
                         BreatherEditor.OnInspectorGUI();
@@ -1664,11 +1683,15 @@ namespace CustomEditors
 
             if (showDebuffSettings)
             {
+                EditorGUI.indentLevel += indentLevel;
+
                 #region Leeching Settings
                 showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings", true);
 
                 if (showLeechingSettings)
                 {
+                    EditorGUI.indentLevel += indentLevel;
+
                     if (LeechingEditor)
                     {
                         LeechingEditor.OnInspectorGUI();
@@ -1681,6 +1704,8 @@ namespace CustomEditors
 
                 if (showSlowingSettings)
                 {
+                    EditorGUI.indentLevel += indentLevel;
+
                     if (PlayerSlowingEditor)
                     {
                         PlayerSlowingEditor.OnInspectorGUI();
