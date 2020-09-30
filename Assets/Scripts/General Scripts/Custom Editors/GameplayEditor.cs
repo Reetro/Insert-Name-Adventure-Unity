@@ -1138,7 +1138,7 @@ namespace CustomEditors
 
             if (showLeechFatherSettings)
             {
-                EditorGUI.indentLevel += 1;
+                EditorGUI.indentLevel += indentLevel;
 
                 // fetch current values from the target
                 leechFatherScaleObject.Update();
