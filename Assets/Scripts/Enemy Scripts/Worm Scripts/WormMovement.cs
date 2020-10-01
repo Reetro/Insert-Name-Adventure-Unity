@@ -25,7 +25,7 @@ namespace EnemyCharacter.AI
         [Space]
 
         [Header("Rotation Settings")]
-        [Tooltip("How fast the worm can rotate a segment")]
+        [Tooltip("How fast the worm can rotate a segment lower is faster")]
         [SerializeField] private float rotationSpeed = 1f;
         [Tooltip("The worm ground offset")]
         [SerializeField] private float rotationOffset = 0.4f;
@@ -57,15 +57,11 @@ namespace EnemyCharacter.AI
         private List<WormSegment> childSegments = new List<WormSegment>();
         private float spriteHeight = 0;
         private WormSegment wormSegmentToRotate = null;
-        private bool pushingSegment = false;
         private bool segmentRotating = false;
         private Quaternion targetRotation;
         private bool hookedToGround = false;
         private Quaternion homeRotation;
         private Vector3 homeLocation;
-        private float defaultHomeDelay = 0f;
-        private float defaultRotationDelay = 0f;
-        private bool returningHome = false;
         private bool unHookedFromGround = false;
         private GameObject playerObject = null;
         private float currentAngle = 0f;
@@ -99,7 +95,14 @@ namespace EnemyCharacter.AI
 
             currentAngle = GeneralFunctions.GetObjectEulerAngle(gameObject);
 
-            StartCoroutine(PushSegmentsUp());
+            if (!AreAllSegmentsUp())
+            {
+                StartCoroutine(PushSegmentsUp());
+            }
+            else
+            {
+                StartCoroutine(PushSegmentToTarget());
+            }
 
             SetupRotation();
         }
@@ -153,10 +156,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void SetupRotation()
         {
-            defaultHomeDelay = returnHomeDelay;
-
-            defaultRotationDelay = rotationDelay;
-
             playerObject = GeneralFunctions.GetPlayerGameObject();
 
             if (wormSegmentToRotate)
@@ -220,126 +219,111 @@ namespace EnemyCharacter.AI
         /// </summary>
         private IEnumerator PushSegmentsUp()
         {
-            while (true)
+            yield return new WaitForSeconds(pushDelay);
+
+            if (AreAllSegmentsUp())
             {
-                yield return new WaitForSeconds(pushDelay);
-
-                if (AreAllSegmentsUp())
-                {
-                    yield break;
-                }
-
-                if (!segmentRotating)
-                {
-                    var direction = GetNextSegmentLocation();
-
-                    Vector3 startingPos = transform.position;
-                    Vector3 finalPos = (Vector2)transform.position + direction;
-                    float elapsedTime = 0;
-
-                    while (elapsedTime < pushUpSpeed)
-                    {
-                        transform.position = Vector3.Lerp(startingPos, finalPos, (elapsedTime / pushUpSpeed));
-                        elapsedTime += Time.deltaTime;
-                        pushingSegment = true;
-                        yield return null;
-                    }
-
-                    foreach (WormSegment wormSegment in childSegments)
-                    {
-                        wormSegment.CheckCollision();
-                    }
-
-                    wormSegmentToRotate = GetSegmentToRotate();
-
-                    if (drawDebug)
-                    {
-                        print(wormSegmentToRotate);
-                    }
-
-                    GetNextRotation();
-
-                    pushingSegment = false;
-                }
+                yield break;
             }
-        }
-        /// <summary>
-        /// Rotate the current worm segment towards the player
-        /// </summary>
-        private void Update()
-        {
-            if (wormSegmentToRotate)
+
+            if (!segmentRotating)
             {
-                if (wormSegmentToRotate.transform.rotation == homeRotation)
+                var direction = GetNextSegmentLocation();
+
+                Vector3 startingPos = transform.position;
+                Vector3 finalPos = (Vector2)transform.position + direction;
+                float elapsedTime = 0;
+
+                while (elapsedTime < pushUpSpeed)
                 {
-                    foreach (WormSegment wormSegment in childSegments)
-                    {
-                        wormSegment.IsRotating = false;
-                    }
+                    transform.position = Vector3.Lerp(startingPos, finalPos, (elapsedTime / pushUpSpeed));
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
                 }
 
-                if (!pushingSegment)
+                foreach (WormSegment wormSegment in childSegments)
                 {
-                    HookToGround();
-
-                    if (!returningHome)
-                    {
-                        wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-                        foreach (WormSegment wormSegment in childSegments)
-                        {
-                            wormSegment.IsRotating = true;
-                        }
-
-                        if (wormSegmentToRotate.transform.rotation == targetRotation)
-                        {
-                            returningHome = true;
-                        }
-                    }
-                    else
-                    {
-                        returnHomeDelay -= Time.deltaTime;
-
-                        if (returnHomeDelay <= 0)
-                        {
-                            UnHookFromGround();
-
-                            wormSegmentToRotate.transform.rotation = Quaternion.Slerp(wormSegmentToRotate.transform.rotation, homeRotation, rotationSpeed * Time.deltaTime);
-
-                            if (wormSegmentToRotate.transform.rotation == homeRotation)
-                            {
-                                ReturnHome();
-
-                                foreach (WormSegment wormSegment in childSegments)
-                                {
-                                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
-                                    {
-                                        wormSegment.EnableCollision();
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    wormSegment.CheckCollision();
                 }
-            }
-        }
-        /// <summary>
-        /// Restarts rotation timer 
-        /// </summary>
-        private void ReturnHome()
-        {
-            rotationDelay -= Time.deltaTime;
 
-            if (rotationDelay <= 0)
-            {
+                wormSegmentToRotate = GetSegmentToRotate();
+
+                if (drawDebug)
+                {
+                    print(wormSegmentToRotate);
+                }
+
                 GetNextRotation();
 
-                returnHomeDelay = defaultHomeDelay;
-                rotationDelay = defaultRotationDelay;
+                StartCoroutine(PushSegmentToTarget());
+            }
+        }
+        /// <summary>
+        /// Pushes the current worm segment towards the target rotation
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator PushSegmentToTarget() 
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(rotationDelay);
+
+                HookToGround();
+
+                Quaternion start = wormSegmentToRotate.transform.rotation;
+
+                float elapsedTime = 0;
+
+                while (elapsedTime < rotationSpeed)
+                {
+                    elapsedTime += Time.deltaTime;
+                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, targetRotation, (elapsedTime/rotationSpeed));
+
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        wormSegment.IsRotating = true;
+                    }
+
+                    yield return new WaitForEndOfFrame();
+                }
+
+                yield return new WaitForSeconds(returnHomeDelay);
+
+                UnHookFromGround();
+
+                start = wormSegmentToRotate.transform.rotation;
+
+                elapsedTime = 0;
+
+                while (elapsedTime < rotationSpeed)
+                {
+                    elapsedTime += Time.deltaTime;
+                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, homeRotation, (elapsedTime / rotationSpeed));
+                    yield return new WaitForEndOfFrame();
+                }
+
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    wormSegment.IsRotating = false;
+                }
+
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        wormSegment.EnableCollision();
+                    }
+                }
 
                 hookedToGround = false;
                 unHookedFromGround = false;
-                returningHome = false;
+
+                if (!AreAllSegmentsUp())
+                {
+                    StartCoroutine(PushSegmentsUp());
+
+                    yield break;
+                }
             }
         }
         /// <summary>
@@ -475,7 +459,7 @@ namespace EnemyCharacter.AI
                 Debug.Log("Translate amount: " + traceEnd);
             }
 
-            return traceEnd;
+            return new Vector2(0, traceEnd.y);
         }
         /// <summary>
         /// Called when a worm segments damages the player will place all segments on cooldown
