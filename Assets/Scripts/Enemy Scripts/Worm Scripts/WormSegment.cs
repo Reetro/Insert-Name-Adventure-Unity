@@ -168,7 +168,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void CheckDisable()
         {
-            if (IsRotating)
+            if (IsRotatingDown)
             {
                 Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
 
@@ -207,14 +207,14 @@ namespace EnemyCharacter.AI
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                if (CanDamage && IsRotating)
+                if (CanDamage && IsRotatingDown && !IsRotatingUp)
                 {
                     GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
 
                     DamagedPlayer.Invoke();
                 }
 
-                if (IsRotating && !HasPlayerBeenSquished)
+                if (IsRotatingDown && !HasPlayerBeenSquished && !IsRotatingUp)
                 {
                     GameAssets.PlayerGameController.DisableControl();
 
@@ -271,11 +271,7 @@ namespace EnemyCharacter.AI
             MyBoxCollider2D.enabled = true;
             MyCapsuleCollider2D.enabled = true;
 
-            Color tmp = spriteRenderer.color;
-
-            tmp.a = defaultOpacity;
-
-            spriteRenderer.color = tmp;
+            SetOpacity(defaultOpacity);
         }
         /// <summary>
         /// Set the worm sprites opacity
@@ -376,9 +372,13 @@ namespace EnemyCharacter.AI
         /// </summary>
         public float MyWidth { get; private set; }
         /// <summary>
-        /// Check to see if the worm is rotating
+        /// Check to see if the worm is rotating down towards the ground
         /// </summary>
-        public bool IsRotating { get; set; }
+        public bool IsRotatingDown { get; set; }
+        /// <summary>
+        /// Check to see if the worm is rotating off the ground
+        /// </summary>
+        public bool IsRotatingUp { get; set; }
         /// <summary>
         /// The amount of time the player is squished for
         /// </summary>

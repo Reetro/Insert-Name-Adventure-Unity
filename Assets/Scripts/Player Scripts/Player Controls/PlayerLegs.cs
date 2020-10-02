@@ -9,6 +9,10 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the player is touching the ground
         /// </summary>
         public bool IsGrounded { get; set; }
+        /// <summary>
+        /// The current object under the player legs
+        /// </summary>
+        public GameObject ObjectUnderLeg { get; private set; }
 
         private GameObject player = null;
 
@@ -48,6 +52,8 @@ namespace PlayerCharacter.Controller
 
             if (collision)
             {
+                ObjectUnderLeg = collision.gameObject;
+
                 bool wasGrounded = IsGrounded;
                 IsGrounded = false;
 

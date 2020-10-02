@@ -681,7 +681,7 @@ public class GeneralFunctions
     /// <returns>The player legs component</returns>
     public static PlayerLegs GetPlayerLegs()
     {
-        return GetPlayerGameObject().transform.GetChild(0).GetComponent<PlayerLegs>();
+        return GameAssets.PlayerObjectLegs;
     }
     /// <summary>
     /// Get the Player Gameobject in the current level and get the player spear component
@@ -707,6 +707,14 @@ public class GeneralFunctions
         var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
 
         return manager.GetComponent<GameplayManager>().GenID();
+    }
+    /// <summary>
+    /// Gets the current gameobject under the player legs
+    /// </summary>
+    /// <returns></returns>
+    public static GameObject GetGameObjectUnderPlayer()
+    {
+        return GameAssets.PlayerObjectLegs.ObjectUnderLeg;
     }
     #endregion
 

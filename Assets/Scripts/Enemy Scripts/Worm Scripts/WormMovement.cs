@@ -118,7 +118,7 @@ namespace EnemyCharacter.AI
                 wormSegment.MyHealthComponent.SetHealth(segmentHealth);
                 wormSegment.DrawDebug = drawDebug;
                 wormSegment.WhatIsGround = whatIsGround;
-                wormSegment.IsRotating = segmentRotating;
+                wormSegment.IsRotatingDown = segmentRotating;
                 wormSegment.SquishScale = SquishScale;
                 wormSegment.SquishTime = debuffToApply.GetTotalTime();
                 wormSegment.CanDamage = true;
@@ -281,10 +281,15 @@ namespace EnemyCharacter.AI
 
                     foreach (WormSegment wormSegment in childSegments)
                     {
-                        wormSegment.IsRotating = true;
+                        wormSegment.IsRotatingDown = true;
                     }
 
                     yield return new WaitForEndOfFrame();
+                }
+
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    wormSegment.IsRotatingDown = false;
                 }
 
                 yield return new WaitForSeconds(returnHomeDelay);
@@ -299,12 +304,13 @@ namespace EnemyCharacter.AI
                 {
                     elapsedTime += Time.deltaTime;
                     wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, homeRotation, (elapsedTime / rotationSpeed));
-                    yield return new WaitForEndOfFrame();
-                }
 
-                foreach (WormSegment wormSegment in childSegments)
-                {
-                    wormSegment.IsRotating = false;
+                    foreach (WormSegment wormSegment in childSegments)
+                    {
+                        wormSegment.IsRotatingUp = true;
+                    }
+
+                    yield return new WaitForEndOfFrame();
                 }
 
                 foreach (WormSegment wormSegment in childSegments)
@@ -315,8 +321,15 @@ namespace EnemyCharacter.AI
                     }
                 }
 
+                foreach (WormSegment wormSegment in childSegments)
+                {
+                    wormSegment.IsRotatingUp = false;
+                }
+
                 hookedToGround = false;
                 unHookedFromGround = false;
+
+                GetNextRotation();
 
                 if (!AreAllSegmentsUp())
                 {

@@ -37,6 +37,10 @@ namespace GameplayManagement.Assets
         /// A reference to the current PlayerController in the world
         /// </summary>
         public static PlayerController PlayerGameController { get; private set; }
+        /// <summary>
+        /// A reference to the Player's Leg component currently in the world
+        /// </summary>
+        public static PlayerLegs PlayerObjectLegs { get; private set; }
 
         public Transform damgeText;
         #endregion
@@ -52,6 +56,8 @@ namespace GameplayManagement.Assets
             PlayerGameObject = GameObject.FindGameObjectWithTag("Player");
 
             PlayerGameController = PlayerGameObject.GetComponent<PlayerController>();
+
+            PlayerObjectLegs = PlayerGameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
             PlayerHUDManager = FindObjectOfType<PlayerUIManager>();
 
