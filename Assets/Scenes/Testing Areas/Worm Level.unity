@@ -401,6 +401,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2358775366941770877, guid: 2e37aff177581a940afc35c29abc6b09,
+        type: 3}
+      propertyPath: topCollisionSize.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3478146148403439873, guid: 2e37aff177581a940afc35c29abc6b09,
+        type: 3}
+      propertyPath: topCollisionSize.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3485621069134675727, guid: 2e37aff177581a940afc35c29abc6b09,
+        type: 3}
+      propertyPath: topCollisionSize.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3485621069359818601, guid: 2e37aff177581a940afc35c29abc6b09,
+        type: 3}
+      propertyPath: topCollisionSize.x
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6681054763131576216, guid: 2e37aff177581a940afc35c29abc6b09,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -460,6 +480,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Worm Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970458555238692157, guid: 2e37aff177581a940afc35c29abc6b09,
+        type: 3}
+      propertyPath: topCollisionSize.x
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}

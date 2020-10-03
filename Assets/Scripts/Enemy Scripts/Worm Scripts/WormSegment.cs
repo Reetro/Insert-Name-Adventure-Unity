@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using System.Collections;
 using GameplayManagement.Assets;
+using System.Collections.Generic;
 
 namespace EnemyCharacter.AI
 {
@@ -14,7 +15,6 @@ namespace EnemyCharacter.AI
         private bool isPlayerAttached = false;
         private Quaternion playerAttachedRotation;
         private GameObject playerObject = null;
-        private bool canBeSquished = false;
         private Collider2D playerCollider = null;
 
         private const float groundTraceDistance = 0.35f;
@@ -34,6 +34,12 @@ namespace EnemyCharacter.AI
 
         [HideInInspector]
         public UnityEvent DamagedPlayer;
+
+        [HideInInspector]
+        public bool isPlayerWalkingOnWorm = false;
+
+        [SerializeField] private BoxCollider2D leftCollision = null;
+        [SerializeField] private BoxCollider2D rightCollision = null;
 
         #region Collision Functions
         /// <summary>
@@ -94,9 +100,16 @@ namespace EnemyCharacter.AI
             {
                 CheckForGround();
 
-                CheckDisable();
+                UpdateCollision();
 
-                CheckAttachedSquish();
+                print("Player on Worm " + isPlayerWalkingOnWorm);
+
+                if (!isPlayerWalkingOnWorm)
+                {
+                    CheckDisable();
+
+                    CheckAttachedSquish();
+                }
             }
         }
         /// <summary>
@@ -135,11 +148,27 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
+        /// Disables collision that is facing the player
+        /// </summary>
+        private void UpdateCollision()
+        {
+            if (IsPlayerLeft)
+            {
+                leftCollision.enabled = false;
+                rightCollision.enabled = true;
+            }
+            else
+            {
+                rightCollision.enabled = false;
+                leftCollision.enabled = true;
+            }
+        }
+        /// <summary>
         /// Keep player's attached rotation and look for ground under player
         /// </summary>
         private void CheckAttachedSquish()
         {
-            if (isPlayerAttached)
+            if (isPlayerAttached && !isPlayerWalkingOnWorm)
             {
                 if (playerObject)
                 {
@@ -172,7 +201,7 @@ namespace EnemyCharacter.AI
             {
                 Collider2D collider2D = Physics2D.OverlapBox(transform.position, MyBoxCollider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), LayerMask.GetMask("Player"));
 
-                if (HasPlayerBeenSquished && !collider2D)
+                if (HasPlayerBeenSquished && !collider2D && !isPlayerWalkingOnWorm)
                 {
                     if (IsGrounded)
                     {
@@ -188,14 +217,17 @@ namespace EnemyCharacter.AI
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                if (GeneralFunctions.IsPlayerTouchingGround() && canBeSquished)
+                if (!isPlayerWalkingOnWorm)
                 {
-                    if (IsGrounded)
+                    if (GeneralFunctions.IsPlayerTouchingGround())
                     {
-                        DisableCollision();
-                    }
+                        if (IsGrounded)
+                        {
+                            DisableCollision();
+                        }
 
-                    SquishPlayer(PlayerObject);
+                        SquishPlayer(PlayerObject);
+                    }
                 }
             }
         }
@@ -214,12 +246,34 @@ namespace EnemyCharacter.AI
                     DamagedPlayer.Invoke();
                 }
 
-                if (IsRotatingDown && !HasPlayerBeenSquished && !IsRotatingUp)
+                if (IsRotatingDown && !HasPlayerBeenSquished && !IsRotatingUp && !isPlayerWalkingOnWorm)
                 {
                     GameAssets.PlayerGameController.DisableControl();
 
                     AttachPlayer(collision);
                 }
+            }
+        }
+        /// <summary>
+        /// When player is walking on worm set isPlayerWalkingOnWorm to true
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (GeneralFunctions.IsObjectOnPlayer(collision.gameObject))
+            {
+                isPlayerWalkingOnWorm = true;
+            }
+        }
+        /// <summary>
+        /// When player is no longer walking on worm set isPlayerWalkingOnWorm to false
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (GeneralFunctions.IsObjectOnPlayer(collision.gameObject))
+            {
+                isPlayerWalkingOnWorm = false;
             }
         }
         /// <summary>
@@ -260,8 +314,13 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void DisableCollision()
         {
-            MyBoxCollider2D.enabled = false;
-            MyCapsuleCollider2D.enabled = false;
+            if (!isPlayerWalkingOnWorm)
+            {
+                print("Collision Off");
+
+                MyBoxCollider2D.enabled = false;
+                MyCapsuleCollider2D.enabled = false;
+            }
         }
         /// <summary>
         /// Enable both MyBoxCollider2D and MyCapsuleCollider2D
@@ -294,8 +353,6 @@ namespace EnemyCharacter.AI
         /// <param name="collision"></param>
         private void AttachPlayer(Collision2D playerCollision)
         {
-            canBeSquished = false;
-
             playerObject = playerCollision.gameObject;
 
             playerAttachedRotation = playerCollision.transform.rotation;
@@ -324,8 +381,6 @@ namespace EnemyCharacter.AI
                 Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, false);
 
                 GameAssets.PlayerGameController.EnableControl();
-
-                canBeSquished = true;
             }
             else
             {
@@ -419,6 +474,10 @@ namespace EnemyCharacter.AI
         /// Check to see if the player has been squished
         /// </summary>
         public bool HasPlayerBeenSquished { get; set; } = false;
+        /// <summary>
+        /// A list of all worm segments
+        /// </summary>
+        public List<WormSegment> AllSegments { get; set; } = new List<WormSegment>();
         #endregion
     }
 }

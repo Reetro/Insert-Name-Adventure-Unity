@@ -127,6 +127,7 @@ namespace EnemyCharacter.AI
 
                 spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
                 wormSegment.SpriteWidth = wormSegment.MyBoxCollider2D.bounds.size.x;
+                wormSegment.AllSegments = childSegments;
 
                 wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
                 wormSegment.OnSquishedPlayer.AddListener(OnSquishedPlayer);
