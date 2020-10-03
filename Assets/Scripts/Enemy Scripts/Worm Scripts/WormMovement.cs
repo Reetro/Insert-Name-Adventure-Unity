@@ -54,7 +54,7 @@ namespace EnemyCharacter.AI
         [SerializeField] private bool drawDebug = false;
 
         #region Local Varaibles
-        private List<WormSegment> childSegments = new List<WormSegment>();
+        private List<WormSegment> allSegments = new List<WormSegment>();
         private float spriteHeight = 0;
         private WormSegment wormSegmentToRotate = null;
         private bool segmentRotating = false;
@@ -74,11 +74,11 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Start()
         {
-            childSegments = GetComponentsInChildren<WormSegment>().ToList();
+            allSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             playerObject = GeneralFunctions.GetPlayerGameObject();
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 SetupWormSegment(wormSegment);
             }
@@ -127,13 +127,14 @@ namespace EnemyCharacter.AI
 
                 spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
                 wormSegment.SpriteWidth = wormSegment.MyBoxCollider2D.bounds.size.x;
-                wormSegment.AllSegments = childSegments;
+                wormSegment.AllSegments = allSegments;
 
                 wormSegment.SegmentDeath.AddListener(OnSegmentDeath);
                 wormSegment.OnSquishedPlayer.AddListener(OnSquishedPlayer);
                 wormSegment.DamagedPlayer.AddListener(OnDamagedPlayer);
                 wormSegment.OnUnSquishedPlayer.AddListener(OnUnSquishedPlayer);
                 wormSegment.CheckCollision();
+
 
                 if (drawDebug)
                 {
@@ -178,10 +179,30 @@ namespace EnemyCharacter.AI
                 if (GeneralFunctions.IsObjectLeftOrRight(transform, playerObject.transform))
                 {
                     targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in allSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = false;
+
+                            wormSegment.UpdateCollision();
+                        }
+                    }
                 }
                 else
                 {
                     targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
+
+                    foreach (WormSegment wormSegment in allSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            wormSegment.IsPlayerLeft = true;
+
+                            wormSegment.UpdateCollision();
+                        }
+                    }
                 }
             }
             else
@@ -190,11 +211,13 @@ namespace EnemyCharacter.AI
                 {
                     targetRotation = Quaternion.AngleAxis(targetLeftAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
 
-                    foreach (WormSegment wormSegment in childSegments)
+                    foreach (WormSegment wormSegment in allSegments)
                     {
                         if (wormSegment)
                         {
                             wormSegment.IsPlayerLeft = true;
+
+                            wormSegment.UpdateCollision();
                         }
                     }
                 }
@@ -202,11 +225,13 @@ namespace EnemyCharacter.AI
                 {
                     targetRotation = Quaternion.AngleAxis(targetRightAngle, wormSegmentToRotate.transform.forward) * wormSegmentToRotate.transform.rotation;
 
-                    foreach (WormSegment wormSegment in childSegments)
+                    foreach (WormSegment wormSegment in allSegments)
                     {
                         if (wormSegment)
                         {
                             wormSegment.IsPlayerLeft = false;
+
+                            wormSegment.UpdateCollision();
                         }
                     }
                 }
@@ -242,7 +267,7 @@ namespace EnemyCharacter.AI
                     yield return null;
                 }
 
-                foreach (WormSegment wormSegment in childSegments)
+                foreach (WormSegment wormSegment in allSegments)
                 {
                     wormSegment.CheckCollision();
                 }
@@ -280,7 +305,7 @@ namespace EnemyCharacter.AI
                     elapsedTime += Time.deltaTime;
                     wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, targetRotation, (elapsedTime/rotationSpeed));
 
-                    foreach (WormSegment wormSegment in childSegments)
+                    foreach (WormSegment wormSegment in allSegments)
                     {
                         wormSegment.IsRotatingDown = true;
                     }
@@ -288,7 +313,7 @@ namespace EnemyCharacter.AI
                     yield return new WaitForEndOfFrame();
                 }
 
-                foreach (WormSegment wormSegment in childSegments)
+                foreach (WormSegment wormSegment in allSegments)
                 {
                     wormSegment.IsRotatingDown = false;
                 }
@@ -306,7 +331,7 @@ namespace EnemyCharacter.AI
                     elapsedTime += Time.deltaTime;
                     wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, homeRotation, (elapsedTime / rotationSpeed));
 
-                    foreach (WormSegment wormSegment in childSegments)
+                    foreach (WormSegment wormSegment in allSegments)
                     {
                         wormSegment.IsRotatingUp = true;
                     }
@@ -314,7 +339,7 @@ namespace EnemyCharacter.AI
                     yield return new WaitForEndOfFrame();
                 }
 
-                foreach (WormSegment wormSegment in childSegments)
+                foreach (WormSegment wormSegment in allSegments)
                 {
                     if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
                     {
@@ -322,7 +347,7 @@ namespace EnemyCharacter.AI
                     }
                 }
 
-                foreach (WormSegment wormSegment in childSegments)
+                foreach (WormSegment wormSegment in allSegments)
                 {
                     wormSegment.IsRotatingUp = false;
                 }
@@ -373,7 +398,7 @@ namespace EnemyCharacter.AI
                 appliedDebuff = true;
             }
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -402,7 +427,7 @@ namespace EnemyCharacter.AI
                 unHookedFromGround = true;
             }
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -417,7 +442,7 @@ namespace EnemyCharacter.AI
         {
             WormSegment localWormSegment = null;
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment.AboveGround)
                 {
@@ -433,7 +458,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private bool AreAllSegmentsUp()
         {
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (!wormSegment.AboveGround)
                 {
@@ -449,7 +474,7 @@ namespace EnemyCharacter.AI
         {
             var topSegment = GetTopMostSegment();
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -480,7 +505,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void OnDamagedPlayer()
         {
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -498,7 +523,7 @@ namespace EnemyCharacter.AI
         {
             yield return new WaitForSeconds(damageCooldown);
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -511,7 +536,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private WormSegment GetTopMostSegment()
         {
-            return childSegments[childSegments.Count - 1];
+            return allSegments[allSegments.Count - 1];
         }
         #endregion
 
@@ -563,7 +588,7 @@ namespace EnemyCharacter.AI
         {
             List<bool> isDeadList = new List<bool>();
 
-            foreach (WormSegment wormSegment in childSegments)
+            foreach (WormSegment wormSegment in allSegments)
             {
                 if (wormSegment)
                 {
@@ -585,13 +610,13 @@ namespace EnemyCharacter.AI
         private List<WormSegment> GetSegmentsAboveKilledSegment(WormSegment wormSegment)
         {
             List<WormSegment> localSegments = new List<WormSegment>();
-            int index = childSegments.IndexOf(wormSegment);
+            int index = allSegments.IndexOf(wormSegment);
 
-            for (int currentIndex = index; currentIndex < childSegments.Count; currentIndex++)
+            for (int currentIndex = index; currentIndex < allSegments.Count; currentIndex++)
             {
-                if (childSegments[currentIndex])
+                if (allSegments[currentIndex])
                 {
-                    localSegments.Add(childSegments[currentIndex]);
+                    localSegments.Add(allSegments[currentIndex]);
                 }
             }
 

@@ -100,10 +100,6 @@ namespace EnemyCharacter.AI
             {
                 CheckForGround();
 
-                UpdateCollision();
-
-                print("Player on Worm " + isPlayerWalkingOnWorm);
-
                 if (!isPlayerWalkingOnWorm)
                 {
                     CheckDisable();
@@ -150,7 +146,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Disables collision that is facing the player
         /// </summary>
-        private void UpdateCollision()
+        public void UpdateCollision()
         {
             if (IsPlayerLeft)
             {
@@ -310,25 +306,46 @@ namespace EnemyCharacter.AI
             OnUnSquishedPlayer.Invoke();
         }
         /// <summary>
-        /// Disable both MyBoxCollider2D and MyCapsuleCollider2D
+        /// Disables MyBoxCollider2D, MyCapsuleCollider2D, and Trigger Boxes
         /// </summary>
         public void DisableCollision()
         {
             if (!isPlayerWalkingOnWorm)
             {
-                print("Collision Off");
+                foreach (WormSegment wormSegment in AllSegments)
+                {
+                    if (wormSegment)
+                    {
+                        if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                        {
+                            wormSegment.MyBoxCollider2D.enabled = false;
+                            wormSegment.MyCapsuleCollider2D.enabled = false;
 
-                MyBoxCollider2D.enabled = false;
-                MyCapsuleCollider2D.enabled = false;
+                            wormSegment.rightCollision.enabled = false;
+                            wormSegment.leftCollision.enabled = false;
+                        }
+                    }
+                }
             }
         }
         /// <summary>
-        /// Enable both MyBoxCollider2D and MyCapsuleCollider2D
+        /// Enable both MyBoxCollider2D, MyCapsuleCollider2D, and Trigger Boxes
         /// </summary>
         public void EnableCollision()
         {
-            MyBoxCollider2D.enabled = true;
-            MyCapsuleCollider2D.enabled = true;
+            foreach (WormSegment wormSegment in AllSegments)
+            {
+                if (wormSegment)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        wormSegment.MyBoxCollider2D.enabled = true;
+                        wormSegment.MyCapsuleCollider2D.enabled = true;
+
+                        wormSegment.UpdateCollision();
+                    }
+                }
+            }
 
             SetOpacity(defaultOpacity);
         }
