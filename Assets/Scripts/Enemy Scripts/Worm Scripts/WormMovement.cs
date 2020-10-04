@@ -352,6 +352,11 @@ namespace EnemyCharacter.AI
                     wormSegment.IsRotatingUp = false;
                 }
 
+                foreach (WormSegment wormSegment in allSegments)
+                {
+                    wormSegment.IsIdle = true;
+                }
+
                 hookedToGround = false;
                 unHookedFromGround = false;
 

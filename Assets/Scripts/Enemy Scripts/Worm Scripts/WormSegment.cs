@@ -213,9 +213,9 @@ namespace EnemyCharacter.AI
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                if (!isPlayerWalkingOnWorm)
+                if (!isPlayerWalkingOnWorm && !IsRotatingUp)
                 {
-                    if (GeneralFunctions.IsPlayerTouchingGround())
+                    if (GeneralFunctions.IsPlayerTouchingGround() && !IsIdle)
                     {
                         if (IsGrounded)
                         {
@@ -495,6 +495,10 @@ namespace EnemyCharacter.AI
         /// A list of all worm segments
         /// </summary>
         public List<WormSegment> AllSegments { get; set; } = new List<WormSegment>();
+        /// <summary>
+        /// Check to see if the worm is not moving
+        /// </summary>
+        public bool IsIdle { get; set; } = true;
         #endregion
     }
 }
