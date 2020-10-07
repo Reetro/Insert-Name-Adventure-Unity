@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AuraSystem;
+using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
 {
@@ -52,6 +53,9 @@ namespace EnemyCharacter.AI
         [Header("Debug Settings")]
         [Tooltip("Whether or not to print debug messages")]
         [SerializeField] private bool drawDebug = false;
+
+        [HideInInspector]
+        public UnityEvent atLaunchPoint;
 
         #region Local Varaibles
         private List<WormSegment> allSegments = new List<WormSegment>();
@@ -124,6 +128,8 @@ namespace EnemyCharacter.AI
                 wormSegment.CanDamage = true;
                 wormSegment.IDObject.ConstructID();
                 wormSegment.PlayerObject = playerObject;
+
+                atLaunchPoint.AddListener(wormSegment.AtLaunchPoint);
 
                 spriteHeight = wormSegment.MyBoxCollider2D.bounds.size.y;
                 wormSegment.SpriteWidth = wormSegment.MyBoxCollider2D.bounds.size.x;
@@ -241,6 +247,105 @@ namespace EnemyCharacter.AI
 
         #region Movement Functions
         /// <summary>
+        /// Pushes the current worm segment towards the target rotation
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator PushSegmentToTarget()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(rotationDelay);
+
+                HookToGround();
+
+                Quaternion start = wormSegmentToRotate.transform.rotation;
+
+                float elapsedTime = 0;
+
+                while (elapsedTime < rotationSpeed)
+                {
+                    elapsedTime += Time.deltaTime;
+                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, targetRotation, (elapsedTime / rotationSpeed));
+
+                    foreach (WormSegment wormSegment in allSegments)
+                    {
+                        if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                        {
+                            wormSegment.IsRotatingDown = true;
+                            wormSegment.IsRotatingUp = false;
+                            wormSegment.IsIdle = false;
+                        }
+                    }
+
+                    yield return new WaitForEndOfFrame();
+                }
+
+                foreach (WormSegment wormSegment in allSegments)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        wormSegment.IsIdle = true;
+                        wormSegment.IsRotatingDown = false;
+                        wormSegment.IsRotatingUp = false;
+                    }
+                }
+
+                yield return new WaitForSeconds(returnHomeDelay);
+
+                UnHookFromGround();
+
+                start = wormSegmentToRotate.transform.rotation;
+
+                elapsedTime = 0;
+
+                while (elapsedTime < rotationSpeed)
+                {
+                    elapsedTime += Time.deltaTime;
+                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, homeRotation, (elapsedTime / rotationSpeed));
+
+                    foreach (WormSegment wormSegment in allSegments)
+                    {
+                        if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                        {
+                            wormSegment.IsRotatingUp = true;
+                            wormSegment.IsRotatingDown = false;
+                            wormSegment.IsIdle = false;
+
+                            if (elapsedTime >= 0.3f)
+                            {
+                                atLaunchPoint.Invoke();
+                            }
+                        }
+                    }
+
+                    yield return new WaitForEndOfFrame();
+                }
+
+                foreach (WormSegment wormSegment in allSegments)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        wormSegment.IsIdle = true;
+                        wormSegment.IsRotatingDown = false;
+                        wormSegment.IsRotatingUp = false;
+                        wormSegment.EnableCollision();
+                    }
+                }
+
+                hookedToGround = false;
+                unHookedFromGround = false;
+
+                GetNextRotation();
+
+                if (!AreAllSegmentsUp())
+                {
+                    StartCoroutine(PushSegmentsUp());
+
+                    yield break;
+                }
+            }
+        }
+        /// <summary>
         /// Will push the next grounded segment up into the world
         /// </summary>
         private IEnumerator PushSegmentsUp()
@@ -282,92 +387,6 @@ namespace EnemyCharacter.AI
                 GetNextRotation();
 
                 StartCoroutine(PushSegmentToTarget());
-            }
-        }
-        /// <summary>
-        /// Pushes the current worm segment towards the target rotation
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator PushSegmentToTarget() 
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(rotationDelay);
-
-                HookToGround();
-
-                Quaternion start = wormSegmentToRotate.transform.rotation;
-
-                float elapsedTime = 0;
-
-                while (elapsedTime < rotationSpeed)
-                {
-                    elapsedTime += Time.deltaTime;
-                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, targetRotation, (elapsedTime/rotationSpeed));
-
-                    foreach (WormSegment wormSegment in allSegments)
-                    {
-                        wormSegment.IsRotatingDown = true;
-                    }
-
-                    yield return new WaitForEndOfFrame();
-                }
-
-                foreach (WormSegment wormSegment in allSegments)
-                {
-                    wormSegment.IsRotatingDown = false;
-                }
-
-                yield return new WaitForSeconds(returnHomeDelay);
-
-                UnHookFromGround();
-
-                start = wormSegmentToRotate.transform.rotation;
-
-                elapsedTime = 0;
-
-                while (elapsedTime < rotationSpeed)
-                {
-                    elapsedTime += Time.deltaTime;
-                    wormSegmentToRotate.transform.rotation = Quaternion.Slerp(start, homeRotation, (elapsedTime / rotationSpeed));
-
-                    foreach (WormSegment wormSegment in allSegments)
-                    {
-                        wormSegment.IsRotatingUp = true;
-                    }
-
-                    yield return new WaitForEndOfFrame();
-                }
-
-                foreach (WormSegment wormSegment in allSegments)
-                {
-                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
-                    {
-                        wormSegment.EnableCollision();
-                    }
-                }
-
-                foreach (WormSegment wormSegment in allSegments)
-                {
-                    wormSegment.IsRotatingUp = false;
-                }
-
-                foreach (WormSegment wormSegment in allSegments)
-                {
-                    wormSegment.IsIdle = true;
-                }
-
-                hookedToGround = false;
-                unHookedFromGround = false;
-
-                GetNextRotation();
-
-                if (!AreAllSegmentsUp())
-                {
-                    StartCoroutine(PushSegmentsUp());
-
-                    yield break;
-                }
             }
         }
         /// <summary>

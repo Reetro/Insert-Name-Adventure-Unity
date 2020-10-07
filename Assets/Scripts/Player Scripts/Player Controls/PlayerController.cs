@@ -276,9 +276,14 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Completely disable player control
         /// </summary>
-        public void DisableControl()
+        public void DisableControl(bool makeKinematic)
         {
             ControlDisabled = true;
+
+            if (makeKinematic)
+            {
+                myRigidBody2D.isKinematic = true;
+            }
         }
         /// <summary>
         /// Enable player control
@@ -286,6 +291,8 @@ namespace PlayerCharacter.Controller
         public void EnableControl()
         {
             ControlDisabled = false;
+
+            myRigidBody2D.isKinematic = false;
         }
         /// <summary>
         /// Called when player dies will stop all player movement

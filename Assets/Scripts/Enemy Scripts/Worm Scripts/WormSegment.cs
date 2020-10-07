@@ -12,7 +12,7 @@ namespace EnemyCharacter.AI
         private Vector3 defaultPlayerScale = Vector3.zero;
         private Vector3 deafultSpearLocation = Vector3.zero;
         private float defaultOpacity = 0f;
-        private bool isPlayerAttached = false;
+        private bool isPlayerAttachedAndSquishable = false;
         private Quaternion playerAttachedRotation;
         private GameObject playerObject = null;
         private Collider2D playerCollider = null;
@@ -37,6 +37,12 @@ namespace EnemyCharacter.AI
 
         [HideInInspector]
         public bool isPlayerWalkingOnWorm = false;
+
+        [HideInInspector]
+        public bool keepPlayerRotation = false;
+
+        [HideInInspector]
+        public bool isPlayerAttached = false;
 
         [SerializeField] private BoxCollider2D leftCollision = null;
         [SerializeField] private BoxCollider2D rightCollision = null;
@@ -99,6 +105,11 @@ namespace EnemyCharacter.AI
             if (AboveGround)
             {
                 CheckForGround();
+
+                if (keepPlayerRotation)
+                {
+                    playerObject.transform.rotation = playerAttachedRotation;
+                }
 
                 if (!isPlayerWalkingOnWorm)
                 {
@@ -164,14 +175,12 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void CheckAttachedSquish()
         {
-            if (isPlayerAttached && !isPlayerWalkingOnWorm)
+            if (isPlayerAttachedAndSquishable && !isPlayerWalkingOnWorm)
             {
                 if (playerObject)
                 {
                     var traceStart = playerObject.transform.position;
                     var traceEnd = -GeneralFunctions.GetFaceingDirectionY(playerObject);
-
-                    playerObject.transform.rotation = playerAttachedRotation;
 
                     RaycastHit2D raycastHit2D = Physics2D.Raycast(traceStart, traceEnd, playerSquishCheckDistance, LayerMask.GetMask("Ground"));
 
@@ -235,18 +244,17 @@ namespace EnemyCharacter.AI
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
-                if (CanDamage && IsRotatingDown && !IsRotatingUp)
-                {
-                    GeneralFunctions.DamageTarget(collision.gameObject, DamageToApply, true, gameObject);
-
-                    DamagedPlayer.Invoke();
-                }
-
                 if (IsRotatingDown && !HasPlayerBeenSquished && !IsRotatingUp && !isPlayerWalkingOnWorm)
                 {
-                    GameAssets.PlayerGameController.DisableControl();
+                    GameAssets.PlayerGameController.DisableControl(false);
 
-                    AttachPlayer(collision);
+                    AttachPlayer(collision, true);
+                }
+                else if (isPlayerWalkingOnWorm && IsRotatingUp && !IsRotatingDown && !IsIdle)
+                {
+                    GameAssets.PlayerGameController.DisableControl(true);
+
+                    AttachPlayer(collision, true);
                 }
             }
         }
@@ -278,15 +286,26 @@ namespace EnemyCharacter.AI
         /// <param name="player"></param>
         public void SquishPlayer(GameObject player)
         {
-            player.transform.localScale = SquishScale;
-
-            if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
+            if (player)
             {
-                GeneralFunctions.GetPlayerSpear().DisableSpear();
+                player.transform.localScale = SquishScale;
 
-                OnSquishedPlayer.Invoke();
+                GeneralFunctions.DamageTarget(player, DamageToApply, true, gameObject);
 
-                StartCoroutine(UnSquishPlayer(player));
+                DamagedPlayer.Invoke();
+
+                if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
+                {
+                    GeneralFunctions.GetPlayerSpear().DisableSpear();
+
+                    OnSquishedPlayer.Invoke();
+
+                    StartCoroutine(UnSquishPlayer(player));
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to squish player player was not valid");
             }
         }
         /// <summary>
@@ -294,16 +313,25 @@ namespace EnemyCharacter.AI
         /// </summary>
         private IEnumerator UnSquishPlayer(GameObject player)
         {
-            yield return new WaitForSeconds(SquishTime);
+            if (player)
+            {
+                yield return new WaitForSeconds(SquishTime);
 
-            player.transform.localScale = defaultPlayerScale;
+                player.transform.localScale = defaultPlayerScale;
 
-            GeneralFunctions.GetPlayerSpear().EnableSpear();
+                GeneralFunctions.GetPlayerSpear().EnableSpear();
 
-            // Move spear back to it's default location
-            GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;
+                // Move spear back to it's default location
+                GeneralFunctions.GetPlayerSpear().transform.localPosition = deafultSpearLocation;
 
-            OnUnSquishedPlayer.Invoke();
+                OnUnSquishedPlayer.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Failed to unsquish player player was not valid");
+
+                yield break;
+            }
         }
         /// <summary>
         /// Disables MyBoxCollider2D, MyCapsuleCollider2D, and Trigger Boxes
@@ -329,7 +357,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Enable both MyBoxCollider2D, MyCapsuleCollider2D, and Trigger Boxes
+        /// Enables MyBoxCollider2D, MyCapsuleCollider2D, and Trigger Boxes then resets segment opacity
         /// </summary>
         public void EnableCollision()
         {
@@ -343,11 +371,10 @@ namespace EnemyCharacter.AI
                         wormSegment.MyCapsuleCollider2D.enabled = true;
 
                         wormSegment.UpdateCollision();
+                        wormSegment.SetOpacity(wormSegment.defaultOpacity);
                     }
                 }
             }
-
-            SetOpacity(defaultOpacity);
         }
         /// <summary>
         /// Set the worm sprites opacity
@@ -361,14 +388,29 @@ namespace EnemyCharacter.AI
 
             spriteRenderer.color = tmp;
         }
+        /// <summary>
+        /// Called when the segment is almost straight up
+        /// </summary>
+        public void AtLaunchPoint()
+        {
+            if (isPlayerAttached)
+            {
+                DeattachPlayer();
+
+                var force = -GeneralFunctions.GetFaceingDirectionX(playerObject) * 1000f;
+
+                GeneralFunctions.ApplyKnockback(playerObject, force);
+            }
+        }
         #endregion
 
         #region Attachment Code
         /// <summary>
         /// Attach player to the worm segment
         /// </summary>
-        /// <param name="collision"></param>
-        private void AttachPlayer(Collision2D playerCollision)
+        /// <param name="playerCollision"></param>
+        /// <param name="checkForSquish"></param>
+        public void AttachPlayer(Collision2D playerCollision, bool checkForSquish)
         {
             playerObject = playerCollision.gameObject;
 
@@ -378,20 +420,52 @@ namespace EnemyCharacter.AI
 
             Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
 
-            GameAssets.PlayerGameController.DisableControl();
-
             GeneralFunctions.AttachObjectToTransfrom(transform, playerCollision.gameObject);
 
+            keepPlayerRotation = true;
             isPlayerAttached = true;
+
+            if (checkForSquish)
+            {
+                isPlayerAttachedAndSquishable = true;
+            }
+        }
+        /// <summary>
+        /// Attach player to the worm segment
+        /// </summary>
+        /// <param name="playerCollision"></param>
+        /// <param name="checkForSquish"></param>
+        public void AttachPlayer(GameObject playerObject, bool checkForSquish)
+        {
+            playerObject = playerObject.gameObject;
+
+            playerAttachedRotation = playerObject.transform.rotation;
+
+            playerCollider = playerObject.GetComponent<BoxCollider2D>();
+
+            Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
+
+            GeneralFunctions.AttachObjectToTransfrom(transform, playerObject.gameObject);
+
+            keepPlayerRotation = true;
+            isPlayerAttached = true;
+
+            if (checkForSquish)
+            {
+                isPlayerAttachedAndSquishable = true;
+            }
         }
         /// <summary>
         /// Deattach player from worm segment
         /// </summary>
-        private void DeattachPlayer()
+        public void DeattachPlayer()
         {
             if (playerObject)
             {
+                isPlayerAttachedAndSquishable = false;
                 isPlayerAttached = false;
+
+                keepPlayerRotation = false;
 
                 GeneralFunctions.DetachFromParent(playerObject);
 
