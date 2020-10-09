@@ -16,6 +16,7 @@ namespace EnemyCharacter.AI
         private Quaternion playerAttachedRotation;
         private GameObject playerObject = null;
         private Collider2D playerCollider = null;
+        private Rigidbody2D playerRigidBody = null;
 
         private const float groundTraceDistance = 0.35f;
         private const float playerSquishCheckDistance = 0.5f;
@@ -397,9 +398,7 @@ namespace EnemyCharacter.AI
             {
                 DeattachPlayer();
 
-                var force = -GeneralFunctions.GetFaceingDirectionX(playerObject) * 1000f;
-
-                GeneralFunctions.ApplyKnockback(playerObject, force);
+                playerRigidBody.AddExplosionForce(KnockbackForce, transform.position, 0);
             }
         }
         #endregion
@@ -417,6 +416,8 @@ namespace EnemyCharacter.AI
             playerAttachedRotation = playerCollision.transform.rotation;
 
             playerCollider = playerCollision.collider;
+
+            playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 
             Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
 
@@ -442,6 +443,8 @@ namespace EnemyCharacter.AI
             playerAttachedRotation = playerObject.transform.rotation;
 
             playerCollider = playerObject.GetComponent<BoxCollider2D>();
+
+            playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 
             Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
 
@@ -573,6 +576,10 @@ namespace EnemyCharacter.AI
         /// Check to see if the worm is not moving
         /// </summary>
         public bool IsIdle { get; set; } = true;
+        /// <summary>
+        /// How much to knock back the player by when is detaching
+        /// </summary>
+        public float KnockbackForce { get; set; } = 10000f;
         #endregion
     }
 }

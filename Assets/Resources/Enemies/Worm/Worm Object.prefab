@@ -869,13 +869,14 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 655616
-  rotationSpeed: 0.6
+  rotationSpeed: 0.4
   rotationOffset: 0.3
   returnHomeDelay: 2
   rotationDelay: 2
   targetRightAngle: -90
   targetLeftAngle: 90
   spriteOpacity: 0.5
+  knockbackForce: 6600
   debuffToApply: {fileID: 11400000, guid: 26e352bfca2d1474eaaa228d529d453b, type: 2}
   SquishScale: {x: 1, y: 0.5, z: 0}
   drawDebug: 0
@@ -1050,7 +1051,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.38703197, y: 0.03870797}
+  m_Offset: {x: 0.38703197, y: 0.0024431944}
   m_SpriteTilingProperty:
     border: {x: 2.055, y: 0.995, z: 2.26, w: 0.585}
     pivot: {x: 0.480575, y: 0.57597363}
@@ -1061,7 +1062,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31811297, y: 1.1913209}
+  m_Size: {x: 0.31811297, y: 1.1187913}
   m_EdgeRadius: 0
 --- !u!61 &2134318703210897799
 BoxCollider2D:
@@ -1076,7 +1077,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.387032, y: 0.03870797}
+  m_Offset: {x: -0.38703197, y: 0.0024431944}
   m_SpriteTilingProperty:
     border: {x: 2.055, y: 0.995, z: 2.26, w: 0.585}
     pivot: {x: 0.480575, y: 0.57597363}
@@ -1087,7 +1088,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31811297, y: 1.1913209}
+  m_Size: {x: 0.31811297, y: 1.1187913}
   m_EdgeRadius: 0
 --- !u!70 &1150751598691849621
 CapsuleCollider2D:

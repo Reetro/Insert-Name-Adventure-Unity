@@ -41,6 +41,9 @@ namespace EnemyCharacter.AI
         [Tooltip("The opacity worm sprites will have when collision is disabled")]
         [Range(0, 1)]
         [SerializeField] private float spriteOpacity = 0.5f;
+        [Tooltip("How much to knock back the player by when is detaching")]
+        [SerializeField] private float knockbackForce = 10000f;
+
 
         [Header("Squish Settings")]
         [Tooltip("The debuff to apply to the player")]
@@ -128,6 +131,7 @@ namespace EnemyCharacter.AI
                 wormSegment.CanDamage = true;
                 wormSegment.IDObject.ConstructID();
                 wormSegment.PlayerObject = playerObject;
+                wormSegment.KnockbackForce = knockbackForce;
 
                 atLaunchPoint.AddListener(wormSegment.AtLaunchPoint);
 
