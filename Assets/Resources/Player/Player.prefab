@@ -498,7 +498,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   boxSize: {x: 0.4, y: 0.05}
-  collisionTransform: {fileID: 130510490}
 --- !u!1 &4157925456995496915
 GameObject:
   m_ObjectHideFlags: 0
