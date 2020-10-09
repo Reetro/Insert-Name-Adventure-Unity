@@ -424,6 +424,8 @@ namespace EnemyCharacter.AI
                 GeneralFunctions.ApplyDebuffToTarget(playerObject, debuffToApply, true);
 
                 appliedDebuff = true;
+
+                GeneralFunctions.DamageTarget(playerObject, damage, true, gameObject);
             }
 
             foreach (WormSegment wormSegment in allSegments)

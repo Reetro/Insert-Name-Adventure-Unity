@@ -291,8 +291,6 @@ namespace EnemyCharacter.AI
             {
                 player.transform.localScale = SquishScale;
 
-                GeneralFunctions.DamageTarget(player, DamageToApply, true, gameObject);
-
                 DamagedPlayer.Invoke();
 
                 if (!GeneralFunctions.GetGameObjectHealthComponent(player).IsCurrentlyDead)
