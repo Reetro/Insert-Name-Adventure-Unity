@@ -15,7 +15,6 @@ namespace EnemyCharacter
         /// The old leech ID
         /// </summary>
         public int MyID { get; private set; }
-
         /// <summary>
         /// Called after a leech has been spawned
         /// </summary>

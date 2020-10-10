@@ -73,6 +73,7 @@ namespace EnemyCharacter.AI
         private GameObject playerObject = null;
         private float currentAngle = 0f;
         private bool appliedDebuff = false;
+        private bool firstRun = true;
         #endregion
 
         #region Setup Functions
@@ -84,6 +85,8 @@ namespace EnemyCharacter.AI
             allSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             playerObject = GeneralFunctions.GetPlayerGameObject();
+
+            firstRun = true;
 
             foreach (WormSegment wormSegment in allSegments)
             {
@@ -145,6 +148,10 @@ namespace EnemyCharacter.AI
                 wormSegment.OnUnSquishedPlayer.AddListener(OnUnSquishedPlayer);
                 wormSegment.CheckCollision();
 
+                for (int index = 0; index < allSegments.Count; index++)
+                {
+                    allSegments[index].Index = index;
+                }
 
                 if (drawDebug)
                 {
@@ -358,6 +365,8 @@ namespace EnemyCharacter.AI
 
             if (AreAllSegmentsUp())
             {
+                StartCoroutine(PushSegmentToTarget());
+
                 yield break;
             }
 
@@ -385,7 +394,7 @@ namespace EnemyCharacter.AI
 
                 if (drawDebug)
                 {
-                    print(wormSegmentToRotate);
+                    print("Rotating: " + wormSegmentToRotate);
                 }
 
                 GetNextRotation();
@@ -466,7 +475,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Find the bottom most segment
+        /// Find the bottom most segment above ground
         /// </summary>
         private WormSegment GetSegmentToRotate()
         {
@@ -474,7 +483,7 @@ namespace EnemyCharacter.AI
 
             foreach (WormSegment wormSegment in allSegments)
             {
-                if (wormSegment.AboveGround)
+                if (wormSegment.AboveGround && !wormSegment.MyHealthComponent.IsCurrentlyDead)
                 {
                     localWormSegment = wormSegment;
                     break;

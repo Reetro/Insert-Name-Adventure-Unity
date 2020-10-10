@@ -578,6 +578,10 @@ namespace EnemyCharacter.AI
         /// How much to knock back the player by when is detaching
         /// </summary>
         public float KnockbackForce { get; set; } = 10000f;
+        /// <summary>
+        /// Location of this segment in the worm segment array
+        /// </summary>
+        public int Index { get; set; }
         #endregion
     }
 }

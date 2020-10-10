@@ -6,8 +6,8 @@ namespace AuraSystem.Effects
 {
     public class DebuffEffect : MonoBehaviour
     {
-        private float maxTicks = 9999999f;
-        private float maxTimerTime = 9999999f;
+        private const float maxTicks = 9999999f;
+        private const float maxTimerTime = 9999999f;
         private float staticTimer = 0;
         private bool usingStaticTimer = false;
         protected DebuffIcon icon = null;
