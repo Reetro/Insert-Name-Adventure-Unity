@@ -842,7 +842,7 @@ namespace CustomEditors
 
         public void OnGUI()
         {
-            tabs = GUILayout.Toolbar(tabs, new string[] { "Player", "Enemies", "Gameplay Management", "Buff / Debuffs" });
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Buffs & Debuffs" });
 
             switch (tabs)
             {
@@ -901,9 +901,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     gameplayManagerObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 
@@ -951,9 +948,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerMovementObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(foldoutSpaceing);
@@ -976,9 +970,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerHealthObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
 
@@ -1002,9 +993,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerSpearObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(foldoutSpaceing);
@@ -1071,9 +1059,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     leechScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1096,9 +1081,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1116,9 +1098,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechMovementObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1152,9 +1131,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     leechFatherScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1183,9 +1159,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechFatherHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1206,9 +1179,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechFatherMovementObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1231,9 +1201,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechFatherObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1263,15 +1230,12 @@ namespace CustomEditors
                 // Start a code block to check for GUI changes
                 EditorGUI.BeginChangeCheck();
 
-                EditorGUILayout.PropertyField(_LeechMotherScale, new GUIContent("Leech Father Scale"));
+                EditorGUILayout.PropertyField(_LeechMotherScale, new GUIContent("Leech Mother Scale"));
 
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Apply values to the target
                     leechMotherScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1297,9 +1261,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechMotherHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1317,9 +1278,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechMotherMovementObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1339,9 +1297,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         leechMotherObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1377,9 +1332,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     shamanScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1402,9 +1354,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         shamanHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1422,9 +1371,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         shamanHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1457,9 +1403,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     axeThrowerScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1482,9 +1425,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         axeThrowerHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1502,9 +1442,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         axeThrowerObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1537,9 +1474,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     slugScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1562,9 +1496,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         slugMovementObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1582,9 +1513,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         slugHealthObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
                 }
 
@@ -1618,9 +1546,6 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     wormScaleObject.ApplyModifiedProperties();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1640,9 +1565,6 @@ namespace CustomEditors
 
                         // fetch current values from the target
                         wormObject.Update();
-
-                        // Save Current scene after update
-                        EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                     }
 
                     GUILayout.Space(foldoutSpaceing);

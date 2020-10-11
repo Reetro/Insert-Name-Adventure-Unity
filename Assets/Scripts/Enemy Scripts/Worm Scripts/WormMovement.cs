@@ -73,7 +73,6 @@ namespace EnemyCharacter.AI
         private GameObject playerObject = null;
         private float currentAngle = 0f;
         private bool appliedDebuff = false;
-        private bool firstRun = true;
         #endregion
 
         #region Setup Functions
@@ -85,8 +84,6 @@ namespace EnemyCharacter.AI
             allSegments = GetComponentsInChildren<WormSegment>().ToList();
 
             playerObject = GeneralFunctions.GetPlayerGameObject();
-
-            firstRun = true;
 
             foreach (WormSegment wormSegment in allSegments)
             {
