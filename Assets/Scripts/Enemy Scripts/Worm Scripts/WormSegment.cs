@@ -107,9 +107,16 @@ namespace EnemyCharacter.AI
             {
                 CheckForGround();
 
-                if (keepPlayerRotation)
+                if (keepPlayerRotation && isPlayerAttached)
                 {
-                    playerObject.transform.rotation = playerAttachedRotation;
+                    if (playerObject)
+                    {
+                        playerObject.transform.rotation = playerAttachedRotation;
+                    }
+                    else
+                    {
+                        Debug.LogError(name + " is unable to keep player rotation player object is not valid");
+                    }
                 }
 
                 if (!isPlayerWalkingOnWorm)
@@ -302,10 +309,6 @@ namespace EnemyCharacter.AI
                     StartCoroutine(UnSquishPlayer(player));
                 }
             }
-            else
-            {
-                Debug.LogError("Failed to squish player player was not valid");
-            }
         }
         /// <summary>
         /// Return player back to the default scale
@@ -409,6 +412,12 @@ namespace EnemyCharacter.AI
         /// <param name="checkForSquish"></param>
         public void AttachPlayer(Collision2D playerCollision, bool checkForSquish)
         {
+            foreach (WormSegment segment in AllSegments)
+            {
+                segment.isPlayerAttached = false;
+                segment.keepPlayerRotation = false;
+            }
+
             playerObject = playerCollision.gameObject;
 
             playerAttachedRotation = playerCollision.transform.rotation;
@@ -417,17 +426,12 @@ namespace EnemyCharacter.AI
 
             playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 
-            Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
-
             GeneralFunctions.AttachObjectToTransfrom(transform, playerCollision.gameObject);
 
             keepPlayerRotation = true;
             isPlayerAttached = true;
 
-            if (checkForSquish)
-            {
-                isPlayerAttachedAndSquishable = true;
-            }
+            isPlayerAttachedAndSquishable = checkForSquish;
         }
         /// <summary>
         /// Attach player to the worm segment
@@ -436,7 +440,13 @@ namespace EnemyCharacter.AI
         /// <param name="checkForSquish"></param>
         public void AttachPlayer(GameObject playerObject, bool checkForSquish)
         {
-            playerObject = playerObject.gameObject;
+            foreach (WormSegment segment in AllSegments)
+            {
+                segment.isPlayerAttached = false;
+                segment.keepPlayerRotation = false;
+            }
+
+            this.playerObject = playerObject;
 
             playerAttachedRotation = playerObject.transform.rotation;
 
@@ -444,17 +454,12 @@ namespace EnemyCharacter.AI
 
             playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 
-            Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, true);
-
             GeneralFunctions.AttachObjectToTransfrom(transform, playerObject.gameObject);
 
             keepPlayerRotation = true;
             isPlayerAttached = true;
 
-            if (checkForSquish)
-            {
-                isPlayerAttachedAndSquishable = true;
-            }
+            isPlayerAttachedAndSquishable = checkForSquish;
         }
         /// <summary>
         /// Deattach player from worm segment
@@ -470,7 +475,10 @@ namespace EnemyCharacter.AI
 
                 GeneralFunctions.DetachFromParent(playerObject);
 
-                Physics2D.IgnoreCollision(MyBoxCollider2D, playerCollider, false);
+                foreach (WormSegment segment in AllSegments)
+                {
+                    segment.PlayerObject = null;
+                }
 
                 GameAssets.PlayerGameController.EnableControl();
             }

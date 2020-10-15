@@ -300,6 +300,18 @@ namespace EnemyCharacter.AI
 
                 yield return new WaitForSeconds(returnHomeDelay);
 
+                foreach (WormSegment segment in allSegments)
+                {
+                    segment.PlayerObject = playerObject;
+
+                    if (!segment.MyHealthComponent.IsCurrentlyDead && segment.isPlayerWalkingOnWorm)
+                    {
+                        segment.AttachPlayer(playerObject, false);
+
+                        break;
+                    }
+                }
+
                 UnHookFromGround();
 
                 start = wormSegmentToRotate.transform.rotation;
