@@ -15,7 +15,6 @@ namespace EnemyCharacter.AI
         private bool isPlayerAttachedAndSquishable = false;
         private Quaternion playerAttachedRotation;
         private GameObject playerObject = null;
-        private Collider2D playerCollider = null;
         private Rigidbody2D playerRigidBody = null;
 
         private const float groundTraceDistance = 0.35f;
@@ -50,9 +49,9 @@ namespace EnemyCharacter.AI
 
         #region Collision Functions
         /// <summary>
-        /// Set all needed references
+        /// Called right after the SceneCreator has setup the Player Gameobject
         /// </summary>
-        private void Awake()
+        public void OnSceneCreated()
         {
             IDObject = GetComponent<GameplayObjectID>();
             MyHealthComponent = GetComponent<HealthComponent>();
@@ -422,8 +421,6 @@ namespace EnemyCharacter.AI
 
             playerAttachedRotation = playerCollision.transform.rotation;
 
-            playerCollider = playerCollision.collider;
-
             playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 
             GeneralFunctions.AttachObjectToTransfrom(transform, playerCollision.gameObject);
@@ -449,8 +446,6 @@ namespace EnemyCharacter.AI
             this.playerObject = playerObject;
 
             playerAttachedRotation = playerObject.transform.rotation;
-
-            playerCollider = playerObject.GetComponent<BoxCollider2D>();
 
             playerRigidBody = playerObject.GetComponent<Rigidbody2D>();
 

@@ -769,6 +769,10 @@ public class GeneralFunctions
         {
             state.SaveGameToSlot(slot);
         }
+        else
+        {
+            Debug.LogError("Failed to save game unable to find Player State");
+        }
     }
     /// <summary>
     /// Load game data in the given slot

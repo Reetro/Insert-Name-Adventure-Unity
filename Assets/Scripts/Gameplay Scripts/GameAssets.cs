@@ -49,7 +49,7 @@ namespace GameplayManagement.Assets
         /// <summary>
         /// Called when a new scene is loaded will update internal asset references
         /// </summary>
-        public void UpdateReferences()
+        public static void UpdateReferences()
         {
             GlobalManager = FindObjectOfType<GameplayManager>();
 

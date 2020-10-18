@@ -7,6 +7,7 @@ using PlayerCharacter.GameSaving;
 using PlayerCharacter.Controller;
 using EnemyCharacter;
 using GameplayManagement.Assets;
+using EnemyCharacter.AI;
 
 namespace PlayerCharacter.SceneLoading
 {
@@ -43,7 +44,7 @@ namespace PlayerCharacter.SceneLoading
         /// </summary>
         private void SetupLevel()
         {
-            FindObjectOfType<GameAssets>().UpdateReferences();
+            GameAssets.UpdateReferences();
 
             levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
 
@@ -102,6 +103,16 @@ namespace PlayerCharacter.SceneLoading
                 }
             }
 
+            var wormSegments = FindObjectsOfType<WormSegment>();
+
+            foreach (WormSegment wormSegment in wormSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.OnSceneCreated();
+                }
+            }
+
             Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
 
             var auraManagers = FindObjectsOfType<AuraManager>();
@@ -111,6 +122,8 @@ namespace PlayerCharacter.SceneLoading
                 // Set all Aura Components UI reference to the player UI
                 auraManager.SetUIManager(playerHud.GetComponent<PlayerUIManager>());
             }
+
+            GameAssets.UpdateReferences();
         }
     }
 }
