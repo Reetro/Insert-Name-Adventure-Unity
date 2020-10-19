@@ -763,6 +763,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void SaveGameToSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -780,6 +782,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void LoadGameFromSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -796,6 +800,8 @@ public class GeneralFunctions
     /// </summary>
     public static void LoadActiveSave()
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -813,6 +819,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void DeleteGameInSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -829,6 +837,8 @@ public class GeneralFunctions
     /// </summary>
     public static bool IsAnySaveSlotActive()
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -847,6 +857,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static bool IsSlotActive(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -866,6 +878,8 @@ public class GeneralFunctions
     /// <returns></returns>
     public static bool DoesSaveExistInSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -884,6 +898,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void CreateNewSave(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -901,6 +917,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void SetActiveSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
