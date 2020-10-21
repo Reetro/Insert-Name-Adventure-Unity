@@ -30,6 +30,8 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         public bool hasPlateBeenPreesed { get; protected set; } = false;
 
+        private bool isPlayerAttached = false;
+
         /// <summary>
         /// Called when a connected pressure plate is pressed
         /// </summary>
@@ -123,6 +125,8 @@ namespace LevelObjects.MovingObjects
             {
                 GeneralFunctions.AttachObjectToTransfrom(transform, collision.gameObject);
 
+                isPlayerAttached = true;
+
                 UpdatePlayerPathBlocking(collision);
             }
             else if (collision.gameObject.CompareTag("Ground"))
@@ -139,6 +143,8 @@ namespace LevelObjects.MovingObjects
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
                 GeneralFunctions.DetachFromParent(collision.gameObject);
+
+                isPlayerAttached = false;
 
                 var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
@@ -178,7 +184,7 @@ namespace LevelObjects.MovingObjects
                     IsPathBlocked = true;
                 }
             }
-            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject) && !isPlayerAttached)
             {
                 UpdatePlayerPathBlocking(collision);
             }
