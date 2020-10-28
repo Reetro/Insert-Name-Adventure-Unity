@@ -4,7 +4,7 @@ using UnityEngine;
 using PlayerCharacter.Controller;
 using EnemyCharacter.AI;
 using GameplayManagement;
-using AuraSystem;
+using StatusEffects;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
@@ -302,12 +302,6 @@ namespace CustomEditors
 
         #endregion
 
-        #region Buffs / Debuffs Variables
-        private Editor LeechingEditor = null;
-        private Editor BreatherEditor = null;
-        private Editor PlayerSlowingEditor = null;
-        #endregion
-
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
         private const float foldoutSpaceing = 10f;
@@ -322,11 +316,6 @@ namespace CustomEditors
         private static bool showShamanSettings = false;
         private static bool showSlugSettings = false;
         private static bool showWormSettings = false;
-        private static bool showBuffSettings = false;
-        private static bool showDebuffSettings = false;
-        private static bool showBreatherSettings = false;
-        private static bool showLeechingSettings = false;
-        private static bool showSlowingSettings = false;
         #endregion
         #endregion
 
@@ -345,10 +334,6 @@ namespace CustomEditors
             SetupEnemies();
 
             SetupEnemyScale();
-
-            SetupDebuffs();
-
-            SetupBuffs();
         }
 
         #region Gameplay Manager Functions
@@ -802,7 +787,7 @@ namespace CustomEditors
         #endregion
 
         #region Buffs / Debuff Functions
-        private void SetupDebuffs()
+        /* private void SetupDebuffs()
         {
             var leechingDebuff = Resources.Load("Aura System/Debuffs/Leeching_D") as ScriptableDebuff;
             var playerSlowingDebuff = Resources.Load("Aura System/Debuffs/PlayerSlowing_D") as ScriptableDebuff;
@@ -838,11 +823,12 @@ namespace CustomEditors
                 Debug.LogError("Failed to get breatherBuff in SetupBuffs Function in GameplayEditor");
             }
         }
+        */
         #endregion
 
         public void OnGUI()
         {
-            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Buffs & Debuffs" });
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings"});
 
             switch (tabs)
             {
@@ -869,18 +855,8 @@ namespace CustomEditors
 
                     GUILayout.EndScrollView();
                     break;
-
-
-                case 3:
-                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
-
-                    SetupBuffAndDebuffsUI();
-
-                    GUILayout.EndScrollView();
-                    break;
             }
         }
-
         #region Gameplay Manager UI
         private void SetupGameplayManagerUI()
         {
@@ -1578,6 +1554,7 @@ namespace CustomEditors
         #endregion
 
         #region Buff / Debuff Editors
+        /*
         private void SetupBuffAndDebuffsUI()
         {
             showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings", true);
@@ -1636,6 +1613,7 @@ namespace CustomEditors
                 #endregion
             }
         }
+        */
         #endregion
 
     }

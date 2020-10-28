@@ -877,7 +877,7 @@ MonoBehaviour:
   targetLeftAngle: 90
   spriteOpacity: 0.5
   knockbackForce: 6600
-  debuffToApply: {fileID: 11400000, guid: 26e352bfca2d1474eaaa228d529d453b, type: 2}
+  effectToApply: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b, type: 2}
   SquishScale: {x: 1, y: 0.5, z: 0}
   drawDebug: 0
   atLaunchPoint:

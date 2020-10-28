@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using PlayerUI;
 using GameplayManagement;
 using EnemyCharacter;
-using AuraSystem.Effects;
+using StatusEffects.Effects;
 using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
@@ -524,47 +524,24 @@ public class GeneralFunctions
 
     #region Game action functions
     /// <summary>
-    /// Apply a buff to the given target
+    /// Apply a status effect to the given target
     /// </summary>
     /// <param name="target"></param>
     /// <param name="buffToApply"></param>
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static BuffEffect ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    public static StatusEffect ApplyStatusEffectToTarget(GameObject target, ScriptableStatusEffect StatusEffectToApply)
     {
         var auraManager = target.GetComponent<AuraManager>();
 
         if (auraManager)
         {
-            return auraManager.ApplyBuff(target, buffToApply, createIcon);
+            return auraManager.ApplyEffect(target, StatusEffectToApply);
         }
         else
         {
             Debug.LogError("Failed to apply buff to " + target.gameObject.name + " did not have a aura manager component");
-
-            return null;
-        }
-    }
-    /// <summary>
-    /// Apply a debuff to the given target
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="buffToApply"></param>
-    /// <param name="createIcon"></param>
-    /// <param name="refresh"></param>
-    /// <param name="stack"></param>
-    public static DebuffEffect ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
-    {
-        var auraManager = target.GetComponent<AuraManager>();
-
-        if (auraManager)
-        {
-            return auraManager.ApplyDebuff(target, debuffToApply, createIcon);
-        }
-        else
-        {
-            Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
 
             return null;
         }

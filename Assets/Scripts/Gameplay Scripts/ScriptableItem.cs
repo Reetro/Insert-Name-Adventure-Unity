@@ -8,6 +8,8 @@ namespace PlayerUI.ToolTipUI
 {
     public abstract class ScriptableItem : ScriptableObject
     {
+        protected bool hasArtwork = false;
+
         [Tooltip("Name of the item")]
         [SerializeField] private new string name = null;
 
@@ -16,9 +18,11 @@ namespace PlayerUI.ToolTipUI
         [SerializeField] private string description = null;
         [Space]
 
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasArtwork))]
         [Tooltip("Artwork to display on the item icon")]
         [SerializeField] private Sprite artwork = null;
 
+        #region Properties
         /// <summary>
         /// Gets the gameplay manager in the current scene
         /// </summary>
@@ -34,7 +38,9 @@ namespace PlayerUI.ToolTipUI
         /// The current stack count on the given item
         /// </summary>
         public int CurrentStackCount { get; private set; } = 0;
+        #endregion
 
+        #region Item Functions
         /// <summary>
         /// needs to be placed in the item update method will update the ScriptableItem internal stack count
         /// </summary>
@@ -81,5 +87,6 @@ namespace PlayerUI.ToolTipUI
                 return builder.ToString();
             }
         }
+        #endregion
     }
 }

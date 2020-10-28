@@ -1,9 +1,9 @@
 ﻿using PlayerCharacter.Controller;
 using UnityEngine;
 
-namespace AuraSystem.Effects
+namespace StatusEffects.Effects
 {
-    public class PlayerSlowing_DE : DebuffEffect
+    public class PlayerSlowing_SE : StatusEffect
     {
         private PlayerMovement playerMovement = null;
         private bool justFired = false;
@@ -23,24 +23,24 @@ namespace AuraSystem.Effects
             }
         }
 
-        protected override void ApplyDebuffEffect()
+        protected override void ApplyStatusEffect()
         {
             if (!justFired)
             {
-                playerMovement.runSpeed -= DebuffValue;
+                playerMovement.runSpeed = playerMovement.runSpeed / EffectValue;
 
                 justFired = true;
             }
         }
 
-        protected override void OnDebuffEnd()
-        {
+        protected override void OnStatusEffectEnd()
+        {      
             if (playerMovement)
             {
                 playerMovement.runSpeed = defaultSpeed;
             }
 
-            base.OnDebuffEnd();
+            base.OnStatusEffectEnd();
         }
     }
 }

@@ -49,19 +49,6 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Adds a given number to the given leech Y coordinate to give a bouncing effect
-        /// </summary>
-        /// <param name="leechTransfrom"></param>
-        /// <param name="amountToAdd"></param>
-        public void AddToLeechY(Transform leechTransfrom, float amountToAdd)
-        {
-            var temp = leechTransfrom.position;
-
-            temp.y += amountToAdd;
-
-            leechTransfrom.position = temp;
-        }
-        /// <summary>
         /// Completely stop all movement on a given rigidbody
         /// </summary>
         /// <param name="rigidbody"></param>

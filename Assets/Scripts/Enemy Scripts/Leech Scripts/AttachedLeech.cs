@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using AuraSystem.Effects;
-using AuraSystem;
+using StatusEffects.Effects;
+using StatusEffects;
 
 namespace EnemyCharacter
 {
     public class AttachedLeech : MonoBehaviour
     {
-        [SerializeField] ScriptableDebuff leechingDebuff = null;
+        [SerializeField] ScriptableStatusEffect leechingDebuff = null;
         [SerializeField] HealthComponent leechHealthComp = null;
 
-        private DebuffEffect debuffEffect = null;
+        private StatusEffect statusEffect = null;
 
         /// <summary>
         /// The old leech ID
@@ -31,7 +31,7 @@ namespace EnemyCharacter
 
             leechHealthComp.OnDeath.AddListener(OnDeath);
 
-            debuffEffect = GeneralFunctions.ApplyDebuffToTarget(player, leechingDebuff, true);
+            statusEffect = GeneralFunctions.ApplyStatusEffectToTarget(player, leechingDebuff);
 
             // Ignore trap projectile collision
             Physics2D.IgnoreLayerCollision(14, 20, true);
@@ -41,7 +41,7 @@ namespace EnemyCharacter
         /// </summary>
         public void OnDeath()
         {
-            debuffEffect.RemoveFromStack(true, debuffEffect);
+            statusEffect.RemoveFromStack(statusEffect);
 
             Destroy(gameObject);
         }

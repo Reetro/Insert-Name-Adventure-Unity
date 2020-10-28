@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
@@ -46,8 +46,8 @@ namespace EnemyCharacter.AI
 
 
         [Header("Squish Settings")]
-        [Tooltip("The debuff to apply to the player")]
-        [SerializeField] private ScriptableDebuff debuffToApply = null;
+        [Tooltip("The status effect to apply to the player")]
+        [SerializeField] private ScriptableStatusEffect effectToApply = null;
         [Tooltip("The new scale to apply to the player")]
         [SerializeField] private Vector3 SquishScale = new Vector3(1f, 0.5f, 0);
 
@@ -127,7 +127,7 @@ namespace EnemyCharacter.AI
                 wormSegment.WhatIsGround = whatIsGround;
                 wormSegment.IsRotatingDown = segmentRotating;
                 wormSegment.SquishScale = SquishScale;
-                wormSegment.SquishTime = debuffToApply.GetTotalTime();
+                wormSegment.SquishTime = effectToApply.GetTotalTime();
                 wormSegment.CanDamage = true;
                 wormSegment.IDObject.ConstructID();
                 wormSegment.PlayerObject = playerObject;
@@ -439,7 +439,7 @@ namespace EnemyCharacter.AI
         {
             if (!appliedDebuff)
             {
-                GeneralFunctions.ApplyDebuffToTarget(playerObject, debuffToApply, true);
+                GeneralFunctions.ApplyStatusEffectToTarget(playerObject, effectToApply);
 
                 appliedDebuff = true;
 

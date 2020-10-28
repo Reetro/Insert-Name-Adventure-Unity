@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using PlayerUI;
 using LevelObjects.SceneLoading;
 using LevelObjects.Saving;
