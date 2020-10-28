@@ -9,7 +9,7 @@ namespace PlayerCharacter.Controller
     {
         [Header("Movement Settings")]
         [Tooltip("Amount of force added when the player jumps")]
-        [SerializeField] private float jumpForce = 400f;
+        public float jumpForce = 400f;
         [Tooltip("How fast the player can run")]
         public float runSpeed = 35f;
         [Tooltip("How much to smooth out the movement")]

@@ -10,11 +10,11 @@ namespace StatusEffects.Effects
             {
                 if (UseTicks)
                 {
-                    GeneralFunctions.HealTarget(Target, EffectValue);
+                    GeneralFunctions.HealTarget(Target, Value1);
                 }
                 else
                 {
-                    GeneralFunctions.HealTarget(Target, EffectValue * Time.deltaTime);
+                    GeneralFunctions.HealTarget(Target, Value1 * Time.deltaTime);
                 }
             }
         }

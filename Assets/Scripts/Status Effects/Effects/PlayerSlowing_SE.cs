@@ -8,6 +8,7 @@ namespace StatusEffects.Effects
         private PlayerMovement playerMovement = null;
         private bool justFired = false;
         private float defaultSpeed = 0;
+        private float defaultJump = 0;
 
         private void Awake()
         {
@@ -16,6 +17,7 @@ namespace StatusEffects.Effects
             if (playerMovement)
             {
                 defaultSpeed = playerMovement.runSpeed;
+                defaultJump = playerMovement.jumpForce;
             }
             else
             {
@@ -25,11 +27,20 @@ namespace StatusEffects.Effects
 
         protected override void ApplyStatusEffect()
         {
-            if (!justFired)
+            if (UsingTwoValues)
             {
-                playerMovement.runSpeed = playerMovement.runSpeed / EffectValue;
+                if (!justFired)
+                {
+                    playerMovement.runSpeed = playerMovement.runSpeed / Value1;
 
-                justFired = true;
+                    playerMovement.jumpForce -= Value2;
+
+                    justFired = true;
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to apply status " + name + " requires Using Two Values to be true");
             }
         }
 
@@ -38,6 +49,8 @@ namespace StatusEffects.Effects
             if (playerMovement)
             {
                 playerMovement.runSpeed = defaultSpeed;
+
+                playerMovement.jumpForce = defaultJump;
             }
 
             base.OnStatusEffectEnd();

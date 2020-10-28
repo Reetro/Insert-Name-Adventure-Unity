@@ -105,7 +105,7 @@ namespace StatusEffects.Effects
             Target = target;
             UseTicks = statusEffect.UseTicks;
             defaultDuration = Duration;
-            EffectValue = statusEffect.Value;
+            Value1 = statusEffect.Value1;
             MyAuraManager = auraManager;
             CurrentStatusEffect = statusEffect;
             Target = target;
@@ -114,6 +114,13 @@ namespace StatusEffects.Effects
             IsStatic = statusEffect.IsStatic;
             Ticks = statusEffect.Ticks;
             Occurrence = statusEffect.Occurrence;
+
+            UsingTwoValues = statusEffect.UsingTwoValues;
+
+            if (UsingTwoValues)
+            {
+                Value2 = statusEffect.Value2;
+            }
 
             firstRun = true;
         }
@@ -303,9 +310,17 @@ namespace StatusEffects.Effects
         /// </summary>
         public float Duration { get; private set; } = 0f;
         /// <summary>
-        /// Gets the actual effect amount
+        /// The first effect amount
         /// </summary>
-        public float EffectValue { get; private set; } = 0f;
+        public float Value1 { get; private set; } = 0f;
+        /// <summary>
+        /// The second effect amount is only set if UsingTwoValues is true
+        /// </summary>
+        public float Value2 { get; private set; } = 0f;
+        /// <summary>
+        /// Check to see if this status effect is using two values
+        /// </summary>
+        public bool UsingTwoValues { get; private set; } = false;
         /// <summary>
         /// Get the aura manager on the given effect
         /// </summary>

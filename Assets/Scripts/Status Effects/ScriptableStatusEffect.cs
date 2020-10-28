@@ -16,6 +16,9 @@ namespace StatusEffects
         [Tooltip("Should this status effect count down using ticks if false status effect will use a static timer")]
         [SerializeField] private bool useTicks = true;
 
+        [Tooltip("Should this status effect have two values")]
+        [SerializeField] private bool useTwoValues = false;
+
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTicks))]
         [Tooltip("How many times the status effect is fired before it's removed if zero or below BuffEffect will tick forever")]
         [SerializeField] private float ticks = 1;
@@ -37,8 +40,12 @@ namespace StatusEffects
         [Tooltip("If true this status effect will not stack or be refreshed it will remain static")]
         [SerializeField] private bool isStatic = false;
 
-        [Tooltip("This kind of depends on the status effect but an example of this might is the player's health")]
+        [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
         [SerializeField] private float value = 1;
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTwoValues))]
+        [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
+        [SerializeField] private float value2 = 1;
 
         #region Properties
         /// <summary>
@@ -54,6 +61,10 @@ namespace StatusEffects
         /// </summary>
         public bool Stacking { get { return stack; } }
         /// <summary>
+        /// Check to see if this debuff is using two values
+        /// </summary>
+        public bool UsingTwoValues { get { return useTwoValues; } }
+        /// <summary>
         /// Should this status effect count down using ticks if false status effect will use a static timer
         /// </summary>
         public bool UseTicks { get { return useTicks; } }
@@ -64,7 +75,11 @@ namespace StatusEffects
         /// <summary>
         /// This kind of depends on the status effect but an example of this might is the player's health
         /// </summary>
-        public float Value { get { return value; } }
+        public float Value1 { get { return value; } }
+        /// <summary>
+        /// This kind of depends on the status effect but an example of this might is the player's health
+        /// </summary>
+        public float Value2 { get { return value2; } }
         /// <summary>
         /// How many times the status effect is fired before it's removed
         /// </summary>
