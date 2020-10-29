@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Leeching_SSE
   m_EditorClassIdentifier: 
   name: Leeching
-  description: 
+  description: Value - The damage to apply to the target
   artwork: {fileID: 0}
-  Effect: {fileID: 4286989297728079738, guid: 54df71a41bd879741910653c6da6b4f8, type: 3}
+  Effect: {fileID: 2191736061278558866, guid: 54df71a41bd879741910653c6da6b4f8, type: 3}
   useTicks: 1
+  useTwoValues: 0
   ticks: 0
   occurrence: 1
   duration: 1
   refresh: 0
   stack: 1
   isStatic: 0
-  statuseffectValue: 1
-  visualEffect: {fileID: 0}
+  value: 1
+  value2: 1

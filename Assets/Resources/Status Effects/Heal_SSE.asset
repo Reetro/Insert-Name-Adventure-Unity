@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e586b6720f16a2c41ade9828fc549962, type: 3}
-  m_Name: PlayerSlowing_SSE
+  m_Name: Heal_SSE
   m_EditorClassIdentifier: 
-  name: Player Slowing
+  name: 
   description: 
   artwork: {fileID: 0}
-  Effect: {fileID: 6637607642000432650, guid: d4096a713aa9f9a4b83eca755cb3c79b, type: 3}
-  useTicks: 0
+  Effect: {fileID: 0}
+  useTicks: 1
+  useTwoValues: 0
   ticks: 1
   occurrence: 1
-  duration: 3
+  duration: 1
   refresh: 0
-  stack: 0
-  isStatic: 1
-  statuseffectValue: 1
-  visualEffect: {fileID: 0}
+  stack: 1
+  isStatic: 0
+  value: 1
+  value2: 1

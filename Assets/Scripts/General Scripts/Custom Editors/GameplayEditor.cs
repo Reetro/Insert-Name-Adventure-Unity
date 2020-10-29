@@ -302,6 +302,12 @@ namespace CustomEditors
 
         #endregion
 
+        #region Status Effects Editors
+        private Editor leechingSEEditor = null;
+        private Editor playerSlowSEEditor = null;
+        private Editor healSEEditor = null;
+        #endregion
+
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
         private const float foldoutSpaceing = 10f;
@@ -316,6 +322,9 @@ namespace CustomEditors
         private static bool showShamanSettings = false;
         private static bool showSlugSettings = false;
         private static bool showWormSettings = false;
+        private static bool showLeechingEffect = false;
+        private static bool showPlayerSlow = false;
+        private static bool showHeal = false;
         #endregion
         #endregion
 
@@ -334,6 +343,8 @@ namespace CustomEditors
             SetupEnemies();
 
             SetupEnemyScale();
+
+            SetupStatusEffects();
         }
 
         #region Gameplay Manager Functions
@@ -786,49 +797,45 @@ namespace CustomEditors
         }
         #endregion
 
-        #region Buffs / Debuff Functions
-        /* private void SetupDebuffs()
+        #region Status Effect Functions
+        private void SetupStatusEffects()
         {
-            var leechingDebuff = Resources.Load("Aura System/Debuffs/Leeching_D") as ScriptableDebuff;
-            var playerSlowingDebuff = Resources.Load("Aura System/Debuffs/PlayerSlowing_D") as ScriptableDebuff;
+            var leechEffect = Resources.Load("Status Effects/Leeching_SSE") as ScriptableStatusEffect;
+            var playerSlowEffect = Resources.Load("Status Effects/PlayerSlowing_SSE") as ScriptableStatusEffect;
+            var healEffect = Resources.Load("Status Effects/Heal_SSE");
 
-            if (leechingDebuff)
+            if (leechEffect)
             {
-                LeechingEditor = Editor.CreateEditor(leechingDebuff);
+                leechingSEEditor = Editor.CreateEditor(leechEffect);
             }
             else
             {
-                Debug.LogError("Failed to get leechingDebuff in SetupDebuffs Function in GameplayEditor");
+                Debug.LogError("Failed to get leechEffect in SetupStatusEffects Function in GameplayEditor");
             }
 
-            if (playerSlowingDebuff)
+            if (playerSlowEffect)
             {
-                PlayerSlowingEditor = Editor.CreateEditor(playerSlowingDebuff);
+                playerSlowSEEditor = Editor.CreateEditor(playerSlowEffect);
             }
             else
             {
-                Debug.LogError("Failed to get slowingDebuff in SetupDebuffs Function in GameplayEditor");
+                Debug.LogError("Failed to get playerSlowEffect in SetupStatusEffects Function in GameplayEditor");
+            }
+
+            if (healEffect)
+            {
+                healSEEditor = Editor.CreateEditor(healEffect);
+            }
+            else
+            {
+                Debug.LogError("Failed to get healEffect in SetupStatusEffects Function in GameplayEditor");
             }
         }
-        private void SetupBuffs()
-        {
-            var breatherBuff = Resources.Load("Aura System/Buffs/Breather_B") as ScriptableBuff;
-
-            if (breatherBuff)
-            {
-                BreatherEditor = Editor.CreateEditor(breatherBuff);
-            }
-            else
-            {
-                Debug.LogError("Failed to get breatherBuff in SetupBuffs Function in GameplayEditor");
-            }
-        }
-        */
         #endregion
 
         public void OnGUI()
         {
-            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings"});
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Status Effects"});
 
             switch (tabs)
             {
@@ -852,6 +859,13 @@ namespace CustomEditors
                     scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
                     SetupGameplayManagerUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+                case 3:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
+                    SetupStatusEffectsUI();
 
                     GUILayout.EndScrollView();
                     break;
@@ -1553,69 +1567,37 @@ namespace CustomEditors
         }
         #endregion
 
-        #region Buff / Debuff Editors
-        /*
-        private void SetupBuffAndDebuffsUI()
+        #region Status Effect Editors
+        private void SetupStatusEffectsUI()
         {
-            showBuffSettings = EditorGUILayout.Foldout(showBuffSettings, "Buff Settings", true);
+            showLeechingEffect = EditorGUILayout.Foldout(showLeechingEffect, "Leeching", true);
 
-            if (showBuffSettings)
+            if (showLeechingEffect)
             {
                 EditorGUI.indentLevel += indentLevel;
 
-                #region Breather Settings
-                showBreatherSettings = EditorGUILayout.Foldout(showBreatherSettings, "Breather Settings", true);
-
-                if (showBreatherSettings)
-                {
-                    EditorGUI.indentLevel += indentLevel;
-
-                    if (BreatherEditor)
-                    {
-                        BreatherEditor.OnInspectorGUI();
-                    }
-                }
-                #endregion
+                leechingSEEditor.OnInspectorGUI();
             }
 
-            showDebuffSettings = EditorGUILayout.Foldout(showDebuffSettings, "Debuff Settings", true);
+            showPlayerSlow = EditorGUILayout.Foldout(showPlayerSlow, "Player Slow", true);
 
-            if (showDebuffSettings)
+            if (showPlayerSlow)
             {
                 EditorGUI.indentLevel += indentLevel;
 
-                #region Leeching Settings
-                showLeechingSettings = EditorGUILayout.Foldout(showLeechingSettings, "Leeching Settings", true);
+                playerSlowSEEditor.OnInspectorGUI();
+            }
 
-                if (showLeechingSettings)
-                {
-                    EditorGUI.indentLevel += indentLevel;
+            showHeal = EditorGUILayout.Foldout(showHeal, "Heal", true);
 
-                    if (LeechingEditor)
-                    {
-                        LeechingEditor.OnInspectorGUI();
-                    }
-                }
-                #endregion
+            if (showHeal)
+            {
+                EditorGUI.indentLevel += indentLevel;
 
-                #region Slowing Settings
-                showSlowingSettings = EditorGUILayout.Foldout(showSlowingSettings, "Player Slowing Settings", true);
-
-                if (showSlowingSettings)
-                {
-                    EditorGUI.indentLevel += indentLevel;
-
-                    if (PlayerSlowingEditor)
-                    {
-                        PlayerSlowingEditor.OnInspectorGUI();
-                    }
-                }
-                #endregion
+                healSEEditor.OnInspectorGUI();
             }
         }
-        */
         #endregion
-
     }
 }
 #endif
