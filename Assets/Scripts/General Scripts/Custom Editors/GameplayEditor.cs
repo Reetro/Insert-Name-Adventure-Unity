@@ -1586,7 +1586,7 @@ namespace CustomEditors
                 EditorGUI.indentLevel += indentLevel;
 
                 playerSlowSEEditor.OnInspectorGUI();
-            }
+                }
 
             showHeal = EditorGUILayout.Foldout(showHeal, "Heal", true);
 
