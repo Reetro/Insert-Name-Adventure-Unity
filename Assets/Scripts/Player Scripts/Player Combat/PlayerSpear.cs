@@ -433,7 +433,7 @@ namespace PlayerCharacter.Controller
                     {
                         var leechEggRipe = collider2.gameObject.GetComponent<LeechEggRipe>();
                         var leechEggCold = collider2.gameObject.GetComponent<LeechEggCold>();
-                        var wormSegment = collider2.gameObject.GetComponent<WormSegment>();
+                        //var wormSegment = collider2.gameObject.GetComponent<WormSegment>();
 
                         if (leechEggRipe)
                         {
@@ -443,14 +443,14 @@ namespace PlayerCharacter.Controller
                         {
                             leechEggCold.SpawnLeech();
                         }
-                        else if (wormSegment)
+                        /*else if (wormSegment)
                         {
                             if (wormSegment.AboveGround)
                             {
                                 GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                             }
-                        }
-                        else if (!leechEggRipe && !leechEggCold && !wormSegment)
+                        }*/
+                        else if (!leechEggRipe && !leechEggCold)
                         {
                             GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                         }

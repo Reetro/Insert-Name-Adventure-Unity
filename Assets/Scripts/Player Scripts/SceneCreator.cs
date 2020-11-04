@@ -24,14 +24,10 @@ namespace PlayerCharacter.SceneLoading
 
         private PlayerController playerController = null;
 
-        void Awake()
-        {
-            SetupScene();
-        }
         /// <summary>
         /// Goes through 3 stages of setup Level, Player, Gameplay Components on each stage checks to see if the given assets currently exist will call there construction scripts if not it will spawn them in
         /// </summary>
-        private void SetupScene()
+        void Awake()
         {
             SetupLevel();
 
@@ -103,13 +99,13 @@ namespace PlayerCharacter.SceneLoading
                 }
             }
 
-            var wormSegments = FindObjectsOfType<WormSegment>();
+            var wormMovementComponents = FindObjectsOfType<WormMovement>();
 
-            foreach (WormSegment wormSegment in wormSegments)
+            foreach (WormMovement wormMovement in wormMovementComponents)
             {
-                if (wormSegment)
+                if (wormMovement)
                 {
-                    wormSegment.OnSceneCreated();
+                    wormMovement.OnSceneCreated();
                 }
             }
 

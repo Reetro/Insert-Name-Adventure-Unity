@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
 {
+    /*
     public class WormMovement : MonoBehaviour
     {
         [Header("Worm Settings")]
@@ -672,4 +673,5 @@ namespace EnemyCharacter.AI
         }
         #endregion
     }
+    */
 }

@@ -321,7 +321,7 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    ///  Gets the targets health component then damages to the target
+    ///  Apply the given amount of damage to the given target
     /// </summary>
     /// <param name="target"></param>
     /// <param name="amount"></param>
