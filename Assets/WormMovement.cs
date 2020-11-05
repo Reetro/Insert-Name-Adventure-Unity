@@ -14,6 +14,7 @@ namespace EnemyCharacter.AI
         [Tooltip("Layers the worm will check as ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
+        #region Setup Functions
         /// <summary>
         /// Get all attached worm segments and update worm stiffness
         /// </summary>
@@ -85,6 +86,7 @@ namespace EnemyCharacter.AI
 
             return foundSegment;
         }
+        #endregion
 
         #region bool functions
         /// <summary>
@@ -98,7 +100,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Checks to see if all worm segments are dead
         /// </summary>
-        public bool AreAllSegmentsDead()
+        public bool AllSegmentsAreDead()
         {
             foreach (WormSegment wormSegment in AllWormSegments)
             {
@@ -116,7 +118,7 @@ namespace EnemyCharacter.AI
 
         #region Gameplay Functions
         /// <summary>
-        /// Called whenever a worm segment is killed will kill all segments above the given index if all segments are kill will destroy the worm object
+        /// Called whenever a worm segment is killed will kill all segments above the given index if all segments are dead it will destroy the worm object
         /// </summary>
         private void OnSegmentKilled(int index)
         {
@@ -130,7 +132,7 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            if (AreAllSegmentsDead())
+            if (AllSegmentsAreDead())
             {
                 Destroy(gameObject);
             }
@@ -147,7 +149,12 @@ namespace EnemyCharacter.AI
             {
                 if (currentIndex > index)
                 {
-                    wormSegments.Add(AllWormSegments[currentIndex]);
+                    var wormSegment = AllWormSegments[currentIndex];
+
+                    if (wormSegment)
+                    {
+                        wormSegments.Add(wormSegment);
+                    }
                 }
             }
 
