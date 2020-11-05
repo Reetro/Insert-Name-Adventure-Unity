@@ -19,15 +19,15 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void OnSceneCreated()
         {
-            var segments = transform.GetComponentsInChildren<WormSegment>();
+            AllWormSegments = transform.GetComponentsInChildren<WormSegment>();
 
-            for (int index = 0; index < segments.Length; index++)
+            for (int index = 0; index < AllWormSegments.Length; index++)
             {
-                var wormSegment = segments[index];
+                var wormSegment = AllWormSegments[index];
 
                 if (wormSegment)
                 {
-                    AllWormSegments.Add(wormSegment);
+                    wormSegment.SegmentDeath.AddListener(OnSegmentKilled);
 
                     wormSegment.SetupSegment(index, segmentHealth, whatIsGround);
 
@@ -42,7 +42,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         public void UpdateWormStiffness()
         {
-            for (var index = 0; index < AllWormSegments.Count; index++)
+            for (var index = 0; index < AllWormSegments.Length; index++)
             {
                 var wormSegment = AllWormSegments[index];
 
@@ -69,7 +69,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         public WormSegment GetBottomMostSegment()
         {
-            WormSegment foundSegment = null; 
+            WormSegment foundSegment = null;
 
             foreach (WormSegment wormSegment in AllWormSegments)
             {
@@ -86,11 +86,80 @@ namespace EnemyCharacter.AI
             return foundSegment;
         }
 
+        #region bool functions
+        /// <summary>
+        /// Checks to see if the given index is the top most index in the AllWormSegments array
+        /// </summary>
+        /// <param name="index"></param>
+        public bool IsTopMostSegment(int index)
+        {
+            return index == AllWormSegments.Length - 1;
+        }
+        /// <summary>
+        /// Checks to see if all worm segments are dead
+        /// </summary>
+        public bool AreAllSegmentsDead()
+        {
+            foreach (WormSegment wormSegment in AllWormSegments)
+            {
+                if (wormSegment)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        #endregion
+
+        #region Gameplay Functions
+        /// <summary>
+        /// Called whenever a worm segment is killed will kill all segments above the given index if all segments are kill will destroy the worm object
+        /// </summary>
+        private void OnSegmentKilled(int index)
+        {
+            var segmentsToKill = GetSegmentsAboveIndex(index);
+
+            foreach (WormSegment wormSegment in segmentsToKill)
+            {
+                if (wormSegment)
+                {
+                    GeneralFunctions.KillTarget(wormSegment.gameObject);
+                }
+            }
+
+            if (AreAllSegmentsDead())
+            {
+                Destroy(gameObject);
+            }
+        }
+        /// <summary>
+        /// Gets all worm segments above the given index
+        /// </summary>
+        /// <param name="index"></param>
+        public WormSegment[] GetSegmentsAboveIndex(int index)
+        {
+            List<WormSegment> wormSegments = new List<WormSegment>();
+
+            for (int currentIndex = 0; currentIndex < AllWormSegments.Length; currentIndex++)
+            {
+                if (currentIndex > index)
+                {
+                    wormSegments.Add(AllWormSegments[currentIndex]);
+                }
+            }
+
+            return wormSegments.ToArray();
+        }
+        #endregion
+
         #region Properties
         /// <summary>
         /// Gets all worm segments attached to the worm object
         /// </summary>
-        public List<WormSegment> AllWormSegments { get; private set; } = new List<WormSegment>();
+        public WormSegment[] AllWormSegments { get; private set; }
         #endregion
     }
 }

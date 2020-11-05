@@ -1,19 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
 {
     public class WormSegment : MonoBehaviour
     {
         private FixedJoint2D fixedJoint2D = null;
-        private HealthComponent healthComponent = null;
         private BoxCollider2D boxCollider2D = null;
         private int index = 0;
         private SpriteRenderer spriteRenderer = null;
         private CapsuleCollider2D capsuleCollider2D = null;
         private LayerMask whatIsGround = new LayerMask();
         private Rigidbody2D myRigidbody2D = null;
+
+        [System.Serializable]
+        public class OnSegmentDeath : UnityEvent<int> { }
+
+        [HideInInspector]
+        public OnSegmentDeath SegmentDeath;
 
         #region Setup Functions
         /// <summary>
@@ -33,11 +37,15 @@ namespace EnemyCharacter.AI
 
                     if (boxCollider2D)
                     {
-                        healthComponent = GetComponent<HealthComponent>();
+                        MyHealthComponent = GetComponent<HealthComponent>();
 
-                        if (healthComponent)
+                        if (MyHealthComponent)
                         {
-                            healthComponent.SetHealth(healthAmount);
+                            MyHealthComponent.ConstructHealthComponent();
+
+                            MyHealthComponent.SetHealth(healthAmount);
+
+                            MyHealthComponent.OnDeath.AddListener(OnSegmentKillied);
 
                             spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -86,11 +94,15 @@ namespace EnemyCharacter.AI
 
                     if (boxCollider2D)
                     {
-                        healthComponent = GetComponent<HealthComponent>();
+                        MyHealthComponent = GetComponent<HealthComponent>();
 
-                        if (healthComponent)
+                        if (MyHealthComponent)
                         {
-                            healthComponent.SetHealth(healthAmount);
+                            MyHealthComponent.ConstructHealthComponent();
+
+                            MyHealthComponent.SetHealth(healthAmount);
+
+                            MyHealthComponent.OnDeath.AddListener(OnSegmentKillied);
 
                             spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -297,6 +309,24 @@ namespace EnemyCharacter.AI
                 Debug.LogError(name + " Does not have a Sprite Render Component " + " failed to change opacity");
             }
         }
+        /// <summary>
+        /// Called whenever a worm segment is killed
+        /// </summary>
+        private void OnSegmentKillied()
+        {
+            boxCollider2D.enabled = false;
+
+            capsuleCollider2D.enabled = false;
+
+            if (fixedJoint2D)
+            {
+                fixedJoint2D.enabled = false;
+            }
+
+            spriteRenderer.enabled = false;
+
+            SegmentDeath.Invoke(index);
+        }
         #endregion
 
         #region Properites
@@ -304,7 +334,10 @@ namespace EnemyCharacter.AI
         /// Check to see if the worm segment is above ground
         /// </summary>
         public bool isAboveGround { get; private set; }
-
+        /// <summary>
+        /// Gets the health component on the worm segment
+        /// </summary>
+        public HealthComponent MyHealthComponent { get; private set; }
         #endregion
     }
 }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3485621069134675726}
   - component: {fileID: 4110474315345112314}
   - component: {fileID: 3485621069134675712}
-  - component: {fileID: 246935521}
+  - component: {fileID: 4814601966795534286}
   m_Layer: 10
   m_Name: Worm Middle 1
   m_TagString: Worm Segment
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &246935521
+--- !u!114 &4814601966795534286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 3485621069359818600}
   - component: {fileID: 6836023560972087159}
   - component: {fileID: 3485621069359818602}
-  - component: {fileID: 1499275877}
+  - component: {fileID: 7239629465896965783}
   m_Layer: 10
   m_Name: Worm Middle 2
   m_TagString: Worm Segment
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1499275877
+--- !u!114 &7239629465896965783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 6681054762503465385}
   - component: {fileID: 8306795630467371400}
   - component: {fileID: 5393045303437337952}
-  - component: {fileID: 1286141515}
+  - component: {fileID: 1514774363849821135}
   m_Layer: 10
   m_Name: Worm Bottom
   m_TagString: Worm Segment
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1286141515
+--- !u!114 &1514774363849821135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 7602114729331947921}
   - component: {fileID: 1150751598691849621}
   - component: {fileID: 248167160917598137}
-  - component: {fileID: 970118666}
+  - component: {fileID: 1660771632382429848}
   m_Layer: 10
   m_Name: Worm Top
   m_TagString: Worm Segment
@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &970118666
+--- !u!114 &1660771632382429848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -897,7 +897,7 @@ GameObject:
   - component: {fileID: 5592427309960210506}
   - component: {fileID: 2510376099352287481}
   - component: {fileID: 7365113063725882043}
-  - component: {fileID: 1157764368}
+  - component: {fileID: 1846349249595805950}
   m_Layer: 10
   m_Name: Worm Middle 3
   m_TagString: Worm Segment
@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed28b01134325d469b5b02ad2e52bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1157764368
+--- !u!114 &1846349249595805950
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
