@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
 {
+    [RequireComponent(typeof(GameplayObjectID), typeof(Rigidbody2D))]
     public class WormSegment : MonoBehaviour
     {
         private FixedJoint2D fixedJoint2D = null;
@@ -12,12 +13,16 @@ namespace EnemyCharacter.AI
         private CapsuleCollider2D capsuleCollider2D = null;
         private LayerMask whatIsGround = new LayerMask();
         private Rigidbody2D myRigidbody2D = null;
+        private GameplayObjectID idObject = null;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<int> { }
 
         [HideInInspector]
         public OnSegmentDeath SegmentDeath;
+
+        [HideInInspector]
+        public WormMovement MyWormMovement = null;
 
         #region Setup Functions
         /// <summary>
@@ -26,6 +31,10 @@ namespace EnemyCharacter.AI
         public void SetupSegment(int index, float healthAmount, LayerMask layerMask)
         {
             this.index = index;
+
+            idObject = GetComponent<GameplayObjectID>();
+
+            idObject.ConstructID();
 
             if (this.index >= 0)
             {
@@ -157,10 +166,14 @@ namespace EnemyCharacter.AI
 
                 if (collider2D)
                 {
+                    IsAboveGround = false;
+
                     DisableCollision();
                 }
                 else
                 {
+                    IsAboveGround = true;
+
                     EnableCollisioin();
                 }
             }
@@ -178,17 +191,27 @@ namespace EnemyCharacter.AI
             {
                 if (fixedJoint2D)
                 {
-                    fixedJoint2D.enabled = true;
-
                     if (boxCollider2D)
                     {
                         boxCollider2D.enabled = true;
 
                         if (myRigidbody2D)
                         {
-                            myRigidbody2D.isKinematic = false;
+                            myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
 
-                            myRigidbody2D.freezeRotation = false;
+                            var nextSegment = MyWormMovement.GetSegmentUnderIndex(index);
+
+                            if (nextSegment)
+                            {
+                                if (nextSegment.IsAboveGround)
+                                {
+                                    fixedJoint2D.enabled = true;
+                                }
+                                else
+                                {
+                                    fixedJoint2D.enabled = false;
+                                }
+                            }
                         }
                         else
                         {
@@ -213,9 +236,7 @@ namespace EnemyCharacter.AI
 
                     if (myRigidbody2D)
                     {
-                        myRigidbody2D.isKinematic = false;
-
-                        myRigidbody2D.freezeRotation = false;
+                        myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
                     }
                     else
                     {
@@ -245,9 +266,7 @@ namespace EnemyCharacter.AI
 
                         if (myRigidbody2D)
                         {
-                            myRigidbody2D.isKinematic = true;
-
-                            myRigidbody2D.freezeRotation = true;
+                            myRigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
                         }
                         else
                         {
@@ -272,9 +291,7 @@ namespace EnemyCharacter.AI
 
                     if (myRigidbody2D)
                     {
-                        myRigidbody2D.isKinematic = true;
-
-                        myRigidbody2D.freezeRotation = true;
+                        myRigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
                     }
                     else
                     {
@@ -333,11 +350,15 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Check to see if the worm segment is above ground
         /// </summary>
-        public bool isAboveGround { get; private set; }
+        public bool IsAboveGround { get; private set; }
         /// <summary>
         /// Gets the health component on the worm segment
         /// </summary>
         public HealthComponent MyHealthComponent { get; private set; }
+        /// <summary>
+        /// Gets this Gameobjects ID
+        /// </summary>
+        public int MyID { get { return idObject.ID; } }
         #endregion
     }
 }

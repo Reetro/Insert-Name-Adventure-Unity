@@ -286,7 +286,7 @@ public class GeneralFunctions
     }
     #endregion
 
-    #region Health Functions
+    #region General Health Functions
     /// <summary>
     /// Calls the construct health component function on the given game object
     /// </summary>
@@ -302,64 +302,6 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to construct Health Component on " + gameObject.name.ToString() + " does not have a health component");
-        }
-    }
-    /// <summary>
-    ///  Gets the targets health component then heals the target
-    /// </summary>
-    public static void HealTarget(GameObject target, float amount)
-    {
-        var health = target.GetComponent<HealthComponent>();
-
-        if (health)
-        {
-            health.AddHealth(amount);
-        }
-        else
-        {
-            Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
-        }
-    }
-    /// <summary>
-    ///  Apply the given amount of damage to the given target
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="amount"></param>
-    /// <param name="showText"></param>
-    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
-    {
-        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
-        {
-            var health = target.GetComponent<HealthComponent>();
-
-            if (health)
-            {
-                health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
-            }
-            else
-            {
-                Debug.LogError(damageDealer.name.ToString() + " Failed to damage " + target.name.ToString() + " does not have a health component");
-            }
-        }
-    }
-    /// <summary>
-    /// Will instantly kill the given target
-    /// </summary>
-    /// <param name="target"></param>
-    public static void KillTarget(GameObject target)
-    {
-        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
-        {
-            var health = target.GetComponent<HealthComponent>();
-
-            if (health)
-            {
-                health.ProccessDamage(1000000000, false, GameAssets.GlobalManager.whatCanBeDamaged);
-            }
-            else
-            {
-                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
-            }
         }
     }
     /// <summary>
@@ -524,6 +466,64 @@ public class GeneralFunctions
 
     #region Game action functions
     /// <summary>
+    ///  Gets the targets health component then heals the target
+    /// </summary>
+    public static void HealTarget(GameObject target, float amount)
+    {
+        var health = target.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.AddHealth(amount);
+        }
+        else
+        {
+            Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
+        }
+    }
+    /// <summary>
+    ///  Apply the given amount of damage to the given target
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="amount"></param>
+    /// <param name="showText"></param>
+    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
+    {
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
+
+            if (health)
+            {
+                health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError(damageDealer.name.ToString() + " Failed to damage " + target.name.ToString() + " does not have a health component");
+            }
+        }
+    }
+    /// <summary>
+    /// Will instantly kill the given target
+    /// </summary>
+    /// <param name="target"></param>
+    public static void KillTarget(GameObject target)
+    {
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
+
+            if (health)
+            {
+                health.ProccessDamage(1000000000, false, GameAssets.GlobalManager.whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
+            }
+        }
+    }
+    /// <summary>
     /// Apply a status effect to the given target
     /// </summary>
     /// <param name="target"></param>
@@ -681,9 +681,7 @@ public class GeneralFunctions
     /// <returns>A random int that will be unique to this object</returns>
     public static int GenID()
     {
-        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
-
-        return manager.GetComponent<GameplayManager>().GenID();
+        return GameAssets.GlobalManager.GetComponent<GameplayManager>().GenID();
     }
     /// <summary>
     /// Gets the current gameobject under the player legs

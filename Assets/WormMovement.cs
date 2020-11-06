@@ -28,6 +28,8 @@ namespace EnemyCharacter.AI
 
                 if (wormSegment)
                 {
+                    wormSegment.MyWormMovement = this;
+
                     wormSegment.SegmentDeath.AddListener(OnSegmentKilled);
 
                     wormSegment.SetupSegment(index, segmentHealth, whatIsGround);
@@ -49,7 +51,7 @@ namespace EnemyCharacter.AI
 
                 if (wormSegment)
                 {
-                    if (wormSegment.isAboveGround)
+                    if (wormSegment.IsAboveGround)
                     {
                         var joint = wormSegment.GetComponent<FixedJoint2D>();
 
@@ -76,7 +78,7 @@ namespace EnemyCharacter.AI
             {
                 if (wormSegment)
                 {
-                    if (wormSegment.isAboveGround)
+                    if (wormSegment.IsAboveGround)
                     {
                         foundSegment = wormSegment;
                         break;
@@ -113,6 +115,16 @@ namespace EnemyCharacter.AI
                 }
             }
             return true;
+        }
+        /// <summary>
+        /// Gets the worm segment under the given segment
+        /// </summary>
+        /// <param name="index"></param>
+        public WormSegment GetSegmentUnderIndex(int index)
+        {
+            var targetIndex = Mathf.Clamp(index - 1, 0, AllWormSegments.Length);
+
+            return AllWormSegments[targetIndex];
         }
         #endregion
 
