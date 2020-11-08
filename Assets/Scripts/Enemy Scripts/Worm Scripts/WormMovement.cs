@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 namespace EnemyCharacter.AI
 {
-    /*
     public class WormMovement : MonoBehaviour
     {
         [Header("Worm Settings")]
@@ -62,7 +61,7 @@ namespace EnemyCharacter.AI
         public UnityEvent atLaunchPoint;
 
         #region Local Varaibles
-        private List<WormSegment> allSegments = new List<WormSegment>();
+        private WormSegment[] allSegments;
         private float spriteHeight = 0;
         private WormSegment wormSegmentToRotate = null;
         private bool segmentRotating = false;
@@ -80,9 +79,9 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Get a random rotation to move towards then setup segment damage
         /// </summary>
-        private void Start()
+        public void OnSceneCreated()
         {
-            allSegments = GetComponentsInChildren<WormSegment>().ToList();
+            allSegments = GetComponentsInChildren<WormSegment>();
 
             playerObject = GeneralFunctions.GetPlayerGameObject();
 
@@ -146,7 +145,7 @@ namespace EnemyCharacter.AI
                 wormSegment.OnUnSquishedPlayer.AddListener(OnUnSquishedPlayer);
                 wormSegment.CheckCollision();
 
-                for (int index = 0; index < allSegments.Count; index++)
+                for (int index = 0; index < allSegments.Length; index++)
                 {
                     allSegments[index].Index = index;
                 }
@@ -585,7 +584,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private WormSegment GetTopMostSegment()
         {
-            return allSegments[allSegments.Count - 1];
+            return allSegments[allSegments.Length - 1];
         }
         #endregion
 
@@ -633,7 +632,7 @@ namespace EnemyCharacter.AI
         /// Gets all segments health component is dead Variables
         /// </summary>
         /// <returns>A bool array</returns>
-        public List<bool> GetAllSegmentsDeathState()
+        public bool[] GetAllSegmentsDeathState()
         {
             List<bool> isDeadList = new List<bool>();
 
@@ -650,18 +649,18 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            return isDeadList;
+            return isDeadList.ToArray();
         }
         /// <summary>
         /// Gets all segments above the given segment
         /// </summary>
         /// <param name="wormSegment"></param>
-        private List<WormSegment> GetSegmentsAboveKilledSegment(WormSegment wormSegment)
+        private WormSegment[] GetSegmentsAboveKilledSegment(WormSegment wormSegment)
         {
             List<WormSegment> localSegments = new List<WormSegment>();
-            int index = allSegments.IndexOf(wormSegment);
+            int index = GeneralFunctions.FindItemIndex(allSegments, wormSegment);
 
-            for (int currentIndex = index; currentIndex < allSegments.Count; currentIndex++)
+            for (int currentIndex = index; currentIndex < allSegments.Length; currentIndex++)
             {
                 if (allSegments[currentIndex])
                 {
@@ -669,9 +668,8 @@ namespace EnemyCharacter.AI
                 }
             }
 
-            return localSegments;
+            return localSegments.ToArray();
         }
         #endregion
     }
-    */
 }

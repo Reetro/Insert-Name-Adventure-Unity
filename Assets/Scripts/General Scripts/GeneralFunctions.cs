@@ -158,6 +158,16 @@ public class GeneralFunctions
     {
         return gameObject.transform.rotation * Vector2.up;
     }
+    /// <summary>
+    /// Get a point X units behind the given transform
+    /// </summary>
+    /// <param name="targetTransform"></param>
+    /// <param name="distanceBehind"></param>
+    /// <returns></returns>
+    public static Vector2 GetPointBehind(Transform targetTransform, float distanceBehind)
+    {
+        return targetTransform.position - (targetTransform.right * distanceBehind);
+    }
     #endregion
 
     #region Rotation Functions
@@ -728,6 +738,40 @@ public class GeneralFunctions
             }
         }
         return true;
+    }
+    /// <summary>
+    /// Will find the given items index in the given array
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Array"></param>
+    /// <param name="ObjectToFind"></param>
+    public static int FindItemIndex<T>(T[] Array, T ObjectToFind)
+    {
+        if (ObjectToFind != null)
+        {
+            for (int index = 0; index < Array.Length; index++)
+            {
+                var item = Array[index];
+
+                if (item != null)
+                {
+                    if (item.Equals(ObjectToFind))
+                    {
+                        return index;
+                    }
+                }
+            }
+
+            Debug.LogError("Failed to find item index in Array item");
+
+            return 0;
+        }
+        else
+        {
+            Debug.LogError("Failed to find item index in Array item was null");
+
+            return 0;
+        }
     }
     #endregion
 

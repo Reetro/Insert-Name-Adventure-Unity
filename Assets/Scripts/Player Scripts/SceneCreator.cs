@@ -99,6 +99,16 @@ namespace PlayerCharacter.SceneLoading
                 }
             }
 
+            var wormSegments = FindObjectsOfType<WormSegment>();
+
+            foreach (WormSegment wormSegment in wormSegments)
+            {
+                if (wormSegment)
+                {
+                    wormSegment.OnSceneCreated();
+                }
+            }
+
             var wormMovementComponents = FindObjectsOfType<WormMovement>();
 
             foreach (WormMovement wormMovement in wormMovementComponents)
