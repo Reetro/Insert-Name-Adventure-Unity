@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using PlayerUI.ToolTipUI;
-using StatusEffects.Effects;
 
 namespace StatusEffects
 {
@@ -20,7 +19,7 @@ namespace StatusEffects
         [SerializeField] private bool useTwoValues = false;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTicks))]
-        [Tooltip("How many times the status effect is fired before it's removed if zero or below BuffEffect will tick forever")]
+        [Tooltip("How many times the status effect is fired before it's removed if zero or below status effect will tick forever")]
         [SerializeField] private float ticks = 1;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTicks))]
