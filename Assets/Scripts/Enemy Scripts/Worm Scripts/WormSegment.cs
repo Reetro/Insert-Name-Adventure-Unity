@@ -2,7 +2,6 @@
 using UnityEngine.Events;
 using System.Collections;
 using GameplayManagement.Assets;
-using System.Collections.Generic;
 
 namespace EnemyCharacter.AI
 {

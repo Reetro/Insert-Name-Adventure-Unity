@@ -762,13 +762,13 @@ public class GeneralFunctions
                 }
             }
 
-            Debug.LogError("Failed to find item index in Array item");
+            Debug.LogError("Failed to find item index in " + Array);
 
             return 0;
         }
         else
         {
-            Debug.LogError("Failed to find item index in Array item was null");
+            Debug.LogError("Failed to find item index in " + Array + " item was null");
 
             return 0;
         }
