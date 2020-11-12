@@ -263,41 +263,41 @@ namespace CustomEditors
         #endregion
 
         #region Worm Variables
-        private SerializedProperty _WormDamage;
-        private SerializedProperty _WormSegmentHealth;
-        private SerializedProperty _WormPushDelay;
-        private SerializedProperty _WormPushUpSpeed;
-        private SerializedProperty _WormWhatIsGround;
-        private SerializedProperty _WormDamageCooldown;
+        //private SerializedProperty _WormDamage;
+        //private SerializedProperty _WormSegmentHealth;
+        //private SerializedProperty _WormPushDelay;
+        //private SerializedProperty _WormPushUpSpeed;
+        //private SerializedProperty _WormWhatIsGround;
+        //private SerializedProperty _WormDamageCooldown;
         #endregion
 
         #region Worm Rotation Variables
-        private SerializedProperty _WormRotationSpeed;
-        private SerializedProperty _WormRotationOffset;
-        private SerializedProperty _WormReturnHomeDelay;
-        private SerializedProperty _WormRotationDelay;
-        private SerializedProperty _WormRotationTargetLeft;
-        private SerializedProperty _WormRotationTargetRight;
-        private SerializedProperty _WormDrawDebug;
-        private SerializedProperty _WormOpacity;
+        //private SerializedProperty _WormRotationSpeed;
+        //private SerializedProperty _WormRotationOffset;
+        //private SerializedProperty _WormReturnHomeDelay;
+        //private SerializedProperty _WormRotationDelay;
+        //private SerializedProperty _WormRotationTargetLeft;
+        //private SerializedProperty _WormRotationTargetRight;
+        //private SerializedProperty _WormDrawDebug;
+        //private SerializedProperty _WormOpacity;
         #endregion
 
         #region Worm Squish Variables
-        private SerializedProperty _WormSquishScale;
-        private SerializedProperty _WormDebuff;
+        //private SerializedProperty _WormSquishScale;
+        //private SerializedProperty _WormDebuff;
         #endregion
 
         #region Worm Objects
-        private SerializedObject wormObject;
+        //private SerializedObject wormObject;
         #endregion
 
         #region Worm Scale Variables
-        private SerializedProperty _WormScale;
-        private SerializedObject wormScaleObject;
+        //private SerializedProperty _WormScale;
+        //private SerializedObject wormScaleObject;
         #endregion
 
         #region Worm Editors
-        private Editor wormEdior = null;
+        //private Editor wormEdior = null;
         #endregion
 
         #endregion
@@ -321,7 +321,7 @@ namespace CustomEditors
         private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
         private static bool showSlugSettings = false;
-        private static bool showWormSettings = false;
+        //private static bool showWormSettings = false;
         private static bool showLeechingEffect = false;
         private static bool showPlayerSlow = false;
         private static bool showHeal = false;
@@ -429,9 +429,9 @@ namespace CustomEditors
 
             SetupSlugMovementEditor();
 
-            SetupWormEditor();
+            //SetupWormEditor();
 
-            SetupWormObjectEditor();
+            //SetupWormObjectEditor();
         }
 
         #region Leech Functions
@@ -668,7 +668,7 @@ namespace CustomEditors
         #endregion
 
         #region Worm Functions
-        private void SetupWormEditor()
+        /*private void SetupWormEditor()
         {
             var wormPrefab = Resources.Load("Enemies/Worm/Worm Object") as GameObject;
 
@@ -684,8 +684,8 @@ namespace CustomEditors
             {
                 Debug.LogError("Failed to get wormPrefab in Gameplay Editor");
             }
-        }
-        private void SetupWormObjectEditor()
+        }*/
+        /*private void SetupWormObjectEditor()
         {
             _WormDamage = wormObject.FindProperty("damage");
             _WormSegmentHealth = wormObject.FindProperty("segmentHealth");
@@ -702,7 +702,7 @@ namespace CustomEditors
             _WormDebuff = wormObject.FindProperty("debuffToApply");
             _WormDamageCooldown = wormObject.FindProperty("damageCooldown");
             _WormOpacity = wormObject.FindProperty("spriteOpacity");
-        }
+        }*/
         #endregion
 
         private void SetupEnemyScale()
@@ -718,7 +718,7 @@ namespace CustomEditors
             // Set slug scale var
             _SlugScale = slugScaleObject.FindProperty("m_LocalScale");
             // Set worm scale var
-            _WormScale = wormScaleObject.FindProperty("m_LocalScale");
+            //_WormScale = wormScaleObject.FindProperty("m_LocalScale");
         }
         #endregion
 
@@ -1518,9 +1518,9 @@ namespace CustomEditors
             #endregion
 
             #region Worm UI
-            showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
+            //showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
 
-            if (showWormSettings)
+            /*if (showWormSettings)
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1561,8 +1561,8 @@ namespace CustomEditors
                 }
 
                 // Apply values to the target
-                wormObject.ApplyModifiedProperties();
-            }
+                wormObject.ApplyModifiedProperties(); */
+            //}
             #endregion
         }
         #endregion

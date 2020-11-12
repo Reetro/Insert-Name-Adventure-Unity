@@ -9,7 +9,7 @@ using EnemyCharacter;
 using GameplayManagement.Assets;
 using EnemyCharacter.AI;
 
-namespace PlayerCharacter.SceneLoading
+namespace GameplayManagement.SceneLoading
 {
     public class SceneCreator : MonoBehaviour
     {
@@ -99,19 +99,9 @@ namespace PlayerCharacter.SceneLoading
                 }
             }
 
-            var wormSegments = FindObjectsOfType<WormSegment>();
+            var wormMovementComps = FindObjectsOfType<WormMovement>();
 
-            foreach (WormSegment wormSegment in wormSegments)
-            {
-                if (wormSegment)
-                {
-                    wormSegment.OnSceneCreated();
-                }
-            }
-
-            var wormMovementComponents = FindObjectsOfType<WormMovement>();
-
-            foreach (WormMovement wormMovement in wormMovementComponents)
+            foreach (WormMovement wormMovement in wormMovementComps)
             {
                 if (wormMovement)
                 {

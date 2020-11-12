@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Value - The damage to apply to the target
   artwork: {fileID: 0}
   Effect: {fileID: 2191736061278558866, guid: 54df71a41bd879741910653c6da6b4f8, type: 3}
-  useTicks: 1
+  useTicks: 0
   useTwoValues: 0
   ticks: 0
   occurrence: 1

@@ -17,7 +17,11 @@ namespace StatusEffects.Effects
             if (playerMovement)
             {
                 defaultSpeed = playerMovement.runSpeed;
-                defaultJump = playerMovement.jumpForce;
+                
+                if (UsingTwoValues)
+                {
+                    defaultJump = playerMovement.jumpForce;
+                }
             }
             else
             {
@@ -33,7 +37,10 @@ namespace StatusEffects.Effects
                 {
                     playerMovement.runSpeed = playerMovement.runSpeed / Value1;
 
-                    playerMovement.jumpForce -= Value2;
+                    if (UsingTwoValues)
+                    {
+                        playerMovement.jumpForce -= Value2;
+                    }
 
                     justFired = true;
                 }
@@ -50,7 +57,10 @@ namespace StatusEffects.Effects
             {
                 playerMovement.runSpeed = defaultSpeed;
 
-                playerMovement.jumpForce = defaultJump;
+                if (UsingTwoValues)
+                {
+                    playerMovement.jumpForce = defaultJump;
+                }
             }
 
             base.OnStatusEffectEnd();

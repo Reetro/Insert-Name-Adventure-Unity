@@ -4,7 +4,7 @@ using EnemyCharacter.AI;
 namespace EnemyCharacter
 {
     [RequireComponent(typeof(HealthComponent), typeof(Rigidbody2D), typeof(GameplayObjectID))]
-    [RequireComponent(typeof(EnemyMovement), typeof(Animator))]
+    [RequireComponent(typeof(Animator))]
     public class EnemyBase : MonoBehaviour
     {
         private GameplayObjectID idObject = null;
@@ -25,6 +25,15 @@ namespace EnemyCharacter
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
         }
+        /// <summary>
+        /// Called when the current health on health component is 0 or below by default will only disable enemy collision
+        /// </summary>
+        protected virtual void OnDeath()
+        {
+            GetComponent<Collider2D>().enabled = false;
+        }
+
+        #region Properties
         /// <summary>
         /// Get this Gameobjects health component
         /// </summary>
@@ -49,12 +58,6 @@ namespace EnemyCharacter
         /// Get this Gameobjects animator component
         /// </summary>
         public Animator MyAnimator { get; private set; } = null;
-        /// <summary>
-        /// Called when the current health on health component is 0 or below by default will only disable enemy collision
-        /// </summary>
-        protected virtual void OnDeath()
-        {
-            GetComponent<Collider2D>().enabled = false;
-        }
+        #endregion
     }
 }

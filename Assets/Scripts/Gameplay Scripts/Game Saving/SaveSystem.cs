@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
-using GameplayManagement.Assets;
 using static PlayerCharacter.GameSaving.PlayerState;
 
 namespace PlayerCharacter.GameSaving
