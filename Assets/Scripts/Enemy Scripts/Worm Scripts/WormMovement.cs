@@ -19,7 +19,7 @@ namespace EnemyCharacter.AI
 
         [SerializeField] private float launchSpeed = 2f;
 
-        [SerializeField] private float endPointMultiplier = 10f;
+        [SerializeField] private float endPointDistance = 10f;
 
         [SerializeField] private float inAirTimer = 2f;
 
@@ -68,6 +68,10 @@ namespace EnemyCharacter.AI
                 }
             }
 
+            TopMostWormSegment = AllChildSegments[AllChildSegments.Length - 1];
+
+            SegmentToRotate = AllChildSegments[0];
+
             if (!AreAllWormSegmentsUp())
             {
                 CurrentMovementState = WormMovementState.FollowPlayer;
@@ -115,7 +119,7 @@ namespace EnemyCharacter.AI
                     MoveWormToGround();
                     break;
                 case WormMovementState.SinkToGround:
-                    SinkToGround();
+                    SinkWormToGround();
                     break;
             }
         }
@@ -146,10 +150,9 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void RotateWorm()
         {
-            var segmentToRotate = AllChildSegments[0];
             var targetRotation = new Vector3(0, 0, -90);
 
-            segmentToRotate.transform.Rotate(targetRotation);
+            SegmentToRotate.transform.Rotate(targetRotation);
 
             CurrentMovementState = WormMovementState.MoveToGround;
             runMoveTimer = true;
@@ -168,7 +171,7 @@ namespace EnemyCharacter.AI
             {
                 runMoveTimer = false;
 
-                var targetLocation = GetGroundPoint();
+                var targetLocation = GetPoint(-GeneralFunctions.GetFaceingDirectionY(transform.gameObject), 50f, transform.position);
 
                 float step = launchSpeed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, targetLocation, step);
@@ -186,7 +189,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Sink the worm back into the ground and reset rotation back to 0
         /// </summary>
-        private void SinkToGround()
+        private void SinkWormToGround()
         {
             if (runSinkTimer)
             {
@@ -207,22 +210,22 @@ namespace EnemyCharacter.AI
 
                 if (Vector3.Distance(transform.position, sinkTarget) < 0.001f)
                 {
-                    var segmentToRotate = AllChildSegments[0];
-                    
-                    segmentToRotate.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    SegmentToRotate.transform.rotation = new Quaternion(0, 0, 0, 0);
 
                     CurrentMovementState = WormMovementState.FollowPlayer;
+
+                    sinkDelay = deafaultSinkDelay;
 
                     StartCoroutine(StartLaunch());
                 }
             }
         }
         /// <summary>
-        /// Get a point on the ground for the worm to move to
+        /// Gets a point X units away from the facing directions
         /// </summary>
-        private Vector2 GetGroundPoint()
+        private Vector2 GetPoint(Vector2 facingDirection, float distance, Vector2 startPostion)
         {
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(transform.gameObject), 50f, whatIsGround);
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(startPostion, facingDirection, distance, whatIsGround);
 
             if (raycastHit2D)
             {
@@ -230,7 +233,7 @@ namespace EnemyCharacter.AI
             }
             else
             {
-                return Vector2.zero;
+                return facingDirection * distance;
             }
         }
         /// <summary>
@@ -240,7 +243,9 @@ namespace EnemyCharacter.AI
         {
             yield return new WaitForSeconds(launchDelay);
 
-            launchEndPoint = transform.TransformDirection(transform.up * endPointMultiplier);
+            launchEndPoint = GetPoint(GeneralFunctions.GetFaceingDirectionY(TopMostWormSegment.gameObject), endPointDistance, TopMostWormSegment.transform.position);
+
+            print(launchEndPoint);
 
             CurrentMovementState = WormMovementState.IsLaunching;
         }
@@ -336,6 +341,14 @@ namespace EnemyCharacter.AI
         /// Gets the current movement state of the worm
         /// </summary>
         public WormMovementState CurrentMovementState { get; private set; }
+        /// <summary>
+        /// Gets the segment the worm will rotate always the bottom most worm segment
+        /// </summary>
+        public WormSegment SegmentToRotate { get; private set; }
+        /// <summary>
+        /// Gets the worms top most segment
+        /// </summary>
+        public WormSegment TopMostWormSegment { get; private set; }
         #endregion
     }
 }
