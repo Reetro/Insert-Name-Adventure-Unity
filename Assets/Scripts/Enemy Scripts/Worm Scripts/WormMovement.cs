@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StatusEffects;
 
 namespace EnemyCharacter.AI
 {
@@ -32,7 +33,20 @@ namespace EnemyCharacter.AI
         
         [Tooltip("The Worm's target rotation the air")]
         [SerializeField] private float wormTargetRotation = -90;
-        
+
+        [Tooltip("The new scale to apply to the player when squished")]
+        [SerializeField] private Vector3 squishScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+        [Tooltip("The Status Effect to apply to the player when squished")]
+        [SerializeField] private ScriptableStatusEffect effectToApply = null;
+
+        [Tooltip("The opacity of each worm segment when player is squished")]
+        [Range(0, 1)]
+        [SerializeField] private float segmentSquishOpacity = 0.5f;
+
+        [Tooltip("Amount of damage to apply to the player")]
+        [SerializeField] private float damageToApply = 2f;
+
         [Tooltip("Set's which layers the worm considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
@@ -62,7 +76,7 @@ namespace EnemyCharacter.AI
             /// </summary>
             IsLaunching,
             /// <summary>
-            /// Will Rotate the Worm to -90 degrees
+            /// Will Rotate the Worm to the worms target rotation
             /// </summary>
             RotateInAir,
             /// <summary>
@@ -92,9 +106,13 @@ namespace EnemyCharacter.AI
 
                 if (segment)
                 {
-                    segment.SetupWormSegment(index, segmentHealth, whatIsGround);
+                    segment.SetupWormSegment(index, segmentHealth, whatIsGround, effectToApply, squishScale, damageToApply);
 
                     segment.SegmentDeath.AddListener(OnSegmentDeath);
+
+                    segment.onSquishPlayer.AddListener(OnPlayerSquish);
+
+                    segment.onUnSquishPlayer.AddListener(OnPlayerUnSquish);
                 }
             }
 
@@ -109,12 +127,10 @@ namespace EnemyCharacter.AI
 
             StartCoroutine(StartLaunch());
         }
-
-        #region Movement Code
         /// <summary>
-        /// Check to see if worm segments are above ground if so enable collision         
+        /// Called when the player is Squished
         /// </summary>
-        private void Update()
+        private void OnPlayerSquish()
         {
             foreach (WormSegment wormSegment in AllChildSegments)
             {
@@ -122,18 +138,42 @@ namespace EnemyCharacter.AI
                 {
                     if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
                     {
-                        if (wormSegment.IsOverlappingGround())
-                        {
-                            wormSegment.DisableCollision();
-                        }
-                        else
-                        {
-                            wormSegment.EnableCollision();
-                        }
+                        wormSegment.DisableCollision();
+
+                        wormSegment.SetSpriteOpacity(segmentSquishOpacity);
+
+                        wormSegment.IsPlayerSquished = true;
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Called when player Squish ends
+        /// </summary>
+        private void OnPlayerUnSquish()
+        {
+            foreach (WormSegment wormSegment in AllChildSegments)
+            {
+                if (wormSegment)
+                {
+                    if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                    {
+                        wormSegment.SetSpriteOpacity();
 
+                        wormSegment.IsPlayerSquished = false;
+
+                        wormSegment.EnableCollision();
+                    }
+                }
+            }
+        }
+
+        #region Movement Code
+        /// <summary>
+        /// Checks worm's current movement state    
+        /// </summary>
+        private void Update()
+        {
             switch (CurrentMovementState)
             {
                 case WormMovementState.FollowPlayer:
@@ -214,11 +254,37 @@ namespace EnemyCharacter.AI
                 float step = launchSpeed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, targetLocation, step);
 
+                foreach (WormSegment wormSegment in AllChildSegments)
+                {
+                    if (wormSegment)
+                    {
+                        if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                        {
+                            wormSegment.IsFalling = true;
+                        }
+                        else
+                        {
+                            wormSegment.IsFalling = false;
+                        }
+                    }
+                }
+
                 if (Vector3.Distance(transform.position, targetLocation) < 0.001f)
                 {
                     CurrentMovementState = WormMovementState.SinkToGround;
 
                     inAirTimer = deafaultInAirTimer;
+
+                    foreach (WormSegment wormSegment in AllChildSegments)
+                    {
+                        if (wormSegment)
+                        {
+                            if (!wormSegment.MyHealthComponent.IsCurrentlyDead)
+                            {
+                                wormSegment.IsFalling = false;
+                            }
+                        }
+                    }
 
                     runSinkTimer = true;
                 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using StatusEffects;
 
 namespace EnemyCharacter.AI
 {
@@ -14,11 +15,24 @@ namespace EnemyCharacter.AI
         /// Check to see if the segment is above ground
         /// </summary>
         public bool AboveGround { get; private set; } = false;
+        /// <summary>
+        /// Checks to see if the segment is falling
+        /// </summary>
+        public bool IsFalling { get; set; } = false;
+        /// <summary>
+        /// Checks to see if the player is currently squished
+        /// </summary>
+        public bool IsPlayerSquished { get; set; } = false;
 
         private BoxCollider2D boxCollider2D = null;
         private CapsuleCollider2D capsuleCollider2D = null;
         private SpriteRenderer spriteRenderer = null;
         private LayerMask whatIsGround = new LayerMask();
+        private ScriptableStatusEffect effectToApply = null;
+        private Vector3 defaultPlayerScale = Vector3.zero;
+        private Vector3 newPlayerScale = Vector3.zero;
+        private float defaultOpacity = 0f;
+        private float damageToApply = 0f;
 
         [System.Serializable]
         public class OnSegmentDeath : UnityEvent<WormSegment> { }
@@ -26,10 +40,16 @@ namespace EnemyCharacter.AI
         [HideInInspector]
         public OnSegmentDeath SegmentDeath;
 
+        [HideInInspector]
+        public UnityEvent onSquishPlayer;
+
+        [HideInInspector]
+        public UnityEvent onUnSquishPlayer;
+
         /// <summary>
         /// Set all internal worm segment values
         /// </summary>
-        public void SetupWormSegment(int index, float health, LayerMask whatIsGround)
+        public void SetupWormSegment(int index, float health, LayerMask whatIsGround, ScriptableStatusEffect effectToApply, Vector3 newPlayerScale, float damageToApply)
         {
             Index = index;
 
@@ -37,9 +57,17 @@ namespace EnemyCharacter.AI
 
             this.whatIsGround = whatIsGround;
 
+            this.effectToApply = effectToApply;
+
+            this.newPlayerScale = newPlayerScale;
+
+            this.damageToApply = damageToApply;
+
             boxCollider2D = GetComponent<BoxCollider2D>();
             capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+            defaultOpacity = spriteRenderer.color.a;
         }
         /// <summary>
         /// Disables collision and hides worm segment sprite's then invokes the segment death event
@@ -67,7 +95,7 @@ namespace EnemyCharacter.AI
             Physics2D.IgnoreLayerCollision(segmentLayer, groundLayer, localCollide);
         }
         /// <summary>
-        /// Enables both collision and fixed joint 2D then makes the rigidbody dynamic
+        /// Enables collision between ground and segment
         /// </summary>
         public void EnableCollision()
         {
@@ -75,11 +103,9 @@ namespace EnemyCharacter.AI
 
             boxCollider2D.enabled = true;
             capsuleCollider2D.enabled = true;
-
-            MyRigidBody2D.constraints = RigidbodyConstraints2D.None;
         }
         /// <summary>
-        /// Disables both collision and fixed joint 2D then freeze rotation and position
+        /// Disables collision between ground and segment
         /// </summary>
         public void DisableCollision()
         {
@@ -87,8 +113,6 @@ namespace EnemyCharacter.AI
 
             boxCollider2D.enabled = false;
             capsuleCollider2D.enabled = false;
-
-            MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
         }
         /// <summary>
         /// Check to see if this segment is overlapping any ground
@@ -109,6 +133,73 @@ namespace EnemyCharacter.AI
 
                 return false;
             }
+        }
+        /// <summary>
+        /// When player is hit by a segment squish the player
+        /// </summary>
+        /// <param name="collision"></param>
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (IsFalling)
+            {
+                if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+                {
+                    defaultPlayerScale = collision.gameObject.transform.localScale;
+
+                    SquishPlayer(collision.gameObject);
+                }
+            }
+        }
+        /// <summary>
+        /// Slow Player and set new scale
+        /// </summary>
+        private void SquishPlayer(GameObject player)
+        {
+            if (!IsPlayerSquished)
+            {
+                effectToApply.EffectEnd.AddListener(UnSquishPlayer);
+
+                player.transform.localScale = newPlayerScale;
+
+                GeneralFunctions.ApplyStatusEffectToTarget(player, effectToApply);
+
+                GeneralFunctions.DamageTarget(player, damageToApply, true, gameObject);
+
+                onSquishPlayer.Invoke();
+            }
+        }
+        /// <summary>
+        /// Called when squish debuff ends
+        /// </summary>
+        private void UnSquishPlayer(GameObject gameObject)
+        {
+            GeneralFunctions.GetPlayerGameObject().transform.localScale = defaultPlayerScale;
+
+            onUnSquishPlayer.Invoke();
+        }
+        /// <summary>
+        /// Set the segment opacity the the given value
+        /// </summary>
+        /// <param name="newOpacity"></param>
+        public void SetSpriteOpacity(float newOpacity)
+        {
+            Color tmp = spriteRenderer.color;
+
+            tmp.a = newOpacity;
+
+            spriteRenderer.color = tmp;
+        }
+        /// <summary>
+        /// Set the segment opacity the the given value if no value defaults to original opacity
+        /// </summary>
+        /// <param name="newOpacity"></param>
+        public void SetSpriteOpacity()
+        {
+            Color tmp = spriteRenderer.color;
+
+            tmp.a = defaultOpacity;
+
+            spriteRenderer.color = tmp;
         }
         #endregion
     }

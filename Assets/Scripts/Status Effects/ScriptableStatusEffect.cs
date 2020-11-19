@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using PlayerUI.ToolTipUI;
 
 namespace StatusEffects
@@ -45,6 +46,13 @@ namespace StatusEffects
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTwoValues))]
         [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
         [SerializeField] private float value2 = 1;
+
+        [System.Serializable]
+        public class OnEffectEnd : UnityEvent<GameObject> { }
+
+        [HideInInspector]
+        [Tooltip("Called when the Status Effect Ends")]
+        public OnEffectEnd EffectEnd;
 
         #region Properties
         /// <summary>

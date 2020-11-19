@@ -217,6 +217,12 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
+  onSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3485621069359818604
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,6 +438,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnSquishPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6681054762503465396
@@ -651,6 +663,12 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
+  onSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6681054763131576229
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +722,9 @@ MonoBehaviour:
   moveToGroundDistance: 50
   sinkSubtractAmount: 5.5
   wormTargetRotation: -90
+  squishScale: {x: 0.5, y: 0.5, z: 0.5}
+  effectToApply: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b, type: 2}
+  segmentSquishOpacity: 0.5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -923,6 +944,12 @@ MonoBehaviour:
   SegmentDeath:
     m_PersistentCalls:
       m_Calls: []
+  onSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8519305143845916208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,5 +1165,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onSquishPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnSquishPlayer:
     m_PersistentCalls:
       m_Calls: []
