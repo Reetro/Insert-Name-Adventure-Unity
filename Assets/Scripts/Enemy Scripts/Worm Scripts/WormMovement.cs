@@ -6,43 +6,72 @@ namespace EnemyCharacter.AI
 {
     public class WormMovement : MonoBehaviour
     {
-        /// <summary>
-        /// How much health each segment has
-        /// </summary>
+        [Tooltip("How much health each segment has")]
         [SerializeField] private float segmentHealth = 6;
-        /// <summary>
-        /// Set's which layers the worm considers ground
-        /// </summary>
+
+        [Tooltip("How long the Worm waits before launching into the air")]
+        [SerializeField] private float launchDelay = 1f;
+        
+        [Tooltip("How fast the Worm launches up")]
+        [SerializeField] private float launchSpeed = 2f;
+        
+        [Tooltip("How long the Worm's launches into the air for")]
+        [SerializeField] private float launchTimer = 1f;
+
+        [Tooltip("How long the Worm stays in the air for")]
+        [SerializeField] private float inAirTimer = 2f;
+        
+        [Tooltip("How long before the Worm's sinks into the ground")]
+        [SerializeField] private float sinkDelay = 2f;
+        
+        [Tooltip("Distance of the Worm's ground trace")]
+        [SerializeField] private float moveToGroundDistance = 50f;
+        
+        [Tooltip("Amount to subtract from the Worm's Y cord when sinking into the ground")]
+        [SerializeField] private float sinkSubtractAmount = 5.5f;
+        
+        [Tooltip("The Worm's target rotation the air")]
+        [SerializeField] private float wormTargetRotation = -90;
+        
+        [Tooltip("Set's which layers the worm considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
-        [SerializeField] private float launchDelay = 1f;
-
-        [SerializeField] private float launchSpeed = 2f;
-
-        [SerializeField] private float endPointDistance = 10f;
-
-        [SerializeField] private float inAirTimer = 2f;
-
-        [SerializeField] private float sinkDelay = 2f;
-
+        #region Local Variables
         private Vector2 playerPostion = new Vector2();
-        private Vector3 launchEndPoint = new Vector3();
         private float deafaultInAirTimer = 0f;
         private float deafaultSinkDelay = 0f;
+        private float defaultLaunchTimer = 0f;
+        private bool runLaunchTimer = false;
         private bool runMoveTimer = false;
         private bool runSinkTimer = false;
         private bool gotSinkTarget = false;
         private Vector2 sinkTarget = Vector2.zero;
+        #endregion
 
         /// <summary>
-        /// All worm movement types
+        /// All worm movement states
         /// </summary>
         public enum WormMovementState
         {
+            /// <summary>
+            /// Will match the player X coordinate
+            /// </summary>
             FollowPlayer,
+            /// <summary>
+            /// Will Launch the Worm up Into the Air
+            /// </summary>
             IsLaunching,
+            /// <summary>
+            /// Will Rotate the Worm to -90 degrees
+            /// </summary>
             RotateInAir,
+            /// <summary>
+            /// Will Move the Worm from the air on to the ground
+            /// </summary>
             MoveToGround,
+            /// <summary>
+            /// Will sink the Worm back down into the ground and reset rotation
+            /// </summary>
             SinkToGround
         }
 
@@ -53,6 +82,7 @@ namespace EnemyCharacter.AI
         {
             deafaultInAirTimer = inAirTimer;
             deafaultSinkDelay = sinkDelay;
+            defaultLaunchTimer = launchTimer;
 
             AllChildSegments = GetComponentsInChildren<WormSegment>();
 
@@ -137,11 +167,19 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void LaunchWorm()
         {
-            float step = launchSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, launchEndPoint, step);
-
-            if (Vector3.Distance(transform.position, launchEndPoint) < 0.001f)
+            if (runLaunchTimer)
             {
+                launchTimer -= Time.deltaTime;
+
+                transform.Translate(Vector2.up * launchSpeed * Time.deltaTime, Space.World);
+            }
+
+            if (launchTimer <= 0)
+            {
+                launchTimer = defaultLaunchTimer;
+
+                runLaunchTimer = false;
+
                 CurrentMovementState = WormMovementState.RotateInAir;
             }
         }
@@ -150,7 +188,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void RotateWorm()
         {
-            var targetRotation = new Vector3(0, 0, -90);
+            var targetRotation = new Vector3(0, 0, wormTargetRotation);
 
             SegmentToRotate.transform.Rotate(targetRotation);
 
@@ -171,7 +209,7 @@ namespace EnemyCharacter.AI
             {
                 runMoveTimer = false;
 
-                var targetLocation = GetPoint(-GeneralFunctions.GetFaceingDirectionY(transform.gameObject), 50f, transform.position);
+                var targetLocation = GetPoint(-GeneralFunctions.GetFaceingDirectionY(transform.gameObject), moveToGroundDistance, transform.position);
 
                 float step = launchSpeed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, targetLocation, step);
@@ -202,7 +240,7 @@ namespace EnemyCharacter.AI
                 {
                     gotSinkTarget = true;
 
-                    sinkTarget = (Vector2)transform.position + new Vector2(0, -5.5f);
+                    sinkTarget = new Vector2(transform.position.x, transform.position.y - sinkSubtractAmount);
                 }
 
                 float step = launchSpeed * Time.deltaTime;
@@ -243,9 +281,7 @@ namespace EnemyCharacter.AI
         {
             yield return new WaitForSeconds(launchDelay);
 
-            launchEndPoint = GetPoint(GeneralFunctions.GetFaceingDirectionY(TopMostWormSegment.gameObject), endPointDistance, TopMostWormSegment.transform.position);
-
-            print(launchEndPoint);
+            runLaunchTimer = true;
 
             CurrentMovementState = WormMovementState.IsLaunching;
         }

@@ -466,7 +466,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6681054762503465396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.553, y: 0.212, z: 0}
+  m_LocalPosition: {x: -1.59, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3485621069134675713}
@@ -696,13 +696,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segmentHealth: 6
+  launchDelay: 3
+  launchSpeed: 8
+  launchTimer: 1
+  inAirTimer: 2
+  sinkDelay: 2
+  moveToGroundDistance: 50
+  sinkSubtractAmount: 5.5
+  wormTargetRotation: -90
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  launchDelay: 1
-  launchSpeed: 8
-  rotationSpeed: 2
-  endPointMultiplier: 1
 --- !u!1 &7303351026954897495
 GameObject:
   m_ObjectHideFlags: 0
