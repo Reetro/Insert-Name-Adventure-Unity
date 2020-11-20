@@ -165,6 +165,8 @@ namespace EnemyCharacter.AI
 
                 GeneralFunctions.DamageTarget(player, damageToApply, true, gameObject);
 
+                GeneralFunctions.GetPlayerSpear().DisableSpear();
+
                 onSquishPlayer.Invoke();
             }
         }
@@ -174,6 +176,8 @@ namespace EnemyCharacter.AI
         private void UnSquishPlayer(GameObject gameObject)
         {
             GeneralFunctions.GetPlayerGameObject().transform.localScale = defaultPlayerScale;
+
+            GeneralFunctions.GetPlayerSpear().EnableSpear();
 
             onUnSquishPlayer.Invoke();
         }

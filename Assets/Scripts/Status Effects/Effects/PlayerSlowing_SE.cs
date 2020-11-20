@@ -10,14 +10,14 @@ namespace StatusEffects.Effects
         private float defaultSpeed = 0;
         private float defaultJump = 0;
 
-        private void Awake()
+        protected override void OnUnpackDone()
         {
             playerMovement = GeneralFunctions.GetPlayerGameObject().GetComponent<PlayerMovement>();
 
             if (playerMovement)
             {
                 defaultSpeed = playerMovement.runSpeed;
-                
+
                 if (UsingTwoValues)
                 {
                     defaultJump = playerMovement.jumpForce;

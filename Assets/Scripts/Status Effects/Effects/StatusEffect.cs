@@ -122,7 +122,16 @@ namespace StatusEffects.Effects
                 Value2 = statusEffect.Value2;
             }
 
+            OnUnpackDone();
+
             firstRun = true;
+        }
+        /// <summary>
+        /// Called when UppackEffect has finished
+        /// </summary>
+        protected virtual void OnUnpackDone()
+        {
+            // for use in children
         }
         #endregion
 

@@ -16,7 +16,7 @@ namespace PlayerCharacter.Controller
         private float horizontalMove = 0f;
         private bool jump = false;
         private bool jumpHeldDown = false;
-        private bool fireGun = false;
+        private bool swingSpear = false;
         #endregion
 
         #region Player Components
@@ -133,7 +133,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnFirePressed(InputAction.CallbackContext context)
         {
-            fireGun = true;
+            swingSpear = true;
         }
         /// <summary>
         /// Called when fire button is released
@@ -141,7 +141,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnFireReleased(InputAction.CallbackContext context)
         {
-            fireGun = false;
+            swingSpear = false;
         }
         /// <summary>
         /// Called when jump button is pressed
@@ -178,7 +178,7 @@ namespace PlayerCharacter.Controller
         {
             if (!healthComponent.IsCurrentlyDead)
             {
-                if (fireGun)
+                if (swingSpear)
                 {
                     currentSpear.StartSpearPush();
                 }
