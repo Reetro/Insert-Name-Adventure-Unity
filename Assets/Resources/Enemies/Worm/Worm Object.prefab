@@ -722,9 +722,11 @@ MonoBehaviour:
   moveToGroundDistance: 50
   sinkSubtractAmount: 5.5
   wormTargetRotation: -90
-  squishScale: {x: 0.5, y: 0.5, z: 0.5}
+  rotationSpeed: 0.4
+  squishScale: {x: 1, y: 0.4, z: 0}
   effectToApply: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b, type: 2}
   segmentSquishOpacity: 0.5
+  damageToApply: 2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256

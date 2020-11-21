@@ -34,6 +34,9 @@ namespace EnemyCharacter.AI
         [Tooltip("The Worm's target rotation the air")]
         [SerializeField] private float wormTargetRotation = -90;
 
+        [Tooltip("How fast the worm rotates down")]
+        [SerializeField] private float rotationSpeed = 2f;
+
         [Tooltip("The new scale to apply to the player when squished")]
         [SerializeField] private Vector3 squishScale = new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -60,6 +63,7 @@ namespace EnemyCharacter.AI
         private bool runSinkTimer = false;
         private bool gotSinkTarget = false;
         private Vector2 sinkTarget = Vector2.zero;
+        private bool isRotating = false;
         #endregion
 
         /// <summary>
@@ -183,7 +187,7 @@ namespace EnemyCharacter.AI
                     LaunchWorm();
                     break;
                 case WormMovementState.RotateInAir:
-                    RotateWorm();
+                    StartWormRotation();
                     break;
                 case WormMovementState.MoveToGround:
                     MoveWormToGround();
@@ -226,14 +230,40 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Rotate Worm down to -90 degrees
         /// </summary>
-        private void RotateWorm()
+        private void StartWormRotation()
         {
-            var targetRotation = new Vector3(0, 0, wormTargetRotation);
+            if (!isRotating)
+            {
+                StartCoroutine(RotateWorm());
+            }
+        }
+        /// <summary>
+        /// Rotate worm towards the target angle
+        /// </summary>
+        private IEnumerator RotateWorm()
+        {
+            
+            Vector3 tempRotation = SegmentToRotate.transform.eulerAngles;
 
-            SegmentToRotate.transform.Rotate(targetRotation);
+            float elapsedTime = 0;
+
+            while (elapsedTime < 1)
+            {
+                isRotating = true;
+
+                elapsedTime += Time.deltaTime / rotationSpeed;
+                SegmentToRotate.transform.eulerAngles = Vector3.Lerp(tempRotation, new Vector3(0, 0, wormTargetRotation), elapsedTime);
+
+                yield return 0;
+            }
 
             CurrentMovementState = WormMovementState.MoveToGround;
+
             runMoveTimer = true;
+
+            isRotating = false;
+
+            yield return null;
         }
         /// <summary>
         /// Move the worm back to the ground
@@ -314,7 +344,7 @@ namespace EnemyCharacter.AI
 
                 if (Vector3.Distance(transform.position, sinkTarget) < 0.001f)
                 {
-                    SegmentToRotate.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    SegmentToRotate.transform.rotation = Quaternion.identity;
 
                     CurrentMovementState = WormMovementState.FollowPlayer;
 

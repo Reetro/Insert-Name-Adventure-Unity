@@ -408,22 +408,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: squishScale.z
-      value: 0
+      propertyPath: launchSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: squishScale.x
+      propertyPath: inAirTimer
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: squishScale.y
-      value: 0.4
+      propertyPath: rotationSpeed
+      value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: effectToApply
-      value: 
-      objectReference: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b,
-        type: 2}
     - target: {fileID: 6681054763131576216, guid: 2e37aff177581a940afc35c29abc6b09,
         type: 3}
       propertyPath: m_LocalPosition.x

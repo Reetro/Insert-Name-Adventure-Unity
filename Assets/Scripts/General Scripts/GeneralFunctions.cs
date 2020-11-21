@@ -202,7 +202,7 @@ public class GeneralFunctions
     {
         var angle = gameObject.transform.localEulerAngles.z;
 
-        if (angle.Equals(270))
+        if (Mathf.Approximately(angle, 270))
         {
             angle = -90;
         }
