@@ -715,14 +715,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentHealth: 6
   launchDelay: 3
-  launchSpeed: 8
+  launchSpeed: 10
   launchTimer: 1
-  inAirTimer: 2
+  inAirTimer: 1
   sinkDelay: 2
   moveToGroundDistance: 50
   sinkSubtractAmount: 5.5
   wormTargetRotation: -90
-  rotationSpeed: 0.4
+  rotationSpeed: 0.2
   squishScale: {x: 1, y: 0.4, z: 0}
   effectToApply: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b, type: 2}
   segmentSquishOpacity: 0.5

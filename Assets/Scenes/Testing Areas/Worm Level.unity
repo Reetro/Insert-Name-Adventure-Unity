@@ -407,18 +407,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: launchSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: inAirTimer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 746881625, guid: 2e37aff177581a940afc35c29abc6b09, type: 3}
-      propertyPath: rotationSpeed
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 6681054763131576216, guid: 2e37aff177581a940afc35c29abc6b09,
         type: 3}
       propertyPath: m_LocalPosition.x

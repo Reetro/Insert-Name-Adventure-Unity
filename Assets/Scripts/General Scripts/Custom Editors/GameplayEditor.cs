@@ -263,41 +263,34 @@ namespace CustomEditors
         #endregion
 
         #region Worm Variables
-        //private SerializedProperty _WormDamage;
-        //private SerializedProperty _WormSegmentHealth;
-        //private SerializedProperty _WormPushDelay;
-        //private SerializedProperty _WormPushUpSpeed;
-        //private SerializedProperty _WormWhatIsGround;
-        //private SerializedProperty _WormDamageCooldown;
-        #endregion
-
-        #region Worm Rotation Variables
-        //private SerializedProperty _WormRotationSpeed;
-        //private SerializedProperty _WormRotationOffset;
-        //private SerializedProperty _WormReturnHomeDelay;
-        //private SerializedProperty _WormRotationDelay;
-        //private SerializedProperty _WormRotationTargetLeft;
-        //private SerializedProperty _WormRotationTargetRight;
-        //private SerializedProperty _WormDrawDebug;
-        //private SerializedProperty _WormOpacity;
-        #endregion
-
-        #region Worm Squish Variables
-        //private SerializedProperty _WormSquishScale;
-        //private SerializedProperty _WormDebuff;
+        private SerializedProperty _WormDamage;
+        private SerializedProperty _WormSegmentHealth;
+        private SerializedProperty _WormLaunchDelay;
+        private SerializedProperty _WormLaunchSpeend;
+        private SerializedProperty _WormLaunchTimer;
+        private SerializedProperty _WormInAirTimer;
+        private SerializedProperty _WormSinkDelay;
+        private SerializedProperty _WormMoveToGroundDistance;
+        private SerializedProperty _WormSinkSubtractAmount;
+        private SerializedProperty _WormTargetRotation;
+        private SerializedProperty _WormRotationSpeed;
+        private SerializedProperty _WormSquishScale;
+        private SerializedProperty _WormEffectToApply;
+        private SerializedProperty _WormSegmentOpacity;
+        private SerializedProperty _WormWhatIsGround;
         #endregion
 
         #region Worm Objects
-        //private SerializedObject wormObject;
+        private SerializedObject wormObject;
         #endregion
 
         #region Worm Scale Variables
-        //private SerializedProperty _WormScale;
-        //private SerializedObject wormScaleObject;
+        private SerializedProperty _WormScale;
+        private SerializedObject wormScaleObject;
         #endregion
 
         #region Worm Editors
-        //private Editor wormEdior = null;
+        private Editor wormEdior = null;
         #endregion
 
         #endregion
@@ -321,7 +314,7 @@ namespace CustomEditors
         private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
         private static bool showSlugSettings = false;
-        //private static bool showWormSettings = false;
+        private static bool showWormSettings = false;
         private static bool showLeechingEffect = false;
         private static bool showPlayerSlow = false;
         private static bool showHeal = false;
@@ -429,9 +422,9 @@ namespace CustomEditors
 
             SetupSlugMovementEditor();
 
-            //SetupWormEditor();
+            SetupWormEditor();
 
-            //SetupWormObjectEditor();
+            SetupWormObjectEditor();
         }
 
         #region Leech Functions
@@ -524,7 +517,7 @@ namespace CustomEditors
 
                 leechMotherHealthObject = new SerializedObject(leechMotherPrefab.GetComponent<HealthComponent>());
                 leechMotherMovementObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMovement>());
-                
+
                 leechMotherObject = new SerializedObject(leechMotherPrefab.GetComponent<LeechMother>());
                 leechMotherScaleObject = new SerializedObject(leechMotherPrefab.transform.GetComponent<Transform>());
             }
@@ -613,7 +606,7 @@ namespace CustomEditors
                 Debug.LogError("Failed to get axeThrowerPrefab in Gameplay Editor");
             }
         }
-        
+
         private void SetupAxeThrowerHealth()
         {
             _AxeThrowerMaxHealth = axeThrowerHealthObject.FindProperty("maxHealth");
@@ -668,7 +661,7 @@ namespace CustomEditors
         #endregion
 
         #region Worm Functions
-        /*private void SetupWormEditor()
+        private void SetupWormEditor()
         {
             var wormPrefab = Resources.Load("Enemies/Worm/Worm Object") as GameObject;
 
@@ -684,25 +677,22 @@ namespace CustomEditors
             {
                 Debug.LogError("Failed to get wormPrefab in Gameplay Editor");
             }
-        }*/
-        /*private void SetupWormObjectEditor()
+        }
+        private void SetupWormObjectEditor()
         {
-            _WormDamage = wormObject.FindProperty("damage");
+            _WormDamage = wormObject.FindProperty("damageToApply");
             _WormSegmentHealth = wormObject.FindProperty("segmentHealth");
-            _WormPushDelay = wormObject.FindProperty("pushDelay");
-            _WormPushUpSpeed = wormObject.FindProperty("pushUpSpeed");
+            _WormEffectToApply = wormObject.FindProperty("effectToApply");
+            _WormInAirTimer = wormObject.FindProperty("inAirTimer");
             _WormWhatIsGround = wormObject.FindProperty("whatIsGround");
-            _WormRotationDelay = wormObject.FindProperty("rotationDelay");
-            _WormReturnHomeDelay = wormObject.FindProperty("returnHomeDelay");
-            _WormRotationOffset = wormObject.FindProperty("rotationOffset");
+            _WormLaunchDelay = wormObject.FindProperty("launchDelay");
+            _WormMoveToGroundDistance = wormObject.FindProperty("moveToGroundDistance");
+            _WormLaunchTimer = wormObject.FindProperty("launchTimer");
             _WormRotationSpeed = wormObject.FindProperty("rotationSpeed");
-            _WormRotationTargetLeft = wormObject.FindProperty("targetLeftAngle");
-            _WormRotationTargetRight = wormObject.FindProperty("targetRightAngle");
+            _WormSinkDelay = wormObject.FindProperty("sinkDelay");
+            _WormSegmentOpacity = wormObject.FindProperty("segmentSquishOpacity");
             _WormSquishScale = wormObject.FindProperty("SquishScale");
-            _WormDebuff = wormObject.FindProperty("debuffToApply");
-            _WormDamageCooldown = wormObject.FindProperty("damageCooldown");
-            _WormOpacity = wormObject.FindProperty("spriteOpacity");
-        }*/
+        }
         #endregion
 
         private void SetupEnemyScale()
@@ -718,7 +708,7 @@ namespace CustomEditors
             // Set slug scale var
             _SlugScale = slugScaleObject.FindProperty("m_LocalScale");
             // Set worm scale var
-            //_WormScale = wormScaleObject.FindProperty("m_LocalScale");
+            _WormScale = wormScaleObject.FindProperty("m_LocalScale");
         }
         #endregion
 
@@ -835,7 +825,7 @@ namespace CustomEditors
 
         public void OnGUI()
         {
-            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Status Effects"});
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Status Effects" });
 
             switch (tabs)
             {
@@ -871,6 +861,7 @@ namespace CustomEditors
                     break;
             }
         }
+
         #region Gameplay Manager UI
         private void SetupGameplayManagerUI()
         {
@@ -1518,9 +1509,8 @@ namespace CustomEditors
             #endregion
 
             #region Worm UI
-            //showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
-
-            /*if (showWormSettings)
+            showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
+            if (showWormSettings)
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1561,8 +1551,8 @@ namespace CustomEditors
                 }
 
                 // Apply values to the target
-                wormObject.ApplyModifiedProperties(); */
-            //}
+                wormObject.ApplyModifiedProperties();
+            }
             #endregion
         }
         #endregion
@@ -1586,7 +1576,7 @@ namespace CustomEditors
                 EditorGUI.indentLevel += indentLevel;
 
                 playerSlowSEEditor.OnInspectorGUI();
-                }
+            }
 
             showHeal = EditorGUILayout.Foldout(showHeal, "Heal", true);
 
@@ -1596,8 +1586,10 @@ namespace CustomEditors
 
                 healSEEditor.OnInspectorGUI();
             }
+
+            #endregion
         }
-        #endregion
     }
 }
 #endif
+      
