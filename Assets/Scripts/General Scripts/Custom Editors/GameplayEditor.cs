@@ -262,37 +262,6 @@ namespace CustomEditors
         private Editor slugHealthEditor = null;
         #endregion
 
-        #region Worm Variables
-        private SerializedProperty _WormDamage;
-        private SerializedProperty _WormSegmentHealth;
-        private SerializedProperty _WormLaunchDelay;
-        private SerializedProperty _WormLaunchSpeend;
-        private SerializedProperty _WormLaunchTimer;
-        private SerializedProperty _WormInAirTimer;
-        private SerializedProperty _WormSinkDelay;
-        private SerializedProperty _WormMoveToGroundDistance;
-        private SerializedProperty _WormSinkSubtractAmount;
-        private SerializedProperty _WormTargetRotation;
-        private SerializedProperty _WormRotationSpeed;
-        private SerializedProperty _WormSquishScale;
-        private SerializedProperty _WormEffectToApply;
-        private SerializedProperty _WormSegmentOpacity;
-        private SerializedProperty _WormWhatIsGround;
-        #endregion
-
-        #region Worm Objects
-        private SerializedObject wormObject;
-        #endregion
-
-        #region Worm Scale Variables
-        private SerializedProperty _WormScale;
-        private SerializedObject wormScaleObject;
-        #endregion
-
-        #region Worm Editors
-        private Editor wormEdior = null;
-        #endregion
-
         #endregion
 
         #region Status Effects Editors
@@ -314,7 +283,6 @@ namespace CustomEditors
         private static bool showAxeThrowerSettings = false;
         private static bool showShamanSettings = false;
         private static bool showSlugSettings = false;
-        private static bool showWormSettings = false;
         private static bool showLeechingEffect = false;
         private static bool showPlayerSlow = false;
         private static bool showHeal = false;
@@ -422,9 +390,6 @@ namespace CustomEditors
 
             SetupSlugMovementEditor();
 
-            SetupWormEditor();
-
-            SetupWormObjectEditor();
         }
 
         #region Leech Functions
@@ -660,41 +625,6 @@ namespace CustomEditors
         }
         #endregion
 
-        #region Worm Functions
-        private void SetupWormEditor()
-        {
-            var wormPrefab = Resources.Load("Enemies/Worm/Worm Object") as GameObject;
-
-            if (wormPrefab)
-            {
-                wormEdior = Editor.CreateEditor(wormPrefab.GetComponent<WormMovement>());
-
-                wormObject = new SerializedObject(wormPrefab.GetComponent<WormMovement>());
-
-                wormScaleObject = new SerializedObject(wormPrefab.GetComponent<Transform>());
-            }
-            else
-            {
-                Debug.LogError("Failed to get wormPrefab in Gameplay Editor");
-            }
-        }
-        private void SetupWormObjectEditor()
-        {
-            _WormDamage = wormObject.FindProperty("damageToApply");
-            _WormSegmentHealth = wormObject.FindProperty("segmentHealth");
-            _WormEffectToApply = wormObject.FindProperty("effectToApply");
-            _WormInAirTimer = wormObject.FindProperty("inAirTimer");
-            _WormWhatIsGround = wormObject.FindProperty("whatIsGround");
-            _WormLaunchDelay = wormObject.FindProperty("launchDelay");
-            _WormMoveToGroundDistance = wormObject.FindProperty("moveToGroundDistance");
-            _WormLaunchTimer = wormObject.FindProperty("launchTimer");
-            _WormRotationSpeed = wormObject.FindProperty("rotationSpeed");
-            _WormSinkDelay = wormObject.FindProperty("sinkDelay");
-            _WormSegmentOpacity = wormObject.FindProperty("segmentSquishOpacity");
-            _WormSquishScale = wormObject.FindProperty("SquishScale");
-        }
-        #endregion
-
         private void SetupEnemyScale()
         {
             // Set leech scale vars
@@ -707,8 +637,6 @@ namespace CustomEditors
             _AxeThrowerScale = axeThrowerScaleObject.FindProperty("m_LocalScale");
             // Set slug scale var
             _SlugScale = slugScaleObject.FindProperty("m_LocalScale");
-            // Set worm scale var
-            _WormScale = wormScaleObject.FindProperty("m_LocalScale");
         }
         #endregion
 
@@ -1507,57 +1435,10 @@ namespace CustomEditors
             }
 
             #endregion
-
-            #region Worm UI
-            showWormSettings = EditorGUILayout.Foldout(showWormSettings, "Worm Settings", true);
-            if (showWormSettings)
-            {
-                EditorGUI.indentLevel += indentLevel;
-
-                // fetch current values from the target
-                wormScaleObject.Update();
-
-                // Start a code block to check for GUI changes
-                EditorGUI.BeginChangeCheck();
-
-                EditorGUILayout.PropertyField(_WormScale, new GUIContent("Worm Scale"));
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    // Apply values to the target
-                    wormScaleObject.ApplyModifiedProperties();
-                }
-
-                // fetch current values from the target
-                wormObject.Update();
-
-                if (wormEdior)
-                {
-                    // Start a code block to check for GUI changes
-                    EditorGUI.BeginChangeCheck();
-
-                    wormEdior.OnInspectorGUI();
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        // Apply values to the target
-                        wormObject.ApplyModifiedProperties();
-
-                        // fetch current values from the target
-                        wormObject.Update();
-                    }
-
-                    GUILayout.Space(foldoutSpaceing);
-                }
-
-                // Apply values to the target
-                wormObject.ApplyModifiedProperties();
-            }
-            #endregion
         }
         #endregion
 
-        #region Status Effect Editors
+        #region Status Effect UI
         private void SetupStatusEffectsUI()
         {
             showLeechingEffect = EditorGUILayout.Foldout(showLeechingEffect, "Leeching", true);
@@ -1586,9 +1467,8 @@ namespace CustomEditors
 
                 healSEEditor.OnInspectorGUI();
             }
-
-            #endregion
         }
+        #endregion
     }
 }
 #endif

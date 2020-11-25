@@ -76,6 +76,7 @@ namespace EnemyCharacter.AI
         private Vector3 defaultPlayerScale = Vector2.zero;
         private float defaultOpacity = 0f;
         private bool isFalling = false;
+        private new BoxCollider2D collider2D = null;
         #endregion
 
         /// <summary>
@@ -113,6 +114,8 @@ namespace EnemyCharacter.AI
             defaultPlayerScale = PlayerTransform.localScale;
             defaultOpacity = spriteRenderer.color.a;
 
+            collider2D = GetComponent<BoxCollider2D>();
+
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
             CurrentMovementState = HourGlassDrillMovementState.FollowPlayer;
@@ -144,6 +147,8 @@ namespace EnemyCharacter.AI
 
                         PlayerTransform.localScale = playerSquishScale;
 
+                        collider2D.enabled = false;
+
                         SetSpriteOpacity(spriteOpacity);
                     }
                 }
@@ -160,6 +165,8 @@ namespace EnemyCharacter.AI
                 PlayerTransform.localScale = defaultPlayerScale;
 
                 ResetSpriteOpacity();
+
+                collider2D.enabled = true;
             }
         }
         /// <summary>

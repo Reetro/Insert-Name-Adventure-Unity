@@ -7,7 +7,6 @@ using PlayerCharacter.GameSaving;
 using PlayerCharacter.Controller;
 using EnemyCharacter;
 using GameplayManagement.Assets;
-using EnemyCharacter.AI;
 
 namespace GameplayManagement.SceneLoading
 {
@@ -96,16 +95,6 @@ namespace GameplayManagement.SceneLoading
                 if (enemyBase)
                 {
                     enemyBase.OnSceneCreated();
-                }
-            }
-
-            var wormMovementComps = FindObjectsOfType<WormMovement>();
-
-            foreach (WormMovement wormMovement in wormMovementComps)
-            {
-                if (wormMovement)
-                {
-                    wormMovement.OnSceneCreated();
                 }
             }
 
