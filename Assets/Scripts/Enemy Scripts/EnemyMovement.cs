@@ -128,6 +128,26 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
+        /// Will move the AI towards the target location
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="moveSpeed"></param>
+        /// <param name="minDistance"></param>
+        /// <returns>Returns true if current position is less then or equal to minDistance</returns>
+        public bool MoveAIToPoint(Vector2 target, float moveSpeed, float minDistance)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+
+            if (Vector2.Distance(transform.position, target) <= minDistance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// Make the AI face the direction it's moving in
         /// </summary>
         public void RotateToMovement(Rigidbody2D rigidbody2D)

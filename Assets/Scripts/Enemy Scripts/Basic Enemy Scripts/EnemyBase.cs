@@ -4,7 +4,7 @@ using EnemyCharacter.AI;
 namespace EnemyCharacter
 {
     [RequireComponent(typeof(HealthComponent), typeof(Rigidbody2D), typeof(GameplayObjectID))]
-    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Animator)), RequireComponent(typeof(EnemyMovement))]
     public class EnemyBase : MonoBehaviour
     {
         private GameplayObjectID idObject = null;

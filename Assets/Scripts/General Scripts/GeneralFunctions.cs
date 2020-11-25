@@ -168,6 +168,13 @@ public class GeneralFunctions
     {
         return targetTransform.position - (targetTransform.right * distanceBehind);
     }
+    /// <summary>
+    /// Gets a point X units away from the facing directions
+    /// </summary>
+    public static Vector2 GetPoint(Vector2 direction, Vector2 startPostion, float distance)
+    {
+        return startPostion + direction * distance;
+    }
     #endregion
 
     #region Rotation Functions

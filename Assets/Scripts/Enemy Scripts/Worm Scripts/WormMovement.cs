@@ -186,9 +186,6 @@ namespace EnemyCharacter.AI
                 case WormMovementState.IsLaunching:
                     LaunchWorm();
                     break;
-                case WormMovementState.RotateInAir:
-                    StartWormRotation();
-                    break;
                 case WormMovementState.MoveToGround:
                     MoveWormToGround();
                     break;
@@ -224,7 +221,9 @@ namespace EnemyCharacter.AI
 
                 runLaunchTimer = false;
 
-                CurrentMovementState = WormMovementState.RotateInAir;
+                CurrentMovementState = WormMovementState.MoveToGround;
+
+                runMoveTimer = true;
             }
         }
         /// <summary>
