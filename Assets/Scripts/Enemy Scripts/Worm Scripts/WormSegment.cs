@@ -157,7 +157,7 @@ namespace EnemyCharacter.AI
         {
             if (!IsPlayerSquished)
             {
-                effectToApply.EffectEnd.AddListener(UnSquishPlayer);
+                effectToApply.OnEffectEnd.AddListener(UnSquishPlayer);
 
                 player.transform.localScale = newPlayerScale;
 
@@ -173,7 +173,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Called when squish debuff ends
         /// </summary>
-        private void UnSquishPlayer(GameObject gameObject)
+        private void UnSquishPlayer()
         {
             GeneralFunctions.GetPlayerGameObject().transform.localScale = defaultPlayerScale;
 

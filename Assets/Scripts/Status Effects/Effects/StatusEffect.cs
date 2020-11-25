@@ -149,7 +149,7 @@ namespace StatusEffects.Effects
         /// </summary>
         protected virtual void OnStatusEffectEnd()
         {
-            CurrentStatusEffect.EffectEnd.Invoke(gameObject);
+            CurrentStatusEffect.OnEffectEnd.Invoke();
 
             MyAuraManager.StartStatusEffectRemoval(gameObject, this);
         }
