@@ -4,12 +4,15 @@ using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
+using Spells;
 
 namespace PlayerCharacter.Controller
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerSpear currentSpear = null;
+
+        [SerializeField] private ScriptableSpell dash = null;
 
         #region Player Controls
         public Controls controls = null;
@@ -60,6 +63,8 @@ namespace PlayerCharacter.Controller
             controls.Player.LoadGame.started += OnLoadPressed;
 
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
+
+            controls.Player.ActionbarSlot1.started += OnActionSlot1Pressed;
 
             transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
 
@@ -159,7 +164,12 @@ namespace PlayerCharacter.Controller
         {
             jumpHeldDown = false;
         }
+        private void OnActionSlot1Pressed(InputAction.CallbackContext context)
+        {
+            var dashSpell = Instantiate(dash.SpellToSpawn);
 
+            GeneralFunctions.StartSpellCast(dashSpell, dash);
+        }
         /// <summary>
         /// Event to tell the player to start jumping
         /// </summary>

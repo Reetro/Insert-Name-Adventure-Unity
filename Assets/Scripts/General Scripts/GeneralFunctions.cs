@@ -9,6 +9,7 @@ using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
+using Spells;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -597,6 +598,24 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
+        }
+    }
+    /// <summary>
+    /// Will cast the provided spell
+    /// </summary>
+    /// <param name="spawnSpell"></param>
+    /// <param name="spellInfo"></param>
+    public static void StartSpellCast(GameObject spawnSpell, ScriptableSpell spellInfo)
+    {
+        var spell = spawnSpell.GetComponent<Spell>();
+
+        if (spell)
+        {
+            spell.StartSpellCast(spellInfo, spawnSpell);
+        }
+        else
+        {
+            Debug.LogError("Failed to start spell GameObject " + spawnSpell.name + " does not have a spell component");
         }
     }
     #endregion

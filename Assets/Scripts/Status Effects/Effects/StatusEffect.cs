@@ -22,7 +22,7 @@ namespace StatusEffects.Effects
         {
             StatusEffect statusEffect = null;
 
-            IsCurrentlyActive = IsStatusEffectgActive(auraManager, effect, out statusEffect);
+            IsCurrentlyActive = IsStatusEffectActive(auraManager, effect, out statusEffect);
 
             if (!IsCurrentlyActive)
             {
@@ -210,7 +210,7 @@ namespace StatusEffects.Effects
         /// <summary>
         /// Checks to see if the current effect is active
         /// </summary>
-        public bool IsStatusEffectgActive(AuraManager auraManager, ScriptableStatusEffect scriptableStatus, out StatusEffect statusEffect)
+        public bool IsStatusEffectActive(AuraManager auraManager, ScriptableStatusEffect scriptableStatus, out StatusEffect statusEffect)
         {
             if (auraManager)
             {

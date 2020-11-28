@@ -27,11 +27,17 @@ namespace PlayerUI.ToolTipUI
         /// Gets the gameplay manager in the current scene
         /// </summary>
         public GameplayManager MyGameplayManager { get; private set; } = null;
-
+        /// <summary>
+        /// Gets the name of the item
+        /// </summary>
         public string Name { get { return name; } }
-
+        /// <summary>
+        /// Gets the description of the item
+        /// </summary>
         public string Description { get { return description; } }
-
+        /// <summary>
+        /// Gets the art icon assigned to this item
+        /// </summary>
         public Sprite Artwork { get { return artwork; } }
 
         /// <summary>

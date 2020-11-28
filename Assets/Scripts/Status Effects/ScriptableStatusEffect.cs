@@ -65,7 +65,7 @@ namespace StatusEffects
         /// </summary>
         public bool Stacking { get { return stack; } }
         /// <summary>
-        /// Check to see if this debuff is using two values
+        /// Check to see if this status effect is using two values
         /// </summary>
         public bool UsingTwoValues { get { return useTwoValues; } }
         /// <summary>

@@ -128,7 +128,7 @@ namespace EnemyCharacter.AI
             Destroy(gameObject);
         }
 
-        #region Squish Functions
+        #region Collision Functions
         /// <summary>
         /// When Drill collides with player apply squish effect and damage player
         /// </summary>
@@ -150,6 +150,20 @@ namespace EnemyCharacter.AI
                         collider2D.enabled = false;
 
                         SetSpriteOpacity(spriteOpacity);
+                    }
+                }
+            }
+            else if (IsGrounded)
+            {
+                if (collision.gameObject)
+                {
+                    if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+                    {
+                        var knockBackDirection = transform.position - collision.transform.position;
+
+                        GeneralFunctions.ApplyKnockback(collision.gameObject, knockBackDirection.normalized * 200, ForceMode2D.Impulse);
+
+                        GeneralFunctions.DamageTarget(collision.gameObject, 2, true, gameObject);
                     }
                 }
             }
@@ -201,6 +215,10 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
+            IsGrounded = IsInGround();
+
+            print(IsGrounded);
+
             switch (CurrentMovementState)
             {
                 case HourGlassDrillMovementState.FollowPlayer:
@@ -304,6 +322,13 @@ namespace EnemyCharacter.AI
 
             return hit;
         }
+        /// <summary>
+        /// Checks to see if the Hour Glass Is Currently in the ground
+        /// </summary>
+        private bool IsInGround()
+        {
+            return Physics2D.OverlapBox(transform.position, collider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
+        }
 
         #region Movement Timers
         /// <summary>
@@ -357,6 +382,10 @@ namespace EnemyCharacter.AI
         /// Gets the drills current movement state
         /// </summary>
         public HourGlassDrillMovementState CurrentMovementState { get; private set; }
+        /// <summary>
+        /// Checks to see if the Hour Glass is in the Ground
+        /// </summary>
+        public bool IsGrounded { get; private set; }
         #endregion
     }
 }
