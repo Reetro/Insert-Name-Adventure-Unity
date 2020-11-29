@@ -2,7 +2,7 @@
 
 namespace Spells
 {
-    public class Spell : MonoBehaviour
+    public abstract class Spell : MonoBehaviour
     {
         #region Local Vars
         private float defaultTimer = 0f;
@@ -39,10 +39,7 @@ namespace Spells
         /// <summary>
         /// The actual event that casts the spell
         /// </summary>
-        protected virtual void CastSpell()
-        {
-            // for use in children
-        }
+        protected abstract void CastSpell();
         /// <summary>
         /// Set all local values
         /// </summary>
@@ -62,10 +59,7 @@ namespace Spells
         /// <summary>
         /// Called after spell has unpacked all need values
         /// </summary>
-        protected virtual void OnUpackSpellValuesDone()
-        {
-            // for use in children
-        }
+        protected abstract void OnUpackSpellValuesDone();
         #endregion
 
         #region Spell Logic Functions

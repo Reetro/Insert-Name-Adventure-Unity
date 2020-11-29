@@ -18,7 +18,7 @@ MonoBehaviour:
   useTwoValues: 0
   value: 1
   value2: 1
-  spellCoolDown: 1
+  spellCoolDown: 2
   hasCoolDown: 1
   spellToSpawn: {fileID: 6588241084584412938, guid: b1235bf5109054349ae89c9baededa96,
     type: 3}

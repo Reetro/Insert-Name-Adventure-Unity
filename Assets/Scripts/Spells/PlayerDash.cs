@@ -1,7 +1,11 @@
-﻿namespace Spells
+﻿using UnityEngine;
+
+namespace Spells
 {
     public class PlayerDash : Spell
     {
+        private GameObject playerGameObject = null;
+
         protected override void CastSpell()
         {
             print("Dash spell has been casted");
@@ -14,6 +18,11 @@
             {
                 OnSpellCastEnded();
             }
+        }
+
+        protected override void OnUpackSpellValuesDone()
+        {
+            playerGameObject = GeneralFunctions.GetPlayerGameObject();
         }
     }
 }
