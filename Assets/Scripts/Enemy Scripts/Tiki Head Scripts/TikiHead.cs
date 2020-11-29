@@ -4,14 +4,14 @@ using StatusEffects;
 
 namespace EnemyCharacter.AI
 {
-    public class HourGlassDrill : EnemyBase
+    public class TikiHead : EnemyBase
     {
         [Header("Launch Settings")]
 
-        [Tooltip("How long the Hour Glass waits before launching into the air")]
+        [Tooltip("How long the Tiki Head waits before launching into the air")]
         [SerializeField] private float launchDelay = 1f;
 
-        [Tooltip("How fast the Hour Glass launches up")]
+        [Tooltip("How fast the Tiki Head launches up")]
         [SerializeField] private float launchSpeed = 2f;
 
         [Tooltip("Multiplier Used To calculate Launch Distance")]
@@ -19,18 +19,18 @@ namespace EnemyCharacter.AI
 
         [Header("Move To Ground Settings")]
 
-        [Tooltip("How long the Hour Glass stays in the air for")]
+        [Tooltip("How long the Tiki Head stays in the air for")]
         [SerializeField] private float moveToGroundDelay = 2f;
 
-        [Tooltip("Distance of the Hour Glass ground trace")]
+        [Tooltip("Distance of the Tiki Head ground trace")]
         [SerializeField] private float moveToGroundDistance = 2f;
 
         [Header("Follow Settings")]
 
-        [Tooltip("How long the Hour Glass waits before following the player")]
+        [Tooltip("How long the Tiki Head waits before following the player")]
         [SerializeField] private float followDelay = 0.8f;
 
-        [Tooltip("How fast the Hour Glass follows the player")]
+        [Tooltip("How fast the Tiki Head follows the player")]
         [SerializeField] private float followSpeed = 3f;
 
         [Header("Sink Settings")]
@@ -38,10 +38,10 @@ namespace EnemyCharacter.AI
         [Tooltip("Multiplier Used To calculate Sink Distance")]
         [SerializeField] private float sinkDistanceMultiplier = 2f;
 
-        [Tooltip("How long before the Hour Glass sinks into the ground")]
+        [Tooltip("How long before the Tiki Head sinks into the ground")]
         [SerializeField] private float sinkDelay = 2f;
 
-        [Tooltip("How fast the Hour Glass sinks back into the ground")]
+        [Tooltip("How fast the Tiki Head sinks back into the ground")]
         [SerializeField] private float sinkSpeed = 2f;
 
         [Header("Squish Settings")]
@@ -50,7 +50,7 @@ namespace EnemyCharacter.AI
         [SerializeField] private Vector3 playerSquishScale = new Vector3(1f, 1f, 1f);
 
         [Tooltip("Damage to apply to the player when squished")]
-        [SerializeField] private float squishDamage = 2f;
+        [SerializeField] private float damageToApply = 2f;
 
         [Tooltip("The Status Effect to apply when the player squished")]
         [SerializeField] private ScriptableStatusEffect squishEffect = null;
@@ -59,10 +59,21 @@ namespace EnemyCharacter.AI
         [Tooltip("The opacity to change the sprite to when player is squished")]
         [SerializeField] private float spriteOpacity = 0.5f;
 
+        [Header("Knockback Settings")]
+
+        [Tooltip("Multiplier for player Knockback")]
+        [SerializeField] private float knockBackMultiplier = 200f;
+
         [Header("Collision Settings")]
 
-        [Tooltip("Set's which layers the worm considers ground")]
+        [Tooltip("Set's which layers the Tiki Head considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
+
+        [Tooltip("A reference to the box trigger")]
+        [SerializeField] private BoxCollider2D triggerBox2D = null;
+
+        [Tooltip("A reference to the box collider")]
+        [SerializeField] private BoxCollider2D colliderBox2D = null;
 
         #region Local Variables
         private bool launchTimerRunning = false;
@@ -76,11 +87,11 @@ namespace EnemyCharacter.AI
         private Vector3 defaultPlayerScale = Vector2.zero;
         private float defaultOpacity = 0f;
         private bool isFalling = false;
-        private new BoxCollider2D collider2D = null;
+        private bool isLaunching = false;
         #endregion
 
         /// <summary>
-        /// All Hour Glass Drill movement states
+        /// All Tiki Head Drill movement states
         /// </summary>
         public enum HourGlassDrillMovementState
         {
@@ -89,15 +100,15 @@ namespace EnemyCharacter.AI
             /// </summary>
             FollowPlayer,
             /// <summary>
-            /// Will Launch the Hour Glass up Into the Air
+            /// Will Launch the Tiki Head up Into the Air
             /// </summary>
             LaunchHourGlass,
             /// <summary>
-            /// Will Move the Hour Glass from the air on to the ground
+            /// Will Move the Tiki Head from the air on to the ground
             /// </summary>
             MoveToGround,
             /// <summary>
-            /// Will sink the Hour Glass back down into the ground and reset rotation
+            /// Will sink the Tiki Head back down into the ground and reset rotation
             /// </summary>
             SinkToGround
         }
@@ -114,7 +125,7 @@ namespace EnemyCharacter.AI
             defaultPlayerScale = PlayerTransform.localScale;
             defaultOpacity = spriteRenderer.color.a;
 
-            collider2D = GetComponent<BoxCollider2D>();
+            colliderBox2D = GetComponent<BoxCollider2D>();
 
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
@@ -141,32 +152,81 @@ namespace EnemyCharacter.AI
                 {
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
-                        GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
+                        if (!GeneralFunctions.IsPlayerDead())
+                        {
+                            GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
 
-                        GeneralFunctions.DamageTarget(collision.gameObject, squishDamage, true, gameObject);
+                            GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
 
-                        PlayerTransform.localScale = playerSquishScale;
+                            PlayerTransform.localScale = playerSquishScale;
 
-                        collider2D.enabled = false;
+                            colliderBox2D.enabled = false;
+                            triggerBox2D.enabled = false;
 
-                        SetSpriteOpacity(spriteOpacity);
+                            SetSpriteOpacity(spriteOpacity);
+                        }
                     }
                 }
             }
-            else if (IsGrounded)
+            else if (!IsInGrounded)
             {
                 if (collision.gameObject)
                 {
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
-                        var knockBackDirection = transform.position - collision.transform.position;
+                        if (!isLaunching)
+                        {
+                            if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
+                            {
+                                GeneralFunctions.ApplyKnockback(collision.gameObject, -transform.right * knockBackMultiplier, ForceMode2D.Impulse);
 
-                        GeneralFunctions.ApplyKnockback(collision.gameObject, knockBackDirection.normalized * 200, ForceMode2D.Impulse);
+                                GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
+                            }
+                            else
+                            {
+                                GeneralFunctions.ApplyKnockback(collision.gameObject, transform.right * knockBackMultiplier, ForceMode2D.Impulse);
 
-                        GeneralFunctions.DamageTarget(collision.gameObject, 2, true, gameObject);
+                                GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
+                            }
+                        }
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Checks to see if the player is above the Tiki Head and if the Tiki Head is actually moving if so apply damage and knock the player up
+        /// </summary>
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (collision.gameObject)
+            {
+                if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+                {
+                    if (isLaunching)
+                    {
+                        GeneralFunctions.ApplyKnockback(PlayerTransform.gameObject, transform.up * knockBackMultiplier, ForceMode2D.Impulse);
+
+                        GeneralFunctions.DamageTarget(PlayerTransform.gameObject, damageToApply, true, gameObject);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Checks to see if the Tiki Head Is Hitting the ground
+        /// </summary>
+        /// <returns></returns>
+        private bool HitGround()
+        {
+            var hit = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject), moveToGroundDistance, whatIsGround);
+
+            return hit;
+        }
+        /// <summary>
+        /// Checks to see if the Tiki Head Is Currently in the ground
+        /// </summary>
+        private bool IsInGround()
+        {
+            return Physics2D.OverlapBox(transform.position, colliderBox2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
         }
         /// <summary>
         /// Called when
@@ -180,7 +240,8 @@ namespace EnemyCharacter.AI
 
                 ResetSpriteOpacity();
 
-                collider2D.enabled = true;
+                colliderBox2D.enabled = true;
+                triggerBox2D.enabled = true;
             }
         }
         /// <summary>
@@ -215,9 +276,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
-            IsGrounded = IsInGround();
-
-            print(IsGrounded);
+            IsInGrounded = IsInGround();
 
             switch (CurrentMovementState)
             {
@@ -248,11 +307,11 @@ namespace EnemyCharacter.AI
             MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
         }
         /// <summary>
-        /// Launch Hour Glass Into the Air
+        /// Launch Tiki Head Into the Air
         /// </summary>
         private void LaunchHourGlassToAir()
         {
-            if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f))
+            if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching))
             {
                 if (!moveToGroundTimerRunning)
                 {
@@ -263,7 +322,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Will Launch The Hour Glass Back down the Ground
+        /// Will Launch The Tiki Head Back down the Ground
         /// </summary>
         private void MoveHourGlassToGround()
         {
@@ -303,7 +362,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Will Sink the Hour Glass back into the ground
+        /// Will Sink the Tiki Head back into the ground
         /// </summary>
         private void SinkBackToGround()
         {
@@ -312,27 +371,10 @@ namespace EnemyCharacter.AI
                 CurrentMovementState = HourGlassDrillMovementState.FollowPlayer;
             }
         }
-        /// <summary>
-        /// Checks to see if the Hour Glass Is Hitting the ground
-        /// </summary>
-        /// <returns></returns>
-        private bool HitGround()
-        {
-            var hit = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject), moveToGroundDistance, whatIsGround);
-
-            return hit;
-        }
-        /// <summary>
-        /// Checks to see if the Hour Glass Is Currently in the ground
-        /// </summary>
-        private bool IsInGround()
-        {
-            return Physics2D.OverlapBox(transform.position, collider2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
-        }
 
         #region Movement Timers
         /// <summary>
-        /// Delay before the Hour Glass will launch up into the air
+        /// Delay before the Tiki Head will launch up into the air
         /// </summary>
         private IEnumerator LaunchTimer()
         {
@@ -347,7 +389,7 @@ namespace EnemyCharacter.AI
             launchTimerRunning = false;
         }
         /// <summary>
-        /// Delay before the Hour Glass will sink back into the ground
+        /// Delay before the Tiki Head will sink back into the ground
         /// </summary>
         private IEnumerator SinkToGroundDelay()
         {
@@ -362,7 +404,7 @@ namespace EnemyCharacter.AI
             sinkTimerRunning = false;
         }
         /// <summary>
-        /// Delay before the Hour Glass will back the ground
+        /// Delay before the Tiki Head will back the ground
         /// </summary>
         private IEnumerator MoveToGroundDelay()
         {
@@ -383,9 +425,9 @@ namespace EnemyCharacter.AI
         /// </summary>
         public HourGlassDrillMovementState CurrentMovementState { get; private set; }
         /// <summary>
-        /// Checks to see if the Hour Glass is in the Ground
+        /// Checks to see if the Tiki Head is in the Ground
         /// </summary>
-        public bool IsGrounded { get; private set; }
+        public bool IsInGrounded { get; private set; }
         #endregion
     }
 }
