@@ -43,11 +43,13 @@ namespace Spells
         /// <summary>
         /// Set all local values
         /// </summary>
-        private void UnpackSpell(bool useTwoValues, float value1, float value2, ScriptableSpell scriptableSpell, float cooldown, bool hasCooldown)
+        private void UnpackSpell(bool useTwoValues, float value1, float value2, ScriptableSpell scriptableSpell, float cooldown, bool hasCooldown, bool usingThreeValues, float value3)
         {
             UsingTwoValues = useTwoValues;
+            UsingThreeValues = usingThreeValues;
             Value1 = value1;
             Value2 = value2;
+            Value3 = value3;
             HasCoolDown = hasCooldown;
             SpellCoolDown = cooldown;
             defaultTimer = cooldown;
@@ -74,7 +76,7 @@ namespace Spells
                 {
                     MyID = GeneralFunctions.GenID();
 
-                    UnpackSpell(spellToCast.UsingTwoValues, spellToCast.Value1, spellToCast.Value2, spellToCast, spellToCast.SpellCoolDown, spellToCast.HasCoolDown);
+                    UnpackSpell(spellToCast.UsingTwoValues, spellToCast.Value1, spellToCast.Value2, spellToCast, spellToCast.SpellCoolDown, spellToCast.HasCoolDown, spellToCast.UsingThreeValues, spellToCast.Value3);
 
                     return true;
                 }
@@ -136,7 +138,7 @@ namespace Spells
         /// <summary>
         /// The actual Cooldown timer
         /// </summary>
-        private void Update()
+        protected virtual  void Update()
         {
             if (startCooldownTimer)
             {
@@ -199,6 +201,14 @@ namespace Spells
         /// Gets the actual spell that is being casted
         /// </summary>
         public ScriptableSpell SpellInfo { get; private set; }
+        /// <summary>
+        /// The third effect amount is only set if useThreeValues is true
+        /// </summary>
+        public float Value3 { get; private set; } = 0f;
+        /// <summary>
+        /// Check to see if this status effect is using three values
+        /// </summary>
+        public bool UsingThreeValues { get; private set; } = false;
         #endregion
     }
 }

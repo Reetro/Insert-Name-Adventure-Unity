@@ -15,9 +15,11 @@ MonoBehaviour:
   name: Dash
   description: It Does a thing a with stuff
   artwork: {fileID: 21300000, guid: d75c3ea4f69088244983a84c88525796, type: 3}
-  useTwoValues: 0
-  value: 1
-  value2: 1
+  useTwoValues: 1
+  useThreeValues: 0
+  value: 0.1
+  value2: 50
+  value3: 1
   spellCoolDown: 2
   hasCoolDown: 1
   spellToSpawn: {fileID: 6588241084584412938, guid: b1235bf5109054349ae89c9baededa96,

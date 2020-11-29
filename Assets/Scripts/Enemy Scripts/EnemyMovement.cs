@@ -154,7 +154,6 @@ namespace EnemyCharacter.AI
         /// <param name="moveSpeed"></param>
         /// <param name="minDistance"></param>
         /// <param name="isMoving"></param>
-        /// <returns></returns>
         public bool MoveAIToPoint(Vector2 target, float moveSpeed, float minDistance, out bool isMoving)
         {
             transform.position = Vector2.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
