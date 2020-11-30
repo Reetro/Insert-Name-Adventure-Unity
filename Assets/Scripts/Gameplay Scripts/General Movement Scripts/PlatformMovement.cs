@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
 using PlayerCharacter.Controller;
+using UnityEngine.Events;
 
 namespace LevelObjects.MovingObjects
 {
@@ -28,6 +29,9 @@ namespace LevelObjects.MovingObjects
         /// Checks to see if the pressure plate has pressed
         /// </summary>
         public bool hasPlateBeenPreesed { get; protected set; } = false;
+
+        private bool isPlayerAttached = false;
+
         /// <summary>
         /// Called when a connected pressure plate is pressed
         /// </summary>
@@ -119,6 +123,10 @@ namespace LevelObjects.MovingObjects
             }
             else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
+                GeneralFunctions.AttachObjectToTransfrom(transform, collision.gameObject);
+
+                isPlayerAttached = true;
+
                 UpdatePlayerPathBlocking(collision);
             }
             else if (collision.gameObject.CompareTag("Ground"))
@@ -134,9 +142,13 @@ namespace LevelObjects.MovingObjects
         {
             if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
             {
+                GeneralFunctions.DetachFromParent(collision.gameObject);
+
+                isPlayerAttached = false;
+
                 var playerLegs = collision.gameObject.transform.GetChild(0).GetComponent<PlayerLegs>();
 
-                if (playerLegs.TouchingGround() && !TouchingGround)
+                if (playerLegs.IsGrounded && !TouchingGround)
                 {
                     IsPathBlocked = false;
                 }
@@ -172,7 +184,7 @@ namespace LevelObjects.MovingObjects
                     IsPathBlocked = true;
                 }
             }
-            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject))
+            else if (GeneralFunctions.IsObjectPlayer(collision.gameObject) && !isPlayerAttached)
             {
                 UpdatePlayerPathBlocking(collision);
             }
@@ -191,7 +203,7 @@ namespace LevelObjects.MovingObjects
 
             if (playerLegs)
             {
-                if (playerLegs.TouchingGround())
+                if (playerLegs.IsGrounded)
                 {
                     IsPathBlocked = true;
                 }

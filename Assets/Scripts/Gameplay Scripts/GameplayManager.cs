@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using Spells;
 
 namespace GameplayManagement
 {
@@ -37,6 +38,12 @@ namespace GameplayManagement
         [Tooltip("Layers that can receive damage")]
         public LayerMask whatCanBeDamaged;
 
+        [Header("Player Spell Settings")]
+        [Tooltip("Spells the player starts with")]
+        public ScriptableSpell[] startingSpells;
+        [Tooltip("Amount of action bar slots")]
+        public int amountOfSlots = 4;
+
         [Space]
 
         [Header("Game Debug")]
@@ -55,6 +62,8 @@ namespace GameplayManagement
             UpdateGamepadState();
             UpdateMouseCursor();
         }
+
+        #region ID Management
         /// <summary>
         /// Generates a random number between 1 and 1000000 then adds to the gameIDS array
         /// </summary>
@@ -79,6 +88,9 @@ namespace GameplayManagement
         /// Get all current gameIDS
         /// </summary>
         public List<int> gameIDS { get; } = new List<int>();
+        #endregion
+
+        #region Control Functions
         /// <summary>
         /// Bind onInputDeviceChange to input user onChange event
         /// </summary>
@@ -120,5 +132,6 @@ namespace GameplayManagement
                 Cursor.visible = true;
             }
         }
+        #endregion
     }
 }

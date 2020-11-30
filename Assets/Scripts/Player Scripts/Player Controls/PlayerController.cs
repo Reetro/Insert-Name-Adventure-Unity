@@ -4,20 +4,22 @@ using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
-using AuraSystem;
+using Spells;
 
 namespace PlayerCharacter.Controller
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerSpear currentGun = null;
+        [SerializeField] private PlayerSpear currentSpear = null;
+
+        [SerializeField] private ScriptableSpell dash = null;
 
         #region Player Controls
         public Controls controls = null;
         private float horizontalMove = 0f;
         private bool jump = false;
         private bool jumpHeldDown = false;
-        private bool fireGun = false;
+        private bool swingSpear = false;
         #endregion
 
         #region Player Components
@@ -25,17 +27,22 @@ namespace PlayerCharacter.Controller
         private PlayerMovement playerMovement = null;
         private HealthComponent healthComponent = null;
         private PlayerUIManager uiManager = null;
+        private Rigidbody2D myRigidBody2D = null;
         #endregion
 
         #region Properties
         /// <summary>
-        /// Reference to player currently in the world
+        /// Reference to player state currently in the world
         /// </summary>
         public PlayerState MyPlayerState { get; set; } = null;
         /// <summary>
         /// Checks to see if the player is stunned
         /// </summary>
-        public bool IsPlayerStuned { get; private set; } = false;
+        public bool ControlDisabled { get; private set; } = false;
+        /// <summary>
+        /// Reference to the players box collider
+        /// </summary>
+        public BoxCollider2D MyBoxCollider { get; private set; } = null;
         #endregion
 
         #region Setup Functions
@@ -57,7 +64,11 @@ namespace PlayerCharacter.Controller
 
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
 
-            IsPlayerStuned = false;
+            controls.Player.ActionbarSlot1.started += OnActionSlot1Pressed;
+
+            transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
+
+            ControlDisabled = false;
         }
         /// <summary>
         /// Enable player input
@@ -85,6 +96,9 @@ namespace PlayerCharacter.Controller
 
             healthComponent.OnDeath.AddListener(OnDeath);
             healthComponent.OnTakeAnyDamage.AddListener(OnTakeAnyDamage);
+
+            MyBoxCollider = GetComponent<BoxCollider2D>();
+            myRigidBody2D = GetComponent<Rigidbody2D>();
 
             Move();
         }
@@ -124,7 +138,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnFirePressed(InputAction.CallbackContext context)
         {
-            fireGun = true;
+            swingSpear = true;
         }
         /// <summary>
         /// Called when fire button is released
@@ -132,7 +146,7 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnFireReleased(InputAction.CallbackContext context)
         {
-            fireGun = false;
+            swingSpear = false;
         }
         /// <summary>
         /// Called when jump button is pressed
@@ -150,7 +164,12 @@ namespace PlayerCharacter.Controller
         {
             jumpHeldDown = false;
         }
+        private void OnActionSlot1Pressed(InputAction.CallbackContext context)
+        {
+            var dashSpell = Instantiate(dash.SpellToSpawn);
 
+            GeneralFunctions.StartSpellCast(dashSpell, dash);
+        }
         /// <summary>
         /// Event to tell the player to start jumping
         /// </summary>
@@ -165,13 +184,13 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Fires the player's current gun
         /// </summary>
-        private void FireGun()
+        private void StartSpearPush()
         {
             if (!healthComponent.IsCurrentlyDead)
             {
-                if (fireGun)
+                if (swingSpear)
                 {
-                    currentGun.StartSpearPush();
+                    currentSpear.StartSpearPush();
                 }
             }
         }
@@ -212,10 +231,10 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void Update()
         {
-            if (!IsPlayerStuned)
+            if (!ControlDisabled)
             {
                 Move();
-                FireGun();
+                StartSpearPush();
             }
         }
         /// <summary>
@@ -223,7 +242,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void FixedUpdate()
         {
-            if (!IsPlayerStuned)
+            if (!ControlDisabled)
             {
                 playerMovement.Move(horizontalMove * Time.fixedDeltaTime, jump, false);
                 jump = false;
@@ -250,7 +269,7 @@ namespace PlayerCharacter.Controller
         /// <param name="stunTime"></param>
         public void ApplyStun(float stunTime)
         {
-            IsPlayerStuned = true;
+            ControlDisabled = true;
 
             StartCoroutine(StunTimer(stunTime));
         }
@@ -262,7 +281,28 @@ namespace PlayerCharacter.Controller
         {
             yield return new WaitForSeconds(time);
 
-            IsPlayerStuned = false;
+            ControlDisabled = false;
+        }
+        /// <summary>
+        /// Completely disable player control
+        /// </summary>
+        public void DisableControl(bool makeKinematic)
+        {
+            ControlDisabled = true;
+
+            if (makeKinematic)
+            {
+                myRigidBody2D.isKinematic = true;
+            }
+        }
+        /// <summary>
+        /// Enable player control
+        /// </summary>
+        public void EnableControl()
+        {
+            ControlDisabled = false;
+
+            myRigidBody2D.isKinematic = false;
         }
         /// <summary>
         /// Called when player dies will stop all player movement
@@ -274,6 +314,24 @@ namespace PlayerCharacter.Controller
             myAnimator.SetBool("Idle", true);
 
             playerMovement.StopMovement();
+        }
+        /// <summary>
+        /// Completely disable player collision
+        /// </summary>
+        public void DisableCollision()
+        {
+            MyBoxCollider.enabled = false;
+
+            myRigidBody2D.isKinematic = true;
+        }
+        /// <summary>
+        /// Enable collision on the player
+        /// </summary>
+        public void EnableCollision()
+        {
+            MyBoxCollider.enabled = true;
+
+            myRigidBody2D.isKinematic = false;
         }
         /// <summary>
         /// Update PlayerState health when ever player takes damage

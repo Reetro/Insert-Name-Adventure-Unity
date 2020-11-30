@@ -24,9 +24,9 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Get the transform to spawn axes at and disable auto start
         /// </summary>
-        protected override void Awake()
+        public override void OnSceneCreated()
         {
-            base.Awake();
+            base.OnSceneCreated();
 
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = false;

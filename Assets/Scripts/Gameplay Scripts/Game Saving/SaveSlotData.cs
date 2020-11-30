@@ -9,7 +9,7 @@
         /// </summary>
         public int Slot { get; private set; }
         /// <summary>
-        /// Checks to see if this the active game slot
+        /// Checks to see if this is the active game slot
         /// </summary>
         public bool IsSlotActive { get; private set; }
         #endregion
