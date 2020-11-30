@@ -68,38 +68,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
-                },
-                {
-                    "name": "Actionbar Slot 1",
-                    "type": "Button",
-                    "id": "ad96234e-f0b9-4ee7-b5eb-0a584a48ae60",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Actionbar Slot 2",
-                    "type": "Button",
-                    "id": "ce86b4c7-32ef-4c56-a7f7-af4d17821a9f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Actionbar Slot 3",
-                    "type": "Button",
-                    "id": "cc6cf8e0-59f6-4a8e-bb8e-bb1db4042a09",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Actionbar Slot 4",
-                    "type": "Button",
-                    "id": "80176bea-11ff-477e-be1e-9dcd700fa290",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -309,94 +277,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Delete Saved Game",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dfd57d80-965e-456a-98f5-6666e5a61657",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5d6cfdbf-8584-4ff2-bea4-7f8343fe9118",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "34d72cfd-b11e-4a2c-978c-85e5f7e1789b",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "30d9c819-c1bc-4605-92b3-078ef81bbe24",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "26660228-5b0a-4462-a574-a6c9d585e199",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c639ee6d-290b-4476-aba5-ac9afd8dc48b",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3a06fb19-c724-43cf-814c-56c8e41d7a75",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 4",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bb98fb8f-2a1b-4fc1-b8ab-5f2ab13783de",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Actionbar Slot 4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

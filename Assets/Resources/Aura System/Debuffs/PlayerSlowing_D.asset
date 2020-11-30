@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb35c1ae9d8e662438f0270b0ae56f1b, type: 3}
+  m_Name: PlayerSlowing_D
+  m_EditorClassIdentifier: 
+  name: Slowing
+  description: You have been slowed your speed is now halved
+  artwork: {fileID: 21300000, guid: 65d211f55b476254ea778e5c4d2e5735, type: 3}
+  debuffEffect: {fileID: 6637607642000432650, guid: d4096a713aa9f9a4b83eca755cb3c79b,
+    type: 3}
+  useTicks: 0
+  ticks: 0
+  occurrence: 0
+  duration: 4
+  refresh: 0
+  stack: 0
+  isStatic: 1
+  debuffValue: 15
+  visualEffect: {fileID: 0}
