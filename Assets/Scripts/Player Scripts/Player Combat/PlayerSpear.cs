@@ -6,6 +6,7 @@ using PlayerControls;
 using System.Collections;
 using System.Collections.Generic;
 using EnemyCharacter.SceneObject;
+using EnemyCharacter.AI;
 
 namespace PlayerCharacter.Controller
 {
@@ -21,8 +22,12 @@ namespace PlayerCharacter.Controller
         [SerializeField] private float spearReturnDelay = 1f;
         [Tooltip("How far the spear gets pushed out")]
         [SerializeField] private float spearTravelDistance = 1f;
-        [Tooltip("Which layers will block the spear from moving")]
-        public LayerMask BlockLayers;
+
+        [Space]
+
+        [Header("Layer Settings")]
+        [Tooltip("A mask determining what is ground to the spear")]
+        public LayerMask whatIsGround;
 
         #region Properties
         /// <summary>
@@ -36,7 +41,7 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Gets the layers the spear can collide with 
         /// </summary>
-        public LayerMask WhatIsGround { get { return BlockLayers; } }
+        public LayerMask WhatIsGround { get { return whatIsGround; } }
         #endregion
 
         #region Spear Components
@@ -52,7 +57,6 @@ namespace PlayerCharacter.Controller
         private Controls controls = null;
         private bool canRotate = false;
         private bool isSpearOut = false;
-        private bool isSpearDisabled = false;
         private GameObject playerObject = null;
         private PolygonCollider2D meleeCollision = null;
         #endregion
@@ -71,12 +75,7 @@ namespace PlayerCharacter.Controller
         private void Awake()
         {
             controls = new Controls();
-        }
-        /// <summary>
-        /// When scene is done loading setup spear references
-        /// </summary>
-        public void OnSceneLoaded()
-        {
+
             SetupSpear();
         }
         /// <summary>
@@ -98,7 +97,7 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
-            if (!controller.ControlDisabled)
+            if (!controller.IsPlayerStuned)
             {
                 if (canRotate)
                 {
@@ -144,20 +143,16 @@ namespace PlayerCharacter.Controller
         public void StartSpearPush()
         {
             bool nextToWall;
-            bool doCooldown;
-            if (CanPushSpear(out nextToWall, out doCooldown))
+            if (CanPushSpear(out nextToWall))
             {
                 isSpearOut = true;
                 canRotate = false;
 
-                StartCoroutine(PushSpear(doCooldown));
+                StartCoroutine(PushSpear());
             }
             else if (!GeneralFunctions.IsPlayerDead() && !cooldownBar.GetIsActive())
             {
-                if (doCooldown)
-                {
-                    cooldownBar.StartCooldown(spearCooldown);
-                }
+                cooldownBar.StartCooldown(spearCooldown);
 
                 if (nextToWall)
                 {
@@ -169,15 +164,10 @@ namespace PlayerCharacter.Controller
         /// <summary>
         /// Push spear forward
         /// </summary>
-        private IEnumerator PushSpear(bool doCooldown)
+        private IEnumerator PushSpear()
         {
             meleeCollision.enabled = true;
-
-            if (doCooldown)
-            {
-                cooldownBar.StartCooldown(spearCooldown);
-            }
-
+            cooldownBar.StartCooldown(spearCooldown);
             transform.Translate(spearTravelDistance, 0, 0);
 
             yield return new WaitForSeconds(spearReturnDelay);
@@ -306,50 +296,37 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the spear is being block by ground
         /// </summary>
         /// <returns>A bool that determines if the player can push the spear</returns>
-        private bool CanPushSpear(out bool nextToWall, out bool doCooldown)
+        private bool CanPushSpear(out bool nextToWall)
         {
-           if (!isSpearDisabled)
+            if (!GeneralFunctions.IsPlayerDead())
             {
-                if (!GeneralFunctions.IsPlayerDead())
+                if (!isSpearOut)
                 {
-                    if (!isSpearOut)
+                    if (!cooldownBar.GetIsActive())
                     {
-                        if (!cooldownBar.GetIsActive())
+                        if (!TouchingGround)
                         {
-                            if (!TouchingGround)
-                            {
-                                nextToWall = false;
-                                doCooldown = true;
-                                return true;
-                            }
-                            else
-                            {
-                                var hit = GeneralFunctions.TraceFromEyes(playerObject);
-
-                                if (hit)
-                                {
-                                    doCooldown = true;
-                                    nextToWall = true;
-                                }
-                                else
-                                {
-                                    doCooldown = true;
-                                    nextToWall = false;
-                                }
-
-                                return false;
-                            }
+                            nextToWall = false;
+                            return true;
                         }
                         else
                         {
-                            doCooldown = false;
-                            nextToWall = false;
+                            var hit = GeneralFunctions.TraceFromEyes(playerObject);
+
+                            if (hit)
+                            {
+                                nextToWall = true;
+                            }
+                            else
+                            {
+                                nextToWall = false;
+                            }
+
                             return false;
                         }
                     }
                     else
                     {
-                        doCooldown = true;
                         nextToWall = false;
                         return false;
                     }
@@ -357,13 +334,11 @@ namespace PlayerCharacter.Controller
                 else
                 {
                     nextToWall = false;
-                    doCooldown = false;
                     return false;
                 }
             }
-           else
+            else
             {
-                doCooldown = false;
                 nextToWall = false;
                 return false;
             }
@@ -384,7 +359,6 @@ namespace PlayerCharacter.Controller
         public void DisableSpear()
         {
             canRotate = false;
-            isSpearDisabled = true;
         }
         /// <summary>
         /// Enable spear rotation
@@ -392,7 +366,6 @@ namespace PlayerCharacter.Controller
         public void EnableSpear()
         {
             canRotate = true;
-            isSpearDisabled = false;
         }
         #endregion
 
@@ -432,7 +405,7 @@ namespace PlayerCharacter.Controller
                     {
                         var leechEggRipe = collider2.gameObject.GetComponent<LeechEggRipe>();
                         var leechEggCold = collider2.gameObject.GetComponent<LeechEggCold>();
-                        //var wormSegment = collider2.gameObject.GetComponent<WormSegment>();
+                        var wormSegment = collider2.gameObject.GetComponent<WormSegment>();
 
                         if (leechEggRipe)
                         {
@@ -442,14 +415,14 @@ namespace PlayerCharacter.Controller
                         {
                             leechEggCold.SpawnLeech();
                         }
-                        /*else if (wormSegment)
+                        else if (wormSegment)
                         {
                             if (wormSegment.AboveGround)
                             {
                                 GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                             }
-                        }*/
-                        else if (!leechEggRipe && !leechEggCold)
+                        }
+                        else if (!leechEggRipe && !leechEggCold && !wormSegment)
                         {
                             GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
                         }

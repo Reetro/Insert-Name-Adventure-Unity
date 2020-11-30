@@ -6,6 +6,8 @@ namespace LevelObjects.MovingObjects
     {
         [Tooltip("Points to move in between")]
         public Transform pos1, pos2;
+        [Tooltip("How close the platform should get to a point")]
+        public float distanceTolerance = 1f;
 
         private Vector3 nextPos;
         private float oldPosition = 0.0f;
@@ -71,12 +73,12 @@ namespace LevelObjects.MovingObjects
         /// </summary>
         private void InvertDirection()
         {
-            if (Vector3.Distance(transform.position, pos1.position) <= 0.01f)
+            if (Vector3.Distance(transform.position, pos1.position) <= distanceTolerance)
             {
                 nextPos = pos2.position;
                 lastPos = pos1;
             }
-            else if (Vector3.Distance(transform.position, pos2.position) <= 0.01f)
+            else if (Vector3.Distance(transform.position, pos2.position) <= distanceTolerance)
             {
                 nextPos = pos1.position;
                 lastPos = pos2;

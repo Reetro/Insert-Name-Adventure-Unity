@@ -9,33 +9,18 @@ namespace PlayerCharacter.Controller
         /// Checks to see if the player is touching the ground
         /// </summary>
         public bool IsGrounded { get; set; }
-        /// <summary>
-        /// The current object under the player legs
-        /// </summary>
-        public GameObject ObjectUnderLeg { get; private set; }
+
+        const float k_GroundedRadius = .5f;
 
         private GameObject player = null;
 
-        [Header("Leg Settings")]
-        [Tooltip("What layers are considered to be ground to the legs")]
-        public LayerMask whatIsGround;
-        
-        [HideInInspector]
+        [Header("Layer Settings")]
+        public LayerMask whatIsGround;  // A mask determining what is ground to the character
+
+        [Header("Events")]
+        [Space]
+
         public UnityEvent OnLandEvent;
-
-        [Header("Collision Settings")]
-        [Tooltip("The size of the player ground collision box")]
-        [SerializeField] private Vector2 boxSize = Vector2.zero;
-        /// The draw location of the ground collision box
-        private Transform collisionTransform = null;
-
-        /// <summary>
-        /// Get a ref to the child gameobject
-        /// </summary>
-        private void OnEnable()
-        {
-            collisionTransform = transform.GetChild(0).transform;
-        }
         /// <summary>
         /// When object is spawned in get a reference to the player object
         /// </summary>
@@ -44,19 +29,17 @@ namespace PlayerCharacter.Controller
             player = GeneralFunctions.GetPlayerGameObject();
         }
         /// <summary>
-        /// Check to see if legs are colliding with anything
+        /// Check to see if player is touching the ground every frame
         /// </summary>
-        private void FixedUpdate()
+        /// <param name="collision"></param>
+        private void OnTriggerStay2D(Collider2D collision)
         {
-            var collision = GetLegCollision();
+            bool wasGrounded = IsGrounded;
+            IsGrounded = false;
 
-            if (collision)
+            // Check to see if player is on the ground
+            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject))
             {
-                ObjectUnderLeg = collision.gameObject;
-
-                bool wasGrounded = IsGrounded;
-                IsGrounded = false;
-
                 if (collision.gameObject != player)
                 {
                     IsGrounded = true;
@@ -66,28 +49,54 @@ namespace PlayerCharacter.Controller
                     }
                 }
             }
+            // See if the player is on a platform if so attach player to it
+            else if (collision.gameObject.CompareTag("Platform"))
+            {
+                GeneralFunctions.AttachObjectToTransfrom(collision.transform, player);
+
+                IsGrounded = true;
+                if (!wasGrounded)
+                {
+                    OnLandEvent.Invoke();
+                }
+            }
+
         }
         /// <summary>
-        /// Draw a overlap box
+        /// If player was on a moving platform detach player from it
         /// </summary>
-        /// <returns>The first collider2D it overlaps</returns>
-        public Collider2D GetLegCollision()
+        /// <param name="collision"></param>
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            Collider2D collider2D = Physics2D.OverlapBox(collisionTransform.position, boxSize, 0f, whatIsGround);
-
-            return collider2D;
+            // Deattach player from a moving platform when they jump off
+            if (collision.gameObject.CompareTag("Platform"))
+            {
+                GeneralFunctions.DetachFromParent(player);
+            }
         }
         /// <summary>
-        /// <summary>
-        /// Draw overlap box
+        /// Checks to see if the player is touching the ground layer
         /// </summary>
-        private void OnDrawGizmos()
+        public bool TouchingGround()
         {
-            collisionTransform = transform.GetChild(0).transform;
+            var hitGround = false;
 
-            Gizmos.color = Color.green;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
 
-            Gizmos.DrawWireCube(collisionTransform.position, boxSize);
+            for (int index = 0; index < colliders.Length; index++)
+            {
+                if (colliders[index].gameObject.CompareTag("Ground"))
+                {
+                    hitGround = true;
+                    break;
+                }
+                else
+                {
+                    hitGround = false;
+                    continue;
+                }
+            }
+            return hitGround;
         }
     }
 }

@@ -7,9 +7,9 @@ namespace EnemyCharacter.AI
     [Serializable]
     public class LeechFather : EnemyShooter
     {
-        public override void OnSceneCreated()
+        protected override void Awake()
         {
-            base.OnSceneCreated();
+            base.Awake();
 
             CurrentFireTransform = gameObject.GetComponentInChildren<Transform>();
             AutoStart = true;

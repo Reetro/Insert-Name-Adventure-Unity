@@ -49,6 +49,19 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
+        /// Adds a given number to the given leech Y coordinate to give a bouncing effect
+        /// </summary>
+        /// <param name="leechTransfrom"></param>
+        /// <param name="amountToAdd"></param>
+        public void AddToLeechY(Transform leechTransfrom, float amountToAdd)
+        {
+            var temp = leechTransfrom.position;
+
+            temp.y += amountToAdd;
+
+            leechTransfrom.position = temp;
+        }
+        /// <summary>
         /// Completely stop all movement on a given rigidbody
         /// </summary>
         /// <param name="rigidbody"></param>
@@ -125,50 +138,6 @@ namespace EnemyCharacter.AI
             else
             {
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
-            }
-        }
-        /// <summary>
-        /// Will move the AI towards the target location
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="moveSpeed"></param>
-        /// <param name="minDistance"></param>
-        /// <returns>Returns true if current position is less then or equal to minDistance</returns>
-        public bool MoveAIToPoint(Vector2 target, float moveSpeed, float minDistance)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-
-            if (Vector2.Distance(transform.position, target) <= minDistance)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        ///  Will move the AI towards the target location
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="moveSpeed"></param>
-        /// <param name="minDistance"></param>
-        /// <param name="isMoving"></param>
-        public bool MoveAIToPoint(Vector2 target, float moveSpeed, float minDistance, out bool isMoving)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-
-            if (Vector2.Distance(transform.position, target) <= minDistance)
-            {
-                isMoving = false;
-
-                return true;
-            }
-            else
-            {
-                isMoving = true;
-
-                return false;
             }
         }
         /// <summary>

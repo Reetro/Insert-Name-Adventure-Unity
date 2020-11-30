@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using PlayerUI.Icons;
 using PlayerUI;
-using StatusEffects.Effects;
+using AuraSystem.Effects;
+using System.Collections;
 
-namespace StatusEffects
+namespace AuraSystem
 {
     public class AuraManager : MonoBehaviour
     {
@@ -16,143 +18,400 @@ namespace StatusEffects
             MyUIManager = playerUIManager;
         }
 
-        #region Status Effect Functions
+        #region Buff Functions
         /// <summary>
-        /// Will spawn the given status effect into the scene then start the status effect
+        /// Will spawn the given buff into the scene then start the buff
         /// </summary>
-        /// <returns>The applied status effect</returns>
-        public StatusEffect ApplyEffect(GameObject target, ScriptableStatusEffect effectToApply)
+        /// <returns>The applied buff</returns>
+        public BuffEffect ApplyBuff(GameObject target, ScriptableBuff buffToApply, bool createIcon)
         {
-            GameObject spawnedEffect = Instantiate(effectToApply.CurrentStatusEffect, Vector2.zero, Quaternion.identity);
+            BuffEffect buff = Instantiate(buffToApply.CurrentBuffEffect, Vector2.zero, Quaternion.identity);
 
-            StatusEffect effect = spawnedEffect.GetComponent<StatusEffect>();
+            BuffEffect staticEffect = null;
 
-            if (effect)
+            if (!IsStaticBuffActive(buff, out staticEffect))
             {
-                StatusEffect staticEffect = null;
+                BuffEffect createdBuff = null;
 
-                if (!IsStatusEffectActive(effect, out staticEffect))
+                if (createIcon)
                 {
-                    StatusEffect createdEffect = effect.StartStatusEffect(this, effectToApply, target);
+                    var buffIcon = CreateBuffIcon(buffToApply);
 
-                    if (createdEffect)
-                    {
-                        if (!MyCurrentStatusEffects.Contains(createdEffect))
-                        {
-                            MyCurrentStatusEffects.Add(createdEffect);
-                        }
-
-                        return createdEffect;
-                    }
-                    else
-                    {
-                        Debug.LogError("Failed to apply " + effectToApply.Name + " created status effect failed to start");
-
-                        return null;
-                    }
+                    createdBuff = buff.StartBuff(this, buffToApply, buffIcon, target);
                 }
                 else
                 {
-                    if (staticEffect)
-                    {
-                        Destroy(staticEffect);
+                    createdBuff = buff.StartBuff(this, buffToApply, target);
+                }
 
-                        return staticEffect;
-                    }
-                    else
+                if (createdBuff)
+                {
+                    if (!MyCurrentBuffs.Contains(createdBuff))
                     {
-                        Debug.LogError("Failed to apply " + effectToApply.Name + " failed to get static status effect");
-
-                        return null;
+                        MyCurrentBuffs.Add(createdBuff);
                     }
+
+                    return createdBuff;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + buffToApply.Name + " created buff failed to start");
+
+                    return null;
                 }
             }
             else
             {
-                Debug.LogError("Failed to spawn status effect " + spawnedEffect.name + " does not have a status effect component");
+                if (staticEffect)
+                {
+                    Destroy(buff);
 
-                Destroy(spawnedEffect);
+                    return staticEffect;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + buffToApply.Name + " failed to get static debuff");
 
-                return null;
+                    return null;
+                }
             }
         }
         /// <summary>
-        /// Check to see if a status of the same type is active and is a static status effect
+        /// Check to see if a debuff of the same type is active and is a static debuff
         /// </summary>
-        private bool IsStatusEffectActive(StatusEffect statusEffect, out StatusEffect activeEffect)
+        /// <param name="buffEffect"></param>
+        private bool IsStaticBuffActive(BuffEffect buff, out BuffEffect activeBuffEffect)
         {
-            foreach (StatusEffect currentStatusEffect in MyCurrentStatusEffects)
+            foreach (BuffEffect buffEffect in MyCurrentBuffs)
             {
-                if (currentStatusEffect)
+                if (buffEffect)
                 {
-                    if (currentStatusEffect.IsStatic && currentStatusEffect.GetType() == currentStatusEffect.GetType())
+                    if (buffEffect.IsStatic && buffEffect.GetType() == buff.GetType())
                     {
-                        activeEffect = currentStatusEffect;
+                        activeBuffEffect = buffEffect;
                         return true;
                     }
                 }
             }
-            activeEffect = null;
+            activeBuffEffect = null;
             return false;
         }
         /// <summary>
-        /// Finds a status effect of the same type as the given status effect
+        /// Finds a buff of the same type as the given buff
         /// </summary>
-        /// <returns>A StatusEffectBase</returns>
-        public StatusEffect FindStatusEffectOfType(ScriptableStatusEffect scriptableStatusEffect)
+        /// <returns>A BuffEffect</returns>
+        public BuffEffect FindBuffOfType(ScriptableBuff buff)
         {
-            if (scriptableStatusEffect)
+            if (buff)
             {
-                StatusEffect foundEffect = null;
+                BuffEffect foundBuff = null;
 
-                foreach (StatusEffect statusEffect in MyCurrentStatusEffects)
+                foreach (BuffEffect buffEffect in MyCurrentBuffs)
                 {
-                    var type = statusEffect.CurrentStatusEffect.GetType();
+                    var type = buffEffect.Buff.GetType();
 
-                    if (type == scriptableStatusEffect.GetType())
+                    if (type == buff.GetType())
                     {
-                        foundEffect = statusEffect;
+                        foundBuff = buffEffect;
                         break;
                     }
                 }
 
-                return foundEffect;
+                return foundBuff;
             }
             else
             {
                 Debug.LogError("Was unable to find buff type on " + gameObject.name + "buff was invalid");
                 return null;
             }
-        } 
+        }
         /// <summary>
-        /// Removes then destroy the given status effect from the aura manager
+        /// Removes then destroy the given buff from the the aura manager then removes the icon from the playerUI
         /// </summary>
-        /// <param name="currentEffectObject"></param>
-        /// <param name="effect"></param>
-        public void StartStatusEffectRemoval(GameObject currentEffectObject, StatusEffect effect)
+        public void StartBuffRemoval(GameObject buffEffectObject, BuffEffect effect, BuffIcon iconToRemove)
         {
-            if (currentEffectObject)
+            if (buffEffectObject)
             {
-                MyCurrentStatusEffects.Remove(effect);
+                MyCurrentBuffs.Remove(effect);
 
-                Destroy(currentEffectObject);
+                if (iconToRemove)
+                {
+                    var buffEffect = buffEffectObject.GetComponent<BuffEffect>();
+
+                    if (buffEffect)
+                    {
+                        if (buffEffect.fadeOutAnimation)
+                        {
+                            buffEffect.IsCurrentlyActive = false;
+                            buffEffect.IsFading = true;
+
+                            buffEffect.fadeOutAnimation.Play();
+
+                            StartCoroutine(DestroyBuff(buffEffect, iconToRemove));
+                        }
+                        else
+                        {
+                            MyUIManager.RemoveBuffIcon(iconToRemove);
+
+                            Destroy(buffEffectObject.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to StartBuffRemoval on " + buffEffectObject.name.ToString() + " does not have a BuffEffect component");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fade out " + buffEffectObject.name.ToString() + " icon was invalid");
+
+                    Destroy(buffEffectObject.gameObject);
+                }
+            }
+        }
+        /// <summary>
+        /// Removes then destroy the given debuff from the aura manager
+        /// </summary>
+        public void StartBuffRemoval(GameObject buffEffectObject, BuffEffect effect)
+        {
+            if (buffEffectObject)
+            {
+                Destroy(buffEffectObject);
+
+                MyCurrentBuffs.Remove(effect);
+            }
+        }
+        /// <summary>
+        /// After the fade out animation is done destroy DebuffEffect Gameobject and removes the buff icon from screen
+        /// </summary>
+        private IEnumerator DestroyBuff(BuffEffect buff, BuffIcon iconToRemove)
+        {
+            yield return new WaitForSeconds(buff.fadeOutAnimation.GetClip("Buff_Fade_Out").length);
+
+            MyUIManager.RemoveBuffIcon(iconToRemove);
+
+            Destroy(buff.gameObject);
+        }
+        #endregion
+
+        #region Debuff Functions
+        /// <summary>
+        /// Will spawn the given debuff into the scene then start the debuff
+        /// </summary>
+        /// <returns>The applied debuff</returns>
+        public DebuffEffect ApplyDebuff(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
+        {
+            DebuffEffect debuff = Instantiate(debuffToApply.CurrentDebuffEffect, Vector2.zero, Quaternion.identity);
+
+            DebuffEffect staticEffect = null;
+
+            if (!IsStaticDebuffActive(debuff, out staticEffect))
+            {
+                DebuffEffect createdDebuff = null;
+
+                if (createIcon)
+                {
+                    var hasFillAmount = debuffToApply.GetTotalTime() > 0;
+
+                    var debuffIcon = CreateDebuffIcon(debuffToApply, hasFillAmount);
+
+                    createdDebuff = debuff.StartDebuff(this, debuffToApply, debuffIcon, target);
+                }
+                else
+                {
+                    createdDebuff = debuff.StartDebuff(this, debuffToApply, target);
+                }
+
+                if (createdDebuff)
+                {
+                    if (!MyCurrentDebuffs.Contains(createdDebuff))
+                    {
+                        MyCurrentDebuffs.Add(createdDebuff);
+                    }
+
+                    return createdDebuff;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + debuffToApply.Name + " created debuff failed to start");
+
+                    return null;
+                }
             }
             else
             {
-                Debug.LogError("Failed to remove effect " + effect.name + " Effect Object was not valid");
+                if (staticEffect)
+                {
+                    Destroy(debuff);
+
+                    return staticEffect;
+                }
+                else
+                {
+                    Debug.LogError("Failed to apply " + debuffToApply.Name + " failed to get static debuff");
+
+                    return null;
+                }
             }
+        }
+        /// <summary>
+        /// Check to see if a debuff of the same type is active and is a static debuff
+        /// </summary>
+        /// <param name="debuff"></param>
+        private bool IsStaticDebuffActive(DebuffEffect debuff, out DebuffEffect activeDebuffEffect)
+        {
+            foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
+            {
+                if (debuffEffect)
+                {
+                    if (debuffEffect.IsStatic && debuffEffect.GetType() == debuff.GetType())
+                    {
+                        activeDebuffEffect = debuffEffect;
+                        return true;
+                    }
+                }
+            }
+            activeDebuffEffect = null;
+            return false;
+        }
+        /// <summary>
+        /// Plays debuff fade out animation if debuff had a Icon and then destroys the DebuffEffect Gameobject
+        /// </summary>
+        public void StartDebuffRemoval(GameObject debuffEffectObject, DebuffIcon iconToRemove)
+        {
+            if (debuffEffectObject)
+            {
+                if (iconToRemove)
+                {
+                    var debuffEffect = debuffEffectObject.GetComponent<DebuffEffect>();
+
+                    MyCurrentDebuffs.Remove(debuffEffect);
+
+                    if (debuffEffect)
+                    {
+                        if (debuffEffect.fadeOutAnimation)
+                        {
+                            debuffEffect.IsCurrentlyActive = false;
+                            debuffEffect.IsFading = true;
+
+                            debuffEffect.fadeOutAnimation.Play();
+
+                            StartCoroutine(DestroyDebuff(debuffEffect, iconToRemove));
+                        }
+                        else
+                        {
+                            MyUIManager.RemoveDebuffIcon(iconToRemove);
+
+                            Destroy(debuffEffectObject.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to StartDebuffRemoval on " + debuffEffectObject.name.ToString() + " does not have a DebuffEffect component");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fade out " + debuffEffectObject.name.ToString() + " icon was invalid");
+
+                    Destroy(debuffEffectObject.gameObject);
+                }
+            }
+        }
+        /// <summary>
+        /// Removes then destroys the given debuff from the aura manager
+        /// </summary>
+        public void StartDebuffRemoval(GameObject debuffEffectObject)
+        {
+            if (debuffEffectObject)
+            {
+                var effect = debuffEffectObject.GetComponent<DebuffEffect>();
+
+                MyCurrentDebuffs.Remove(effect);
+
+                Destroy(debuffEffectObject);
+            }
+        }
+        /// <summary>
+        /// After the fade out animation is done destroy DebuffEffect Gameobject and removes the debuff icon from screen
+        /// </summary>
+        private IEnumerator DestroyDebuff(DebuffEffect debuff, DebuffIcon iconToRemove)
+        {
+            yield return new WaitForSeconds(debuff.fadeOutAnimation.GetClip("Debuff_Fade_Out").length);
+
+            if (iconToRemove)
+            {
+                MyUIManager.RemoveDebuffIcon(iconToRemove);
+            }
+
+            if (debuff)
+            {
+                Destroy(debuff.gameObject);
+            }
+        }
+        /// <summary>
+        /// Finds a debuff of the same type as the given debuff
+        /// </summary>
+        /// <returns>A DebuffEffect</returns>
+        public DebuffEffect FindDebuffOtype(ScriptableDebuff debuff)
+        {
+            if (debuff)
+            {
+                DebuffEffect foundDebuff = null;
+
+                foreach (DebuffEffect debuffEffect in MyCurrentDebuffs)
+                {
+                    var type = debuffEffect.Debuff.GetType();
+
+                    if (type == debuff.GetType())
+                    {
+                        foundDebuff = debuffEffect;
+                        break;
+                    }
+                }
+
+                return foundDebuff;
+            }
+            else
+            {
+                Debug.LogError("Was unable to find debuff type on " + gameObject.name + " debuff was invalid");
+                return null;
+            }
+        }
+        #endregion
+
+        #region Icon Functions
+        /// <summary>
+        /// Will add a buff icon to the player UI
+        /// </summary>
+        /// <returns>The created icon</returns>
+        private BuffIcon CreateBuffIcon(ScriptableBuff buff)
+        {
+            return MyUIManager.AddBuffIcon(buff);
+        }
+        /// <summary>
+        /// Will add a debuff icon to the player UI
+        /// </summary>
+        /// <returns>The created icon</returns>
+        private DebuffIcon CreateDebuffIcon(ScriptableDebuff debuff, bool hasFillAmount)
+        {
+            return MyUIManager.AddDebuffIcon(debuff, hasFillAmount);
         }
         #endregion
 
         #region Properties
         /// <summary>
+        /// Gets all current buffs on this Gameobject
+        /// </summary>
+        public List<BuffEffect> MyCurrentBuffs { get; } = new List<BuffEffect>();
+        /// <summary>
+        /// Gets all current debuffs on this Gameobject
+        /// </summary>
+        public List<DebuffEffect> MyCurrentDebuffs { get; } = new List<DebuffEffect>();
+        /// <summary>
         /// Gets the player UI Manager
         /// </summary>
         public PlayerUIManager MyUIManager { get; private set; } = null;
-        /// <summary>
-        /// Gets all current status effects on this Gameobject
-        /// </summary>
-        public List<StatusEffect> MyCurrentStatusEffects { get; } = new List<StatusEffect>();
         #endregion
     }
 }

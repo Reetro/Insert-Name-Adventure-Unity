@@ -4,7 +4,6 @@ using PlayerCharacter.GameSaving;
 using PlayerUI;
 using GameplayManagement;
 using System;
-using GameplayManagement.Assets;
 
 [Serializable]
 public class HealthComponent : MonoBehaviour
@@ -32,7 +31,7 @@ public class HealthComponent : MonoBehaviour
     /// </summary>
     public void ConstructHealthComponent()
     {
-        gameplayManager = GameAssets.GlobalManager;
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
 
         IsCurrentlyDead = false;
 
@@ -66,7 +65,7 @@ public class HealthComponent : MonoBehaviour
     {
         this.healthBar = healthBar;
 
-        gameplayManager = GameAssets.GlobalManager;
+        gameplayManager = GameObject.FindGameObjectWithTag("Gameplay Manager").GetComponent<GameplayManager>();
 
         IsCurrentlyDead = false;
 
