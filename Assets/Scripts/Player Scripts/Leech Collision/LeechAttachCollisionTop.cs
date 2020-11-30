@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using EnemyCharacter;
 using EnemyCharacter.AI;
 

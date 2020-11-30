@@ -159,7 +159,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 0
-  onTakeAnyDamage:
+  OnTakeAnyDamage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6208939237362477914
@@ -174,5 +174,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40dffc6d8f5b1274f847eeba6753a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leechingDebuff: {fileID: 11400000, guid: e3130148d21bae74aa3433411e803538, type: 2}
+  leechingDebuff: {fileID: 11400000, guid: 8ec7d3b1cd33e94428f63cdd6775dcac, type: 2}
   leechHealthComp: {fileID: 7248717176020946982}

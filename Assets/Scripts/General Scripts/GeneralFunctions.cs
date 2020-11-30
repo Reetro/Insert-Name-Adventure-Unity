@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using PlayerUI;
 using GameplayManagement;
 using EnemyCharacter;
-using AuraSystem.Effects;
+using StatusEffects.Effects;
 using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
+using Spells;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -158,6 +159,23 @@ public class GeneralFunctions
     {
         return gameObject.transform.rotation * Vector2.up;
     }
+    /// <summary>
+    /// Get a point X units behind the given transform
+    /// </summary>
+    /// <param name="targetTransform"></param>
+    /// <param name="distanceBehind"></param>
+    /// <returns></returns>
+    public static Vector2 GetPointBehind(Transform targetTransform, float distanceBehind)
+    {
+        return targetTransform.position - (targetTransform.right * distanceBehind);
+    }
+    /// <summary>
+    /// Gets a point X units away from the facing directions
+    /// </summary>
+    public static Vector2 GetPoint(Vector2 direction, Vector2 startPostion, float distance)
+    {
+        return startPostion + direction * distance;
+    }
     #endregion
 
     #region Rotation Functions
@@ -192,7 +210,7 @@ public class GeneralFunctions
     {
         var angle = gameObject.transform.localEulerAngles.z;
 
-        if (angle.Equals(270))
+        if (Mathf.Approximately(angle, 270))
         {
             angle = -90;
         }
@@ -286,7 +304,7 @@ public class GeneralFunctions
     }
     #endregion
 
-    #region Health Functions
+    #region General Health Functions
     /// <summary>
     /// Calls the construct health component function on the given game object
     /// </summary>
@@ -302,64 +320,6 @@ public class GeneralFunctions
         else
         {
             Debug.LogError("Failed to construct Health Component on " + gameObject.name.ToString() + " does not have a health component");
-        }
-    }
-    /// <summary>
-    ///  Gets the targets health component then heals the target
-    /// </summary>
-    public static void HealTarget(GameObject target, float amount)
-    {
-        var health = target.GetComponent<HealthComponent>();
-
-        if (health)
-        {
-            health.AddHealth(amount);
-        }
-        else
-        {
-            Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
-        }
-    }
-    /// <summary>
-    ///  Gets the targets health component then damages to the target
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="amount"></param>
-    /// <param name="showText"></param>
-    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
-    {
-        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
-        {
-            var health = target.GetComponent<HealthComponent>();
-
-            if (health)
-            {
-                health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
-            }
-            else
-            {
-                Debug.LogError(damageDealer.name.ToString() + " Failed to damage " + target.name.ToString() + " does not have a health component");
-            }
-        }
-    }
-    /// <summary>
-    /// Will instantly kill the given target
-    /// </summary>
-    /// <param name="target"></param>
-    public static void KillTarget(GameObject target)
-    {
-        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
-        {
-            var health = target.GetComponent<HealthComponent>();
-
-            if (health)
-            {
-                health.ProccessDamage(1000000000, false, GameAssets.GlobalManager.whatCanBeDamaged);
-            }
-            else
-            {
-                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
-            }
         }
     }
     /// <summary>
@@ -524,47 +484,82 @@ public class GeneralFunctions
 
     #region Game action functions
     /// <summary>
-    /// Apply a buff to the given target
+    ///  Gets the targets health component then heals the target
+    /// </summary>
+    public static void HealTarget(GameObject target, float amount)
+    {
+        var health = target.GetComponent<HealthComponent>();
+
+        if (health)
+        {
+            health.AddHealth(amount);
+        }
+        else
+        {
+            Debug.LogError("Failed to heal " + target.name.ToString() + " does not have a health component");
+        }
+    }
+    /// <summary>
+    ///  Apply the given amount of damage to the given target
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="amount"></param>
+    /// <param name="showText"></param>
+    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
+    {
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
+
+            if (health)
+            {
+                health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError(damageDealer.name.ToString() + " Failed to damage " + target.name.ToString() + " does not have a health component");
+            }
+        }
+    }
+    /// <summary>
+    /// Will instantly kill the given target
+    /// </summary>
+    /// <param name="target"></param>
+    public static void KillTarget(GameObject target)
+    {
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
+        {
+            var health = target.GetComponent<HealthComponent>();
+
+            if (health)
+            {
+                health.ProccessDamage(1000000000, false, GameAssets.GlobalManager.whatCanBeDamaged);
+            }
+            else
+            {
+                Debug.LogError("Failed to kill " + target.name.ToString() + " does not have a health component");
+            }
+        }
+    }
+    /// <summary>
+    /// Apply a status effect to the given target
     /// </summary>
     /// <param name="target"></param>
     /// <param name="buffToApply"></param>
     /// <param name="createIcon"></param>
     /// <param name="refresh"></param>
     /// <param name="stack"></param>
-    public static BuffEffect ApplyBuffToTarget(GameObject target, ScriptableBuff buffToApply, bool createIcon)
+    public static StatusEffect ApplyStatusEffectToTarget(GameObject target, ScriptableStatusEffect StatusEffectToApply)
     {
         var auraManager = target.GetComponent<AuraManager>();
 
         if (auraManager)
         {
-            return auraManager.ApplyBuff(target, buffToApply, createIcon);
+            return auraManager.ApplyEffect(target, StatusEffectToApply);
         }
         else
         {
             Debug.LogError("Failed to apply buff to " + target.gameObject.name + " did not have a aura manager component");
-
-            return null;
-        }
-    }
-    /// <summary>
-    /// Apply a debuff to the given target
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="buffToApply"></param>
-    /// <param name="createIcon"></param>
-    /// <param name="refresh"></param>
-    /// <param name="stack"></param>
-    public static DebuffEffect ApplyDebuffToTarget(GameObject target, ScriptableDebuff debuffToApply, bool createIcon)
-    {
-        var auraManager = target.GetComponent<AuraManager>();
-
-        if (auraManager)
-        {
-            return auraManager.ApplyDebuff(target, debuffToApply, createIcon);
-        }
-        else
-        {
-            Debug.LogError("Failed to apply debuff to " + target.gameObject.name + " did not have a aura manager component");
 
             return null;
         }
@@ -605,16 +600,33 @@ public class GeneralFunctions
             Debug.LogError("Failed to ApplyKnockback " + target.name.ToString() + " does not have a Rigidbody2D component");
         }
     }
+    /// <summary>
+    /// Will cast the provided spell
+    /// </summary>
+    /// <param name="spawnSpell"></param>
+    /// <param name="spellInfo"></param>
+    public static void StartSpellCast(GameObject spawnSpell, ScriptableSpell spellInfo)
+    {
+        var spell = spawnSpell.GetComponent<Spell>();
+
+        if (spell)
+        {
+            spell.StartSpellCast(spellInfo, spawnSpell);
+        }
+        else
+        {
+            Debug.LogError("Failed to start spell GameObject " + spawnSpell.name + " does not have a spell component");
+        }
+    }
     #endregion
 
     #region Gameobject Functions
     /// <summary>
-    /// Find the Player UI Manager in the current scene
+    /// Get the PlayerUIManager cached in Game Assets
     /// </summary>
-    /// <returns></returns>
     public static PlayerUIManager GetPlayerUIManager()
     {
-        return GameObject.FindGameObjectWithTag("Player Hud Canvas").GetComponent<PlayerUIManager>();
+        return GameAssets.PlayerHUDManager;
     }
     /// <summary>
     /// Checks to see if the given object is on the player character
@@ -632,8 +644,10 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="playerObject"></param>
     /// <param name="stunTime"></param>
-    public static void StunPlayer(GameObject playerObject, float stunTime)
+    public static void StunPlayer(float stunTime)
     {
+        var playerObject = GetPlayerGameObject();
+
         if (playerObject)
         {
             var playerController = playerObject.GetComponent<PlayerController>();
@@ -653,37 +667,37 @@ public class GeneralFunctions
         }
     }
     /// <summary>
-    /// Finds the player state in the game world
+    /// Get the PlayerState cached in Game Assets
     /// </summary>
     public static PlayerState GetPlayerState()
     {
-        return GameObject.FindGameObjectWithTag("Player State").GetComponent<PlayerState>();
+        return GameAssets.PlayerCurrentState;
     }
     /// <summary>
-    /// Finds the level loader in the game world
+    /// Get the LevelLoader cached in Game Assets
     /// </summary>
     public static LevelLoader GetLevelLoader()
     {
-        return GameObject.FindGameObjectWithTag("Level Loader").GetComponent<LevelLoader>();
+        return GameAssets.CurrentLevelLoader;
     }
     /// <summary>
-    ///  Find the Player Gameobject by tag in the current level
+    ///  Get the Player Gameobject cached in Game Assets
     /// </summary>
     /// <returns>The Player Gameobject</returns>
     public static GameObject GetPlayerGameObject()
     {
-        return GameObject.FindGameObjectWithTag("Player");
+        return GameAssets.PlayerGameObject;
     }
     /// <summary>
-    /// Find the player in the current level and get the player legs component
+    /// Get the Player Gameobject in the current level and get the player legs component
     /// </summary>
     /// <returns>The player legs component</returns>
     public static PlayerLegs GetPlayerLegs()
     {
-        return GetPlayerGameObject().transform.GetChild(0).GetComponent<PlayerLegs>();
+        return GameAssets.PlayerObjectLegs;
     }
     /// <summary>
-    /// Find the player in the current level and get the player spear component
+    /// Get the Player Gameobject in the current level and get the player spear component
     /// </summary>
     /// <returns>The player spear component</returns>
     public static PlayerSpear GetPlayerSpear()
@@ -695,7 +709,7 @@ public class GeneralFunctions
     /// </summary>
     public static bool IsPlayerTouchingGround()
     {
-        return GetPlayerLegs().TouchingGround();
+        return GetPlayerLegs().IsGrounded;
     }
     /// <summary>
     ///  Gets the gameplay manager and generates an ID
@@ -703,9 +717,15 @@ public class GeneralFunctions
     /// <returns>A random int that will be unique to this object</returns>
     public static int GenID()
     {
-        var manager = GameObject.FindGameObjectWithTag("Gameplay Manager");
-
-        return manager.GetComponent<GameplayManager>().GenID();
+        return GameAssets.GlobalManager.GetComponent<GameplayManager>().GenID();
+    }
+    /// <summary>
+    /// Gets the current gameobject under the player legs
+    /// </summary>
+    /// <returns></returns>
+    public static GameObject GetGameObjectUnderPlayer()
+    {
+        return GameAssets.PlayerObjectLegs.ObjectUnderLeg;
     }
     #endregion
 
@@ -745,6 +765,40 @@ public class GeneralFunctions
         }
         return true;
     }
+    /// <summary>
+    /// Will find the given items index in the given array
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Array"></param>
+    /// <param name="ObjectToFind"></param>
+    public static int FindItemIndex<T>(T[] Array, T ObjectToFind)
+    {
+        if (ObjectToFind != null)
+        {
+            for (int index = 0; index < Array.Length; index++)
+            {
+                var item = Array[index];
+
+                if (item != null)
+                {
+                    if (item.Equals(ObjectToFind))
+                    {
+                        return index;
+                    }
+                }
+            }
+
+            Debug.LogError("Failed to find item index in " + Array);
+
+            return 0;
+        }
+        else
+        {
+            Debug.LogError("Failed to find item index in " + Array + " item was null");
+
+            return 0;
+        }
+    }
     #endregion
 
     #region Save Game Functions
@@ -754,11 +808,17 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void SaveGameToSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
         {
             state.SaveGameToSlot(slot);
+        }
+        else
+        {
+            Debug.LogError("Failed to save game unable to find Player State");
         }
     }
     /// <summary>
@@ -767,6 +827,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void LoadGameFromSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -783,6 +845,8 @@ public class GeneralFunctions
     /// </summary>
     public static void LoadActiveSave()
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -800,6 +864,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void DeleteGameInSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -816,6 +882,8 @@ public class GeneralFunctions
     /// </summary>
     public static bool IsAnySaveSlotActive()
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -834,6 +902,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static bool IsSlotActive(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -853,6 +923,8 @@ public class GeneralFunctions
     /// <returns></returns>
     public static bool DoesSaveExistInSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -871,6 +943,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void CreateNewSave(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -888,6 +962,8 @@ public class GeneralFunctions
     /// <param name="slot"></param>
     public static void SetActiveSlot(int slot)
     {
+        GameAssets.UpdateReferences();
+
         var state = GetPlayerState();
 
         if (state)
@@ -950,3 +1026,54 @@ public class GeneralFunctions
     }
     #endregion
 }
+
+#region Extension Methods
+
+public static class Rigidbody2DExt
+{
+    /// <summary>
+    /// Applies a force to a rigidbody that simulates explosion effects
+    /// </summary>
+    /// <param name="rb"></param>
+    /// <param name="explosionForce"></param>
+    /// <param name="explosionPosition"></param>
+    /// <param name="explosionRadius"></param>
+    /// <param name="upwardsModifier"></param>
+    /// <param name="mode"></param>
+    public static void AddExplosionForce(this Rigidbody2D rb, float explosionForce, Vector2 explosionPosition, float explosionRadius, float upwardsModifier = 0.0F, ForceMode2D mode = ForceMode2D.Force)
+    {
+        var explosionDir = rb.position - explosionPosition;
+        var explosionDistance = explosionDir.magnitude;
+
+        // Normalize without computing magnitude again
+        if (upwardsModifier == 0)
+            explosionDir /= explosionDistance;
+        else
+        {
+            // From Rigidbody.AddExplosionForce doc:
+            // If you pass a non-zero value for the upwardsModifier parameter, the direction
+            // will be modified by subtracting that value from the Y component of the centre point.
+            explosionDir.y += upwardsModifier;
+            explosionDir.Normalize();
+        }
+
+        rb.AddForce(Mathf.Lerp(0, explosionForce, (1 - explosionDistance)) * explosionDir, mode);
+    }
+}
+
+public static class Extension
+{
+    /// <summary>
+    /// Will reverse the given list order
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="items"></param>
+    public static IEnumerable<T> FastReverse<T>(this IList<T> items)
+    {
+        for (int i = items.Count - 1; i >= 0; i--)
+        {
+            yield return items[i];
+        }
+    }
+}
+#endregion

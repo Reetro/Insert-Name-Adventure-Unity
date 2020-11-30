@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Justin's Levels/Justin's Level 2.unity
     guid: b256b682208f5fb42b7476a5cb7b4a49
   - enabled: 1
-    path: Assets/Scenes/Testing Areas/Sandbox.unity
+    path: Assets/Scenes/Testing Areas/Enemy Testing  Level.unity
     guid: 2672f61219880d842a48d9f67e4d6289
   - enabled: 1
     path: Assets/Scenes/Testing Areas/Sandbox 1.unity

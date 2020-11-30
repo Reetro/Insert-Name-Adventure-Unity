@@ -272,7 +272,7 @@ namespace EnemyCharacter.AI
 
                 GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackForce, ForceMode2D.Impulse);
 
-                GeneralFunctions.StunPlayer(collision.gameObject, 0.1f);
+                GeneralFunctions.StunPlayer(0.1f);
             }
         }
         /// <summary>

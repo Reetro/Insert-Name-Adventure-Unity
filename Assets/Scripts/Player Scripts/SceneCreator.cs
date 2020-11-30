@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using AuraSystem;
+using StatusEffects;
 using PlayerUI;
 using LevelObjects.SceneLoading;
 using LevelObjects.Saving;
 using PlayerCharacter.GameSaving;
 using PlayerCharacter.Controller;
+using EnemyCharacter;
+using GameplayManagement.Assets;
 
-namespace PlayerCharacter.SceneLoading
+namespace GameplayManagement.SceneLoading
 {
     public class SceneCreator : MonoBehaviour
     {
@@ -21,14 +23,10 @@ namespace PlayerCharacter.SceneLoading
 
         private PlayerController playerController = null;
 
-        void Awake()
-        {
-            SetupScene();
-        }
         /// <summary>
         /// Goes through 3 stages of setup Level, Player, Gameplay Components on each stage checks to see if the given assets currently exist will call there construction scripts if not it will spawn them in
         /// </summary>
-        private void SetupScene()
+        void Awake()
         {
             SetupLevel();
 
@@ -37,10 +35,12 @@ namespace PlayerCharacter.SceneLoading
             SetupGameplayComponents();
         }
         /// <summary>
-        /// Checks if the level loader and level exit currently exist in the spawn
+        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets
         /// </summary>
         private void SetupLevel()
         {
+            GameAssets.UpdateReferences();
+
             levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
 
             var levelExit = FindObjectOfType<LevelExit>();
@@ -64,6 +64,8 @@ namespace PlayerCharacter.SceneLoading
 
             playerController.MyPlayerState = playerState.GetComponent<PlayerState>();
 
+            FindObjectOfType<PlayerSpear>().OnSceneLoaded();
+
             var checkpoint = FindObjectOfType<Checkpoint>();
 
             // Sets the player state in active checkpoint 
@@ -86,6 +88,16 @@ namespace PlayerCharacter.SceneLoading
         /// </summary>
         private void SetupGameplayComponents()
         {
+            var enemies = FindObjectsOfType<EnemyBase>();
+
+            foreach (EnemyBase enemyBase in enemies)
+            {
+                if (enemyBase)
+                {
+                    enemyBase.OnSceneCreated();
+                }
+            }
+
             Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
 
             var auraManagers = FindObjectsOfType<AuraManager>();
@@ -95,6 +107,8 @@ namespace PlayerCharacter.SceneLoading
                 // Set all Aura Components UI reference to the player UI
                 auraManager.SetUIManager(playerHud.GetComponent<PlayerUIManager>());
             }
+
+            GameAssets.UpdateReferences();
         }
     }
 }
