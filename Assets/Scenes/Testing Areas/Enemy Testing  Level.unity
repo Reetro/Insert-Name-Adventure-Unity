@@ -5612,17 +5612,17 @@ PrefabInstance:
     - target: {fileID: 8108744408832518177, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
       propertyPath: m_Name
-      value: Hour Glass Drill
+      value: Tiki Head
       objectReference: {fileID: 0}
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.05
+      value: -2.229
       objectReference: {fileID: 0}
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.999
+      value: -2.895
       objectReference: {fileID: 0}
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
