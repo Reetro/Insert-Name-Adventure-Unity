@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3262375c319c446828cecd4be0ba47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchDelay: 2
+  launchDelay: 3
   launchSpeed: 20
   launchDistanceMultiplier: 8
   moveToGroundDelay: 3
@@ -128,7 +128,7 @@ MonoBehaviour:
   followDelay: 0.8
   followSpeed: 8
   sinkDistanceMultiplier: 2
-  sinkDelay: 2
+  sinkDelay: 3
   sinkSpeed: 2
   playerSquishScale: {x: 1, y: 0.4, z: 0}
   damageToApply: 2

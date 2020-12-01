@@ -33,17 +33,6 @@ namespace EnemyCharacter.AI
         [Tooltip("How fast the Tiki Head follows the player")]
         [SerializeField] private float followSpeed = 3f;
 
-        [Header("Sink Settings")]
-
-        [Tooltip("Multiplier Used To calculate Sink Distance")]
-        [SerializeField] private float sinkDistanceMultiplier = 2f;
-
-        [Tooltip("How long before the Tiki Head sinks into the ground")]
-        [SerializeField] private float sinkDelay = 2f;
-
-        [Tooltip("How fast the Tiki Head sinks back into the ground")]
-        [SerializeField] private float sinkSpeed = 2f;
-
         [Header("Squish Settings")]
 
         [Tooltip("Scale to set the player to when squished")]
@@ -93,24 +82,20 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// All Tiki Head Drill movement states
         /// </summary>
-        public enum HourGlassDrillMovementState
+        public enum TikiHeadMovementState
         {
-            /// <summary>
-            /// Will match the player X coordinate
-            /// </summary>
-            FollowPlayer,
             /// <summary>
             /// Will Launch the Tiki Head up Into the Air
             /// </summary>
-            LaunchHourGlass,
+            LaunchTikiHead,
             /// <summary>
             /// Will Move the Tiki Head from the air on to the ground
             /// </summary>
             MoveToGround,
             /// <summary>
-            /// Will sink the Tiki Head back down into the ground and reset rotation
+            /// Will match the player X coordinate
             /// </summary>
-            SinkToGround
+            FollowPlayer,
         }
         /// <summary>
         /// Set Default Variables and start move timer
@@ -129,7 +114,9 @@ namespace EnemyCharacter.AI
 
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
-            CurrentMovementState = HourGlassDrillMovementState.FollowPlayer;
+            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);  
+
+            CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
         }
         /// <summary>
         /// Destroy Gameobject on death
@@ -280,17 +267,14 @@ namespace EnemyCharacter.AI
 
             switch (CurrentMovementState)
             {
-                case HourGlassDrillMovementState.FollowPlayer:
+                case TikiHeadMovementState.LaunchTikiHead:
+                    LaunchTikiHeadIntoAir();
+                    break;
+                case TikiHeadMovementState.FollowPlayer:
                     FollowPlayerX();
                     break;
-                case HourGlassDrillMovementState.LaunchHourGlass:
-                    LaunchHourGlassToAir();
-                    break;
-                case HourGlassDrillMovementState.MoveToGround:
-                    MoveHourGlassToGround();
-                    break;
-                case HourGlassDrillMovementState.SinkToGround:
-                    SinkBackToGround();
+                case TikiHeadMovementState.MoveToGround:
+                    MoveTikiHeadToGround();
                     break;
             }
         }
@@ -309,13 +293,13 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Launch Tiki Head Into the Air
         /// </summary>
-        private void LaunchHourGlassToAir()
+        private void LaunchTikiHeadIntoAir()
         {
             if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching))
             {
                 if (!moveToGroundTimerRunning)
                 {
-                    CurrentMovementState = HourGlassDrillMovementState.MoveToGround;
+                    CurrentMovementState = TikiHeadMovementState.MoveToGround;
 
                     StartCoroutine(MoveToGroundDelay());
                 }
@@ -324,7 +308,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Will Launch The Tiki Head Back down the Ground
         /// </summary>
-        private void MoveHourGlassToGround()
+        private void MoveTikiHeadToGround()
         {
             if (moveToGroundTimerRunning)
             {
@@ -350,25 +334,8 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    isFalling = false;
-
-                    followDelay = defaultfollowDelay;
-
-                    if (!sinkTimerRunning)
-                    {
-                        StartCoroutine(SinkToGroundDelay());
-                    }
+                    StartCoroutine(LaunchTimer());
                 }
-            }
-        }
-        /// <summary>
-        /// Will Sink the Tiki Head back into the ground
-        /// </summary>
-        private void SinkBackToGround()
-        {
-            if (MyMovementComp.MoveAIToPoint(sinkTarget, sinkSpeed, 0.01f))
-            {
-                CurrentMovementState = HourGlassDrillMovementState.FollowPlayer;
             }
         }
 
@@ -381,27 +348,10 @@ namespace EnemyCharacter.AI
             launchTimerRunning = true;
 
             yield return new WaitForSeconds(launchDelay);
-
-            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);
-
-            CurrentMovementState = HourGlassDrillMovementState.LaunchHourGlass;
+            
+            CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
 
             launchTimerRunning = false;
-        }
-        /// <summary>
-        /// Delay before the Tiki Head will sink back into the ground
-        /// </summary>
-        private IEnumerator SinkToGroundDelay()
-        {
-            sinkTimerRunning = true;
-
-            yield return new WaitForSeconds(sinkDelay);
-
-            CurrentMovementState = HourGlassDrillMovementState.SinkToGround;
-
-            sinkTarget = GeneralFunctions.GetPoint(-GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, sinkDistanceMultiplier);
-
-            sinkTimerRunning = false;
         }
         /// <summary>
         /// Delay before the Tiki Head will back the ground
@@ -423,7 +373,7 @@ namespace EnemyCharacter.AI
         /// <summary>
         /// Gets the drills current movement state
         /// </summary>
-        public HourGlassDrillMovementState CurrentMovementState { get; private set; }
+        public TikiHeadMovementState CurrentMovementState { get; private set; }
         /// <summary>
         /// Checks to see if the Tiki Head is in the Ground
         /// </summary>
