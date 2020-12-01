@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL1.unity
+    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL1 (Hello world!).unity
     guid: 7eccf9f462b6a3a4c8e834e27131376e
   - enabled: 1
-    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL2.unity
+    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL2 (Hello Leeches).unity
     guid: a7ab46b3d9cea964cabc061bb4c37718
   - enabled: 1
-    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL3.unity
+    path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL3 (Rolling).unity
     guid: 322a5e9172c066a47a7060d6941f07f1
   - enabled: 1
     path: Assets/Scenes/Justin's Levels/Justin's level 1.unity

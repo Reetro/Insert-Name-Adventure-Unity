@@ -152,7 +152,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onTakeAnyDamage:
+  OnTakeAnyDamage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!50 &5653861939190943894
