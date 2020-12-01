@@ -58,25 +58,23 @@ namespace EnemyCharacter.AI
         [Tooltip("Set's which layers the Tiki Head considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
-        [Tooltip("A reference to the box trigger")]
-        [SerializeField] private BoxCollider2D triggerBox2D = null;
+        [Header("Debug Settings")]
 
-        [Tooltip("A reference to the box collider")]
-        [SerializeField] private BoxCollider2D colliderBox2D = null;
+        [Tooltip("Whether or not to draw debug info")]
+        [SerializeField] private bool drawDebug = false;
 
         #region Local Variables
         private bool launchTimerRunning = false;
-        private bool sinkTimerRunning = false;
-        private Vector2 sinkTarget = Vector2.zero;
         private bool moveToGroundTimerRunning = false;
-        private float defaultfollowDelay = 0f;
         private bool runFollowDelay = false;
         private Vector2 launchTarget = Vector2.zero;
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector2.zero;
         private float defaultOpacity = 0f;
+        private bool isPlayerSquished = false;
         private bool isFalling = false;
         private bool isLaunching = false;
+        private BoxCollider2D colliderBox2D = null;
         #endregion
 
         /// <summary>
@@ -106,7 +104,6 @@ namespace EnemyCharacter.AI
 
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-            defaultfollowDelay = followDelay;
             defaultPlayerScale = PlayerTransform.localScale;
             defaultOpacity = spriteRenderer.color.a;
 
@@ -137,7 +134,7 @@ namespace EnemyCharacter.AI
             {
                 if (collision.gameObject)
                 {
-                    if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+                    if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject) && !isPlayerSquished)
                     {
                         if (!GeneralFunctions.IsPlayerDead())
                         {
@@ -148,20 +145,23 @@ namespace EnemyCharacter.AI
                             PlayerTransform.localScale = playerSquishScale;
 
                             colliderBox2D.enabled = false;
-                            triggerBox2D.enabled = false;
+
+                            GeneralFunctions.GetPlayerSpear().DisableSpear();
 
                             SetSpriteOpacity(spriteOpacity);
+
+                            isPlayerSquished = true;
                         }
                     }
                 }
             }
-            else if (!IsInGrounded)
+            else
             {
                 if (collision.gameObject)
                 {
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
-                        if (!isLaunching)
+                        if (!isLaunching && !GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
                         {
                             if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
                             {
@@ -181,24 +181,6 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Checks to see if the player is above the Tiki Head and if the Tiki Head is actually moving if so apply damage and knock the player up
-        /// </summary>
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (collision.gameObject)
-            {
-                if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
-                {
-                    if (isLaunching)
-                    {
-                        GeneralFunctions.ApplyKnockback(PlayerTransform.gameObject, transform.up * knockBackMultiplier, ForceMode2D.Impulse);
-
-                        GeneralFunctions.DamageTarget(PlayerTransform.gameObject, damageToApply, true, gameObject);
-                    }
-                }
-            }
-        }
-        /// <summary>
         /// Checks to see if the Tiki Head Is Hitting the ground
         /// </summary>
         /// <returns></returns>
@@ -207,13 +189,6 @@ namespace EnemyCharacter.AI
             var hit = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject), moveToGroundDistance, whatIsGround);
 
             return hit;
-        }
-        /// <summary>
-        /// Checks to see if the Tiki Head Is Currently in the ground
-        /// </summary>
-        private bool IsInGround()
-        {
-            return Physics2D.OverlapBox(transform.position, colliderBox2D.size, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
         }
         /// <summary>
         /// Called when
@@ -225,10 +200,13 @@ namespace EnemyCharacter.AI
             {
                 PlayerTransform.localScale = defaultPlayerScale;
 
+                GeneralFunctions.GetPlayerSpear().EnableSpear();
+
                 ResetSpriteOpacity();
 
                 colliderBox2D.enabled = true;
-                triggerBox2D.enabled = true;
+
+                isPlayerSquished = false;
             }
         }
         /// <summary>
@@ -263,8 +241,6 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
-            IsInGrounded = IsInGround();
-
             switch (CurrentMovementState)
             {
                 case TikiHeadMovementState.LaunchTikiHead:
@@ -301,8 +277,16 @@ namespace EnemyCharacter.AI
                 {
                     CurrentMovementState = TikiHeadMovementState.MoveToGround;
 
-                    StartCoroutine(MoveToGroundDelay());
+                    if (!moveToGroundTimerRunning)
+                    {
+                        StartCoroutine(MoveToGroundDelay());
+                    }
                 }
+            }
+
+            if (drawDebug)
+            {
+                print("Launching to point: " + launchTarget);
             }
         }
         /// <summary>
@@ -334,7 +318,12 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    StartCoroutine(LaunchTimer());
+                    isFalling = false;
+
+                    if (!launchTimerRunning)
+                    {
+                        StartCoroutine(LaunchTimer());
+                    }
                 }
             }
         }
@@ -348,7 +337,14 @@ namespace EnemyCharacter.AI
             launchTimerRunning = true;
 
             yield return new WaitForSeconds(launchDelay);
-            
+
+            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);
+
+            if (drawDebug)
+            {
+                Debug.DrawRay(transform.position, GeneralFunctions.GetFaceingDirectionY(gameObject) * launchDistanceMultiplier, Color.red);
+            }
+
             CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
 
             launchTimerRunning = false;
@@ -374,10 +370,6 @@ namespace EnemyCharacter.AI
         /// Gets the drills current movement state
         /// </summary>
         public TikiHeadMovementState CurrentMovementState { get; private set; }
-        /// <summary>
-        /// Checks to see if the Tiki Head is in the Ground
-        /// </summary>
-        public bool IsInGrounded { get; private set; }
         #endregion
     }
 }
