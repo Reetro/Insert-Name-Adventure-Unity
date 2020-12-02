@@ -66,7 +66,7 @@ namespace EnemyCharacter.AI
         #region Local Variables
         private bool launchTimerRunning = false;
         private bool moveToGroundTimerRunning = false;
-        private bool runFollowDelay = false;
+        private bool followTimerRunning = false;
         private Vector2 launchTarget = Vector2.zero;
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector2.zero;
@@ -188,6 +188,11 @@ namespace EnemyCharacter.AI
         {
             var hit = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject), moveToGroundDistance, whatIsGround);
 
+            if (drawDebug)
+            {
+                Debug.DrawRay(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject) * moveToGroundDistance, Color.red);
+            }
+
             return hit;
         }
         /// <summary>
@@ -296,17 +301,14 @@ namespace EnemyCharacter.AI
         {
             if (moveToGroundTimerRunning)
             {
-                if (runFollowDelay)
+                if (!followTimerRunning)
                 {
-                    followDelay -= Time.deltaTime;
-                }
-
-                if (followDelay <= 0)
-                {
-                    runFollowDelay = false;
-
                     MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
-                } 
+                }
+                else
+                {
+                    StartCoroutine(FollowTimer());
+                }
             }
             else
             {
@@ -356,11 +358,22 @@ namespace EnemyCharacter.AI
         {
             moveToGroundTimerRunning = true;
 
-            runFollowDelay = true;
+            followTimerRunning = true;
 
             yield return new WaitForSeconds(moveToGroundDelay);
 
             moveToGroundTimerRunning = false;
+        }
+        /// <summary>
+        /// Delay before the Tiki Head follows the player
+        /// </summary>
+        private IEnumerator FollowTimer()
+        {
+            followTimerRunning = true;
+
+            yield return new WaitForSeconds(followDelay);
+
+            followTimerRunning = false;
         }
         #endregion
         #endregion

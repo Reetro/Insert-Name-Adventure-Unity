@@ -123,7 +123,7 @@ MonoBehaviour:
   launchSpeed: 20
   launchDistanceMultiplier: 8
   moveToGroundDelay: 3
-  moveToGroundDistance: 1
+  moveToGroundDistance: 1.15
   followDelay: 0.8
   followSpeed: 8
   playerSquishScale: {x: 1, y: 0.4, z: 0}
@@ -134,8 +134,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  triggerBox2D: {fileID: 0}
-  colliderBox2D: {fileID: 8108744408832518185}
+  drawDebug: 1
 --- !u!114 &8108744408832518188
 MonoBehaviour:
   m_ObjectHideFlags: 0
