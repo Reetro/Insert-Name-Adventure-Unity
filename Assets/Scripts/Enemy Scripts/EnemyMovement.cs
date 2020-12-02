@@ -194,7 +194,7 @@ namespace EnemyCharacter.AI
         /// Fire a raycast from the current AI to the given transform and checks to if there is ground between the transform and and the enemy
         /// </summary>
         /// <returns>A bool that determines enemy sight</returns>
-        public bool IsTransformVisiable(LayerMask layerMask, Transform startTransform, Transform targetTransform, string tag, float sightRange, bool drawDebug)
+        public bool IsTransformVisible(LayerMask layerMask, Transform startTransform, Transform targetTransform, string tag, float sightRange, bool drawDebug)
         {
             var direction = GeneralFunctions.GetDistanceBetweenVectors(targetTransform.position, startTransform.position);
 

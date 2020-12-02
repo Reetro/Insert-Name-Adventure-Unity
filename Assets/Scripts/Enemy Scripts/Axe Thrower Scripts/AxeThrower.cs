@@ -49,7 +49,7 @@ namespace EnemyCharacter.AI
             {
                 while (!isPlayerVisiable)
                 {
-                    var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
+                    var visible = MyMovementComp.IsTransformVisible(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
 
                     if (visible)
                     {
@@ -75,7 +75,7 @@ namespace EnemyCharacter.AI
         {
             while (isPlayerVisiable)
             {
-                var visible = MyMovementComp.IsTransformVisiable(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
+                var visible = MyMovementComp.IsTransformVisible(sightLayers, CurrentFireTransform, PlayerTransform, "Player", sightRange, drawDebug);
 
                 if (visible)
                 {

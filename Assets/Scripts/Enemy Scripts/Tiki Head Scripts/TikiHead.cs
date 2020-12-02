@@ -22,9 +22,6 @@ namespace EnemyCharacter.AI
         [Tooltip("How long the Tiki Head stays in the air for")]
         [SerializeField] private float moveToGroundDelay = 2f;
 
-        [Tooltip("Distance of the Tiki Head ground trace")]
-        [SerializeField] private float moveToGroundDistance = 2f;
-
         [Header("Follow Settings")]
 
         [Tooltip("How long the Tiki Head waits before following the player")]
@@ -58,6 +55,13 @@ namespace EnemyCharacter.AI
         [Tooltip("Set's which layers the Tiki Head considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
+        [Header("Sight Settings")]
+
+        [Tooltip("What layers this object can see")]
+        public LayerMask sightLayers;
+        
+        [SerializeField] private float sightRange = 10f;
+
         [Header("Debug Settings")]
 
         [Tooltip("Whether or not to draw debug info")]
@@ -73,8 +77,11 @@ namespace EnemyCharacter.AI
         private float defaultOpacity = 0f;
         private bool isPlayerSquished = false;
         private bool isFalling = false;
+        private bool canMove = false;
         private bool isLaunching = false;
         private BoxCollider2D colliderBox2D = null;
+        private bool isTouchingGround = false;
+        private bool wasAbove = false;
         #endregion
 
         /// <summary>
@@ -111,7 +118,7 @@ namespace EnemyCharacter.AI
 
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
-            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);  
+            SetLaunchPoint();  
 
             CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
         }
@@ -130,12 +137,20 @@ namespace EnemyCharacter.AI
         /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject) || GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+            {
+                isTouchingGround = true;
+            }
+
             if (isFalling)
             {
                 if (collision.gameObject)
                 {
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject) && !isPlayerSquished)
                     {
+                        isTouchingGround = false;
+                        canMove = false;
+
                         if (!GeneralFunctions.IsPlayerDead())
                         {
                             GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
@@ -161,6 +176,9 @@ namespace EnemyCharacter.AI
                 {
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
+                        isTouchingGround = false;
+                        canMove = false;
+
                         if (!isLaunching && !GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
                         {
                             if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
@@ -181,22 +199,59 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Checks to see if the Tiki Head Is Hitting the ground
+        /// Tiki Head is no longer touching ground
         /// </summary>
-        /// <returns></returns>
-        private bool HitGround()
+        /// <param name="collision"></param>
+        private void OnCollisionExit2D(Collision2D collision)
         {
-            var hit = Physics2D.Raycast(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject), moveToGroundDistance, whatIsGround);
-
-            if (drawDebug)
+            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject) || GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
             {
-                Debug.DrawRay(transform.position, -GeneralFunctions.GetFaceingDirectionY(gameObject) * moveToGroundDistance, Color.red);
+                isTouchingGround = false;
             }
-
-            return hit;
         }
         /// <summary>
-        /// Called when
+        /// Destroy all titles under the tile collision box
+        /// </summary>
+        /*private void DestroyTitles()
+        {
+            if (canDestroyTile)
+            {
+                ContactPoint2D[] contactPoint2Ds = new ContactPoint2D[amountOfContacts];
+
+                var overlapBox = Physics2D.OverlapBox(tileCollisionPoint.position, tileBoxSize, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
+
+                if (overlapBox)
+                {
+                    var tileMap = overlapBox.GetComponentInParent<Tilemap>();
+
+                    if (drawDebug)
+                    {
+                        print("Hit Tilemap: " + tileMap.name);
+                    }
+
+                    overlapBox.GetContacts(contactPoint2Ds);
+
+                    foreach (ContactPoint2D contact in contactPoint2Ds)
+                    {
+                        Vector2 hitPoint = contact.point;
+
+                        Vector3Int cellPosition = tileMap.WorldToCell(hitPoint);
+
+                        tileMap.SetTile(cellPosition, null);
+
+                        if (drawDebug)
+                        {
+                            Debug.Log("Hit Points: " + hitPoint.ToString());
+                            Debug.Log("Cell Position: " + cellPostion);
+                        }
+                    }
+                }
+
+                canDestroyTile = false;
+            }
+        }*/
+        /// <summary>
+        /// Called when player squish effect has ended
         /// </summary>
         /// <param name="gameObject"></param>
         private void OnSquishEnd()
@@ -264,7 +319,27 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void FollowPlayerX()
         {
-            if (!launchTimerRunning)
+            bool startedMoveToGround = false;
+
+            if (wasAbove)
+            {
+                var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
+
+                if (visible)
+                {
+                    wasAbove = false;
+
+                    startedMoveToGround = true;
+
+                    CurrentMovementState = TikiHeadMovementState.MoveToGround;
+
+                    if (!moveToGroundTimerRunning)
+                    {
+                        StartCoroutine(MoveToGroundDelay());
+                    }
+                }
+            }
+            else if (!launchTimerRunning && !startedMoveToGround)
             {
                 StartCoroutine(LaunchTimer());
             }
@@ -280,6 +355,8 @@ namespace EnemyCharacter.AI
             {
                 if (!moveToGroundTimerRunning)
                 {
+                    isTouchingGround = false;
+
                     CurrentMovementState = TikiHeadMovementState.MoveToGround;
 
                     if (!moveToGroundTimerRunning)
@@ -312,7 +389,12 @@ namespace EnemyCharacter.AI
             }
             else
             {
-                if (!HitGround())
+                if (drawDebug)
+                {
+                    print("Tiki Touching Ground: " + isTouchingGround);
+                }
+
+                if (!isTouchingGround && canMove)
                 {
                     isFalling = true;
 
@@ -320,14 +402,37 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    isFalling = false;
-
-                    if (!launchTimerRunning)
+                    if (GeneralFunctions.IsObjectAbove(transform.position, PlayerTransform.position) && isTouchingGround)
                     {
-                        StartCoroutine(LaunchTimer());
+                        isFalling = false;
+
+                        wasAbove = true;
+
+                        CurrentMovementState = TikiHeadMovementState.FollowPlayer;
+
+                        if (!followTimerRunning)
+                        {
+                            StartCoroutine(FollowTimer());
+                        }
+                    }
+                    else
+                    {
+                        isFalling = false;
+
+                        if (!launchTimerRunning)
+                        {
+                            StartCoroutine(LaunchTimer());
+                        }
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Calculates the next launch point
+        /// </summary>
+        private void SetLaunchPoint()
+        {
+            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);
         }
 
         #region Movement Timers
@@ -340,7 +445,7 @@ namespace EnemyCharacter.AI
 
             yield return new WaitForSeconds(launchDelay);
 
-            launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);
+            SetLaunchPoint();
 
             if (drawDebug)
             {
@@ -361,6 +466,8 @@ namespace EnemyCharacter.AI
             followTimerRunning = true;
 
             yield return new WaitForSeconds(moveToGroundDelay);
+
+            canMove = true;
 
             moveToGroundTimerRunning = false;
         }

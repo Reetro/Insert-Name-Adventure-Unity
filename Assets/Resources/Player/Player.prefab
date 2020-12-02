@@ -1332,7 +1332,7 @@ PrefabInstance:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: whatCanBeDamaged.m_Bits
-      value: 6309376
+      value: 14697984
       objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
