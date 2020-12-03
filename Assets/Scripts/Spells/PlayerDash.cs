@@ -64,17 +64,22 @@ namespace Spells
                 {
                     dashTimer -= Time.deltaTime;
 
-                    var playerAngle = GeneralFunctions.GetPlayerGameObject().transform.localEulerAngles.y;
-
-                    if (playerAngle <= 0)
-                    {
-                        playerRigidBody2D.velocity = Vector2.right * Value2;
-                    }
-                    else
-                    {
-                        playerRigidBody2D.velocity = Vector2.left * Value2;
-                    }
+                    ApplyPlayerDash();
                 }
+            }
+        }
+        /// <summary>
+        /// Determines what direction the player is moving in then dashes the player
+        /// </summary>
+        private void ApplyPlayerDash()
+        {
+            bool isIdle = false;
+
+            bool leftOrRight = GeneralFunctions.IsRigidBodyMovingLeftOrRight(playerRigidBody2D, GeneralFunctions.GetPlayerGameObject().transform, out isIdle);
+
+            if (!isIdle)
+            {
+
             }
         }
     }

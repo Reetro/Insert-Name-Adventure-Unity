@@ -650,10 +650,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -6.088173, y: 6.0566688}
+    - - {x: -6.0376244, y: 9.022478}
       - {x: -6.4145727, y: -6.482582}
       - {x: 21.735893, y: -6.5053606}
-      - {x: 21.884052, y: 6.033019}
+      - {x: 21.26063, y: 9.015678}
 --- !u!483693784 &841015631
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -5371,12 +5371,12 @@ PrefabInstance:
     - target: {fileID: 3730422875354482445, guid: a21ed784aa3b2d64b8413686ca43be1a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.8343086
+      value: 3.8136826
       objectReference: {fileID: 0}
     - target: {fileID: 3730422875354482445, guid: a21ed784aa3b2d64b8413686ca43be1a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7741961
+      value: 3.7742143
       objectReference: {fileID: 0}
     - target: {fileID: 3730422875354482445, guid: a21ed784aa3b2d64b8413686ca43be1a,
         type: 3}
@@ -5565,12 +5565,12 @@ PrefabInstance:
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.477
+      value: -3.31
       objectReference: {fileID: 0}
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.896
+      value: -2.92
       objectReference: {fileID: 0}
     - target: {fileID: 8108744408832518184, guid: 28ff15f7604228b42b09ff4b39dc7676,
         type: 3}

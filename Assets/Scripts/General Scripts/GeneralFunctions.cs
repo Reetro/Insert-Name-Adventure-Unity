@@ -618,6 +618,35 @@ public class GeneralFunctions
             Debug.LogError("Failed to start spell GameObject " + spawnSpell.name + " does not have a spell component");
         }
     }
+    /// <summary>
+    /// Checks to see what direction the given rigidbody is moving in
+    /// </summary>
+    /// <param name="rigidbody2D"></param>
+    /// <param name="transform"></param>
+    /// <returns>Returns true if left</returns>
+    public static bool IsRigidBodyMovingLeftOrRight(Rigidbody2D rigidbody2D, Transform transform, out bool wasIdle)
+    {
+        Vector3 vel = transform.rotation * rigidbody2D.velocity;
+
+        if (vel.x > 0)
+        {
+            wasIdle = false;
+
+            return true;
+        }
+        else if (vel.x < 0)
+        {
+            wasIdle = false;
+
+            return false;
+        }
+        else
+        {
+            wasIdle = true;
+
+            return false;
+        }
+    } 
     #endregion
 
     #region Gameobject Functions
