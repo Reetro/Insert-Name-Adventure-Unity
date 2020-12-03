@@ -268,6 +268,12 @@ namespace EnemyCharacter.AI
 
                 isPlayerSquished = false;
             }
+            else
+            {
+                ResetSpriteOpacity();
+
+                colliderBox2D.enabled = true;
+            }
         }
         /// <summary>
         /// Set the segment opacity the the given value
