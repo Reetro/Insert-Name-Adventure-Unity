@@ -61,7 +61,10 @@ namespace Spells
         /// <summary>
         /// Called after spell has unpacked all need values
         /// </summary>
-        protected abstract void OnUpackSpellValuesDone();
+        protected virtual void OnUpackSpellValuesDone()
+        {
+            // for use in children
+        }
         #endregion
 
         #region Spell Logic Functions

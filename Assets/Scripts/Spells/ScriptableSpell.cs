@@ -1,7 +1,7 @@
-﻿using PlayerUI.ToolTipUI;
+﻿#pragma warning disable xxxx
+using PlayerUI.ToolTipUI;
 using UnityEngine.Events;
 using UnityEngine;
-using System;
 
 namespace Spells
 {
@@ -10,6 +10,7 @@ namespace Spells
     {
         private bool showUseValue3 = false;
         private bool showUseValue2 = false;
+        private bool showValue2 = false;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue2))]
         [Tooltip("Should this status effect have two values")]
@@ -29,29 +30,58 @@ namespace Spells
         [Tooltip("The spell to spawn into the world")]
         [SerializeField] private GameObject spellToSpawn = null;
 
-        [Tooltip("Container for editable spell values")]
-        [SerializeField] private SpellValues spellValues1 = null;
+        [Space]
 
-        [Tooltip("Container for editable spell values")]
-        [SerializeField] private SpellValues spellValues2 = null;
+        [Tooltip("Name of the spell value")]
+        [SerializeField] private string spellValue1Name = "";
+        [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
+        [SerializeField] private float spellValue1 = 1f;
 
-        [Tooltip("Container for editable spell values")]
-        [SerializeField] private SpellValues spellValues3 = null;
+        [Space]
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showValue2))]
+        [Tooltip("Name of the spell value")]
+        [SerializeField] private string spellValue2Name = "";
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showValue2))]
+        [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
+        [SerializeField] private float spellValue2 = 1f;
+
+        [Space]
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
+        [Tooltip("Name of the spell value")]
+        [SerializeField] private string spellValue3Name = "";
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
+        [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
+        [SerializeField] private float spellValue3 = 1f;
 
         #region Properties
         /// <summary>
         /// This kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value1 { get { return spellValues1.SpellValue; } }
+        public float Value1 { get { return spellValue1; } }
         /// <summary>
         /// This kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value2 { get { return spellValues2.SpellValue; } }
+        public float Value2 { get { return spellValue2; } }
         /// <summary>
         /// his kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value3 { get { return spellValues3.SpellValue; } }
-
+        public float Value3 { get { return spellValue3; } }
+        /// <summary>
+        /// Name of the spell value
+        /// </summary>
+        public string Value1Name { get { return spellValue1Name; } }
+        /// <summary>
+        /// Name of the spell value
+        /// </summary>
+        public string Value2Name { get { return spellValue2Name; } }
+        /// <summary>
+        /// Name of the spell value
+        /// </summary>
+        public string Value3Name { get { return spellValue3Name; } }
         /// <summary>
         /// Check to see if this spell is using two values
         /// </summary>
@@ -103,16 +133,20 @@ namespace Spells
 
             showUseValue3 = !useTwoValues;
             showUseValue2 = !useThreeValues;
+
+            if (showUseValue2)
+            {
+                showValue2 = true;
+            }
+            else if (showUseValue3)
+            {
+                showValue2 = true;
+            }
+            else
+            {
+                showValue2 = false;
+            }
         }
         #endregion
-    }
-
-    [Serializable]
-    public class SpellValues
-    {
-        [Tooltip("Name of the spell value")]
-        public string SpellValueName = "";
-        [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
-        public float SpellValue = 1f;
     }
 }

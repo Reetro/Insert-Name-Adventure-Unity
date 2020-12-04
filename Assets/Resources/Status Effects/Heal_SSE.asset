@@ -24,5 +24,10 @@ MonoBehaviour:
   refresh: 0
   stack: 0
   isStatic: 1
-  value: 1
+  value1Name: Heal Amount
+  value1: 1
+  value2Name: 
   value2: 1
+  OnEffectEnd:
+    m_PersistentCalls:
+      m_Calls: []

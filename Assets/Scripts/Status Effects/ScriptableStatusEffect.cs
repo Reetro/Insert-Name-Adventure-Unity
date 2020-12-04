@@ -40,8 +40,18 @@ namespace StatusEffects
         [Tooltip("If true this status effect will not stack or be refreshed it will remain static")]
         [SerializeField] private bool isStatic = false;
 
+        [Space]
+
+        [Tooltip("Name of the status effect value")]
+        [SerializeField] private string value1Name = "";
         [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
-        [SerializeField] private float value = 1;
+        [SerializeField] private float value1 = 1;
+
+        [Space]
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTwoValues))]
+        [Tooltip("Name of the status effect value")]
+        [SerializeField] private string value2Name = "";
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTwoValues))]
         [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
@@ -79,11 +89,19 @@ namespace StatusEffects
         /// <summary>
         /// This kind of depends on the status effect but an example of this might is the player's health
         /// </summary>
-        public float Value1 { get { return value; } }
+        public float Value1 { get { return value1; } }
         /// <summary>
         /// This kind of depends on the status effect but an example of this might is the player's health
         /// </summary>
         public float Value2 { get { return value2; } }
+        /// <summary>
+        /// Name of the status effect value
+        /// </summary>
+        public string Value1Name { get { return value1Name; } }
+        /// <summary>
+        /// Name of the status effect value
+        /// </summary>
+        public string Value2Name { get { return value2Name; } }
         /// <summary>
         /// How many times the status effect is fired before it's removed
         /// </summary>
