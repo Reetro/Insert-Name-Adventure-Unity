@@ -248,6 +248,31 @@ namespace PlayerCharacter.Controller
                 jump = false;
             }
         }
+        /// <summary>
+        /// Checks to see if player is moving left or right
+        /// </summary>
+        /// <returns>Returns true if moving left</returns>
+        public bool IsMovingRightOrLeft(out bool isIdle)
+        {
+            if (horizontalMove == 0)
+            {
+                isIdle = true;
+
+                return false;
+            }
+            else if (horizontalMove < 0)
+            {
+                isIdle = false;
+
+                return true;
+            }
+            else
+            {
+                isIdle = false;
+
+                return false;
+            }
+        }
         #endregion
 
         #region Player Events

@@ -9,6 +9,9 @@ namespace Spells
         private bool runDashTimer = false;
         private float dashTimer = 0f;
 
+        /// <summary>
+        /// Starts the dash timer when spell is cast
+        /// </summary>
         protected override void CastSpell()
         {
             if (UsingTwoValues)
@@ -16,7 +19,9 @@ namespace Spells
                 runDashTimer = true;
             }
         }
-
+        /// <summary>
+        /// Get the Player's Rigidbody2D component and set default values
+        /// </summary>
         protected override void OnUpackSpellValuesDone()
         {
             if (UsingTwoValues)
@@ -26,12 +31,15 @@ namespace Spells
                 defaultDashTime = Value1;
                 dashTimer = Value1;
             }
+            else if (UsingThreeValues)
+            {
+                Debug.LogError("Unable to cast player dash spell it can't have more than 2 values");
+            }
             else
             {
                 Debug.LogError("Unable to cast player dash spell it requires 2 Values");
             }
         }
-
         /// <summary>
         /// Apply dash velocity on spell cast
         /// </summary>
@@ -75,11 +83,18 @@ namespace Spells
         {
             bool isIdle = false;
 
-            bool leftOrRight = GeneralFunctions.IsRigidBodyMovingLeftOrRight(playerRigidBody2D, GeneralFunctions.GetPlayerGameObject().transform, out isIdle);
+            bool leftOrRight = GeneralFunctions.IsPlayerMovingLeftOrRight(out isIdle);
 
             if (!isIdle)
             {
-
+                if (leftOrRight)
+                {
+                    playerRigidBody2D.velocity = Vector2.left * Value2;
+                }
+                else
+                {
+                    playerRigidBody2D.velocity = Vector2.right * Value2;
+                }
             }
         }
     }

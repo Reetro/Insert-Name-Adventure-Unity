@@ -646,7 +646,15 @@ public class GeneralFunctions
 
             return false;
         }
-    } 
+    }
+    /// <summary>
+    /// Checks to see if player is moving left or right
+    /// </summary>
+    /// <returns>Returns true if moving left</returns>
+    public static bool IsPlayerMovingLeftOrRight(out bool isIdle)
+    {
+        return GetPlayerController().IsMovingRightOrLeft(out isIdle);
+    }
     #endregion
 
     #region Gameobject Functions
@@ -732,6 +740,14 @@ public class GeneralFunctions
     public static PlayerSpear GetPlayerSpear()
     {
         return GetPlayerGameObject().transform.GetChild(1).GetComponent<PlayerSpear>();
+    }
+    /// <summary>
+    /// Gets The Player Controller
+    /// </summary>
+    /// <returns>The player controller component</returns>
+    public static PlayerController GetPlayerController()
+    {
+        return GetPlayerGameObject().GetComponent<PlayerController>();
     }
     /// <summary>
     /// Check to see if the player is touching the ground

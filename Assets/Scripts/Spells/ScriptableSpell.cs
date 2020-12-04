@@ -1,4 +1,4 @@
-﻿#pragma warning disable xxxx
+﻿#pragma warning disable 0414
 using PlayerUI.ToolTipUI;
 using UnityEngine.Events;
 using UnityEngine;
@@ -133,18 +133,18 @@ namespace Spells
 
             showUseValue3 = !useTwoValues;
             showUseValue2 = !useThreeValues;
-
+            
             if (showUseValue2)
             {
                 showValue2 = true;
             }
             else if (showUseValue3)
             {
-                showValue2 = true;
+                showUseValue2 = true;
             }
             else
             {
-                showValue2 = false;
+                showUseValue2 = false;
             }
         }
         #endregion
