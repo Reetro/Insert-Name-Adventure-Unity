@@ -11,6 +11,7 @@ namespace Spells
         private bool showUseValue3 = false;
         private bool showUseValue2 = false;
         private bool showValue2 = false;
+        private bool showValue3 = false;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue2))]
         [Tooltip("Should this status effect have two values")]
@@ -20,15 +21,15 @@ namespace Spells
         [Tooltip("Should this status effect have two values")]
         [SerializeField] private bool useThreeValues = false;
 
-        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
-        [Tooltip("How long the spell cooldown lasts")]
-        [SerializeField] private float spellCoolDown = 1f;
-
         [Tooltip("Whether or not the spell has a cooldown")]
         [SerializeField] private bool hasCoolDown = true;
 
         [Tooltip("The spell to spawn into the world")]
         [SerializeField] private GameObject spellToSpawn = null;
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
+        [Tooltip("How long the spell cooldown lasts")]
+        [SerializeField] private float spellCoolDown = 1f;
 
         [Space]
 
@@ -49,11 +50,11 @@ namespace Spells
 
         [Space]
 
-        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showValue3))]
         [Tooltip("Name of the spell value")]
         [SerializeField] private string spellValue3Name = "";
 
-        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showValue3))]
         [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
         [SerializeField] private float spellValue3 = 1f;
 
@@ -134,18 +135,20 @@ namespace Spells
             showUseValue3 = !useTwoValues;
             showUseValue2 = !useThreeValues;
             
-            if (showUseValue2)
+            if (useTwoValues)
             {
                 showValue2 = true;
             }
-            else if (showUseValue3)
+            else if (useThreeValues)
             {
-                showUseValue2 = true;
+                showValue2 = true;
             }
             else
             {
-                showUseValue2 = false;
+                showValue2 = false;
             }
+
+            showValue3 = useThreeValues;
         }
         #endregion
     }
