@@ -19,7 +19,6 @@ namespace PlayerCharacter.Controller
         private bool jump = false;
         private bool jumpHeldDown = false;
         private bool swingSpear = false;
-        private List<InputAction> actionBarInputs = new List<InputAction>();
         #endregion
 
         #region Player Components
@@ -310,7 +309,7 @@ namespace PlayerCharacter.Controller
                         {
                             if (actionButton.MyKeyCode.ToString() == inputEvent.keyCode.ToString())
                             {
-                                print("Spell casted on slot key " + inputEvent.keyCode.ToString());
+                                actionButton.CastSpell();
                             }
                         }
                     }

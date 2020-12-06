@@ -6,10 +6,14 @@ namespace PlayerUI
 {
     public class SpellIcon : MonoBehaviour
     {
-        public ScriptableSpell scriptableSpell = null;
-        private int spellIndex = 0;
+        private ScriptableSpell scriptableSpell = null;
         private Image spellIcon = null;
         private Button spellButton = null;
+
+        /// <summary>
+        /// Where this spell is located on the Actionbar
+        /// </summary>
+        public int SpellIndex { get; private set; }
 
         /// <summary>
         /// Set default values and disable button in parent object
@@ -19,11 +23,13 @@ namespace PlayerUI
         public void SetupIcon(ScriptableSpell spellToCast, int index)
         {
             scriptableSpell = spellToCast;
-            spellIndex = index;
+            SpellIndex = index;
 
-            GetComponentInParent<Button>().enabled = false;
+            spellIcon = GetComponent<Image>();
 
             spellIcon.sprite = spellToCast.Artwork;
+
+            spellButton = GetComponent<Button>();
 
             spellButton.onClick.AddListener(CastSpell);
         }

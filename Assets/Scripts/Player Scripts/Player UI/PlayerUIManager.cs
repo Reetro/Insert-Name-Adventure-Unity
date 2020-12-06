@@ -4,6 +4,7 @@ using TMPro;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using System.Collections.Generic;
+using Spells;
 
 namespace PlayerUI
 {
@@ -18,12 +19,14 @@ namespace PlayerUI
 
         [SerializeField] private GridLayoutGroup actionBarLayout = null;
         [SerializeField] private ActionButton actionSlot = null;
+        [SerializeField] private SpellIcon spellIcon = null;
 
         private LevelLoader levelLoader = null;
 
         /// <summary>
         /// List of all action buttons
         /// </summary>
+        [HideInInspector]
         public List<ActionButton> actionBarButtons = new List<ActionButton>();
 
         private void Awake()
@@ -35,6 +38,8 @@ namespace PlayerUI
             loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
 
             CreateActionbar();
+
+            AssignSpells();
         }
         /// <summary>
         /// Load the current checkpoint index
@@ -77,6 +82,23 @@ namespace PlayerUI
                 spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.spellKeybinds[index]);
 
                 actionBarButtons.Add(spawnedSlot);
+            }
+        }
+        /// <summary>
+        /// Assign player spells to Actionbar
+        /// </summary>
+        private void AssignSpells()
+        {
+            for (int index = 0; index < GameAssets.GlobalManager.playerSpells.Length; index++)
+            {
+                if (index >= 0 && index < actionBarButtons.Count)
+                {
+                    var spawnedSpellIcon = Instantiate(spellIcon, actionBarButtons[index].transform);
+
+                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerSpells[index], index);
+
+                    actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
+                }
             }
         }
     }

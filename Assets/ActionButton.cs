@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using Spells;
 
 namespace PlayerUI
 {
@@ -8,10 +7,30 @@ namespace PlayerUI
     {
         [SerializeField] private TextMeshProUGUI textAsset = null;
 
+        private SpellIcon mySpellIcon = null;
+
         public void SetupActionSlot(string slotButton, KeyCode keyCode)
         {
             textAsset.text = slotButton;
             MyKeyCode = keyCode;
+        }
+        /// <summary>
+        /// Casts the spell assigned to this Action button
+        /// </summary>
+        public void CastSpell()
+        {
+            if (mySpellIcon)
+            {
+                mySpellIcon.CastSpell();
+            }
+        }
+        /// <summary>
+        /// Sets the action buttons spell icon
+        /// </summary>
+        /// <param name="spellIcon"></param>
+        public void SetSpellIcon(SpellIcon spellIcon)
+        {
+            mySpellIcon = spellIcon;
         }
 
         #region Properties

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6465960484478984010}
   - component: {fileID: 7716091717921154066}
   - component: {fileID: 8291887927572139467}
+  - component: {fileID: 8822087666611862644}
   m_Layer: 5
   m_Name: Spell Icon
   m_TagString: Untagged
@@ -118,3 +119,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8822087666611862644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8930589888635901467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee6a8210aaeacb04e8714e399e51f23d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptableSpell: {fileID: 0}
