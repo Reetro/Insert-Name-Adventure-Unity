@@ -31,6 +31,8 @@ namespace PlayerUI
 
         private void Awake()
         {
+            GameAssets.GlobalManager.controllerUpdated.AddListener(OnControllerStateUpdated);
+
             HideDeathUI();
 
             levelLoader = FindObjectOfType<LevelLoader>();
@@ -68,20 +70,36 @@ namespace PlayerUI
             loadCheckpointBTN.gameObject.SetActive(true);
             gameOverText.gameObject.SetActive(true);
         }
+
+        #region Actionbar Functions
         /// <summary>
         /// For every key in the gameplay manager create a action slot
         /// </summary>
         private void CreateActionbar()
         {
-            for (int index = 0; index < GameAssets.GlobalManager.spellKeybinds.Length; index++)
+            if (!GameAssets.GlobalManager._IsGamepadActive)
             {
-                var keyName = GeneralFunctions.GetKeyName(GameAssets.GlobalManager.spellKeybinds[index]);
+                for (int index = 0; index < GameAssets.GlobalManager.spellKeybindsKeyboard.Length; index++)
+                {
+                    var keyName = GeneralFunctions.GetKeyName(GameAssets.GlobalManager.spellKeybindsKeyboard[index]);
 
-                var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
+                    var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
 
-                spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.spellKeybinds[index]);
+                    spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.spellKeybindsKeyboard[index]);
 
-                actionBarButtons.Add(spawnedSlot);
+                    actionBarButtons.Add(spawnedSlot);
+                }
+            }
+            else
+            {
+                for (int index = 0; index < GameAssets.GlobalManager.spellKeybindsGamepad.Length; index++)
+                {
+                    var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
+
+                    spawnedSlot.SetupActionSlot("1", GameAssets.GlobalManager.spellKeybindsGamepad[index]);
+
+                    actionBarButtons.Add(spawnedSlot);
+                }
             }
         }
         /// <summary>
@@ -101,5 +119,23 @@ namespace PlayerUI
                 }
             }
         }
+        /// <summary>
+        /// Called when a controller is connected or disconnected
+        /// </summary>
+        /// <param name="isActive"></param>
+        private void OnControllerStateUpdated(bool isActive)
+        {
+            foreach (ActionButton actionButton in actionBarButtons)
+            {
+                Destroy(actionButton.gameObject);
+            }
+
+            actionBarButtons.Clear();
+
+            CreateActionbar();
+
+            AssignSpells();
+        }
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 using Spells;
+using UnityEngine.Events;
 
 namespace GameplayManagement
 {
@@ -45,13 +46,22 @@ namespace GameplayManagement
         [Space]
 
         [Tooltip("Keybinds for Player Actionbar for every keybind in this array a new action slot is created")]
-        public KeyCode[] spellKeybinds;
+        public KeyCode[] spellKeybindsKeyboard;
+
+        [Tooltip("Keybinds for Player Actionbar for every keybind in this array a new action slot is created")]
+        public KeyCode[] spellKeybindsGamepad;
 
         [Space]
 
         [Header("Game Debug")]
         [Tooltip("Whether or not to print save game debug messages")]
         public bool debugSave = false;
+
+        [System.Serializable]
+        public class OnControllerUpdate : UnityEvent<bool> { }
+
+        [HideInInspector]
+        public OnControllerUpdate controllerUpdated;
 
         /// <summary>
         /// Checks to see if a Gamepad is connected
@@ -116,6 +126,8 @@ namespace GameplayManagement
         private void UpdateGamepadState()
         {
             _IsGamepadActive = (Gamepad.all.Count >= 1) ? true : false;
+
+            controllerUpdated.Invoke(_IsGamepadActive);
         }
         /// <summary>
         /// Show / Hide mouse cursor depending on if a Gamepad is active

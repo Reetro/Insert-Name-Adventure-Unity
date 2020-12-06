@@ -85,7 +85,7 @@ namespace PlayerControls
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""AnykeyPreesed"",
+                    ""name"": ""GamepadAnykey"",
                     ""type"": ""Button"",
                     ""id"": ""3a71487c-9627-42a0-9cf2-471191be7dab"",
                     ""expectedControlType"": ""Button"",
@@ -310,7 +310,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -321,7 +321,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -332,7 +332,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -343,7 +343,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -354,7 +354,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -365,7 +365,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -376,7 +376,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -387,7 +387,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -398,7 +398,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -409,7 +409,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -420,7 +420,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -431,7 +431,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -442,7 +442,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -453,7 +453,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AnykeyPreesed"",
+                    ""action"": ""GamepadAnykey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -472,7 +472,7 @@ namespace PlayerControls
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
             m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
-            m_Player_AnykeyPreesed = m_Player.FindAction("AnykeyPreesed", throwIfNotFound: true);
+            m_Player_GamepadAnykey = m_Player.FindAction("GamepadAnykey", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -530,7 +530,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
         private readonly InputAction m_Player_DeleteSavedGame;
-        private readonly InputAction m_Player_AnykeyPreesed;
+        private readonly InputAction m_Player_GamepadAnykey;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -543,7 +543,7 @@ namespace PlayerControls
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
-            public InputAction @AnykeyPreesed => m_Wrapper.m_Player_AnykeyPreesed;
+            public InputAction @GamepadAnykey => m_Wrapper.m_Player_GamepadAnykey;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -577,9 +577,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
-                    @AnykeyPreesed.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
-                    @AnykeyPreesed.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
-                    @AnykeyPreesed.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
+                    @GamepadAnykey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
+                    @GamepadAnykey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
+                    @GamepadAnykey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -608,9 +608,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
-                    @AnykeyPreesed.started += instance.OnAnykeyPreesed;
-                    @AnykeyPreesed.performed += instance.OnAnykeyPreesed;
-                    @AnykeyPreesed.canceled += instance.OnAnykeyPreesed;
+                    @GamepadAnykey.started += instance.OnGamepadAnykey;
+                    @GamepadAnykey.performed += instance.OnGamepadAnykey;
+                    @GamepadAnykey.canceled += instance.OnGamepadAnykey;
                 }
             }
         }
@@ -625,7 +625,7 @@ namespace PlayerControls
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
             void OnDeleteSavedGame(InputAction.CallbackContext context);
-            void OnAnykeyPreesed(InputAction.CallbackContext context);
+            void OnGamepadAnykey(InputAction.CallbackContext context);
         }
     }
 }

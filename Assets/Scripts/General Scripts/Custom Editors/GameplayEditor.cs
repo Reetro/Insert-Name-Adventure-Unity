@@ -26,7 +26,8 @@ namespace CustomEditors
         private SerializedProperty _ManagerDefaultControllerCheckTimer;
         private SerializedProperty _ManagerDebugSave;
         private SerializedProperty _ManagerPlayerStartingSpells;
-        private SerializedProperty _ManagerSpellKeybinds;
+        private SerializedProperty _ManagerSpellKeybindsKeyboard;
+        private SerializedProperty _ManagerSpellKeybindsGamepad;
         #endregion
 
         #region Gameplay Manager Editors
@@ -346,7 +347,8 @@ namespace CustomEditors
             _ManagerTextDisappearTime = gameplayManagerObject.FindProperty("disappearTime");
             _ManagerDefaultControllerCheckTimer = gameplayManagerObject.FindProperty("defaultControllerCheckTimer");
             _ManagerPlayerStartingSpells = gameplayManagerObject.FindProperty("startingSpells");
-            _ManagerSpellKeybinds = gameplayManagerObject.FindProperty("spellKeybinds");
+            _ManagerSpellKeybindsKeyboard = gameplayManagerObject.FindProperty("spellKeybindsKeyboard");
+            _ManagerSpellKeybindsGamepad = gameplayManagerObject.FindProperty("spellKeybindsGamepad");
             _ManagerDebugSave = gameplayManagerObject.FindProperty("debugSave");
         }
         #endregion

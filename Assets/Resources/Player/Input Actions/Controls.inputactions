@@ -70,7 +70,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "AnykeyPreesed",
+                    "name": "GamepadAnykey",
                     "type": "Button",
                     "id": "3a71487c-9627-42a0-9cf2-471191be7dab",
                     "expectedControlType": "Button",
@@ -295,7 +295,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -306,7 +306,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -317,7 +317,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -328,7 +328,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -339,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -350,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -361,7 +361,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -372,7 +372,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -383,7 +383,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -394,7 +394,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -405,7 +405,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -416,7 +416,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -427,7 +427,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -438,7 +438,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AnykeyPreesed",
+                    "action": "GamepadAnykey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
