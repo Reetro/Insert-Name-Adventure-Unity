@@ -25,6 +25,8 @@ namespace PlayerUI.ToolTipUI
             controls = new Controls();
 
             popupCanvas = popupCanvasObject.GetComponent<Canvas>();
+
+            popupObject.SetAsLastSibling();
         }
         /// <summary>
         /// Enable player input
@@ -79,14 +81,17 @@ namespace PlayerUI.ToolTipUI
         /// <param name="item"></param>
         public void DisplayInfo(ScriptableItem item)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            if (item)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(item.GetToolTipInfoText());
+                stringBuilder.Append(item.GetToolTipInfoText());
 
-            infoText.text = stringBuilder.ToString();
+                infoText.text = stringBuilder.ToString();
 
-            popupCanvasObject.SetActive(true);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(popupObject);
+                popupCanvasObject.SetActive(true);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(popupObject);
+            }
         }
         /// <summary>
         /// Hide Tooltip

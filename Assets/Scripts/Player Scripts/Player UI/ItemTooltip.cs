@@ -9,7 +9,7 @@ namespace PlayerUI.ToolTipUI
         private TooltipPopup tooltipPopup = null;
         private bool mouseOnButton = false;
 
-        private void Awake()
+        public void OnSceneCreated()
         {
             tooltipPopup = FindObjectOfType<TooltipPopup>();
         }

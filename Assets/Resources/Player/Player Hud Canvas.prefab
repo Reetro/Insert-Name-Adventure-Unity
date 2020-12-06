@@ -32,7 +32,7 @@ RectTransform:
   m_Children:
   - {fileID: 3078946286014601153}
   m_Father: {fileID: 8175054866649225397}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -149,7 +149,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8175054866649225397}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -464,10 +464,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 7302504761716921640}
   - {fileID: 8175054867234241930}
   - {fileID: 8248812631375922181}
   - {fileID: 3629656338859678714}
-  - {fileID: 7302504761716921640}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -556,73 +556,6 @@ MonoBehaviour:
     type: 3}
   spellIcon: {fileID: 8822087666611862644, guid: d09cba5c4cf1b3940a9449e461f5e500,
     type: 3}
-  actionbarMap:
-    m_Name: Actionbar Map
-    m_Id: 79459702-9473-448c-b498-81e1a319a7fb
-    m_Asset: {fileID: 0}
-    m_Actions:
-    - m_Name: Action Slot 1
-      m_Type: 1
-      m_ExpectedControlType: Button
-      m_Id: 37daa384-cea1-49ec-83c1-d969ef547085
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-    - m_Name: Action Slot 2
-      m_Type: 1
-      m_ExpectedControlType: Button
-      m_Id: 34568067-5b95-420a-847d-7db9df9b83d8
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-    - m_Name: New action
-      m_Type: 1
-      m_ExpectedControlType: Button
-      m_Id: 1e226884-1766-4e6b-b2d1-fa447d438ed0
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-    m_Bindings:
-    - m_Name: 
-      m_Id: c176bfca-2714-4ac8-a441-f7f1512ad3f2
-      m_Path: <Keyboard>/1
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Slot 1
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 208079c0-7366-4c9f-873e-26e33dab9d1c
-      m_Path: <XInputController>/rightShoulder
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Slot 1
-      m_Flags: 0
-    - m_Name: 
-      m_Id: edda8879-1317-4f32-ba9b-4765101d412d
-      m_Path: <XboxOneGampadiOS>/rightShoulder
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Slot 1
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 78c541af-fb74-416b-b1f1-8bd8d3675fc0
-      m_Path: 
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Slot 2
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 1b164036-e701-41cd-80df-933fd1cefc6e
-      m_Path: 
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: New action
-      m_Flags: 0
   actionBarButtons: []
 --- !u!1001 &2071734183663685060
 PrefabInstance:
@@ -674,7 +607,7 @@ PrefabInstance:
     - target: {fileID: 8761737821522401516, guid: 9e804833af8ed6c4994edbc989004b8d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8761737821522401516, guid: 9e804833af8ed6c4994edbc989004b8d,
         type: 3}
@@ -841,7 +774,7 @@ PrefabInstance:
     - target: {fileID: 6065528069214796931, guid: daf8a3ab37ef52f47ac7a5b210a5752a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6065528069214796931, guid: daf8a3ab37ef52f47ac7a5b210a5752a,
         type: 3}

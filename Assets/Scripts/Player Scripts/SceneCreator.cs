@@ -7,6 +7,7 @@ using PlayerCharacter.GameSaving;
 using PlayerCharacter.Controller;
 using EnemyCharacter;
 using GameplayManagement.Assets;
+using PlayerUI.ToolTipUI;
 
 namespace GameplayManagement.SceneLoading
 {
@@ -99,6 +100,13 @@ namespace GameplayManagement.SceneLoading
             }
 
             Instantiate(toolTipObject, Vector2.zero, Quaternion.identity);
+
+            var itemToolTips = FindObjectsOfType<ItemTooltip>();
+
+            foreach (ItemTooltip itemTooltip in itemToolTips)
+            {
+                itemTooltip.OnSceneCreated();
+            }
 
             var auraManagers = FindObjectsOfType<AuraManager>();
 

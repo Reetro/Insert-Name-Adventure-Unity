@@ -7,7 +7,6 @@ namespace PlayerUI
 {
     public class SpellIcon : MonoBehaviour
     {
-        private ScriptableSpell scriptableSpell = null;
         private Image spellIcon = null;
         private Button spellButton = null;
 
@@ -15,7 +14,11 @@ namespace PlayerUI
         /// Where this spell is located on the Actionbar
         /// </summary>
         public int SpellIndex { get; private set; }
-        
+        /// <summary>
+        /// The actual spell assigned to this slot
+        /// </summary>
+        public ScriptableSpell MyScriptableSpell { get; private set; }
+
         [Tooltip("A reference to the cooldown image on the spell icon")]
         [SerializeField] private Image cooldownImage = null;
 
@@ -29,7 +32,7 @@ namespace PlayerUI
         /// <param name="index"></param>
         public void SetupIcon(ScriptableSpell spellToCast, int index)
         {
-            scriptableSpell = spellToCast;
+            MyScriptableSpell = spellToCast;
             SpellIndex = index;
 
             spellIcon = GetComponent<Image>();
@@ -74,9 +77,9 @@ namespace PlayerUI
         /// <param name="spellIndex"></param>
         public void CastSpell()
         {
-            var spellToCast = Instantiate(scriptableSpell.SpellToSpawn);
+            var spellToCast = Instantiate(MyScriptableSpell.SpellToSpawn);
 
-            GeneralFunctions.StartSpellCast(spellToCast, scriptableSpell, this);
+            GeneralFunctions.StartSpellCast(spellToCast, MyScriptableSpell, this);
         }
     }
 }

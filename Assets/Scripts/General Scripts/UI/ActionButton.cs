@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using PlayerUI.ToolTipUI;
 
 namespace PlayerUI
 {
@@ -33,6 +34,11 @@ namespace PlayerUI
         public void SetSpellIcon(SpellIcon spellIcon)
         {
             mySpellIcon = spellIcon;
+
+            if (mySpellIcon)
+            {
+                GetComponent<ItemTooltip>().SetItem(mySpellIcon.MyScriptableSpell);
+            }
         }
 
         #region Properties
