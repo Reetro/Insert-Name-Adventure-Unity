@@ -551,6 +551,9 @@ MonoBehaviour:
   loadCheckpointBTN: {fileID: 5282076970713725880}
   gameOverText: {fileID: 6882351876974062472}
   healthBar: {fileID: 8175054867234241931}
+  actionBarLayout: {fileID: 7930685322806290829}
+  actionSlot: {fileID: 1245881277421189467, guid: 766c1ee080a8472458ffcd7af0d0f1c3,
+    type: 3}
 --- !u!1001 &2071734183663685060
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,11 +565,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Actionbar
-      objectReference: {fileID: 0}
-    - target: {fileID: 2753732349691032018, guid: 9e804833af8ed6c4994edbc989004b8d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8761737821522401516, guid: 9e804833af8ed6c4994edbc989004b8d,
         type: 3}
@@ -681,6 +679,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2071734183663685060}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7930685322806290829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8272887163462034505, guid: 9e804833af8ed6c4994edbc989004b8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2071734183663685060}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2692788307307675913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -716,6 +726,11 @@ PrefabInstance:
     - target: {fileID: 6065528069214796929, guid: daf8a3ab37ef52f47ac7a5b210a5752a,
         type: 3}
       propertyPath: m_MaxValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065528069214796929, guid: daf8a3ab37ef52f47ac7a5b210a5752a,
+        type: 3}
+      propertyPath: m_Value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6065528069214796931, guid: daf8a3ab37ef52f47ac7a5b210a5752a,

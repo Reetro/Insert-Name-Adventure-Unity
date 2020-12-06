@@ -85,33 +85,9 @@ namespace PlayerControls
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Actionbar Slot 1"",
+                    ""name"": ""AnykeyPreesed"",
                     ""type"": ""Button"",
-                    ""id"": ""ad96234e-f0b9-4ee7-b5eb-0a584a48ae60"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Actionbar Slot 2"",
-                    ""type"": ""Button"",
-                    ""id"": ""ce86b4c7-32ef-4c56-a7f7-af4d17821a9f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Actionbar Slot 3"",
-                    ""type"": ""Button"",
-                    ""id"": ""cc6cf8e0-59f6-4a8e-bb8e-bb1db4042a09"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Actionbar Slot 4"",
-                    ""type"": ""Button"",
-                    ""id"": ""80176bea-11ff-477e-be1e-9dcd700fa290"",
+                    ""id"": ""3a71487c-9627-42a0-9cf2-471191be7dab"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -329,89 +305,155 @@ namespace PlayerControls
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dfd57d80-965e-456a-98f5-6666e5a61657"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""id"": ""2ecc315e-376a-4f46-9f4a-cb4fbf976780"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 1"",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5d6cfdbf-8584-4ff2-bea4-7f8343fe9118"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""681d7a9c-09a9-49b1-ab77-4abaece2c6b8"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 1"",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""34d72cfd-b11e-4a2c-978c-85e5f7e1789b"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""id"": ""df7573df-2f47-420f-b072-500eb39c977d"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 2"",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""30d9c819-c1bc-4605-92b3-078ef81bbe24"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""ea77b263-11fd-4e34-a35d-c7bf61b84cb6"",
+                    ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 2"",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""26660228-5b0a-4462-a574-a6c9d585e199"",
-                    ""path"": ""<Keyboard>/3"",
+                    ""id"": ""8749d061-c735-4297-9422-af336489d31c"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 3"",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c639ee6d-290b-4476-aba5-ac9afd8dc48b"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Actionbar Slot 3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3a06fb19-c724-43cf-814c-56c8e41d7a75"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Actionbar Slot 4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bb98fb8f-2a1b-4fc1-b8ab-5f2ab13783de"",
+                    ""id"": ""9e1a58c1-374c-4853-8d59-8338f43e9627"",
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Actionbar Slot 4"",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""adeb4212-29f3-4407-98e0-827e796c5884"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""429fa484-2548-43dc-ac9c-e58c9074384d"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46c79d7b-02c3-4c00-90c0-37b42fa80d06"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dfc2f59-0fd9-4d77-bde3-2e5bd083ec7f"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0d946f2-0d44-4dd0-97f3-1ba7e869c172"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f69ad942-c467-4f7a-a6ad-111c96f7131d"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a484ea81-e5a7-4c44-815f-4e30c3ff7186"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4b9275d-ebfd-4ff8-af7f-ff90a0f48867"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnykeyPreesed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -430,10 +472,7 @@ namespace PlayerControls
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
             m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
-            m_Player_ActionbarSlot1 = m_Player.FindAction("Actionbar Slot 1", throwIfNotFound: true);
-            m_Player_ActionbarSlot2 = m_Player.FindAction("Actionbar Slot 2", throwIfNotFound: true);
-            m_Player_ActionbarSlot3 = m_Player.FindAction("Actionbar Slot 3", throwIfNotFound: true);
-            m_Player_ActionbarSlot4 = m_Player.FindAction("Actionbar Slot 4", throwIfNotFound: true);
+            m_Player_AnykeyPreesed = m_Player.FindAction("AnykeyPreesed", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -491,10 +530,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
         private readonly InputAction m_Player_DeleteSavedGame;
-        private readonly InputAction m_Player_ActionbarSlot1;
-        private readonly InputAction m_Player_ActionbarSlot2;
-        private readonly InputAction m_Player_ActionbarSlot3;
-        private readonly InputAction m_Player_ActionbarSlot4;
+        private readonly InputAction m_Player_AnykeyPreesed;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -507,10 +543,7 @@ namespace PlayerControls
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
-            public InputAction @ActionbarSlot1 => m_Wrapper.m_Player_ActionbarSlot1;
-            public InputAction @ActionbarSlot2 => m_Wrapper.m_Player_ActionbarSlot2;
-            public InputAction @ActionbarSlot3 => m_Wrapper.m_Player_ActionbarSlot3;
-            public InputAction @ActionbarSlot4 => m_Wrapper.m_Player_ActionbarSlot4;
+            public InputAction @AnykeyPreesed => m_Wrapper.m_Player_AnykeyPreesed;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -544,18 +577,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
-                    @ActionbarSlot1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
-                    @ActionbarSlot1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
-                    @ActionbarSlot1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
-                    @ActionbarSlot2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
-                    @ActionbarSlot2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
-                    @ActionbarSlot2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
-                    @ActionbarSlot3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
-                    @ActionbarSlot3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
-                    @ActionbarSlot3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
-                    @ActionbarSlot4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
-                    @ActionbarSlot4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
-                    @ActionbarSlot4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
+                    @AnykeyPreesed.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
+                    @AnykeyPreesed.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
+                    @AnykeyPreesed.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykeyPreesed;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -584,18 +608,9 @@ namespace PlayerControls
                     @DeleteSavedGame.started += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
-                    @ActionbarSlot1.started += instance.OnActionbarSlot1;
-                    @ActionbarSlot1.performed += instance.OnActionbarSlot1;
-                    @ActionbarSlot1.canceled += instance.OnActionbarSlot1;
-                    @ActionbarSlot2.started += instance.OnActionbarSlot2;
-                    @ActionbarSlot2.performed += instance.OnActionbarSlot2;
-                    @ActionbarSlot2.canceled += instance.OnActionbarSlot2;
-                    @ActionbarSlot3.started += instance.OnActionbarSlot3;
-                    @ActionbarSlot3.performed += instance.OnActionbarSlot3;
-                    @ActionbarSlot3.canceled += instance.OnActionbarSlot3;
-                    @ActionbarSlot4.started += instance.OnActionbarSlot4;
-                    @ActionbarSlot4.performed += instance.OnActionbarSlot4;
-                    @ActionbarSlot4.canceled += instance.OnActionbarSlot4;
+                    @AnykeyPreesed.started += instance.OnAnykeyPreesed;
+                    @AnykeyPreesed.performed += instance.OnAnykeyPreesed;
+                    @AnykeyPreesed.canceled += instance.OnAnykeyPreesed;
                 }
             }
         }
@@ -610,10 +625,7 @@ namespace PlayerControls
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
             void OnDeleteSavedGame(InputAction.CallbackContext context);
-            void OnActionbarSlot1(InputAction.CallbackContext context);
-            void OnActionbarSlot2(InputAction.CallbackContext context);
-            void OnActionbarSlot3(InputAction.CallbackContext context);
-            void OnActionbarSlot4(InputAction.CallbackContext context);
+            void OnAnykeyPreesed(InputAction.CallbackContext context);
         }
     }
 }

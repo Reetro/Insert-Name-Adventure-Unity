@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace PlayerUI.ToolTipUI
 {
-    public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ItemTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private ScriptableItem item = null;
         private TooltipPopup tooltipPopup = null;

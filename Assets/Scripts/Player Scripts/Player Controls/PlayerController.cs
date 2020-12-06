@@ -4,7 +4,8 @@ using PlayerCharacter.GameSaving;
 using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
-using Spells;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace PlayerCharacter.Controller
 {
@@ -12,14 +13,13 @@ namespace PlayerCharacter.Controller
     {
         [SerializeField] private PlayerSpear currentSpear = null;
 
-        [SerializeField] private ScriptableSpell dash = null;
-
         #region Player Controls
         public Controls controls = null;
         private float horizontalMove = 0f;
         private bool jump = false;
         private bool jumpHeldDown = false;
         private bool swingSpear = false;
+        private List<InputAction> actionBarInputs = new List<InputAction>();
         #endregion
 
         #region Player Components
@@ -59,12 +59,24 @@ namespace PlayerCharacter.Controller
             controls.Player.Fire.started += OnFirePressed;
             controls.Player.Fire.canceled += OnFireReleased;
 
+            controls.Player.AnykeyPreesed.started += OnAnyGamepadInput;
+
+            KeyCode kcode = KeyCode.Alpha1;
+            string keyCode;
+
+            keyCode = kcode.ToString();
+
+            // Create an Action Map with Actions.
+            var map = new InputActionMap("Gameplay");
+            var lookAction = map.AddAction("look");
+            lookAction.AddBinding("<Keyboard>/" + "1");
+
+            lookAction.Enable();
+
             controls.Player.SaveGame.started += OnSavePressed;
             controls.Player.LoadGame.started += OnLoadPressed;
 
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
-
-            controls.Player.ActionbarSlot1.started += OnActionSlot1Pressed;
 
             transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
 
@@ -138,7 +150,10 @@ namespace PlayerCharacter.Controller
         /// <param name="context"></param>
         private void OnFirePressed(InputAction.CallbackContext context)
         {
-            swingSpear = true;
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                swingSpear = true;
+            }
         }
         /// <summary>
         /// Called when fire button is released
@@ -164,12 +179,6 @@ namespace PlayerCharacter.Controller
         {
             jumpHeldDown = false;
         }
-        private void OnActionSlot1Pressed(InputAction.CallbackContext context)
-        {
-            var dashSpell = Instantiate(dash.SpellToSpawn);
-
-            GeneralFunctions.StartSpellCast(dashSpell, dash);
-        }
         /// <summary>
         /// Event to tell the player to start jumping
         /// </summary>
@@ -193,6 +202,14 @@ namespace PlayerCharacter.Controller
                     currentSpear.StartSpearPush();
                 }
             }
+        }
+        /// <summary>
+        /// Check to see if the pressed button is bound to the Actionbar
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnAnyGamepadInput(InputAction.CallbackContext context)
+        {
+            
         }
         #endregion
 
@@ -271,6 +288,33 @@ namespace PlayerCharacter.Controller
                 isIdle = false;
 
                 return false;
+            }
+        }
+        #endregion
+
+        #region Actionbar Input Functions
+        /// <summary>
+        /// Check for any keyboard input and see if it matches any keys on the Actionbar
+        /// </summary>
+        private void OnGUI()
+        {
+            var inputEvent = Event.current;
+
+            if (inputEvent.isKey)
+            {
+                if (inputEvent.type == EventType.KeyDown)
+                {
+                    if (!inputEvent.keyCode.ToString().Contains("None"))
+                    {
+                        foreach (ActionButton actionButton in GeneralFunctions.GetPlayerUIManager().actionBarButtons)
+                        {
+                            if (actionButton.MyKeyCode.ToString() == inputEvent.keyCode.ToString())
+                            {
+                                print("Spell casted on slot key " + inputEvent.keyCode.ToString());
+                            }
+                        }
+                    }
+                }
             }
         }
         #endregion

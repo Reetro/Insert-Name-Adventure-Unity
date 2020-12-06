@@ -605,17 +605,17 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="spawnSpell"></param>
     /// <param name="spellInfo"></param>
-    public static void StartSpellCast(GameObject spawnSpell, ScriptableSpell spellInfo)
+    public static void StartSpellCast(GameObject spawnedSpell, ScriptableSpell spellInfo)
     {
-        var spell = spawnSpell.GetComponent<Spell>();
+        var spell = spawnedSpell.GetComponent<Spell>();
 
         if (spell)
         {
-            spell.StartSpellCast(spellInfo, spawnSpell);
+            spell.StartSpellCast(spellInfo, spawnedSpell);
         }
         else
         {
-            Debug.LogError("Failed to start spell GameObject " + spawnSpell.name + " does not have a spell component");
+            Debug.LogError("Failed to start spell GameObject " + spawnedSpell.name + " does not have a spell component");
         }
     }
     /// <summary>
@@ -1068,6 +1068,59 @@ public class GeneralFunctions
     public static float GetSpriteHeight(SpriteRenderer spriteRenderer)
     {
         return spriteRenderer.bounds.extents.y;
+    }
+    /// <summary>
+    /// Gets the name of the key from the Keycode
+    /// </summary>
+    /// <param name="keyCode"></param>
+    public static string GetKeyName(KeyCode keyCode)
+    {
+        string codeString = keyCode.ToString().ToLower();
+
+        if (codeString.Contains("alpha"))
+        {
+            string keyString = "";
+
+            switch (codeString)
+            {
+                case "alpha0":
+                    keyString = "0";
+                    break;
+                case "alpha1":
+                    keyString = "1";
+                    break;
+                case "alpha2":
+                    keyString = "2";
+                    break;
+                case "alpha3":
+                    keyString = "3";
+                    break;
+                case "alpha4":
+                    keyString = "4";
+                    break;
+                case "alpha5":
+                    keyString = "5";
+                    break;
+                case "alpha6":
+                    keyString = "6";
+                    break;
+                case "alpha7":
+                    keyString = "7";
+                    break;
+                case "alpha8":
+                    keyString = "8";
+                    break;
+                case "alpha9":
+                    keyString = "9";
+                    break;
+            }
+
+            return keyString;
+        }
+        else
+        {
+            return codeString;
+        }
     }
     #endregion
 }

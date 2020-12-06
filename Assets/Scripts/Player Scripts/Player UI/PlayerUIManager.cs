@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using LevelObjects.SceneLoading;
-using StatusEffects;
+using GameplayManagement.Assets;
+using System.Collections.Generic;
 
 namespace PlayerUI
 {
@@ -16,7 +16,15 @@ namespace PlayerUI
         [Header("Player UI")]
         [SerializeField] HealthBar healthBar = null;
 
+        [SerializeField] private GridLayoutGroup actionBarLayout = null;
+        [SerializeField] private ActionButton actionSlot = null;
+
         private LevelLoader levelLoader = null;
+
+        /// <summary>
+        /// List of all action buttons
+        /// </summary>
+        public List<ActionButton> actionBarButtons = new List<ActionButton>();
 
         private void Awake()
         {
@@ -25,6 +33,8 @@ namespace PlayerUI
             levelLoader = FindObjectOfType<LevelLoader>();
 
             loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
+
+            CreateActionbar();
         }
         /// <summary>
         /// Load the current checkpoint index
@@ -52,6 +62,22 @@ namespace PlayerUI
         {
             loadCheckpointBTN.gameObject.SetActive(true);
             gameOverText.gameObject.SetActive(true);
+        }
+        /// <summary>
+        /// For every key in the gameplay manager create a action slot
+        /// </summary>
+        private void CreateActionbar()
+        {
+            for (int index = 0; index < GameAssets.GlobalManager.spellKeybinds.Length; index++)
+            {
+                var keyName = GeneralFunctions.GetKeyName(GameAssets.GlobalManager.spellKeybinds[index]);
+
+                var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
+
+                spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.spellKeybinds[index]);
+
+                actionBarButtons.Add(spawnedSlot);
+            }
         }
     }
 }

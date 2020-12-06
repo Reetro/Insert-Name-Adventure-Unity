@@ -766,7 +766,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSpear: {fileID: 1635639793}
-  dash: {fileID: 11400000, guid: e3571e77d08e0a9419ae9edbc9ce123d, type: 2}
 --- !u!114 &1364893853460561661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -986,20 +985,8 @@ MonoBehaviour:
     m_ActionName: Player/Delete Saved Game[/Keyboard/f8]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ad96234e-f0b9-4ee7-b5eb-0a584a48ae60
-    m_ActionName: Player/Actionbar Slot 1[/Keyboard/1]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ce86b4c7-32ef-4c56-a7f7-af4d17821a9f
-    m_ActionName: Player/Actionbar Slot 2[/Keyboard/2]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: cc6cf8e0-59f6-4a8e-bb8e-bb1db4042a09
-    m_ActionName: Player/Actionbar Slot 3[/Keyboard/3]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 80176bea-11ff-477e-be1e-9dcd700fa290
-    m_ActionName: Player/Actionbar Slot 4[/Keyboard/4]
+    m_ActionId: 3a71487c-9627-42a0-9cf2-471191be7dab
+    m_ActionName: Player/AnykeyPreesed
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1331,8 +1318,219 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
+      propertyPath: playerSpells.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
       propertyPath: whatCanBeDamaged.m_Bits
       value: 14697984
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: playerSpells.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e3571e77d08e0a9419ae9edbc9ce123d,
+        type: 2}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_Name
+      value: Spell Keybinds
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_Id
+      value: 560f2d1d-3a36-440c-8888-d379ae07609f
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[0].m_Id
+      value: c0d4e336-697a-43d9-af45-d49446a4333f
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Spell Keybinds
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 63136787-ed04-45c2-8714-c14c0ed76d1d
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Keyboard>/2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Spell Keybinds
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[2].m_Id
+      value: 8d019d95-9ec9-420b-b324-ba435c5ed464
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[2].m_Path
+      value: <Keyboard>/3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[2].m_Action
+      value: Spell Keybinds
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[3].m_Id
+      value: e2326e66-19d1-4ac7-8db3-4540acdc54b3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[3].m_Path
+      value: <Keyboard>/4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.m_SingletonActionBindings.Array.data[3].m_Action
+      value: Spell Keybinds
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_Id
+      value: e220dc13-69cb-4d7c-901b-381231454e98
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_Name
+      value: Element 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[1].m_Name
+      value: Element 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[2].m_Name
+      value: Element 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[3].m_Name
+      value: Element 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[0].m_Id
+      value: 09dba6af-8419-46b4-8f08-d7578b51c359
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[0].m_Action
+      value: Element 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[0].m_Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[0].m_Flags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[1].m_Name
+      value: modifier
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[1].m_Id
+      value: 12c5a035-ff90-44f1-b68e-0f73d15716e2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[1].m_Action
+      value: Element 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[1].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[2].m_Name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[2].m_Id
+      value: a3da2f90-3dec-49ed-bfe6-115089f970ab
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[2].m_Action
+      value: Element 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0].m_SingletonActionBindings.Array.data[2].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[4]
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[0]
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[1]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[2]
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybinds.Array.data[3]
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
