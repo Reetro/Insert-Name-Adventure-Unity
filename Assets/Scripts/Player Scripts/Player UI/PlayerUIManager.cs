@@ -4,7 +4,7 @@ using TMPro;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using System.Collections.Generic;
-using Spells;
+using UnityEngine.InputSystem;
 
 namespace PlayerUI
 {
@@ -31,8 +31,6 @@ namespace PlayerUI
 
         private void Awake()
         {
-            GameAssets.GlobalManager.controllerUpdated.AddListener(OnControllerStateUpdated);
-
             HideDeathUI();
 
             levelLoader = FindObjectOfType<LevelLoader>();
@@ -77,30 +75,31 @@ namespace PlayerUI
         /// </summary>
         private void CreateActionbar()
         {
-            if (!GameAssets.GlobalManager._IsGamepadActive)
+            for (int index = 0; index < GameAssets.GlobalManager.actionBarInputActions.actions.Count; index++)
             {
-                for (int index = 0; index < GameAssets.GlobalManager.spellKeybindsKeyboard.Length; index++)
+                var keyName = "";
+
+                if (!GameAssets.GlobalManager._IsGamepadActive)
                 {
-                    var keyName = GeneralFunctions.GetKeyName(GameAssets.GlobalManager.spellKeybindsKeyboard[index]);
+                    var displayStrings = GameAssets.GlobalManager.actionBarInputActions.actions[index].GetBindingDisplayString().Split('|');
 
-                    var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
-
-                    spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.spellKeybindsKeyboard[index]);
-
-                    actionBarButtons.Add(spawnedSlot);
+                    keyName = displayStrings[0];
                 }
-            }
-            else
-            {
-                for (int index = 0; index < GameAssets.GlobalManager.spellKeybindsGamepad.Length; index++)
+                else
                 {
-                    var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
+                    var displayStrings = GameAssets.GlobalManager.actionBarInputActions.actions[index].GetBindingDisplayString().Split('|');
 
-                    spawnedSlot.SetupActionSlot("1", GameAssets.GlobalManager.spellKeybindsGamepad[index]);
-
-                    actionBarButtons.Add(spawnedSlot);
+                    keyName = displayStrings[1];
                 }
+
+                var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
+
+                spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.actionBarInputActions.actions[index]);
+
+                actionBarButtons.Add(spawnedSlot);
             }
+
+            GameAssets.GlobalManager.actionBarInputActions.Enable();
         }
         /// <summary>
         /// Assign player spells to Actionbar
@@ -118,23 +117,6 @@ namespace PlayerUI
                     actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
                 }
             }
-        }
-        /// <summary>
-        /// Called when a controller is connected or disconnected
-        /// </summary>
-        /// <param name="isActive"></param>
-        private void OnControllerStateUpdated(bool isActive)
-        {
-            foreach (ActionButton actionButton in actionBarButtons)
-            {
-                Destroy(actionButton.gameObject);
-            }
-
-            actionBarButtons.Clear();
-
-            CreateActionbar();
-
-            AssignSpells();
         }
         #endregion
     }

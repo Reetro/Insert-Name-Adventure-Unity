@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using PlayerUI;
+using UnityEngine;
 
 namespace Spells
 {
@@ -28,6 +29,27 @@ namespace Spells
             {
                 if (CanSpellBeCasted(spellInfo, spell))
                 {
+                    CastSpell();
+                }
+                else
+                {
+                    Destroy(spawnedSpell);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets all spell values and casts the spell
+        /// </summary>
+        public void StartSpellCast(ScriptableSpell spellInfo, GameObject spawnedSpell, SpellIcon spellIcon)
+        {
+            var spell = spawnedSpell.GetComponent<Spell>();
+
+            if (spell)
+            {
+                if (CanSpellBeCasted(spellInfo, spell))
+                {
+                    MySpellIcon = spellIcon;
+
                     CastSpell();
                 }
                 else
@@ -133,7 +155,10 @@ namespace Spells
         /// </summary>
         protected void StartCoolDown()
         {
-            // TODO Add cooldown image
+            if (MySpellIcon)
+            {
+                MySpellIcon.DisplayCooldown(true);
+            }
 
             onCooldown = true;
             startCooldownTimer = true;
@@ -146,6 +171,12 @@ namespace Spells
             if (startCooldownTimer)
             {
                 SpellCoolDown -= Time.deltaTime;
+
+                if (MySpellIcon)
+                {
+                    MySpellIcon.UpdateCooldownFillAmount(SpellCoolDown);
+                    MySpellIcon.UpdateCooldownText(SpellCoolDown);
+                }
             }
 
             if (SpellCoolDown <= 0)
@@ -169,6 +200,11 @@ namespace Spells
         /// </summary>
         protected virtual void OnSpellCastEnded()
         {
+            if (MySpellIcon)
+            {
+                MySpellIcon.DisplayCooldown(false);
+            }
+
             SpellInfo.OnSpellCastEnd.Invoke();
 
             Destroy(gameObject);
@@ -212,6 +248,10 @@ namespace Spells
         /// Check to see if this status effect is using three values
         /// </summary>
         public bool UsingThreeValues { get; private set; } = false;
+        /// <summary>
+        /// The Spell icon this spell is attached to
+        /// </summary>
+        public SpellIcon MySpellIcon { get; private set; }
         #endregion
     }
 }

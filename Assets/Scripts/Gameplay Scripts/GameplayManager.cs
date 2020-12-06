@@ -45,11 +45,8 @@ namespace GameplayManagement
 
         [Space]
 
-        [Tooltip("Keybinds for Player Actionbar for every keybind in this array a new action slot is created")]
-        public KeyCode[] spellKeybindsKeyboard;
-
-        [Tooltip("Keybinds for Player Actionbar for every keybind in this array a new action slot is created")]
-        public KeyCode[] spellKeybindsGamepad;
+        [Tooltip("Keybinds for Player Actionbar for every Input Action in this array a new action slot is created")]
+        public InputActionMap actionBarInputActions;
 
         [Space]
 

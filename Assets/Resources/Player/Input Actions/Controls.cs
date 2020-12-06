@@ -83,14 +83,6 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""GamepadAnykey"",
-                    ""type"": ""Button"",
-                    ""id"": ""3a71487c-9627-42a0-9cf2-471191be7dab"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -302,160 +294,6 @@ namespace PlayerControls
                     ""action"": ""Delete Saved Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2ecc315e-376a-4f46-9f4a-cb4fbf976780"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""681d7a9c-09a9-49b1-ab77-4abaece2c6b8"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""df7573df-2f47-420f-b072-500eb39c977d"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ea77b263-11fd-4e34-a35d-c7bf61b84cb6"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8749d061-c735-4297-9422-af336489d31c"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9e1a58c1-374c-4853-8d59-8338f43e9627"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""adeb4212-29f3-4407-98e0-827e796c5884"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""429fa484-2548-43dc-ac9c-e58c9074384d"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""46c79d7b-02c3-4c00-90c0-37b42fa80d06"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7dfc2f59-0fd9-4d77-bde3-2e5bd083ec7f"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c0d946f2-0d44-4dd0-97f3-1ba7e869c172"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f69ad942-c467-4f7a-a6ad-111c96f7131d"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a484ea81-e5a7-4c44-815f-4e30c3ff7186"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a4b9275d-ebfd-4ff8-af7f-ff90a0f48867"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GamepadAnykey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -472,7 +310,6 @@ namespace PlayerControls
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
             m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
-            m_Player_GamepadAnykey = m_Player.FindAction("GamepadAnykey", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -530,7 +367,6 @@ namespace PlayerControls
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
         private readonly InputAction m_Player_DeleteSavedGame;
-        private readonly InputAction m_Player_GamepadAnykey;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -543,7 +379,6 @@ namespace PlayerControls
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
-            public InputAction @GamepadAnykey => m_Wrapper.m_Player_GamepadAnykey;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -577,9 +412,6 @@ namespace PlayerControls
                     @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
-                    @GamepadAnykey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
-                    @GamepadAnykey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
-                    @GamepadAnykey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamepadAnykey;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -608,9 +440,6 @@ namespace PlayerControls
                     @DeleteSavedGame.started += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
-                    @GamepadAnykey.started += instance.OnGamepadAnykey;
-                    @GamepadAnykey.performed += instance.OnGamepadAnykey;
-                    @GamepadAnykey.canceled += instance.OnGamepadAnykey;
                 }
             }
         }
@@ -625,7 +454,6 @@ namespace PlayerControls
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
             void OnDeleteSavedGame(InputAction.CallbackContext context);
-            void OnGamepadAnykey(InputAction.CallbackContext context);
         }
     }
 }

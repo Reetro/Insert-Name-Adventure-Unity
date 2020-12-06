@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Spells;
+using TMPro;
 
 namespace PlayerUI
 {
@@ -14,6 +15,12 @@ namespace PlayerUI
         /// Where this spell is located on the Actionbar
         /// </summary>
         public int SpellIndex { get; private set; }
+        
+        [Tooltip("A reference to the cooldown image on the spell icon")]
+        [SerializeField] private Image cooldownImage = null;
+
+        [Tooltip("A reference to the cooldown image on the spell icon")]
+        [SerializeField] private TextMeshProUGUI coolDownText = null;
 
         /// <summary>
         /// Set default values and disable button in parent object
@@ -31,7 +38,35 @@ namespace PlayerUI
 
             spellButton = GetComponent<Button>();
 
+            DisplayCooldown(false);
+
             spellButton.onClick.AddListener(CastSpell);
+        }
+        /// <summary>
+        /// Hide / Show Cooldown info
+        /// </summary>
+        /// <param name="show"></param>
+        public void DisplayCooldown(bool show)
+        {
+            cooldownImage.enabled = show;
+
+            coolDownText.enabled = show;
+        }
+        /// <summary>
+        /// Update the cooldown countdown timer text
+        /// </summary>
+        /// <param name="cooldown"></param>
+        public void UpdateCooldownText(float cooldown)
+        {
+            coolDownText.text = cooldown.ToString("f1");
+        }
+        /// <summary>
+        /// Update the fill amount of the cooldown overlay image
+        /// </summary>
+        /// <param name="cooldown"></param>
+        public void UpdateCooldownFillAmount(float cooldown)
+        {
+            cooldownImage.fillAmount -= 1 / cooldown * Time.deltaTime;
         }
         /// <summary>
         /// Cast the spell at the given index on the action bar
@@ -41,7 +76,7 @@ namespace PlayerUI
         {
             var spellToCast = Instantiate(scriptableSpell.SpellToSpawn);
 
-            GeneralFunctions.StartSpellCast(spellToCast, scriptableSpell);
+            GeneralFunctions.StartSpellCast(spellToCast, scriptableSpell, this);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 namespace PlayerUI
 {
@@ -9,10 +10,11 @@ namespace PlayerUI
 
         private SpellIcon mySpellIcon = null;
 
-        public void SetupActionSlot(string slotButton, KeyCode keyCode)
+        public void SetupActionSlot(string slotButton, InputAction inputAction)
         {
             textAsset.text = slotButton;
-            MyKeyCode = keyCode;
+
+            inputAction.started += ctx => CastSpell();
         }
         /// <summary>
         /// Casts the spell assigned to this Action button

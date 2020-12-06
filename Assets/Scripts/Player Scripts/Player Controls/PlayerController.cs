@@ -5,8 +5,6 @@ using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using GameplayManagement.Assets;
 
 namespace PlayerCharacter.Controller
 {
@@ -58,20 +56,6 @@ namespace PlayerCharacter.Controller
 
             controls.Player.Fire.started += OnFirePressed;
             controls.Player.Fire.canceled += OnFireReleased;
-
-            controls.Player.GamepadAnykey.started += OnAnyGamepadInput;
-
-            KeyCode kcode = KeyCode.Alpha1;
-            string keyCode;
-
-            keyCode = kcode.ToString();
-
-            // Create an Action Map with Actions.
-            var map = new InputActionMap("Gameplay");
-            var lookAction = map.AddAction("look");
-            lookAction.AddBinding("<Keyboard>/" + "1");
-
-            lookAction.Enable();
 
             controls.Player.SaveGame.started += OnSavePressed;
             controls.Player.LoadGame.started += OnLoadPressed;
@@ -280,87 +264,6 @@ namespace PlayerCharacter.Controller
                 isIdle = false;
 
                 return false;
-            }
-        }
-        #endregion
-
-        #region Actionbar Input Functions
-        /// <summary>
-        /// Check for any keyboard input and see if it matches any keys on the Actionbar
-        /// </summary>
-        private void OnGUI()
-        {
-           if (!GameAssets.GlobalManager._IsGamepadActive)
-            {
-                var inputEvent = Event.current;
-
-                if (inputEvent.isKey)
-                {
-                    if (inputEvent.type == EventType.KeyDown)
-                    {
-                        if (!inputEvent.keyCode.ToString().Contains("None"))
-                        {
-                            foreach (ActionButton actionButton in GeneralFunctions.GetPlayerUIManager().actionBarButtons)
-                            {
-                                if (actionButton.MyKeyCode.ToString() == inputEvent.keyCode.ToString())
-                                {
-                                    actionButton.CastSpell();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Check to see if the pressed button is bound to the Actionbar
-        /// </summary>
-        /// <param name="context"></param>
-        private void OnAnyGamepadInput(InputAction.CallbackContext context)
-        {
-            foreach (ActionButton actionButton in GeneralFunctions.GetPlayerUIManager().actionBarButtons)
-            {
-                if (actionButton.MyKeyCode.ToString() == ConvertPathToKeycode(context.control.path))
-                {
-                    actionButton.CastSpell();
-                }
-            }
-        }
-        /// <summary>
-        /// Converts a control path to a code
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private string ConvertPathToKeycode(string path)
-        {
-            string[] code = path.Split('/');
-
-            if (code[2].Contains("button"))
-            {
-                switch(code[2])
-                {
-                    case "buttonEast":
-                        return "JoystickButton2";
-                    case "buttonNorth":
-                        return "JoystickButton3";
-                    case "buttonSouth":
-                        return "JoystickButton0";
-                    default:
-                    case "buttonWest":
-                        return "JoystickButton1";
-                }
-            }
-            else if (code[2].Contains("rightShoulder"))
-            {
-                return "JoystickButton5";
-            }
-            else if (code[2].Contains("leftShoulder"))
-            {
-                return "JoystickButton4";
-            }
-            else
-            {
-                return code[2];
             }
         }
         #endregion

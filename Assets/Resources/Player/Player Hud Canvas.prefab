@@ -556,6 +556,73 @@ MonoBehaviour:
     type: 3}
   spellIcon: {fileID: 8822087666611862644, guid: d09cba5c4cf1b3940a9449e461f5e500,
     type: 3}
+  actionbarMap:
+    m_Name: Actionbar Map
+    m_Id: 79459702-9473-448c-b498-81e1a319a7fb
+    m_Asset: {fileID: 0}
+    m_Actions:
+    - m_Name: Action Slot 1
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 37daa384-cea1-49ec-83c1-d969ef547085
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+    - m_Name: Action Slot 2
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 34568067-5b95-420a-847d-7db9df9b83d8
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+    - m_Name: New action
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 1e226884-1766-4e6b-b2d1-fa447d438ed0
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+    m_Bindings:
+    - m_Name: 
+      m_Id: c176bfca-2714-4ac8-a441-f7f1512ad3f2
+      m_Path: <Keyboard>/1
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Slot 1
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 208079c0-7366-4c9f-873e-26e33dab9d1c
+      m_Path: <XInputController>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Slot 1
+      m_Flags: 0
+    - m_Name: 
+      m_Id: edda8879-1317-4f32-ba9b-4765101d412d
+      m_Path: <XboxOneGampadiOS>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Slot 1
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 78c541af-fb74-416b-b1f1-8bd8d3675fc0
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Slot 2
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 1b164036-e701-41cd-80df-933fd1cefc6e
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: New action
+      m_Flags: 0
   actionBarButtons: []
 --- !u!1001 &2071734183663685060
 PrefabInstance:

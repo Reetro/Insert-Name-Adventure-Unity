@@ -10,6 +10,7 @@ using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using Spells;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -619,6 +620,24 @@ public class GeneralFunctions
         }
     }
     /// <summary>
+    /// Will cast the provided spell
+    /// </summary>
+    /// <param name="spawnedSpell"></param>
+    /// <param name="spellInfo"></param>
+    public static void StartSpellCast(GameObject spawnedSpell, ScriptableSpell spellInfo, SpellIcon spellIcon)
+    {
+        var spell = spawnedSpell.GetComponent<Spell>();
+
+        if (spell)
+        {
+            spell.StartSpellCast(spellInfo, spawnedSpell, spellIcon);
+        }
+        else
+        {
+            Debug.LogError("Failed to start spell GameObject " + spawnedSpell.name + " does not have a spell component");
+        }
+    }
+    /// <summary>
     /// Checks to see what direction the given rigidbody is moving in
     /// </summary>
     /// <param name="rigidbody2D"></param>
@@ -1070,57 +1089,13 @@ public class GeneralFunctions
         return spriteRenderer.bounds.extents.y;
     }
     /// <summary>
-    /// Gets the name of the key from the Keycode
+    /// Gets the name of the key from the Input Actions
     /// </summary>
-    /// <param name="keyCode"></param>
-    public static string GetKeyName(KeyCode keyCode)
+    public static string GetKeyNameForKeyboard(string path)
     {
-        string codeString = keyCode.ToString().ToLower();
+        var localPath = path.Split('/');
 
-        if (codeString.Contains("alpha"))
-        {
-            string keyString = "";
-
-            switch (codeString)
-            {
-                case "alpha0":
-                    keyString = "0";
-                    break;
-                case "alpha1":
-                    keyString = "1";
-                    break;
-                case "alpha2":
-                    keyString = "2";
-                    break;
-                case "alpha3":
-                    keyString = "3";
-                    break;
-                case "alpha4":
-                    keyString = "4";
-                    break;
-                case "alpha5":
-                    keyString = "5";
-                    break;
-                case "alpha6":
-                    keyString = "6";
-                    break;
-                case "alpha7":
-                    keyString = "7";
-                    break;
-                case "alpha8":
-                    keyString = "8";
-                    break;
-                case "alpha9":
-                    keyString = "9";
-                    break;
-            }
-
-            return keyString;
-        }
-        else
-        {
-            return codeString;
-        }
+        return localPath[1];
     }
     #endregion
 }

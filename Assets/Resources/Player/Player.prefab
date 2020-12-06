@@ -983,10 +983,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b0c433bb-624c-4def-930d-ec4d1c441617
     m_ActionName: Player/Delete Saved Game[/Keyboard/f8]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3a71487c-9627-42a0-9cf2-471191be7dab
-    m_ActionName: Player/AnykeyPreesed
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1338,6 +1334,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
+      propertyPath: spellKeybindsKeyboard.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsGamepad.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
       propertyPath: whatCanBeDamaged.m_Bits
       value: 14697984
       objectReference: {fileID: 0}
@@ -1531,6 +1547,261 @@ PrefabInstance:
         type: 3}
       propertyPath: spellKeybinds.Array.data[3]
       value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsKeyboard.Array.data[0]
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsKeyboard.Array.data[1]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsKeyboard.Array.data[2]
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsKeyboard.Array.data[3]
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsGamepad.Array.data[0]
+      value: 335
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsGamepad.Array.data[1]
+      value: 331
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsGamepad.Array.data[2]
+      value: 332
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: spellKeybindsGamepad.Array.data[3]
+      value: 333
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Name
+      value: Action Bar Input Actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Id
+      value: e0a0fea7-bbb5-452f-8281-40256b8a60ab
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[0].m_Name
+      value: Action Bar Slot 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[0].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[0].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[0].m_Id
+      value: 6d62840f-cde4-4188-9360-08503f0b1de9
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[1].m_Name
+      value: Action Bar Slot 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[1].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[1].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[1].m_Id
+      value: df6f4206-e98d-48c5-843a-12f4ed445717
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[2].m_Name
+      value: Action Bar Slot 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[2].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[2].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[2].m_Id
+      value: 327b9402-05d0-493c-8dbc-9463dc887e9e
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[3].m_Name
+      value: Action Bar Slot 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[3].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[3].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Actions.Array.data[3].m_Id
+      value: 465afe89-bc44-4fa4-a2bf-7a14b2142ec4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[0].m_Id
+      value: 00f416eb-ba52-49c3-bfee-e025c8532970
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[0].m_Path
+      value: <Keyboard>/1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[0].m_Action
+      value: Action Bar Slot 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[1].m_Id
+      value: 6548e78d-2471-4fac-85c3-bf324964e750
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[1].m_Path
+      value: <Gamepad>/buttonEast
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[1].m_Action
+      value: Action Bar Slot 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[2].m_Id
+      value: 7d7662d9-e246-41b5-a990-e0cf70487145
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[2].m_Path
+      value: <Keyboard>/2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[2].m_Action
+      value: Action Bar Slot 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[3].m_Id
+      value: 363cd420-c5aa-4ab1-9bc6-34797aa4d389
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[3].m_Path
+      value: <Gamepad>/buttonWest
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[3].m_Action
+      value: Action Bar Slot 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[4].m_Id
+      value: 1131c3de-f612-4be7-a8c0-138499e21736
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[4].m_Path
+      value: <Keyboard>/3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[4].m_Action
+      value: Action Bar Slot 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[5].m_Id
+      value: 459b46c0-8329-41bc-9bd2-627cf01df910
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[5].m_Path
+      value: <XInputController>/buttonNorth
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[5].m_Action
+      value: Action Bar Slot 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[6].m_Id
+      value: 14921918-a42d-49e6-a57b-6ddeabed589c
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[6].m_Path
+      value: <Keyboard>/4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[6].m_Action
+      value: Action Bar Slot 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[7].m_Id
+      value: 9a0a05e6-4593-45cb-9440-0ede9054acba
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[7].m_Action
+      value: Action Bar Slot 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[8].m_Id
+      value: 5cf8cc0c-30bf-41a5-85c8-24477a16716b
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[8].m_Action
+      value: Action Bar Slot 4
       objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
