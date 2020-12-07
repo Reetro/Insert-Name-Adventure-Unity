@@ -31,6 +31,8 @@ namespace PlayerUI
 
         private void Awake()
         {
+            GameAssets.GlobalManager.controllerUpdated.AddListener(OnGamepadUpdated);
+
             HideDeathUI();
 
             levelLoader = FindObjectOfType<LevelLoader>();
@@ -117,6 +119,23 @@ namespace PlayerUI
                     actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
                 }
             }
+        }
+        /// <summary>
+        /// Called whenever a gamepad is connected or disconnected
+        /// </summary>
+        /// <param name="connected"></param>
+        private void OnGamepadUpdated(bool connected)
+        {
+            foreach (ActionButton actionButton in actionBarButtons)
+            {
+                Destroy(actionButton.gameObject);
+            }
+
+            actionBarButtons.Clear();
+
+            CreateActionbar();
+
+            AssignSpells();
         }
         #endregion
     }
