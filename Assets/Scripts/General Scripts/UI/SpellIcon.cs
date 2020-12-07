@@ -84,9 +84,7 @@ namespace PlayerUI
         /// <param name="spellIndex"></param>
         public void CastSpell()
         {
-            var spellToCast = Instantiate(MyScriptableSpell.SpellToSpawn);
-
-            GeneralFunctions.StartSpellCast(spellToCast, MyScriptableSpell, this);
+            GeneralFunctions.CastSpell(MyScriptableSpell, this);
         }
     }
 }

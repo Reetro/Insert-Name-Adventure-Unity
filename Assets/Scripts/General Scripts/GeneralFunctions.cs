@@ -10,12 +10,11 @@ using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using Spells;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
 /// </summary>
-public class GeneralFunctions
+public class GeneralFunctions : MonoBehaviour
 {
     #region Vector Functions
     /// <summary>
@@ -606,17 +605,38 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="spawnSpell"></param>
     /// <param name="spellInfo"></param>
-    public static void StartSpellCast(GameObject spawnedSpell, ScriptableSpell spellInfo)
+    /// <summary>
+    /// Will cast the provided spell
+    /// </summary>
+    /// <param name="spawnedSpell"></param>
+    /// <param name="spellInfo"></param>
+    public static void CastSpell(ScriptableSpell spellInfo)
     {
-        var spell = spawnedSpell.GetComponent<Spell>();
-
-        if (spell)
+        if (spellInfo.SpellToSpawn)
         {
-            spell.StartSpellCast(spellInfo, spawnedSpell);
+            var spellToCast = Instantiate(spellInfo.SpellToSpawn);
+
+            if (spellToCast)
+            {
+                var spell = spellToCast.GetComponent<Spell>();
+
+                if (spell)
+                {
+                    spell.StartSpellCast(spellInfo, spellToCast);
+                }
+                else
+                {
+                    Debug.LogError("Failed to start spell GameObject " + spellToCast.name + " does not have a spell component");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to start spell " + spellInfo.name + " failed to spawn");
+            }
         }
         else
         {
-            Debug.LogError("Failed to start spell GameObject " + spawnedSpell.name + " does not have a spell component");
+            Debug.LogError("Failed to start spell " + spellInfo.name + " does not have a spell to spawn");
         }
     }
     /// <summary>
@@ -624,17 +644,33 @@ public class GeneralFunctions
     /// </summary>
     /// <param name="spawnedSpell"></param>
     /// <param name="spellInfo"></param>
-    public static void StartSpellCast(GameObject spawnedSpell, ScriptableSpell spellInfo, SpellIcon spellIcon)
+    public static void CastSpell(ScriptableSpell spellInfo, SpellIcon spellIcon)
     {
-        var spell = spawnedSpell.GetComponent<Spell>();
-
-        if (spell)
+        if (spellInfo.SpellToSpawn)
         {
-            spell.StartSpellCast(spellInfo, spawnedSpell, spellIcon);
+            var spellToCast = Instantiate(spellInfo.SpellToSpawn);
+
+            if (spellToCast)
+            {
+                var spell = spellToCast.GetComponent<Spell>();
+
+                if (spell)
+                {
+                    spell.StartSpellCast(spellInfo, spellToCast, spellIcon);
+                }
+                else
+                {
+                    Debug.LogError("Failed to start spell GameObject " + spellToCast.name + " does not have a spell component");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to start spell " + spellInfo.name + " failed to spawn");
+            }
         }
         else
         {
-            Debug.LogError("Failed to start spell GameObject " + spawnedSpell.name + " does not have a spell component");
+            Debug.LogError("Failed to start spell " + spellInfo.name + " does not have a spell to spawn");
         }
     }
     /// <summary>
