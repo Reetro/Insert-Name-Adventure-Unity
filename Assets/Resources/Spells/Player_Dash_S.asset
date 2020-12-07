@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87c032688659e75489e0b9a9958b1608, type: 3}
-  m_Name: Player Dash
+  m_Name: Player_Dash_S
   m_EditorClassIdentifier: 
   name: Dash
-  description: Dash In the current direction the player is moving in. If idle nothing
-    happens
+  description: Dash In the current direction of movement. If idle nothing happens.
   artwork: {fileID: 21300000, guid: 42f6c722ead369b4b934a116b4324a4d, type: 3}
   useTwoValues: 1
   useThreeValues: 0
   hasCoolDown: 1
-  spawnParticleEffect: 1
+  spawnParticleEffect: 0
   particleSystemToSpawn: {fileID: 8444143868127711966, guid: 8d129017045a09a45822e06859d2a4fd,
     type: 3}
   particleSystemUpTime: 1

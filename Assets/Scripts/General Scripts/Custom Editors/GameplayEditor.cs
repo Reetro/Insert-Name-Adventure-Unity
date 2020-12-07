@@ -272,6 +272,10 @@ namespace CustomEditors
         private Editor healSEEditor = null;
         #endregion
 
+        #region Spell Editors
+        private Editor playerDashEditor = null;
+        #endregion
+
         #region Local Variables
         private Vector2 scrollPosition = Vector2.zero;
         private const float foldoutSpaceing = 10f;
@@ -288,6 +292,7 @@ namespace CustomEditors
         private static bool showLeechingEffect = false;
         private static bool showPlayerSlow = false;
         private static bool showHeal = false;
+        private static bool showPlayerDash = false;
         #endregion
         #endregion
 
@@ -308,6 +313,8 @@ namespace CustomEditors
             SetupEnemyScale();
 
             SetupStatusEffects();
+
+            SetupSpells();
         }
 
         #region Gameplay Manager Functions
@@ -755,9 +762,25 @@ namespace CustomEditors
         }
         #endregion
 
+        #region Spell Functions
+        private void SetupSpells()
+        {
+            var playerDash = Resources.Load("Spells/Player_Dash_S");
+
+            if (playerDash)
+            {
+                playerDashEditor = Editor.CreateEditor(playerDash);
+            }
+            else
+            {
+                Debug.LogError("Failed to get playerDash in Spell Functions in GameplayEditor");
+            }
+        }
+        #endregion
+
         public void OnGUI()
         {
-            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Status Effects" });
+            tabs = GUILayout.Toolbar(tabs, new string[] { "Player Settings", "Enemy Settings", "Game Settings", "Status Effects", "Spells" });
 
             switch (tabs)
             {
@@ -788,6 +811,13 @@ namespace CustomEditors
                     scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
 
                     SetupStatusEffectsUI();
+
+                    GUILayout.EndScrollView();
+                    break;
+                case 4:
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
+                    SetupSpellUI();
 
                     GUILayout.EndScrollView();
                     break;
@@ -1470,6 +1500,20 @@ namespace CustomEditors
                 EditorGUI.indentLevel += indentLevel;
 
                 healSEEditor.OnInspectorGUI();
+            }
+        }
+        #endregion
+
+        #region Spell UI
+        private void SetupSpellUI()
+        {
+            showPlayerDash = EditorGUILayout.Foldout(showPlayerDash, "Player Dash", true);
+
+            if (showPlayerDash)
+            {
+                EditorGUI.indentLevel += indentLevel;
+
+                playerDashEditor.OnInspectorGUI();
             }
         }
         #endregion
