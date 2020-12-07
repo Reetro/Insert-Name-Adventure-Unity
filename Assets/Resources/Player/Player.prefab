@@ -1701,7 +1701,7 @@ PrefabInstance:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: actionBarInputActions.m_Bindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonEast
+      value: <XInputController>/rightShoulder
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
@@ -1761,7 +1761,7 @@ PrefabInstance:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: actionBarInputActions.m_Bindings.Array.data[5].m_Path
-      value: <XInputController>/buttonNorth
+      value: <Gamepad>/buttonNorth
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
@@ -1796,12 +1796,17 @@ PrefabInstance:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: actionBarInputActions.m_Bindings.Array.data[8].m_Id
-      value: 5cf8cc0c-30bf-41a5-85c8-24477a16716b
+      value: 71efc9ca-5346-4d32-9a04-ddc7dd3f43d0
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: actionBarInputActions.m_Bindings.Array.data[8].m_Action
       value: Action Bar Slot 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: actionBarInputActions.m_Bindings.Array.data[7].m_Path
+      value: <Gamepad>/buttonNorth
       objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}

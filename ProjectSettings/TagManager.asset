@@ -19,6 +19,7 @@ TagManager:
   - Player Hud Canvas
   - Worm Segment
   - Player State
+  - Player Particle Spawn
   layers:
   - Default
   - TransparentFX

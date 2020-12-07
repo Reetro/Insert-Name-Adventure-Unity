@@ -8,6 +8,7 @@ namespace Spells
         private float defaultDashTime = 0f;
         private bool runDashTimer = false;
         private float dashTimer = 0f;
+        private bool wasIdle = false;
 
         /// <summary>
         /// Starts the dash timer when spell is cast
@@ -55,7 +56,7 @@ namespace Spells
 
                     playerRigidBody2D.velocity = Vector2.zero;
 
-                    if (HasCoolDown)
+                    if (HasCoolDown && !wasIdle)
                     {
                         StartCoolDown();
 
@@ -87,6 +88,8 @@ namespace Spells
 
             if (!isIdle)
             {
+                wasIdle = false;
+
                 if (leftOrRight)
                 {
                     playerRigidBody2D.velocity = Vector2.left * Value2;
@@ -95,6 +98,10 @@ namespace Spells
                 {
                     playerRigidBody2D.velocity = Vector2.right * Value2;
                 }
+            }
+            else
+            {
+                wasIdle = true;
             }
         }
     }

@@ -13,6 +13,8 @@ namespace Spells
         private bool showValue2 = false;
         private bool showValue3 = false;
 
+        [Header("Spell Bools")]
+
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue2))]
         [Tooltip("Should this status effect have two values")]
         [SerializeField] private bool useTwoValues = false;
@@ -24,6 +26,21 @@ namespace Spells
         [Tooltip("Whether or not the spell has a cooldown")]
         [SerializeField] private bool hasCoolDown = true;
 
+        [Tooltip("Whether or not to spawn a particle effect on cast")]
+        [SerializeField] private bool spawnParticleEffect = true;
+
+        [Header("Effect Settings")]
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(spawnParticleEffect))]
+        [Tooltip("The particle system to spawn into the world")]
+        [SerializeField] private GameObject particleSystemToSpawn = null;
+
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(spawnParticleEffect))]
+        [Tooltip("How long the particle system is up for")]
+        [SerializeField] private float particleSystemUpTime = 1f;
+
+        [Header("Spell Object Settings")]
+
         [Tooltip("The spell to spawn into the world")]
         [SerializeField] private GameObject spellToSpawn = null;
 
@@ -32,6 +49,8 @@ namespace Spells
         [SerializeField] private float spellCoolDown = 1f;
 
         [Space]
+
+        [Header("Spell Values")]
 
         [Tooltip("Name of the spell value")]
         [SerializeField] private string spellValue1Name = "";
@@ -103,6 +122,18 @@ namespace Spells
         /// Check to see if this spell is using three values
         /// </summary>
         public bool UsingThreeValues { get { return useThreeValues; } }
+        /// <summary>
+        ///  The particle system to spawn into the world
+        /// </summary>
+        public GameObject ParticleSystemToSpawn { get { return particleSystemToSpawn; } }
+        /// <summary>
+        /// Whether or not to spawn a particle effect on cast
+        /// </summary>
+        public bool SpawnParticles { get { return spawnParticleEffect; } }
+        /// <summary>
+        /// How long the particle system is up for
+        /// </summary>
+        public float ParticleSystemUpTime { get { return particleSystemUpTime; } }
         #endregion
 
         #region Spell Events

@@ -72,6 +72,13 @@ namespace PlayerUI
             cooldownImage.fillAmount -= 1 / cooldown * Time.deltaTime;
         }
         /// <summary>
+        /// Reset fill amount of the cooldown overlay image
+        /// </summary>
+        public void ResetCooldownFilAmount()
+        {
+            cooldownImage.fillAmount = 1f;
+        }
+        /// <summary>
         /// Cast the spell at the given index on the action bar
         /// </summary>
         /// <param name="spellIndex"></param>

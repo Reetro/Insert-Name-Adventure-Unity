@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: Player Dash
   m_EditorClassIdentifier: 
   name: Dash
-  description: It Does a thing with stuff
+  description: Dash In the current direction the player is moving in. If idle nothing
+    happens
   artwork: {fileID: 21300000, guid: 42f6c722ead369b4b934a116b4324a4d, type: 3}
   useTwoValues: 1
   useThreeValues: 0
   hasCoolDown: 1
+  spawnParticleEffect: 1
+  particleSystemToSpawn: {fileID: 8444143868127711966, guid: 8d129017045a09a45822e06859d2a4fd,
+    type: 3}
+  particleSystemUpTime: 1
   spellToSpawn: {fileID: 6588241084584412938, guid: b1235bf5109054349ae89c9baededa96,
     type: 3}
   spellCoolDown: 2

@@ -76,6 +76,10 @@ namespace Spells
             SpellCoolDown = cooldown;
             defaultTimer = cooldown;
 
+            ParticleSystemToSpawn = scriptableSpell.ParticleSystemToSpawn;
+            ParticleSystemUpTime = scriptableSpell.ParticleSystemUpTime;
+            SpawnParticles = scriptableSpell.SpawnParticles;
+
             SpellInfo = scriptableSpell;
 
             OnUpackSpellValuesDone();
@@ -174,7 +178,8 @@ namespace Spells
 
                 if (MySpellIcon)
                 {
-                    MySpellIcon.UpdateCooldownFillAmount(SpellCoolDown);
+                    MySpellIcon.UpdateCooldownFillAmount(SpellInfo.SpellCoolDown);
+
                     MySpellIcon.UpdateCooldownText(SpellCoolDown);
                 }
             }
@@ -203,6 +208,8 @@ namespace Spells
             if (MySpellIcon)
             {
                 MySpellIcon.DisplayCooldown(false);
+
+                MySpellIcon.ResetCooldownFilAmount();
             }
 
             SpellInfo.OnSpellCastEnd.Invoke();
@@ -252,6 +259,18 @@ namespace Spells
         /// The Spell icon this spell is attached to
         /// </summary>
         public SpellIcon MySpellIcon { get; private set; }
+        /// <summary>
+        /// The particle system to spawn into the world
+        /// </summary>
+        public GameObject ParticleSystemToSpawn { get; private set; }
+        /// <summary>
+        /// Whether or not to spawn a particle effect on cast
+        /// </summary>
+        public bool SpawnParticles { get; private set; }
+        /// <summary>
+        /// How long the particle system is up for
+        /// </summary>
+        public float ParticleSystemUpTime { get; private set; }
         #endregion
     }
 }
