@@ -67,9 +67,12 @@ namespace PlayerUI
         /// Update the fill amount of the cooldown overlay image
         /// </summary>
         /// <param name="cooldown"></param>
-        public void UpdateCooldownFillAmount(float cooldown)
+        public void UpdateCooldownFillAmount(float cooldown, bool updateFill)
         {
-            cooldownImage.fillAmount -= 1 / cooldown * Time.deltaTime;
+            if (updateFill)
+            {
+                cooldownImage.fillAmount -= 1 / cooldown * Time.deltaTime;
+            }
         }
         /// <summary>
         /// Reset fill amount of the cooldown overlay image

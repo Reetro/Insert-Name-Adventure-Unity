@@ -2,7 +2,6 @@
 using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
-using GameplayManagement;
 using GameplayManagement.Assets;
 
 namespace PlayerCharacter.GameSaving

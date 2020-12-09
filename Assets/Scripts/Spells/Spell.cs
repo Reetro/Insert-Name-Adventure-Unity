@@ -1,4 +1,5 @@
-﻿using PlayerUI;
+﻿using EnemyCharacter;
+using PlayerUI;
 using UnityEngine;
 
 namespace Spells
@@ -82,6 +83,8 @@ namespace Spells
 
             SpellInfo = scriptableSpell;
 
+            DefaultSpellCoolDown = SpellCoolDown;
+
             OnUpackSpellValuesDone();
         }
         /// <summary>
@@ -119,7 +122,34 @@ namespace Spells
                 return false;
             }
         }
+        /// <summary>
+        /// Counts all enemies in the current level if count is 0 cooldown will pauses 
+        /// </summary>
+        public bool CanCooldownTick()
+        {
+            int enemyCount = 0;
+            var enemyBaseCharacters = FindObjectsOfType<EnemyBase>();
 
+            foreach (EnemyBase enemyBase in enemyBaseCharacters)
+            {
+                if (enemyBase)
+                {
+                    enemyCount++;
+                }
+            }
+
+            var attachedLeeches = FindObjectsOfType<AttachedLeech>();
+
+            foreach (AttachedLeech attachedLeech in attachedLeeches)
+            {
+                if (attachedLeech)
+                {
+                    enemyCount++;
+                }
+            }
+
+            return enemyCount > 0;
+        }
         /// <summary>
         /// Gets all spells in the current scene and checks to see if the given spell exists in the world
         /// </summary>
@@ -172,33 +202,42 @@ namespace Spells
         /// </summary>
         protected virtual  void Update()
         {
-            if (startCooldownTimer)
-            {
-                SpellCoolDown -= Time.deltaTime;
-
-                if (MySpellIcon)
+           if (CanCooldownTick())
+           {
+                if (startCooldownTimer)
                 {
-                    MySpellIcon.UpdateCooldownFillAmount(SpellInfo.SpellCoolDown);
+                    SpellCoolDown -= Time.deltaTime;
 
-                    MySpellIcon.UpdateCooldownText(SpellCoolDown);
-                }
-            }
+                    if (MySpellIcon)
+                    {
+                        MySpellIcon.UpdateCooldownFillAmount(SpellInfo.SpellCoolDown, true);
 
-            if (SpellCoolDown <= 0)
-            {
-                startCooldownTimer = false;
-
-                onCooldown = false;
-
-                if (SpellInfo)
-                {
-                    SpellInfo.OnSpellCooldownEnd.Invoke();
+                        MySpellIcon.UpdateCooldownText(SpellCoolDown);
+                    }
                 }
 
-                OnSpellCastEnded();
+                if (SpellCoolDown <= 0)
+                {
+                    startCooldownTimer = false;
 
-                SpellCoolDown = defaultTimer;
-            }
+                    onCooldown = false;
+
+                    SpellCoolDown = DefaultSpellCoolDown;
+
+                    if (SpellInfo)
+                    {
+                        SpellInfo.OnSpellCooldownEnd.Invoke();
+                    }
+
+                    OnSpellCastEnded();
+
+                    SpellCoolDown = defaultTimer;
+                }
+           }
+           else
+           {
+                PauseCooldown();
+           }
         }
         /// <summary>
         /// Destroy Gameobject on cast end
@@ -215,6 +254,22 @@ namespace Spells
             SpellInfo.OnSpellCastEnd.Invoke();
 
             Destroy(gameObject);
+        }
+        /// <summary>
+        /// Stops the cooldown countdown
+        /// </summary>
+        public void PauseCooldown()
+        {
+            startCooldownTimer = false;
+
+            RemainingCooldownTime = SpellCoolDown;
+
+            if (MySpellIcon)
+            {
+                MySpellIcon.UpdateCooldownFillAmount(SpellInfo.SpellCoolDown, false);
+
+                MySpellIcon.UpdateCooldownText(RemainingCooldownTime);
+            }
         }
         #endregion
 
@@ -239,6 +294,10 @@ namespace Spells
         /// How long the spell cooldown lasts
         /// </summary>
         public float SpellCoolDown { get; private set; } = 0f;
+        /// <summary>
+        /// Default value of SpellCoolDown
+        /// </summary>
+        public float DefaultSpellCoolDown { get; private set; } = 0f;
         /// <summary>
         /// The spell to spawn into the world
         /// </summary>
@@ -271,6 +330,10 @@ namespace Spells
         /// How long the particle system is up for
         /// </summary>
         public float ParticleSystemUpTime { get; private set; }
+        /// <summary>
+        /// The remaining cooldown time this spell has
+        /// </summary>
+        public static float RemainingCooldownTime { get; private set; } = 0f;
         #endregion
     }
 }
