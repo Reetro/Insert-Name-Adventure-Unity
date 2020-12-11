@@ -26,6 +26,10 @@ namespace Spells
         [Tooltip("Whether or not the spell has a cooldown")]
         [SerializeField] private bool hasCoolDown = true;
 
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
+        [Tooltip("Does this spell need a enemy active in the level to cooldown")]
+        [SerializeField] private bool needsEnemyToCD = true;
+
         [Tooltip("Whether or not to spawn a particle effect on cast")]
         [SerializeField] private bool spawnParticleEffect = true;
 
@@ -134,6 +138,10 @@ namespace Spells
         /// How long the particle system is up for
         /// </summary>
         public float ParticleSystemUpTime { get { return particleSystemUpTime; } }
+        /// <summary>
+        /// Does this spell need a enemy active in the level to cooldown
+        /// </summary>
+        public bool NeedsEnemyToCooldown { get { return needsEnemyToCD; } }
         #endregion
 
         #region Spell Events

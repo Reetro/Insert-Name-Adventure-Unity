@@ -18,6 +18,7 @@ MonoBehaviour:
   useTwoValues: 1
   useThreeValues: 0
   hasCoolDown: 1
+  needsEnemyToCD: 1
   spawnParticleEffect: 0
   particleSystemToSpawn: {fileID: 8444143868127711966, guid: 8d129017045a09a45822e06859d2a4fd,
     type: 3}

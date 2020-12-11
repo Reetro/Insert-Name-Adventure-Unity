@@ -82,6 +82,7 @@ namespace Spells
             HasCoolDown = hasCooldown;
             SpellCoolDown = cooldown;
             defaultTimer = cooldown;
+            NeedsEnemyToCooldown = scriptableSpell.NeedsEnemyToCooldown;
 
             ParticleSystemToSpawn = scriptableSpell.ParticleSystemToSpawn;
             ParticleSystemUpTime = scriptableSpell.ParticleSystemUpTime;
@@ -133,28 +134,35 @@ namespace Spells
         /// </summary>
         public bool CanCooldownTick()
         {
-            int enemyCount = 0;
-            var enemyBaseCharacters = FindObjectsOfType<EnemyBase>();
-
-            foreach (EnemyBase enemyBase in enemyBaseCharacters)
+            if (NeedsEnemyToCooldown)
             {
-                if (enemyBase)
+                int enemyCount = 0;
+                var enemyBaseCharacters = FindObjectsOfType<EnemyBase>();
+
+                foreach (EnemyBase enemyBase in enemyBaseCharacters)
                 {
-                    enemyCount++;
+                    if (enemyBase)
+                    {
+                        enemyCount++;
+                    }
                 }
+
+                var attachedLeeches = FindObjectsOfType<AttachedLeech>();
+
+                foreach (AttachedLeech attachedLeech in attachedLeeches)
+                {
+                    if (attachedLeech)
+                    {
+                        enemyCount++;
+                    }
+                }
+
+                return enemyCount > 0;
             }
-
-            var attachedLeeches = FindObjectsOfType<AttachedLeech>();
-
-            foreach (AttachedLeech attachedLeech in attachedLeeches)
+            else
             {
-                if (attachedLeech)
-                {
-                    enemyCount++;
-                }
+                return true;
             }
-
-            return enemyCount > 0;
         }
         /// <summary>
         /// Gets all spells in the current scene and checks to see if the given spell exists in the world
@@ -388,6 +396,10 @@ namespace Spells
         /// Checks to see if the spell was on cooldown
         /// </summary>
         public static bool WasOnCooldown { get; private set; } = false;
+        /// <summary>
+        /// Does this spell need a enemy active in the level to cooldown
+        /// </summary>
+        public bool NeedsEnemyToCooldown { get; private set; } = false;
         #endregion
     }
 }
