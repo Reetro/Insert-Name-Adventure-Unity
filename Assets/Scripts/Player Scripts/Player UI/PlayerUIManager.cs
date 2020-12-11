@@ -14,9 +14,6 @@ namespace PlayerUI
         [SerializeField] Button loadCheckpointBTN = null;
         [SerializeField] TextMeshProUGUI gameOverText = null;
 
-        [Header("Player UI")]
-        [SerializeField] HealthBar healthBar = null;
-
         [SerializeField] private GridLayoutGroup actionBarLayout = null;
         [SerializeField] private ActionButton actionSlot = null;
         [SerializeField] private SpellIcon spellIcon = null;
@@ -48,12 +45,12 @@ namespace PlayerUI
         /// </summary>
         private void loadCheckpoint_onclick()
         {
+            levelLoader = FindObjectOfType<LevelLoader>();
+
             levelLoader.LoadCheckpoint();
+
+            HideDeathUI();
         }
-        /// <summary>
-        /// Set the internal health bar value to the player HP bar
-        /// </summary>
-        public HealthBar HPBar => healthBar;
         /// <summary>
         /// Hide the player death screen UI
         /// </summary>

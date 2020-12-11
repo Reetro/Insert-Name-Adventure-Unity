@@ -60,6 +60,9 @@ namespace GameplayManagement
         [HideInInspector]
         public OnControllerUpdate controllerUpdated;
 
+        [HideInInspector]
+        public UnityEvent onLevelExitOverlap;
+
         /// <summary>
         /// Checks to see if a Gamepad is connected
         /// </summary>

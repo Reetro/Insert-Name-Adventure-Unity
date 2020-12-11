@@ -622,6 +622,8 @@ public class GeneralFunctions : MonoBehaviour
 
                 if (spell)
                 {
+                    DontDestroyOnLoad(spellToCast);
+
                     spell.StartSpellCast(spellInfo, spellToCast);
                 }
                 else
@@ -656,6 +658,8 @@ public class GeneralFunctions : MonoBehaviour
 
                 if (spell)
                 {
+                    DontDestroyOnLoad(spellToCast);
+
                     spell.StartSpellCast(spellInfo, spellToCast, spellIcon);
                 }
                 else

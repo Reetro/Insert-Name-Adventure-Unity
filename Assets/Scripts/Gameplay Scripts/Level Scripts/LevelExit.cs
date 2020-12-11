@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using GameplayManagement.Assets;
 
 namespace LevelObjects.SceneLoading
 {
@@ -17,6 +18,8 @@ namespace LevelObjects.SceneLoading
             {
                 if (!GeneralFunctions.IsObjectDead(collision.gameObject))
                 {
+                    GameAssets.GlobalManager.onLevelExitOverlap.Invoke();
+
                     levelLoader.LoadNextLevel();
                 }
             }

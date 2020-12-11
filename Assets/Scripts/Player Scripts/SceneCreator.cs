@@ -77,12 +77,19 @@ namespace GameplayManagement.SceneLoading
 
             if (createUI)
             {
-                playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
+                var hudInLevel = FindObjectOfType<PlayerUIManager>();
+
+                if (!hudInLevel)
+                {
+                    playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
+
+                    DontDestroyOnLoad(playerHud);
+                }
+
+                myHealthComp.ConstructHealthComponentForPlayer();
             }
 
             myHealthComp.MyPlayerState = playerState.GetComponent<PlayerState>();
-
-            myHealthComp.ConstructHealthComponent(playerHud.GetComponent<PlayerUIManager>().HPBar);
         }
         /// <summary>
         /// Sets up all gameplay related components

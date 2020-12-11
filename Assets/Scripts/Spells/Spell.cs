@@ -1,6 +1,8 @@
 ﻿using EnemyCharacter;
 using PlayerUI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using GameplayManagement.Assets;
 
 namespace Spells
 {
@@ -19,6 +21,10 @@ namespace Spells
         #endregion
 
         #region Setup Functions
+        private void Awake()
+        {
+            GameAssets.GlobalManager.onLevelExitOverlap.AddListener(OnLevelExitOverlap);
+        }
         /// <summary>
         /// Sets all spell values and casts the spell
         /// </summary>
@@ -260,6 +266,8 @@ namespace Spells
         /// </summary>
         public void PauseCooldown()
         {
+            WasOnCooldown = true;
+
             startCooldownTimer = false;
 
             RemainingCooldownTime = SpellCoolDown;
@@ -270,6 +278,48 @@ namespace Spells
 
                 MySpellIcon.UpdateCooldownText(RemainingCooldownTime);
             }
+        }
+        /// <summary>
+        /// Resumes the spell cooldown
+        /// </summary>
+        public void ResumeCooldown()
+        {
+            WasOnCooldown = false;
+
+            SpellCoolDown = RemainingCooldownTime;
+
+            startCooldownTimer = true;
+        }
+        #endregion
+
+        #region Level Loading Events
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
+        /// <summary>
+        /// Upon a level being loaded check to see if was on cooldown
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
+        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        {
+            if (WasOnCooldown)
+            {
+                ResumeCooldown();
+            }
+        }
+        /// <summary>
+        /// Pause spell cooldown when player overlaps the level exit
+        /// </summary>
+        private void OnLevelExitOverlap()
+        {
+            PauseCooldown();
         }
         #endregion
 
@@ -334,6 +384,10 @@ namespace Spells
         /// The remaining cooldown time this spell has
         /// </summary>
         public static float RemainingCooldownTime { get; private set; } = 0f;
+        /// <summary>
+        /// Checks to see if the spell was on cooldown
+        /// </summary>
+        public static bool WasOnCooldown { get; private set; } = false;
         #endregion
     }
 }

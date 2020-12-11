@@ -142,6 +142,8 @@ namespace PlayerCharacter.GameSaving
 
             CurrentLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
+            playerHPBar = FindObjectOfType<PlayerUIManager>().transform.GetChild(1).GetComponent<HealthBar>();
+
             SetPlayerHealth();
         }
         #endregion

@@ -69,6 +69,17 @@ public class HealthComponent : MonoBehaviour
         gameplayManager = GameAssets.GlobalManager;
 
         IsCurrentlyDead = false;
+    }
+    /// <summary>
+    /// Setup the health component for the player character
+    /// </summary>
+    public void ConstructHealthComponentForPlayer()
+    {
+        healthBar = FindObjectOfType<PlayerUIManager>().transform.GetChild(1).GetComponent<HealthBar>();
+
+        gameplayManager = GameAssets.GlobalManager;
+
+        IsCurrentlyDead = false;
 
         if (GeneralFunctions.IsObjectOnPlayer(gameObject))
         {
@@ -87,6 +98,11 @@ public class HealthComponent : MonoBehaviour
             }
             else
             {
+                if (!MyPlayerState)
+                {
+                    MyPlayerState = GeneralFunctions.GetPlayerState();
+                }
+
                 maxHealth = MyPlayerState.MaxHealth;
                 CurrentHealth = MyPlayerState.CurrentHealth;
 
@@ -106,7 +122,6 @@ public class HealthComponent : MonoBehaviour
             }
         }
     }
-
     /// <summary>
     /// Add the given value to this Gameobjects current health
     /// </summary>
