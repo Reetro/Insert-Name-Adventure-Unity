@@ -10,6 +10,7 @@ using PlayerCharacter.GameSaving;
 using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using Spells;
+using EnemyCharacter.Collision;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management
@@ -511,9 +512,15 @@ public class GeneralFunctions : MonoBehaviour
         {
             var health = target.GetComponent<HealthComponent>();
 
+            var leechTailHitBox = target.GetComponent<LeechTailHitBox>();
+
             if (health)
             {
                 health.ProccessDamage(amount, showText, GameAssets.GlobalManager.whatCanBeDamaged);
+            }
+            else if (leechTailHitBox)
+            {
+                leechTailHitBox.DamageParent(showText, amount, GameAssets.GlobalManager.whatCanBeDamaged);
             }
             else
             {
