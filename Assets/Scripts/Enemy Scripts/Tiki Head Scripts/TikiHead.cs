@@ -22,6 +22,9 @@ namespace EnemyCharacter.AI
         [Tooltip("How long the Tiki Head stays in the air for")]
         [SerializeField] private float moveToGroundDelay = 2f;
 
+        [Tooltip("How close the Tiki Heads Y cord can be to the players")]
+        [SerializeField] private float yDistanceTolerance = 1f;
+
         [Header("Follow Settings")]
 
         [Tooltip("How long the Tiki Head waits before following the player")]
@@ -55,6 +58,9 @@ namespace EnemyCharacter.AI
         [Tooltip("Set's which layers the Tiki Head considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
+        [Tooltip("How far to the grounded raycast")]
+        [SerializeField] private float traceDistance = 1f;
+
         [Header("Sight Settings")]
 
         [Tooltip("What layers this object can see")]
@@ -82,6 +88,7 @@ namespace EnemyCharacter.AI
         private BoxCollider2D colliderBox2D = null;
         private bool isTouchingGround = false;
         private bool wasAbove = false;
+        private bool skipVisCheck = false;
         #endregion
 
         /// <summary>
@@ -118,9 +125,20 @@ namespace EnemyCharacter.AI
 
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
-            SetLaunchPoint();  
+            if (IsAbovePlayer())
+            {
+                skipVisCheck = true;
 
-            CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
+                CurrentMovementState = TikiHeadMovementState.FollowPlayer;
+            }
+            else
+            {
+                skipVisCheck = false;
+
+                SetLaunchPoint();
+
+                CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
+            }
         }
         /// <summary>
         /// Destroy Gameobject on death
@@ -137,20 +155,13 @@ namespace EnemyCharacter.AI
         /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject) || GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
-            {
-                isTouchingGround = true;
-            }
-
             if (isFalling)
             {
                 if (collision.gameObject)
                 {
+                    // Squish Player if Tiki Head is moving down
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject) && !isPlayerSquished)
                     {
-                        isTouchingGround = false;
-                        canMove = false;
-
                         if (!GeneralFunctions.IsPlayerDead())
                         {
                             GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
@@ -174,11 +185,9 @@ namespace EnemyCharacter.AI
             {
                 if (collision.gameObject)
                 {
+                    // Knockback player if Tiki Head is grounded
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
-                        isTouchingGround = false;
-                        canMove = false;
-
                         if (!isLaunching && !GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
                         {
                             if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
@@ -199,14 +208,32 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Tiki Head is no longer touching ground
+        /// Cast a raycast down towards the ground to see if Tiki Head is grounded
         /// </summary>
-        /// <param name="collision"></param>
-        private void OnCollisionExit2D(Collision2D collision)
+        private bool TouchingGround()
         {
-            if (GeneralFunctions.IsObjectOnLayer(whatIsGround, collision.gameObject) || GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
+            Vector2 traceStart = transform.position;
+            Vector2 traceEnd = -GeneralFunctions.GetFaceingDirectionY(gameObject);
+
+            RaycastHit2D raycastHits2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatIsGround);
+
+            if (raycastHits2D)
             {
-                isTouchingGround = false;
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                }
+
+                return true;
+            }
+            else
+            {
+                if (drawDebug)
+                {
+                    Debug.DrawRay(traceStart, traceEnd, Color.red);
+                }
+
+                return false;
             }
         }
         /// <summary>
@@ -284,6 +311,9 @@ namespace EnemyCharacter.AI
             Color tmp = spriteRenderer.color;
 
             tmp.a = newOpacity;
+            tmp.r = 1f;
+            tmp.g = 1f;
+            tmp.b = 1f;
 
             spriteRenderer.color = tmp;
         }
@@ -307,6 +337,8 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
+            isTouchingGround = TouchingGround();
+
             switch (CurrentMovementState)
             {
                 case TikiHeadMovementState.LaunchTikiHead:
@@ -333,17 +365,12 @@ namespace EnemyCharacter.AI
 
                 if (visible)
                 {
-                    wasAbove = false;
-
-                    startedMoveToGround = true;
-
-                    CurrentMovementState = TikiHeadMovementState.MoveToGround;
-
-                    if (!moveToGroundTimerRunning)
-                    {
-                        StartCoroutine(MoveToGroundDelay());
-                    }
+                    startedMoveToGround = SetupMoveToGround(startedMoveToGround);
                 }
+            }
+            else if (skipVisCheck)
+            {
+                startedMoveToGround = SetupMoveToGround(startedMoveToGround);
             }
             else if (!launchTimerRunning && !startedMoveToGround)
             {
@@ -353,12 +380,34 @@ namespace EnemyCharacter.AI
             MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
         }
         /// <summary>
+        /// Setup Movement state Move To Ground
+        /// </summary>
+        /// <param name="startedMoveToGround"></param>
+        private bool SetupMoveToGround(bool startedMoveToGround)
+        {
+            skipVisCheck = false;
+
+            wasAbove = false;
+
+            startedMoveToGround = true;
+
+            CurrentMovementState = TikiHeadMovementState.MoveToGround;
+
+            if (!moveToGroundTimerRunning)
+            {
+                StartCoroutine(MoveToGroundDelay());
+            }
+            return startedMoveToGround;
+        }
+        /// <summary>
         /// Launch Tiki Head Into the Air
         /// </summary>
         private void LaunchTikiHeadIntoAir()
         {
             if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching))
             {
+                spriteRenderer.color = Color.white;
+
                 if (!moveToGroundTimerRunning)
                 {
                     isTouchingGround = false;
@@ -408,10 +457,10 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    var ydistance = transform.position.y - PlayerTransform.position.y;
-
-                    if (ydistance > 1 && isTouchingGround)
+                    if (IsAbovePlayer() && isTouchingGround)
                     {
+                        spriteRenderer.color = Color.white;
+
                         isFalling = false;
 
                         wasAbove = true;
@@ -441,6 +490,13 @@ namespace EnemyCharacter.AI
         private void SetLaunchPoint()
         {
             launchTarget = GeneralFunctions.GetPoint(GeneralFunctions.GetFaceingDirectionY(gameObject), transform.position, launchDistanceMultiplier);
+        }
+        /// <summary>
+        /// Subtracts the Tiki Head y cord from the player's y cord to determine if it's above the player
+        /// </summary>
+        private bool IsAbovePlayer()
+        {
+            return transform.position.y - PlayerTransform.position.y > yDistanceTolerance;
         }
 
         #region Movement Timers
@@ -474,6 +530,8 @@ namespace EnemyCharacter.AI
             followTimerRunning = true;
 
             yield return new WaitForSeconds(moveToGroundDelay);
+
+            spriteRenderer.color = Color.green;
 
             canMove = true;
 

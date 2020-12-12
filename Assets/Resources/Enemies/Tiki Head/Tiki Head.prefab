@@ -123,6 +123,7 @@ MonoBehaviour:
   launchSpeed: 20
   launchDistanceMultiplier: 8
   moveToGroundDelay: 3
+  yDistanceTolerance: 1
   followDelay: 0.8
   followSpeed: 8
   playerSquishScale: {x: 1, y: 0.4, z: 0}
@@ -133,6 +134,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  traceDistance: 1
   sightLayers:
     serializedVersion: 2
     m_Bits: 131840
