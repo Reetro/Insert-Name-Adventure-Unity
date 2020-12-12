@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1500ae66d6a93ee448fffb36d9bbce70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leechFlySpeed: 0
+  leechFlySpeed: 3
   randomYMin: 0.005
   randomYMax: 0.007
 --- !u!114 &5653861939190943896
