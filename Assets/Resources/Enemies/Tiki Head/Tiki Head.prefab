@@ -137,7 +137,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 131840
   sightRange: 10
-  drawDebug: 1
+  drawDebug: 0
 --- !u!114 &8108744408832518188
 MonoBehaviour:
   m_ObjectHideFlags: 0

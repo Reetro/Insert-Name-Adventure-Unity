@@ -408,7 +408,9 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    if (GeneralFunctions.IsObjectAbove(transform.position, PlayerTransform.position) && isTouchingGround)
+                    var ydistance = transform.position.y - PlayerTransform.position.y;
+
+                    if (ydistance > 1 && isTouchingGround)
                     {
                         isFalling = false;
 
