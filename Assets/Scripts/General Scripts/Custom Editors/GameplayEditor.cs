@@ -264,6 +264,44 @@ namespace CustomEditors
         private Editor slugHealthEditor = null;
         #endregion
 
+        #region Tiki Head Health Variables
+        private SerializedProperty _TikiHeadMaxHealth;
+        #endregion
+
+        #region Tiki Head Movement Variables
+        private SerializedProperty _TikiHeadLaunchDelay;
+        private SerializedProperty _TikiHeadLaunchSpeed;
+        private SerializedProperty _TikiHeadLaunchDistanceMultiplier;
+        private SerializedProperty _TikiHeadMoveToGroundDelay;
+        private SerializedProperty _TikiHeadYDistanceToTolerance;
+        private SerializedProperty _TikiHeadFollowDelay;
+        private SerializedProperty _TikiHeadFollowSpeed;
+        private SerializedProperty _TikiHeadPlayerSquishScale;
+        private SerializedProperty _TikiHeadDamageToApply;
+        private SerializedProperty _TikiHeadSquishEffect;
+        private SerializedProperty _TikiHeadSpriteOpacity;
+        private SerializedProperty _TikiHeadKnockBackMultiplier;
+        private SerializedProperty _TikiHeadTraceDistance;
+        private SerializedProperty _TikiHeadSightLayers;
+        private SerializedProperty _TikiHeadSightRange;
+        private SerializedProperty _TikiHeadDrawDebug;
+        private SerializedProperty _TikiHeadWhatIsGround;
+        #endregion
+
+        #region Tiki Head Editors
+        private Editor tikiHeadMovmentEditor = null;
+        private Editor tikiHeadHealthEditor = null;
+        #endregion
+
+        #region Tiki Head Scale Variables
+        private SerializedProperty _TikiHeadScale;
+        #endregion
+
+        #region Tiki Head Objects
+        private SerializedObject tikiHeadObject;
+        private SerializedObject tikiHeadScaleObject;
+        private SerializedObject tikiHeadHealthObject;
+        #endregion
         #endregion
 
         #region Status Effects Editors
@@ -293,6 +331,7 @@ namespace CustomEditors
         private static bool showPlayerSlow = false;
         private static bool showHeal = false;
         private static bool showPlayerDash = false;
+        private static bool showTikiHead = false;
         #endregion
         #endregion
 
@@ -401,6 +440,11 @@ namespace CustomEditors
 
             SetupSlugMovementEditor();
 
+            SetupTikiHeadEditor();
+
+            SetupTikiHeadHealthEditor();
+
+            SetupTikiHeadMovementEditor();
         }
 
         #region Leech Functions
@@ -600,6 +644,54 @@ namespace CustomEditors
         }
         #endregion
 
+        #region Tiki Head Functions
+        private void SetupTikiHeadEditor()
+        {
+            var tikiHead = Resources.Load("Enemies/Tiki Head/Tiki Head") as GameObject;
+
+            if (tikiHead)
+            {
+                tikiHeadMovmentEditor = Editor.CreateEditor(tikiHead.GetComponent<TikiHead>());
+                tikiHeadHealthEditor = Editor.CreateEditor(tikiHead.GetComponent<HealthComponent>());
+
+                tikiHeadHealthObject = new SerializedObject(tikiHead.GetComponent<HealthComponent>());
+                tikiHeadObject = new SerializedObject(tikiHead.GetComponent<TikiHead>());
+                tikiHeadScaleObject = new SerializedObject(tikiHead.GetComponent<Transform>());
+            }
+            else
+            {
+                Debug.LogError("Failed to get slugPrefab in Gameplay Editor");
+            }
+        }
+
+        private void SetupTikiHeadHealthEditor()
+        {
+            _TikiHeadMaxHealth = slugHealthObject.FindProperty("maxHealth");
+        }
+
+        private void SetupTikiHeadMovementEditor()
+        {
+            _TikiHeadLaunchDelay = tikiHeadObject.FindProperty("launchDelay");
+            _TikiHeadSightLayers = tikiHeadObject.FindProperty("sightLayers");
+            _TikiHeadMoveToGroundDelay = tikiHeadObject.FindProperty("moveToGroundDelay");
+            _TikiHeadPlayerSquishScale = tikiHeadObject.FindProperty("playerSquishScale");
+            _TikiHeadSquishEffect = tikiHeadObject.FindProperty("squishEffect");
+            _TikiHeadLaunchSpeed = tikiHeadObject.FindProperty("launchSpeed");
+            _TikiHeadKnockBackMultiplier = tikiHeadObject.FindProperty("knockBackMultiplier");
+            _TikiHeadLaunchDistanceMultiplier = tikiHeadObject.FindProperty("launchDistanceMultiplier");
+            _TikiHeadSightRange = tikiHeadObject.FindProperty("sightRange");
+            _TikiHeadFollowDelay = tikiHeadObject.FindProperty("followDelay");
+            _TikiHeadFollowSpeed = tikiHeadObject.FindProperty("followSpeed");
+            _TikiHeadYDistanceToTolerance = tikiHeadObject.FindProperty("yDistanceTolerance");
+            _TikiHeadSpriteOpacity = tikiHeadObject.FindProperty("spriteOpacity");
+            _TikiHeadDamageToApply = tikiHeadObject.FindProperty("damageToApply");
+            _TikiHeadMoveToGroundDelay = tikiHeadObject.FindProperty("moveToGroundDelay");
+            _TikiHeadWhatIsGround  = tikiHeadObject.FindProperty("whatIsGround");
+            _TikiHeadSightLayers = tikiHeadObject.FindProperty("sightLayers");
+            _TikiHeadDrawDebug = tikiHeadObject.FindProperty("drawDebug");
+        }
+        #endregion
+
         #region Slug Functions
         private void SetupSlugEditor()
         {
@@ -646,8 +738,10 @@ namespace CustomEditors
             _ShamanScale = shamanScaleObject.FindProperty("m_LocalScale");
             // Set Axe Thrower scale var
             _AxeThrowerScale = axeThrowerScaleObject.FindProperty("m_LocalScale");
-            // Set slug scale var
+            // Set Slug scale var
             _SlugScale = slugScaleObject.FindProperty("m_LocalScale");
+            // Set Tiki Head scale var
+            _TikiHeadScale = tikiHeadScaleObject.FindProperty("m_LocalScale");
         }
         #endregion
 
@@ -1002,6 +1096,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     leechScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1074,6 +1170,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     leechFatherScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1179,6 +1277,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     leechMotherScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1275,6 +1375,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     shamanScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1346,6 +1448,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     axeThrowerScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1417,6 +1521,8 @@ namespace CustomEditors
                 {
                     // Apply values to the target
                     slugScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 // fetch current values from the target
@@ -1468,6 +1574,79 @@ namespace CustomEditors
                 GUILayout.Space(foldoutSpaceing);
             }
 
+            #endregion
+
+            #region Tiki Head UI
+            showTikiHead = EditorGUILayout.Foldout(showTikiHead, "Tiki Head Settings", true);
+
+            if (showTikiHead)
+            {
+                EditorGUI.indentLevel += indentLevel;
+
+                // fetch current values from the target
+                tikiHeadScaleObject.Update();
+
+                // Start a code block to check for GUI changes
+                EditorGUI.BeginChangeCheck();
+
+                EditorGUILayout.PropertyField(_SlugScale, new GUIContent("Tiki Head Scale"));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Apply values to the target
+                    tikiHeadScaleObject.ApplyModifiedProperties();
+
+                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+                }
+
+                // fetch current values from the target
+                tikiHeadHealthObject.Update();
+
+                // fetch current values from the target
+                tikiHeadObject.Update();
+
+                if (tikiHeadMovmentEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    tikiHeadMovmentEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        tikiHeadObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        tikiHeadObject.Update();
+                    }
+                }
+
+                if (tikiHeadHealthEditor)
+                {
+                    // Start a code block to check for GUI changes
+                    EditorGUI.BeginChangeCheck();
+
+                    tikiHeadHealthEditor.OnInspectorGUI();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        // Apply values to the target
+                        tikiHeadHealthObject.ApplyModifiedProperties();
+
+                        // fetch current values from the target
+                        tikiHeadHealthObject.Update();
+                    }
+                }
+
+                // Apply values to the target
+                tikiHeadHealthObject.ApplyModifiedProperties();
+
+                // Apply values to the target
+                tikiHeadObject.ApplyModifiedProperties();
+
+                GUILayout.Space(foldoutSpaceing);
+            }
             #endregion
         }
         #endregion
