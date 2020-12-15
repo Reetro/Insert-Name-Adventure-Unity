@@ -1,7 +1,6 @@
 ﻿using EnemyCharacter;
 using PlayerUI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using GameplayManagement.Assets;
 
 namespace Spells
@@ -21,9 +20,14 @@ namespace Spells
         #endregion
 
         #region Setup Functions
-        private void Awake()
+        /// <summary>
+        /// Add listeners to Gameplay Manger Events
+        /// </summary>
+        public void SetupCallBacks()
         {
             GameAssets.GlobalManager.onLevelExitOverlap.AddListener(OnLevelExitOverlap);
+
+            GameAssets.GlobalManager.onSceneLoadingDone.AddListener(OnLevelFinishedLoading);
         }
         /// <summary>
         /// Sets all spell values and casts the spell
@@ -298,24 +302,12 @@ namespace Spells
 
             startCooldownTimer = true;
         }
-        #endregion
-
-        #region Level Loading Events
-        private void OnEnable()
-        {
-            SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        }
-
-        private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-        }
         /// <summary>
         /// Upon a level being loaded check to see if was on cooldown
         /// </summary>
         /// <param name="scene"></param>
         /// <param name="mode"></param>
-        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        void OnLevelFinishedLoading()
         {
             if (WasOnCooldown)
             {

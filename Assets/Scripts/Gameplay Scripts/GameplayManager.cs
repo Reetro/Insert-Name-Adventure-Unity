@@ -63,6 +63,9 @@ namespace GameplayManagement
         [HideInInspector]
         public UnityEvent onLevelExitOverlap;
 
+        [HideInInspector]
+        public UnityEvent onSceneLoadingDone;
+
         /// <summary>
         /// Checks to see if a Gamepad is connected
         /// </summary>

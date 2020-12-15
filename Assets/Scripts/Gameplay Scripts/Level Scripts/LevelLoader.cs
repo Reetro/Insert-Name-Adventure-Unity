@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayerCharacter.GameSaving;
+using GameplayManagement.Assets;
 
 namespace LevelObjects.SceneLoading
 {
@@ -11,7 +12,13 @@ namespace LevelObjects.SceneLoading
         public float transitionTime = 1f;
 
         public PlayerState playerState = null;
+        private bool runSceneTimer = false;
+        private float sceneTimer = 0f;
 
+        private void Awake()
+        {
+            sceneTimer = transitionTime;
+        }
         /// <summary>
         /// Will load the scene that corresponds to the given index
         /// </summary>
@@ -56,6 +63,48 @@ namespace LevelObjects.SceneLoading
             else
             {
                 SceneManager.LoadScene(0);
+            }
+        }
+        /// <summary>
+        /// Bind scene loaded to OnLevelFinishedLoading
+        /// </summary>
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
+        /// <summary>
+        /// Unbind scene loaded to OnLevelFinishedLoading
+        /// </summary>
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
+        /// <summary>
+        /// Called when scene has finished loading in will start a timer that ends when the transition animation has ended
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
+        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        {
+            runSceneTimer = true;
+        }
+        /// <summary>
+        /// Counts down the time until the transition animation has ended
+        /// </summary>
+        private void Update()
+        {
+            if (runSceneTimer)
+            {
+                sceneTimer -= Time.deltaTime;
+
+                if (sceneTimer <= 0)
+                {
+                    runSceneTimer = false;
+
+                    sceneTimer = transitionTime;
+
+                    GameAssets.GlobalManager.onSceneLoadingDone.Invoke();
+                }
             }
         }
     }

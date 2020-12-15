@@ -8,6 +8,7 @@ using PlayerCharacter.Controller;
 using EnemyCharacter;
 using GameplayManagement.Assets;
 using PlayerUI.ToolTipUI;
+using Spells;
 
 namespace GameplayManagement.SceneLoading
 {
@@ -36,7 +37,7 @@ namespace GameplayManagement.SceneLoading
             SetupGameplayComponents();
         }
         /// <summary>
-        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets
+        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets then update spell call backs
         /// </summary>
         private void SetupLevel()
         {
@@ -50,6 +51,16 @@ namespace GameplayManagement.SceneLoading
             if (levelExit)
             {
                 levelExit.ConsturctExit(levelLoader.GetComponent<LevelLoader>());
+            }
+
+            var activeSpells = FindObjectsOfType<Spell>();
+
+            foreach (Spell spell in activeSpells)
+            {
+                if (spell)
+                {
+                    spell.SetupCallBacks();
+                }
             }
         }
         /// <summary>
