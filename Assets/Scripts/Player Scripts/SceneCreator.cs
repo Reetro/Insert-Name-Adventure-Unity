@@ -113,6 +113,8 @@ namespace GameplayManagement.SceneLoading
             {
                 if (enemyBase)
                 {
+                    enemyBase.SetupCallbacks();
+
                     enemyBase.OnSceneCreated();
                 }
             }

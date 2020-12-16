@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
+using GameplayManagement.Assets;
 
 namespace EnemyCharacter
 {
@@ -24,6 +25,20 @@ namespace EnemyCharacter
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
+        }
+        /// <summary>
+        /// Setup all scene loader call backs
+        /// </summary>
+        public void SetupCallbacks()
+        {
+            GameAssets.GlobalManager.onSceneLoadingDone.AddListener(OnSceneLoadingDone);
+        }
+        /// <summary>
+        /// Called after the scene transitions has finished playing
+        /// </summary>
+        protected virtual void OnSceneLoadingDone()
+        {
+            // For use in children
         }
         /// <summary>
         /// Called when the current health on health component is 0 or below by default will only disable enemy collision
