@@ -32,6 +32,8 @@ MonoBehaviour:
   spellValue2: 50
   spellValue3Name: 
   spellValue3: 1
+  spellUpgrade1: {fileID: 11400000, guid: ce22c0606d0e88843a13eac2f9a65bbd, type: 2}
+  spellUpgrade2: {fileID: 0}
   OnSpellCast:
     m_PersistentCalls:
       m_Calls: []

@@ -81,6 +81,14 @@ namespace Spells
         [Tooltip("This kind of depends on the spell but an example of this might be how much to damage to apply to the player")]
         [SerializeField] private float spellValue3 = 1f;
 
+        [Header("Upgrades")]
+
+        [Tooltip("The first spell Upgrade")]
+        [SerializeField] private ScriptableSpellUpgrade spellUpgrade1 = null;
+
+        [Tooltip("The second spell Upgrade")]
+        [SerializeField] private ScriptableSpellUpgrade spellUpgrade2 = null;
+
         #region Properties
         /// <summary>
         /// This kind of depends on the spell but an example of this might is the player's health
