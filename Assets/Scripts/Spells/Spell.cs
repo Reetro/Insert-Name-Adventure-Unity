@@ -21,12 +21,17 @@ namespace Spells
 
         #region Setup Functions
         /// <summary>
+        /// Setup up level exit event call back
+        /// </summary>
+        private void Awake()
+        {
+            GameAssets.GlobalManager.onLevelExitOverlap.AddListener(OnLevelExitOverlap);
+        }
+        /// <summary>
         /// Add listeners to Gameplay Manger Events
         /// </summary>
         public void SetupCallBacks()
         {
-            GameAssets.GlobalManager.onLevelExitOverlap.AddListener(OnLevelExitOverlap);
-
             GameAssets.GlobalManager.onSceneLoadingDone.AddListener(OnLevelFinishedLoading);
         }
         /// <summary>

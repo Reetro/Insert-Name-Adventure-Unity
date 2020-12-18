@@ -20,6 +20,7 @@ TagManager:
   - Worm Segment
   - Player State
   - Player Particle Spawn
+  - Actionbar Container
   layers:
   - Default
   - TransparentFX

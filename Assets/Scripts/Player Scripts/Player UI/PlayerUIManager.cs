@@ -111,7 +111,7 @@ namespace PlayerUI
                 {
                     var spawnedSpellIcon = Instantiate(spellIcon, actionBarButtons[index].transform);
 
-                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerSpells[index], index);
+                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerSpells[index], index, actionBarButtons[index]);
 
                     actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
                 }

@@ -62,6 +62,16 @@ namespace GameplayManagement.SceneLoading
                     spell.SetupCallBacks();
                 }
             }
+
+            var enemies = FindObjectsOfType<EnemyBase>();
+
+            foreach (EnemyBase enemyBase in enemies)
+            {
+                if (enemyBase)
+                {
+                    enemyBase.SetupCallbacks();
+                }
+            }
         }
         /// <summary>
         /// Spawn in leech collision and setup checkpoint if valid then spawns in the player hud
@@ -113,8 +123,6 @@ namespace GameplayManagement.SceneLoading
             {
                 if (enemyBase)
                 {
-                    enemyBase.SetupCallbacks();
-
                     enemyBase.OnSceneCreated();
                 }
             }
