@@ -25,8 +25,6 @@ namespace Spells
         /// </summary>
         public void SetupCallBacks()
         {
-            GameAssets.GlobalManager.onLevelExitOverlap.AddListener(OnLevelExitOverlap);
-
             GameAssets.GlobalManager.onSceneLoadingDone.AddListener(OnLevelFinishedLoading);
         }
         /// <summary>
@@ -317,7 +315,7 @@ namespace Spells
         /// <summary>
         /// Pause spell cooldown when player overlaps the level exit
         /// </summary>
-        private void OnLevelExitOverlap()
+        public void OnLevelExitOverlap()
         {
             PauseCooldown();
         }

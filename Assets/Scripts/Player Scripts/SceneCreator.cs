@@ -37,7 +37,7 @@ namespace GameplayManagement.SceneLoading
             SetupGameplayComponents();
         }
         /// <summary>
-        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets then update spell call backs
+        /// Checks if the level loader and level exit currently exist in the spawn and update all cached references in GameAssets
         /// </summary>
         private void SetupLevel()
         {
@@ -45,22 +45,17 @@ namespace GameplayManagement.SceneLoading
 
             levelLoader = Instantiate(levelLoader, Vector2.zero, Quaternion.identity);
 
+            if (!levelLoader)
+            {
+                Debug.LogError("Scene Creator failed to spawn Level Loader");
+            }
+
             var levelExit = FindObjectOfType<LevelExit>();
 
             // Only setup the level exit if it is currently valid
             if (levelExit)
             {
                 levelExit.ConsturctExit(levelLoader.GetComponent<LevelLoader>());
-            }
-
-            var activeSpells = FindObjectsOfType<Spell>();
-
-            foreach (Spell spell in activeSpells)
-            {
-                if (spell)
-                {
-                    spell.SetupCallBacks();
-                }
             }
         }
         /// <summary>
@@ -74,9 +69,28 @@ namespace GameplayManagement.SceneLoading
 
             playerController = GetComponent<PlayerController>();
 
+            if (!playerState)
+            {
+                Debug.LogError("Scene Creator failed to spawn Player State");
+            }
+
+            if (!playerController)
+            {
+                Debug.LogError("Scene Creator failed to get Player Controller");
+            }
+
             playerController.MyPlayerState = playerState.GetComponent<PlayerState>();
 
-            FindObjectOfType<PlayerSpear>().OnSceneLoaded();
+            var spear = FindObjectOfType<PlayerSpear>();
+
+            if (spear)
+            {
+                spear.OnSceneLoaded();
+            }
+            else
+            {
+                Debug.LogError("Scene Creator Failed to find Player Spear");
+            }
 
             var checkpoint = FindObjectOfType<Checkpoint>();
 
@@ -103,7 +117,7 @@ namespace GameplayManagement.SceneLoading
             myHealthComp.MyPlayerState = playerState.GetComponent<PlayerState>();
         }
         /// <summary>
-        /// Sets up all gameplay related components
+        /// Sets up all gameplay related components then update spell call backs
         /// </summary>
         private void SetupGameplayComponents()
         {
@@ -113,8 +127,6 @@ namespace GameplayManagement.SceneLoading
             {
                 if (enemyBase)
                 {
-                    enemyBase.SetupCallbacks();
-
                     enemyBase.OnSceneCreated();
                 }
             }
@@ -137,6 +149,24 @@ namespace GameplayManagement.SceneLoading
             }
 
             GameAssets.UpdateReferences();
+
+            var activeSpells = FindObjectsOfType<Spell>();
+
+            foreach (Spell spell in activeSpells)
+            {
+                if (spell)
+                {
+                    spell.SetupCallBacks();
+                }
+            }
+
+            foreach (EnemyBase enemy in enemies)
+            {
+                if (enemy)
+                {
+                    enemy.SetupCallbacks();
+                }
+            }
         }
     }
 }
