@@ -244,7 +244,6 @@ GameObject:
   - component: {fileID: 7716091717921154066}
   - component: {fileID: 8291887927572139467}
   - component: {fileID: 8822087666611862644}
-  - component: {fileID: 4970310107860224288}
   m_Layer: 5
   m_Name: Spell Icon
   m_TagString: Untagged
@@ -366,15 +365,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldownImage: {fileID: 3160537652832540229}
   coolDownText: {fileID: 4765422921358335261}
---- !u!225 &4970310107860224288
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8930589888635901467}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
