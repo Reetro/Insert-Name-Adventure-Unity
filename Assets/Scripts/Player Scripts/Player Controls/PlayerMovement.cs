@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ComponentLibrary;
 
 namespace PlayerCharacter.Controller
 {

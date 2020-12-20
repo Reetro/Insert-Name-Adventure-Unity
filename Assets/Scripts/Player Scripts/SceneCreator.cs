@@ -9,7 +9,7 @@ using EnemyCharacter;
 using GameplayManagement.Assets;
 using PlayerUI.ToolTipUI;
 using Spells;
-using ComponentsLibrary;
+using ComponentLibrary;
 
 namespace GameplayManagement.SceneLoading
 {

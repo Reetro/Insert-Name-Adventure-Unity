@@ -7,6 +7,7 @@ using GameplayManagement;
 using StatusEffects;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
+using ComponentLibrary;
 
 namespace CustomEditors
 {

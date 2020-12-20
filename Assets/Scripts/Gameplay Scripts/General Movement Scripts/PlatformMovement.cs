@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
 using PlayerCharacter.Controller;
-using UnityEngine.Events;
+using ComponentLibrary;
 
 namespace LevelObjects.MovingObjects
 {

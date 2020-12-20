@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
 using GameplayManagement.Assets;
+using ComponentLibrary;
 
 namespace EnemyCharacter
 {

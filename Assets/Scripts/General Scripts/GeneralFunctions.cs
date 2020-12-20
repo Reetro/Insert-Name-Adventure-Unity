@@ -11,6 +11,7 @@ using LevelObjects.SceneLoading;
 using GameplayManagement.Assets;
 using Spells;
 using EnemyCharacter.Collision;
+using ComponentLibrary;
 
 /// <summary>
 /// This is a function library that contains useful functions for gameplay management

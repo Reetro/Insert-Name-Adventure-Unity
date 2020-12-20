@@ -2,6 +2,7 @@
 using StatusEffects;
 using EnemyCharacter;
 using EnemyCharacter.AI;
+using ComponentLibrary;
 
 namespace PlayerCharacter.Collision
 {

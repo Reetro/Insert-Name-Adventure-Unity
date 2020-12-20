@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using StatusEffects.Effects;
 using StatusEffects;
+using ComponentLibrary;
 
 namespace EnemyCharacter
 {

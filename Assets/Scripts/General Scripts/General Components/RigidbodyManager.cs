@@ -1,42 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class RigidbodyManager : MonoBehaviour
+namespace ComponentLibrary
 {
-    private Rigidbody2D myRigidBody2D = null;
-    private bool isZFrozen = false;
-    private bool wasFrozenByPlatfrom = false;
-
-    [HideInInspector]
-    public UnityEvent OnPlatformEnter;
-    [HideInInspector]
-    public UnityEvent OnPlatformExit;
-
-    void Awake()
+    public class RigidbodyManager : MonoBehaviour
     {
-        myRigidBody2D = GetComponent<Rigidbody2D>();
-        isZFrozen = myRigidBody2D.freezeRotation;
-    }
+        private Rigidbody2D myRigidBody2D = null;
+        private bool isZFrozen = false;
+        private bool wasFrozenByPlatfrom = false;
 
-    public void OnPlatfromEnterCall()
-    {
-        OnPlatformEnter.Invoke();
+        [HideInInspector]
+        public UnityEvent OnPlatformEnter;
+        [HideInInspector]
+        public UnityEvent OnPlatformExit;
 
-        if (!isZFrozen)
+        void Awake()
         {
-            myRigidBody2D.freezeRotation = false;
-            wasFrozenByPlatfrom = true;
+            myRigidBody2D = GetComponent<Rigidbody2D>();
+            isZFrozen = myRigidBody2D.freezeRotation;
         }
-    }
 
-    public void OnPlatfromExitCall()
-    {
-        OnPlatformExit.Invoke();
-
-        if (wasFrozenByPlatfrom && !isZFrozen)
+        public void OnPlatfromEnterCall()
         {
-            myRigidBody2D.freezeRotation = false;
-            wasFrozenByPlatfrom = false;
+            OnPlatformEnter.Invoke();
+
+            if (!isZFrozen)
+            {
+                myRigidBody2D.freezeRotation = false;
+                wasFrozenByPlatfrom = true;
+            }
+        }
+
+        public void OnPlatfromExitCall()
+        {
+            OnPlatformExit.Invoke();
+
+            if (wasFrozenByPlatfrom && !isZFrozen)
+            {
+                myRigidBody2D.freezeRotation = false;
+                wasFrozenByPlatfrom = false;
+            }
         }
     }
 }

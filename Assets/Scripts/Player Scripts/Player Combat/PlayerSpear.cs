@@ -6,6 +6,7 @@ using PlayerControls;
 using System.Collections;
 using System.Collections.Generic;
 using EnemyCharacter.SceneObject;
+using ComponentLibrary;
 
 namespace PlayerCharacter.Controller
 {

@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
 using GameplayManagement.Assets;
+using ComponentLibrary;
 
 namespace PlayerCharacter.GameSaving
 {

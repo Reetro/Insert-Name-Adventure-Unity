@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 
-public class GameplayObjectID : MonoBehaviour
+namespace ComponentLibrary
 {
-    public int ID { get; private set; }
-    /// <summary>
-    /// Generate this Gameobjects ID
-    /// </summary>
-    public void ConstructID()
+    public class GameplayObjectID : MonoBehaviour
     {
-        ID = GeneralFunctions.GenID();
-    }
+        public int ID { get; private set; }
+        /// <summary>
+        /// Generate this Gameobjects ID
+        /// </summary>
+        public void ConstructID()
+        {
+            ID = GeneralFunctions.GenID();
+        }
 
+    }
 }

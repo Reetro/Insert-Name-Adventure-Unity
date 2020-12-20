@@ -5,6 +5,7 @@ using PlayerControls;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.EventSystems;
+using ComponentLibrary;
 
 namespace PlayerCharacter.Controller
 {

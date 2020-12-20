@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace ComponentsLibrary
+namespace ComponentLibrary
 {
     public class TileDestroyer : MonoBehaviour
     {
