@@ -9,6 +9,7 @@ using EnemyCharacter;
 using GameplayManagement.Assets;
 using PlayerUI.ToolTipUI;
 using Spells;
+using ComponentsLibrary;
 
 namespace GameplayManagement.SceneLoading
 {
@@ -165,6 +166,16 @@ namespace GameplayManagement.SceneLoading
                 if (enemy)
                 {
                     enemy.SetupCallbacks();
+                }
+            }
+
+            var tileDestoyers = FindObjectsOfType<TileDestroyer>();
+
+            foreach (TileDestroyer tileDestroyer in tileDestoyers)
+            {
+                if (tileDestroyer)
+                {
+                    tileDestroyer.OnSceneCreated();
                 }
             }
         }

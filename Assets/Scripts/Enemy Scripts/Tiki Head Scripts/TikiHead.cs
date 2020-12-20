@@ -237,47 +237,6 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Destroy all titles under the tile collision box
-        /// </summary>
-        /*private void DestroyTitles()
-        {
-            if (canDestroyTile)
-            {
-                ContactPoint2D[] contactPoint2Ds = new ContactPoint2D[amountOfContacts];
-
-                var overlapBox = Physics2D.OverlapBox(tileCollisionPoint.position, tileBoxSize, GeneralFunctions.GetObjectEulerAngle(gameObject), whatIsGround);
-
-                if (overlapBox)
-                {
-                    var tileMap = overlapBox.GetComponentInParent<Tilemap>();
-
-                    if (drawDebug)
-                    {
-                        print("Hit Tilemap: " + tileMap.name);
-                    }
-
-                    overlapBox.GetContacts(contactPoint2Ds);
-
-                    foreach (ContactPoint2D contact in contactPoint2Ds)
-                    {
-                        Vector2 hitPoint = contact.point;
-
-                        Vector3Int cellPosition = tileMap.WorldToCell(hitPoint);
-
-                        tileMap.SetTile(cellPosition, null);
-
-                        if (drawDebug)
-                        {
-                            Debug.Log("Hit Points: " + hitPoint.ToString());
-                            Debug.Log("Cell Position: " + cellPostion);
-                        }
-                    }
-                }
-
-                canDestroyTile = false;
-            }
-        }*/
-        /// <summary>
         /// Called when player squish effect has ended
         /// </summary>
         /// <param name="gameObject"></param>
