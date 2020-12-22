@@ -23,11 +23,11 @@ namespace ComponentLibrary
                 {
                     Physics2D.IgnoreCollision(playerCollider, boxCollider);
 
-                    tilemap = GameObject.FindGameObjectWithTag("Ground").GetComponent<Tilemap>();
+                    tilemap = GameObject.FindGameObjectWithTag("Destructible").GetComponent<Tilemap>();
 
                     if (!tilemap)
                     {
-                        Debug.LogError(name + " failed to get tilemap gameobject");
+                        Debug.LogError(name + " failed to get tilemap gameobject you need to have a destructible tilemap gameobject in your tilemap grid");
                     }
                 }
                 else
@@ -46,7 +46,7 @@ namespace ComponentLibrary
         /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (GeneralFunctions.IsObjectOnLayer("Ground", collision.gameObject))
+            if (collision.gameObject.CompareTag("Destructible"))
             {
                 Vector3 hitPosition = Vector3.zero;
                 if (tilemap)

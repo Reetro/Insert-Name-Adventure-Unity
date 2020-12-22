@@ -20,6 +20,7 @@ TagManager:
   - Worm Segment
   - Player State
   - Player Particle Spawn
+  - Destructible
   layers:
   - Default
   - TransparentFX
@@ -44,7 +45,7 @@ TagManager:
   - Trap Projectile
   - Slug
   - Leech Tail Hit Box
-  - 
+  - Destructible
   - 
   - 
   - 

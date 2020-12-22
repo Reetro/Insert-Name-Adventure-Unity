@@ -622,7 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 4850999
+    m_Bits: 13239607
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
