@@ -46,7 +46,7 @@ namespace ComponentLibrary
         /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Destructible"))
+            if (GeneralFunctions.IsObjectOnLayer("Destructible", collision.gameObject))
             {
                 Vector3 hitPosition = Vector3.zero;
                 if (tilemap)
