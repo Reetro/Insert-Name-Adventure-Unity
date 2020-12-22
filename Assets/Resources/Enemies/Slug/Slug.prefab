@@ -135,7 +135,7 @@ MonoBehaviour:
   traceDistance: 0.28
   whatCanSlugSee:
     serializedVersion: 2
-    m_Bits: 655616
+    m_Bits: 9044224
   drawDebug: 0
   damageToPlayer: 1
   knockBackForce: 20
