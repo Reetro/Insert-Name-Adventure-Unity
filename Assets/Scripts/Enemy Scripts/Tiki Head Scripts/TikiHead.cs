@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using StatusEffects;
+using ComponentLibrary;
 
 namespace EnemyCharacter.AI
 {
@@ -89,6 +90,7 @@ namespace EnemyCharacter.AI
         private bool isTouchingGround = false;
         private bool wasAbove = false;
         private bool skipVisCheck = false;
+        private TileDestroyer[] tileDestroyers;
         #endregion
 
         /// <summary>
@@ -124,6 +126,8 @@ namespace EnemyCharacter.AI
             colliderBox2D = GetComponent<BoxCollider2D>();
 
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
+
+            tileDestroyers = GetComponentsInChildren<TileDestroyer>();
 
             if (IsAbovePlayer())
             {
@@ -410,6 +414,8 @@ namespace EnemyCharacter.AI
 
                 if (!isTouchingGround && canMove)
                 {
+                    EnableTileDestroyers();
+
                     isFalling = true;
 
                     transform.Translate(Vector2.down * launchSpeed * Time.deltaTime, Space.World);
@@ -418,6 +424,8 @@ namespace EnemyCharacter.AI
                 {
                     if (IsAbovePlayer() && isTouchingGround)
                     {
+                        DisableTileDestroyers();
+
                         spriteRenderer.color = Color.white;
 
                         isFalling = false;
@@ -433,6 +441,8 @@ namespace EnemyCharacter.AI
                     }
                     else
                     {
+                        DisableTileDestroyers();
+
                         isFalling = false;
 
                         if (!launchTimerRunning)
@@ -440,6 +450,32 @@ namespace EnemyCharacter.AI
                             StartCoroutine(LaunchTimer());
                         }
                     }
+                }
+            }
+        }
+        /// <summary>
+        /// Set CanDestroyTile in all tile destroyers to true
+        /// </summary>
+        private void EnableTileDestroyers()
+        {
+            foreach (TileDestroyer tileDestroyer in tileDestroyers)
+            {
+                if (tileDestroyer)
+                {
+                    tileDestroyer.CanDestroyTile = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Set CanDestroyTile in all tile destroyers to false
+        /// </summary>
+        private void DisableTileDestroyers()
+        {
+            foreach (TileDestroyer tileDestroyer in tileDestroyers)
+            {
+                if (tileDestroyer)
+                {
+                    tileDestroyer.CanDestroyTile = false;
                 }
             }
         }
