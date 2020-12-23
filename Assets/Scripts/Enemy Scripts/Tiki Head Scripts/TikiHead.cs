@@ -94,7 +94,7 @@ namespace EnemyCharacter.AI
         #endregion
 
         /// <summary>
-        /// All Tiki Head Drill movement states
+        /// All Tiki Head movement states
         /// </summary>
         public enum TikiHeadMovementState
         {
