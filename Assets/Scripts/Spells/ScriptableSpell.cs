@@ -16,11 +16,11 @@ namespace Spells
         [Header("Spell Bools")]
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue2))]
-        [Tooltip("Should this status effect have two values")]
+        [Tooltip("Should this spell have two values")]
         [SerializeField] private bool useTwoValues = false;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
-        [Tooltip("Should this status effect have two values")]
+        [Tooltip("Should this spell have two values")]
         [SerializeField] private bool useThreeValues = false;
 
         [Tooltip("Whether or not the spell has a cooldown")]

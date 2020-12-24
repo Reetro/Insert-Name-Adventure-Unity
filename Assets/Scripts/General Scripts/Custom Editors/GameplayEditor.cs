@@ -1590,7 +1590,7 @@ namespace CustomEditors
                 // Start a code block to check for GUI changes
                 EditorGUI.BeginChangeCheck();
 
-                EditorGUILayout.PropertyField(_SlugScale, new GUIContent("Tiki Head Scale"));
+                EditorGUILayout.PropertyField(_TikiHeadScale, new GUIContent("Tiki Head Scale"));
 
                 if (EditorGUI.EndChangeCheck())
                 {
