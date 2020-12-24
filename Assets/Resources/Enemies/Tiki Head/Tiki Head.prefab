@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3443093584436551982}
   m_Layer: 10
   m_Name: Tile Destroyer (1)
-  m_TagString: Untagged
+  m_TagString: Discard Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 7980311976677166913}
   m_Layer: 10
   m_Name: Tile Destroyer (2)
-  m_TagString: Untagged
+  m_TagString: Discard Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 5280864283248086277}
   m_Layer: 10
   m_Name: Tile Destroyer
-  m_TagString: Untagged
+  m_TagString: Discard Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

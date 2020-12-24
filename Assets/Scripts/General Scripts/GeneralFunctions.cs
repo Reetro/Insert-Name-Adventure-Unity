@@ -509,7 +509,7 @@ public class GeneralFunctions : MonoBehaviour
     /// <param name="showText"></param>
     public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
     {
-        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target))
+        if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target) && !target.CompareTag("Discard Damage"))
         {
             var health = target.GetComponent<HealthComponent>();
 

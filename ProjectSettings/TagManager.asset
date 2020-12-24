@@ -21,6 +21,7 @@ TagManager:
   - Player State
   - Player Particle Spawn
   - Destructible
+  - Discard Damage
   layers:
   - Default
   - TransparentFX
