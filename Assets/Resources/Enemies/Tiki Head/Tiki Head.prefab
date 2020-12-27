@@ -275,7 +275,7 @@ MonoBehaviour:
   damageToApply: 2
   squishEffect: {fileID: 11400000, guid: 1b47a61648c1b10419fb4e42703fd76b, type: 2}
   spriteOpacity: 0.5
-  knockBackMultiplier: 20
+  knockBackMultiplier: 40
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
