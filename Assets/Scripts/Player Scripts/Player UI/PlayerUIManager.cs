@@ -74,44 +74,48 @@ namespace PlayerUI
         /// </summary>
         private void CreateActionbar()
         {
-            for (int index = 0; index < GameAssets.GlobalManager.actionBarInputActions.actions.Count; index++)
+            var actionbarInputActions = GeneralFunctions.GetPlayerController().actionBarInputs;
+
+            for (int index = 0; index < actionbarInputActions.Count; index++)
             {
                 var keyName = "";
 
                 if (!GameAssets.GlobalManager._IsGamepadActive)
                 {
-                    var displayStrings = GameAssets.GlobalManager.actionBarInputActions.actions[index].GetBindingDisplayString().Split('|');
+                    var fullName = actionbarInputActions[index].GetBindingDisplayString().Split('|');
 
-                    keyName = displayStrings[0];
+                    var finalKeyName = fullName[0].Split();
+
+                    keyName = finalKeyName[1];
                 }
                 else
                 {
-                    var displayStrings = GameAssets.GlobalManager.actionBarInputActions.actions[index].GetBindingDisplayString().Split('|');
+                    var fullName = actionbarInputActions[index].GetBindingDisplayString().Split('|');
 
-                    keyName = displayStrings[1];
+                    var finalKeyName = fullName[0].Split();
+
+                    keyName = finalKeyName[1];
                 }
 
                 var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
 
-                spawnedSlot.SetupActionSlot(keyName, GameAssets.GlobalManager.actionBarInputActions.actions[index]);
+                spawnedSlot.SetupActionSlot(keyName, actionbarInputActions[index]);
 
                 actionBarButtons.Add(spawnedSlot);
             }
-
-            GameAssets.GlobalManager.actionBarInputActions.Enable();
         }
         /// <summary>
         /// Assign player spells to Actionbar
         /// </summary>
         private void AssignSpells()
         {
-            for (int index = 0; index < GameAssets.GlobalManager.playerSpells.Length; index++)
+            for (int index = 0; index < GameAssets.GlobalManager.playerStartingSpells.Length; index++)
             {
                 if (index >= 0 && index < actionBarButtons.Count)
                 {
                     var spawnedSpellIcon = Instantiate(spellIcon, actionBarButtons[index].transform);
 
-                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerSpells[index], index);
+                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerStartingSpells[index], index);
 
                     actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
                 }

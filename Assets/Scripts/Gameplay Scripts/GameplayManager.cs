@@ -41,12 +41,7 @@ namespace GameplayManagement
 
         [Header("Player Spell Settings")]
         [Tooltip("Spells the player starts with")]
-        public ScriptableSpell[] playerSpells;
-
-        [Space]
-
-        [Tooltip("Keybinds for Player Actionbar for every Input Action in this array a new action slot is created")]
-        public InputActionMap actionBarInputActions;
+        public ScriptableSpell[] playerStartingSpells;
 
         [Space]
 

@@ -83,6 +83,38 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Actionbar Slot 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""86ca3fa6-8115-4ac8-82ad-507eb8e2151e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Actionbar Slot 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a91e21c-458c-4a0c-85a8-bc1634948f56"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Actionbar Slot 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""8db964fd-46b6-4ddf-8314-ddadd93eceb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Actionbar Slot 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e342863-d953-44e4-8a29-aefff002ee9c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -294,6 +326,94 @@ namespace PlayerControls
                     ""action"": ""Delete Saved Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58df8d3c-f45b-42a8-b654-3e98fa4e5214"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""088244d3-310b-4117-9179-f45d232a0e5a"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfeb701c-d8c1-49ae-8141-d974a8ffd35b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""caffdfd6-fc9d-4a12-a691-fa589f26c8f7"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f4190b19-949d-4ea4-bfd0-c5ffbb505862"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9577b40d-6578-4c86-9b96-feb742b7cbef"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""acc9fc70-cfe7-4095-8491-13313f004e39"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95892808-c3cd-4356-a33e-98c8370887ce"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Actionbar Slot 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -310,6 +430,10 @@ namespace PlayerControls
             m_Player_SaveGame = m_Player.FindAction("Save Game", throwIfNotFound: true);
             m_Player_LoadGame = m_Player.FindAction("Load Game", throwIfNotFound: true);
             m_Player_DeleteSavedGame = m_Player.FindAction("Delete Saved Game", throwIfNotFound: true);
+            m_Player_ActionbarSlot1 = m_Player.FindAction("Actionbar Slot 1", throwIfNotFound: true);
+            m_Player_ActionbarSlot2 = m_Player.FindAction("Actionbar Slot 2", throwIfNotFound: true);
+            m_Player_ActionbarSlot3 = m_Player.FindAction("Actionbar Slot 3", throwIfNotFound: true);
+            m_Player_ActionbarSlot4 = m_Player.FindAction("Actionbar Slot 4", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -367,6 +491,10 @@ namespace PlayerControls
         private readonly InputAction m_Player_SaveGame;
         private readonly InputAction m_Player_LoadGame;
         private readonly InputAction m_Player_DeleteSavedGame;
+        private readonly InputAction m_Player_ActionbarSlot1;
+        private readonly InputAction m_Player_ActionbarSlot2;
+        private readonly InputAction m_Player_ActionbarSlot3;
+        private readonly InputAction m_Player_ActionbarSlot4;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -379,6 +507,10 @@ namespace PlayerControls
             public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
             public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
             public InputAction @DeleteSavedGame => m_Wrapper.m_Player_DeleteSavedGame;
+            public InputAction @ActionbarSlot1 => m_Wrapper.m_Player_ActionbarSlot1;
+            public InputAction @ActionbarSlot2 => m_Wrapper.m_Player_ActionbarSlot2;
+            public InputAction @ActionbarSlot3 => m_Wrapper.m_Player_ActionbarSlot3;
+            public InputAction @ActionbarSlot4 => m_Wrapper.m_Player_ActionbarSlot4;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -412,6 +544,18 @@ namespace PlayerControls
                     @DeleteSavedGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeleteSavedGame;
+                    @ActionbarSlot1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
+                    @ActionbarSlot1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
+                    @ActionbarSlot1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot1;
+                    @ActionbarSlot2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
+                    @ActionbarSlot2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
+                    @ActionbarSlot2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot2;
+                    @ActionbarSlot3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
+                    @ActionbarSlot3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
+                    @ActionbarSlot3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot3;
+                    @ActionbarSlot4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
+                    @ActionbarSlot4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
+                    @ActionbarSlot4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -440,6 +584,18 @@ namespace PlayerControls
                     @DeleteSavedGame.started += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
                     @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
+                    @ActionbarSlot1.started += instance.OnActionbarSlot1;
+                    @ActionbarSlot1.performed += instance.OnActionbarSlot1;
+                    @ActionbarSlot1.canceled += instance.OnActionbarSlot1;
+                    @ActionbarSlot2.started += instance.OnActionbarSlot2;
+                    @ActionbarSlot2.performed += instance.OnActionbarSlot2;
+                    @ActionbarSlot2.canceled += instance.OnActionbarSlot2;
+                    @ActionbarSlot3.started += instance.OnActionbarSlot3;
+                    @ActionbarSlot3.performed += instance.OnActionbarSlot3;
+                    @ActionbarSlot3.canceled += instance.OnActionbarSlot3;
+                    @ActionbarSlot4.started += instance.OnActionbarSlot4;
+                    @ActionbarSlot4.performed += instance.OnActionbarSlot4;
+                    @ActionbarSlot4.canceled += instance.OnActionbarSlot4;
                 }
             }
         }
@@ -454,6 +610,10 @@ namespace PlayerControls
             void OnSaveGame(InputAction.CallbackContext context);
             void OnLoadGame(InputAction.CallbackContext context);
             void OnDeleteSavedGame(InputAction.CallbackContext context);
+            void OnActionbarSlot1(InputAction.CallbackContext context);
+            void OnActionbarSlot2(InputAction.CallbackContext context);
+            void OnActionbarSlot3(InputAction.CallbackContext context);
+            void OnActionbarSlot4(InputAction.CallbackContext context);
         }
     }
 }

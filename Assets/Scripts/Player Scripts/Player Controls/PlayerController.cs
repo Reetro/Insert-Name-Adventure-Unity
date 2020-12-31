@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.EventSystems;
 using ComponentLibrary;
+using System.Collections.Generic;
 
 namespace PlayerCharacter.Controller
 {
@@ -42,9 +43,20 @@ namespace PlayerCharacter.Controller
         /// Reference to the players box collider
         /// </summary>
         public BoxCollider2D MyBoxCollider { get; private set; } = null;
+        /// <summary>
+        /// List of all Actionbar input actions
+        /// </summary>
+        public List<InputAction> actionBarInputs { get; private set; }
         #endregion
 
         #region Setup Functions
+        /// <summary>
+        /// Called when player enters a new level
+        /// </summary>
+        public void OnSceneCreated()
+        {
+            GetActionbarInputs();
+        }
         /// <summary>
         /// Create new player controls object
         /// </summary>
@@ -98,6 +110,25 @@ namespace PlayerCharacter.Controller
             myRigidBody2D = GetComponent<Rigidbody2D>();
 
             Move();
+        }
+        /// <summary>
+        /// Find all Actionbar input actions in player controls and add them to the list
+        /// </summary>
+        private void GetActionbarInputs()
+        {
+            actionBarInputs = new List<InputAction>();
+
+            var playerActionMap = GetComponent<PlayerInput>().currentActionMap.actions;
+
+            for (int index = 0; index < playerActionMap.Count; index++)
+            {
+                var currentItem = playerActionMap[index];
+
+                if (currentItem.name.Contains("Actionbar Slot"))
+                {
+                    actionBarInputs.Add(currentItem);
+                }
+            }
         }
         #endregion
 

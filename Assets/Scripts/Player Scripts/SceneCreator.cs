@@ -75,7 +75,11 @@ namespace GameplayManagement.SceneLoading
                 Debug.LogError("Scene Creator failed to spawn Player State");
             }
 
-            if (!playerController)
+            if (playerController)
+            {
+                playerController.OnSceneCreated();
+            }
+            else
             {
                 Debug.LogError("Scene Creator failed to get Player Controller");
             }
