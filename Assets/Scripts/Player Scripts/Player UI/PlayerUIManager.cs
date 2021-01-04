@@ -4,6 +4,7 @@ using TMPro;
 using LevelObjects.SceneLoading;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using Spells;
 
 namespace PlayerUI
 {
@@ -19,12 +20,14 @@ namespace PlayerUI
 
         private LevelLoader levelLoader = null;
 
+        #region Properties
         /// <summary>
         /// List of all action buttons
         /// </summary>
-        [HideInInspector]
-        public List<ActionButton> actionBarButtons = new List<ActionButton>();
+        public List<ActionButton> ActionBarButtons { get; private set; } = new List<ActionButton>();
+        #endregion
 
+        #region Level Loading Functions
         private void Awake()
         {
             GeneralFunctions.GetGameplayManager().controllerUpdated.AddListener(OnGamepadUpdated);
@@ -36,8 +39,13 @@ namespace PlayerUI
             loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
 
             CreateActionbar();
-
-            AssignSpells();
+        }
+        /// <summary>
+        /// When scene is created assign spells to Actionbar
+        /// </summary>
+        public void OnSceneCreated()
+        {
+            AssignSpells(GeneralFunctions.GetGameplayManager().playerStartingSpells);
         }
         /// <summary>
         /// Load the current checkpoint index
@@ -50,6 +58,9 @@ namespace PlayerUI
 
             HideDeathUI();
         }
+        #endregion
+
+        #region Death UI Functions
         /// <summary>
         /// Hide the player death screen UI
         /// </summary>
@@ -66,6 +77,7 @@ namespace PlayerUI
             loadCheckpointBTN.gameObject.SetActive(true);
             gameOverText.gameObject.SetActive(true);
         }
+        #endregion
 
         #region Actionbar Functions
         /// <summary>
@@ -100,25 +112,76 @@ namespace PlayerUI
 
                 spawnedSlot.SetupActionSlot(keyName, actionbarInputActions[index]);
 
-                actionBarButtons.Add(spawnedSlot);
+                ActionBarButtons.Add(spawnedSlot);
             }
         }
         /// <summary>
-        /// Assign player spells to Actionbar
+        /// Assign multiple spells to Actionbar
         /// </summary>
-        private void AssignSpells()
+        public void AssignSpells(ScriptableSpell[] spellArray)
         {
-            for (int index = 0; index < GeneralFunctions.GetGameplayManager().playerStartingSpells.Length; index++)
+            foreach (ScriptableSpell scriptableSpell in spellArray)
             {
-                if (index >= 0 && index < actionBarButtons.Count)
+                if (scriptableSpell)
                 {
-                    var spawnedSpellIcon = Instantiate(spellIcon, actionBarButtons[index].transform);
+                    var actionButton = FindEmptySlotOnBar();
 
-                    spawnedSpellIcon.SetupIcon(GeneralFunctions.GetGameplayManager().playerStartingSpells[index], index);
+                    if (actionButton)
+                    {
+                        var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
 
-                    actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
+                        spawnedSpellIcon.SetupIcon(scriptableSpell);
+
+                        actionButton.SetSpellIcon(spawnedSpellIcon);
+
+                        GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+                    }
                 }
             }
+        }
+        /// <summary>
+        /// Assign a single spell to Actionbar
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public void AssignSpell(ScriptableSpell scriptableSpell)
+        {
+            if (scriptableSpell)
+            {
+                var actionButton = FindEmptySlotOnBar();
+
+                if (actionButton)
+                {
+                    var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
+
+                    spawnedSpellIcon.SetupIcon(scriptableSpell);
+
+                    actionButton.SetSpellIcon(spawnedSpellIcon);
+
+                    GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to assign spell spell was invalid");
+            }
+        }
+        /// <summary>
+        /// Tries to find a empty slot on the Actionbar
+        /// </summary>
+        /// <returns>The found Actionbar slot if bar is full will return null</returns>
+        private ActionButton FindEmptySlotOnBar()
+        {
+            foreach (ActionButton actionButton in ActionBarButtons)
+            {
+                if (actionButton)
+                {
+                    if (!actionButton.HasSpellInSlot)
+                    {
+                        return actionButton;
+                    }
+                }
+            }
+            return null;
         }
         /// <summary>
         /// Called whenever a gamepad is connected or disconnected
@@ -126,16 +189,16 @@ namespace PlayerUI
         /// <param name="connected"></param>
         private void OnGamepadUpdated(bool connected)
         {
-            foreach (ActionButton actionButton in actionBarButtons)
+            foreach (ActionButton actionButton in ActionBarButtons)
             {
                 Destroy(actionButton.gameObject);
             }
 
-            actionBarButtons.Clear();
+            ActionBarButtons.Clear();
 
             CreateActionbar();
 
-            AssignSpells();
+            AssignSpells(GeneralFunctions.GetPlayerState().PlayerSpells.ToArray());
         }
         #endregion
     }

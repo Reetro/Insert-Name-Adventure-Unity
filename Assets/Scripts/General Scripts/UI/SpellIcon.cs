@@ -11,10 +11,6 @@ namespace PlayerUI
         private Button spellButton = null;
 
         /// <summary>
-        /// Where this spell is located on the Actionbar
-        /// </summary>
-        public int SpellIndex { get; private set; }
-        /// <summary>
         /// The actual spell assigned to this slot
         /// </summary>
         public ScriptableSpell MyScriptableSpell { get; private set; }
@@ -30,10 +26,9 @@ namespace PlayerUI
         /// </summary>
         /// <param name="spellToCast"></param>
         /// <param name="index"></param>
-        public void SetupIcon(ScriptableSpell spellToCast, int index)
+        public void SetupIcon(ScriptableSpell spellToCast)
         {
             MyScriptableSpell = spellToCast;
-            SpellIndex = index;
 
             spellIcon = GetComponent<Image>();
 

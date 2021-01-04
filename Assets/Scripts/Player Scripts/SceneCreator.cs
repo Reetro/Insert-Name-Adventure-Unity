@@ -68,6 +68,8 @@ namespace GameplayManagement.SceneLoading
 
             playerState = Instantiate(playerState, Vector2.zero, Quaternion.identity);
 
+            GameAssets.UpdateReferences();
+
             playerController = GetComponent<PlayerController>();
 
             if (!playerState)
@@ -113,7 +115,20 @@ namespace GameplayManagement.SceneLoading
                 {
                     playerHud = Instantiate(playerHud, Vector2.zero, Quaternion.identity);
 
-                    DontDestroyOnLoad(playerHud);
+                    if (playerHud)
+                    {
+                        playerHud.GetComponent<PlayerUIManager>().OnSceneCreated();
+
+                        DontDestroyOnLoad(playerHud);
+                    }
+                    else
+                    {
+                        Debug.LogError("Scene Creator Failed to spawn playerHud");
+                    }
+                }
+                else
+                {
+                    hudInLevel.OnSceneCreated();
                 }
 
                 myHealthComp.ConstructHealthComponentForPlayer();

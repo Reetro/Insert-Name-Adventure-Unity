@@ -2,7 +2,9 @@
 using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
+using Spells;
 using ComponentLibrary;
+using System.Collections.Generic;
 
 namespace PlayerCharacter.GameSaving
 {
@@ -70,6 +72,10 @@ namespace PlayerCharacter.GameSaving
         /// All current saved game slots
         /// </summary>
         public SavedGameSlot[] SavedGameSlots { get; private set; }
+        /// <summary>
+        /// List of all Spells the player has on the Actionbar
+        /// </summary>
+        public List<ScriptableSpell> PlayerSpells { get; private set; } = new List<ScriptableSpell>();
         #endregion
 
         #region Setup Functions
@@ -92,6 +98,8 @@ namespace PlayerCharacter.GameSaving
                 new SavedGameSlot(2, false),
                 new SavedGameSlot(3, false),
             };
+
+            PlayerSpells = new List<ScriptableSpell>();
         }
         public void SetCheckpointIndex(int index)
         {
@@ -431,6 +439,25 @@ namespace PlayerCharacter.GameSaving
         public bool DoesSaveExistInSlot(int slot)
         {
             return SaveSystem.DoesSaveGameExistInSlot(slot);
+        }
+        #endregion
+
+        #region Spell Functions
+        /// <summary>
+        /// Adds the given spell to the PlayerSpells List
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public void AddSpellToList(ScriptableSpell scriptableSpell)
+        {
+            PlayerSpells.Add(scriptableSpell);
+        }
+        /// <summary>
+        /// Remove the given spell from the PlayerSpells List
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public void RemoveSpellFromList(ScriptableSpell scriptableSpell)
+        {
+            PlayerSpells.Remove(scriptableSpell);
         }
         #endregion
     }

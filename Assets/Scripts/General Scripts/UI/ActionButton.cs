@@ -15,6 +15,8 @@ namespace PlayerUI
         {
             textAsset.text = slotButton;
 
+            HasSpellInSlot = false;
+
             inputAction.started += ctx => CastSpell();
         }
         /// <summary>
@@ -35,6 +37,8 @@ namespace PlayerUI
         {
             mySpellIcon = spellIcon;
 
+            HasSpellInSlot = true;
+
             if (mySpellIcon)
             {
                 GetComponent<ItemTooltip>().SetItem(mySpellIcon.MyScriptableSpell);
@@ -43,9 +47,9 @@ namespace PlayerUI
 
         #region Properties
         /// <summary>
-        /// Reference to the Keycode assigned to this object
+        /// Whether or not a spell is active in this ActionButton
         /// </summary>
-        public KeyCode MyKeyCode { get; private set; }
+        public bool HasSpellInSlot { get; private set; } = false;
         #endregion
     }
 }
