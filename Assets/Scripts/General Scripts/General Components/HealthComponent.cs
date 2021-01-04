@@ -4,7 +4,6 @@ using PlayerCharacter.GameSaving;
 using PlayerUI;
 using GameplayManagement;
 using System;
-using GameplayManagement.Assets;
 
 namespace ComponentLibrary
 {
@@ -34,7 +33,7 @@ namespace ComponentLibrary
         /// </summary>
         public void ConstructHealthComponent()
         {
-            gameplayManager = GameAssets.GlobalManager;
+            gameplayManager = GeneralFunctions.GetGameplayManager();
 
             IsCurrentlyDead = false;
 
@@ -68,7 +67,7 @@ namespace ComponentLibrary
         {
             this.healthBar = healthBar;
 
-            gameplayManager = GameAssets.GlobalManager;
+            gameplayManager = GeneralFunctions.GetGameplayManager();
 
             IsCurrentlyDead = false;
         }
@@ -79,7 +78,7 @@ namespace ComponentLibrary
         {
             healthBar = FindObjectOfType<PlayerUIManager>().transform.GetChild(1).GetComponent<HealthBar>();
 
-            gameplayManager = GameAssets.GlobalManager;
+            gameplayManager = GeneralFunctions.GetGameplayManager();
 
             IsCurrentlyDead = false;
 

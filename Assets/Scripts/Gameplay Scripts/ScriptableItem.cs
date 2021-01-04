@@ -1,5 +1,4 @@
 ﻿using GameplayManagement;
-using GameplayManagement.Assets;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -71,7 +70,7 @@ namespace PlayerUI.ToolTipUI
         /// </summary>
         protected virtual void OnStart()
         {
-            MyGameplayManager = GameAssets.GlobalManager;
+            MyGameplayManager = GeneralFunctions.GetGameplayManager();
         }
 
         public virtual string GetToolTipInfoText()

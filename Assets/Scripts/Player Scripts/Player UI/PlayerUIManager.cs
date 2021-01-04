@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using TMPro;
 using LevelObjects.SceneLoading;
-using GameplayManagement.Assets;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
@@ -28,7 +27,7 @@ namespace PlayerUI
 
         private void Awake()
         {
-            GameAssets.GlobalManager.controllerUpdated.AddListener(OnGamepadUpdated);
+            GeneralFunctions.GetGameplayManager().controllerUpdated.AddListener(OnGamepadUpdated);
 
             HideDeathUI();
 
@@ -80,7 +79,7 @@ namespace PlayerUI
             {
                 var keyName = "";
 
-                if (!GameAssets.GlobalManager._IsGamepadActive)
+                if (!GeneralFunctions.GetGameplayManager()._IsGamepadActive)
                 {
                     var fullName = actionbarInputActions[index].GetBindingDisplayString().Split('|');
 
@@ -109,13 +108,13 @@ namespace PlayerUI
         /// </summary>
         private void AssignSpells()
         {
-            for (int index = 0; index < GameAssets.GlobalManager.playerStartingSpells.Length; index++)
+            for (int index = 0; index < GeneralFunctions.GetGameplayManager().playerStartingSpells.Length; index++)
             {
                 if (index >= 0 && index < actionBarButtons.Count)
                 {
                     var spawnedSpellIcon = Instantiate(spellIcon, actionBarButtons[index].transform);
 
-                    spawnedSpellIcon.SetupIcon(GameAssets.GlobalManager.playerStartingSpells[index], index);
+                    spawnedSpellIcon.SetupIcon(GeneralFunctions.GetGameplayManager().playerStartingSpells[index], index);
 
                     actionBarButtons[index].SetSpellIcon(spawnedSpellIcon);
                 }

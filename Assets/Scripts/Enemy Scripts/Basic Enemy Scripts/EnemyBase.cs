@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using EnemyCharacter.AI;
-using GameplayManagement.Assets;
 using ComponentLibrary;
 
 namespace EnemyCharacter
@@ -32,7 +31,7 @@ namespace EnemyCharacter
         /// </summary>
         public void SetupCallbacks()
         {
-            GameAssets.GlobalManager.onSceneLoadingDone.AddListener(OnSceneLoadingDone);
+            GeneralFunctions.GetGameplayManager().onSceneLoadingDone.AddListener(OnSceneLoadingDone);
         }
         /// <summary>
         /// Called after the scene transitions has finished playing

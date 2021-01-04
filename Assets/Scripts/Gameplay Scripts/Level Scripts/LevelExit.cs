@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using GameplayManagement.Assets;
 using Spells;
 
 namespace LevelObjects.SceneLoading
@@ -19,7 +18,7 @@ namespace LevelObjects.SceneLoading
             {
                 if (!GeneralFunctions.IsObjectDead(collision.gameObject))
                 {
-                    GameAssets.GlobalManager.onLevelExitOverlap.Invoke();
+                    GeneralFunctions.GetGameplayManager().onLevelExitOverlap.Invoke();
 
                     var activeSpells = FindObjectsOfType<Spell>();
 

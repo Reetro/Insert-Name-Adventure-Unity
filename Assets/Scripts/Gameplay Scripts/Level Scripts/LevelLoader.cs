@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayerCharacter.GameSaving;
-using GameplayManagement.Assets;
 
 namespace LevelObjects.SceneLoading
 {
@@ -103,7 +102,7 @@ namespace LevelObjects.SceneLoading
 
                     sceneTimer = transitionTime;
 
-                    GameAssets.GlobalManager.onSceneLoadingDone.Invoke();
+                    GeneralFunctions.GetGameplayManager().onSceneLoadingDone.Invoke();
                 }
             }
         }

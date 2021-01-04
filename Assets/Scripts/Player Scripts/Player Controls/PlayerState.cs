@@ -2,7 +2,6 @@
 using UnityEngine.SceneManagement;
 using PlayerCharacter.Controller;
 using PlayerUI;
-using GameplayManagement.Assets;
 using ComponentLibrary;
 
 namespace PlayerCharacter.GameSaving
@@ -197,7 +196,7 @@ namespace PlayerCharacter.GameSaving
                 SaveSystem.SaveGame(this, player.gameObject, GetSavedGameSlotInfo(slot));
             }
 
-            if (GameAssets.GlobalManager.debugSave)
+            if (GeneralFunctions.GetGameplayManager().debugSave)
             {
                 Debug.Log("Saved game in slot " + slot);
             }
@@ -258,7 +257,7 @@ namespace PlayerCharacter.GameSaving
 
             player.transform.position = position;
 
-            if (GameAssets.GlobalManager.debugSave)
+            if (GeneralFunctions.GetGameplayManager().debugSave)
             {
                 Debug.Log("Loaded game in slot " + currentSlot);
             }
@@ -274,7 +273,7 @@ namespace PlayerCharacter.GameSaving
 
             SaveSystem.DeleteSaveGame(slot);
 
-            if (GameAssets.GlobalManager.debugSave)
+            if (GeneralFunctions.GetGameplayManager().debugSave)
             {
                 Debug.Log("Deleted saved game in slot " + slot);
             }

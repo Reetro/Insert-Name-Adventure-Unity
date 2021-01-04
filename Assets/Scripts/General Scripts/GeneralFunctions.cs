@@ -733,6 +733,14 @@ public class GeneralFunctions : MonoBehaviour
         return GameAssets.PlayerHUDManager;
     }
     /// <summary>
+    /// Gets the GameplayManger cached in Game Assets
+    /// </summary>
+    /// <returns></returns>
+    public static GameplayManager GetGameplayManager()
+    {
+        return GameAssets.GlobalManager;
+    }
+    /// <summary>
     /// Checks to see if the given object is on the player character
     /// </summary>
     /// <param name="objectToTest"></param>
@@ -1094,7 +1102,7 @@ public class GeneralFunctions : MonoBehaviour
     /// <summary>
     /// Gets the eye component on the give object and fires a raycast from the objects eyes
     /// </summary>
-    /// <returns>The hit information</returns>
+    /// <returns>The hit information as RaycastHit2D</returns>
     public static RaycastHit2D TraceFromEyes(GameObject objectTraceParent)
     {
         if (objectTraceParent)
@@ -1191,9 +1199,9 @@ public static class Extension
     /// <param name="items"></param>
     public static IEnumerable<T> FastReverse<T>(this IList<T> items)
     {
-        for (int i = items.Count - 1; i >= 0; i--)
+        for (int index = items.Count - 1; index >= 0; index--)
         {
-            yield return items[i];
+            yield return items[index];
         }
     }
 }
