@@ -19,6 +19,7 @@ namespace PlayerCharacter.GameSaving
         private static int checkpointLevelIndex = 0;
         private static bool isSceneLoading = false;
         private static int currentSlot = 0;
+        private static List<ScriptableSpell> savedPlayerSpells = new List<ScriptableSpell>();
 
         /// <summary>
         /// Struct that contains base info for every save slot
@@ -75,7 +76,7 @@ namespace PlayerCharacter.GameSaving
         /// <summary>
         /// List of all Spells the player has on the Actionbar
         /// </summary>
-        public List<ScriptableSpell> PlayerSpells { get; private set; } = new List<ScriptableSpell>();
+        public List<ScriptableSpell> PlayerSpells { get { return savedPlayerSpells; } }
         #endregion
 
         #region Setup Functions
@@ -99,7 +100,10 @@ namespace PlayerCharacter.GameSaving
                 new SavedGameSlot(3, false),
             };
 
-            PlayerSpells = new List<ScriptableSpell>();
+            if (savedPlayerSpells.Count <= 0)
+            {
+                savedPlayerSpells = new List<ScriptableSpell>();
+            }
         }
         public void SetCheckpointIndex(int index)
         {
@@ -449,7 +453,7 @@ namespace PlayerCharacter.GameSaving
         /// <param name="scriptableSpell"></param>
         public void AddSpellToList(ScriptableSpell scriptableSpell)
         {
-            PlayerSpells.Add(scriptableSpell);
+            savedPlayerSpells.Add(scriptableSpell);
         }
         /// <summary>
         /// Remove the given spell from the PlayerSpells List
@@ -457,7 +461,7 @@ namespace PlayerCharacter.GameSaving
         /// <param name="scriptableSpell"></param>
         public void RemoveSpellFromList(ScriptableSpell scriptableSpell)
         {
-            PlayerSpells.Remove(scriptableSpell);
+            savedPlayerSpells.Remove(scriptableSpell);
         }
         #endregion
     }

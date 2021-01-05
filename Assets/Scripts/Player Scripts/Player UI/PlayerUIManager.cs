@@ -124,6 +124,76 @@ namespace PlayerUI
             {
                 if (scriptableSpell)
                 {
+                    if (!IsSpellOnActionBar(scriptableSpell))
+                    {
+                        var actionButton = FindEmptySlotOnBar();
+
+                        if (actionButton)
+                        {
+                            var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
+
+                            spawnedSpellIcon.SetupIcon(scriptableSpell);
+
+                            actionButton.SetSpellIcon(spawnedSpellIcon);
+
+                            GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Assign multiple spells to Actionbar and check to see if all spells where assigned
+        /// </summary>
+        /// <param name="spellArray"></param>
+        /// <param name="allSpellsAssigned"></param>
+        public void AssignSpells(ScriptableSpell[] spellArray, out bool allSpellsAssigned)
+        {
+            var successCount = 0;
+
+            foreach (ScriptableSpell scriptableSpell in spellArray)
+            {
+                if (scriptableSpell)
+                {
+                    if (!IsSpellOnActionBar(scriptableSpell))
+                    {
+                        var actionButton = FindEmptySlotOnBar();
+
+                        if (actionButton)
+                        {
+                            var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
+
+                            spawnedSpellIcon.SetupIcon(scriptableSpell);
+
+                            actionButton.SetSpellIcon(spawnedSpellIcon);
+
+                            GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+
+                            successCount++;
+                        }
+                    }
+                }
+            }
+
+            if (successCount >= spellArray.Length)
+            {
+                allSpellsAssigned = true;
+            }
+            else
+            {
+                allSpellsAssigned = false;
+            }
+        }
+        /// <summary>
+        /// Assign a single spell to Actionbar
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public void AssignSpell(ScriptableSpell scriptableSpell)
+        {
+            if (scriptableSpell)
+            {
+                if (!IsSpellOnActionBar(scriptableSpell))
+                {
                     var actionButton = FindEmptySlotOnBar();
 
                     if (actionButton)
@@ -138,30 +208,50 @@ namespace PlayerUI
                     }
                 }
             }
+            else
+            {
+                Debug.LogError("Failed to assign spell spell was invalid");
+            }
         }
         /// <summary>
-        /// Assign a single spell to Actionbar
+        /// Assign a single spell to Actionbar and check to see if it did get assigned
         /// </summary>
         /// <param name="scriptableSpell"></param>
-        public void AssignSpell(ScriptableSpell scriptableSpell)
+        /// <param name="spellsAssigned"></param>
+        public void AssignSpell(ScriptableSpell scriptableSpell, out bool spellsAssigned)
         {
             if (scriptableSpell)
             {
-                var actionButton = FindEmptySlotOnBar();
-
-                if (actionButton)
+                if (!IsSpellOnActionBar(scriptableSpell))
                 {
-                    var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
+                    var actionButton = FindEmptySlotOnBar();
 
-                    spawnedSpellIcon.SetupIcon(scriptableSpell);
+                    if (actionButton)
+                    {
+                        var spawnedSpellIcon = Instantiate(spellIcon, actionButton.transform);
 
-                    actionButton.SetSpellIcon(spawnedSpellIcon);
+                        spawnedSpellIcon.SetupIcon(scriptableSpell);
 
-                    GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+                        actionButton.SetSpellIcon(spawnedSpellIcon);
+
+                        GeneralFunctions.GetPlayerState().AddSpellToList(scriptableSpell);
+
+                        spellsAssigned = true;
+                    }
+                    else
+                    {
+                        spellsAssigned = false;
+                    }
+                }
+                else
+                {
+                    spellsAssigned = false;
                 }
             }
             else
             {
+                spellsAssigned = false;
+
                 Debug.LogError("Failed to assign spell spell was invalid");
             }
         }
@@ -182,6 +272,25 @@ namespace PlayerUI
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// Checks to see if the spell is already on the Actionbar
+        /// </summary>
+        /// <param name="spell"></param>
+        private bool IsSpellOnActionBar(ScriptableSpell spell)
+        {
+            foreach (ScriptableSpell scriptableSpell in GeneralFunctions.GetPlayerState().PlayerSpells)
+            {
+                if (scriptableSpell)
+                {
+                    if (scriptableSpell.GetType() == spell.GetType())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
         /// <summary>
         /// Called whenever a gamepad is connected or disconnected
