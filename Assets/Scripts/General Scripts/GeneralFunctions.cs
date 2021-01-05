@@ -34,7 +34,7 @@ public class GeneralFunctions : MonoBehaviour
         }
         else
         {
-            Debug.LogError(objectToTest.ToString() + "didn't have a a Rigidbody2D was unable to test it horizontally");
+            Debug.LogError(objectToTest.ToString() + " didn't have a a Rigidbody2D was unable to test it horizontally");
             return false;
         }
     }
@@ -166,7 +166,7 @@ public class GeneralFunctions : MonoBehaviour
     /// </summary>
     /// <param name="targetTransform"></param>
     /// <param name="distanceBehind"></param>
-    /// <returns></returns>
+    /// <returns>A Vector2</returns>
     public static Vector2 GetPointBehind(Transform targetTransform, float distanceBehind)
     {
         return targetTransform.position - (targetTransform.right * distanceBehind);
@@ -918,6 +918,43 @@ public class GeneralFunctions : MonoBehaviour
 
             return 0;
         }
+    }
+    #endregion
+
+    #region Spell Functions
+    /// <summary>
+    /// Assign a single spell to the Actionbar
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    public static void AssignSpellToActionbar(ScriptableSpell scriptableSpell)
+    {
+        GameAssets.PlayerHUDManager.AssignSpell(scriptableSpell);
+    }
+    /// <summary>
+    /// Assign a single spell to Actionbar and check to see if it did get assigned
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    /// <param name="spellAssigned"></param>
+    public static void AssignSpellToActionbar(ScriptableSpell scriptableSpell, out bool spellAssigned)
+    {
+        GameAssets.PlayerHUDManager.AssignSpell(scriptableSpell, out spellAssigned);
+    }
+    /// <summary>
+    /// Assign multiple spells to Actionbar
+    /// </summary>
+    /// <param name="scriptableSpells"></param>
+    public static void AssignSpellsToActionbar(ScriptableSpell[] scriptableSpells)
+    {
+        GameAssets.PlayerHUDManager.AssignSpells(scriptableSpells);
+    }
+    /// <summary>
+    /// Assign multiple spells to Actionbar and check to see if all spells where assigned
+    /// </summary>
+    /// <param name="scriptableSpells"></param>
+    /// <param name="allSpellsAssigned"></param>
+    public static void AssignSpellsToActionbar(ScriptableSpell[] scriptableSpells, out bool allSpellsAssigned)
+    {
+        GameAssets.PlayerHUDManager.AssignSpells(scriptableSpells, out allSpellsAssigned);
     }
     #endregion
 
