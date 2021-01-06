@@ -103,9 +103,9 @@ namespace PlayerUI
                 {
                     var fullName = actionbarInputActions[index].GetBindingDisplayString().Split('|');
 
-                    var finalKeyName = fullName[0].Split();
+                    var finalKeyName = fullName[1].Split();
 
-                    keyName = finalKeyName[1];
+                    keyName = finalKeyName[2];
                 }
 
                 var spawnedSlot = Instantiate(actionSlot, actionBarLayout.transform);
@@ -124,7 +124,7 @@ namespace PlayerUI
             {
                 if (scriptableSpell)
                 {
-                    if (!IsSpellOnActionBar(scriptableSpell))
+                    if (!FindSpellOnActionbar(scriptableSpell))
                     {
                         var actionButton = FindEmptySlotOnBar();
 
@@ -155,7 +155,7 @@ namespace PlayerUI
             {
                 if (scriptableSpell)
                 {
-                    if (!IsSpellOnActionBar(scriptableSpell))
+                    if (!FindSpellOnActionbar(scriptableSpell))
                     {
                         var actionButton = FindEmptySlotOnBar();
 
@@ -192,7 +192,7 @@ namespace PlayerUI
         {
             if (scriptableSpell)
             {
-                if (!IsSpellOnActionBar(scriptableSpell))
+                if (!FindSpellOnActionbar(scriptableSpell))
                 {
                     var actionButton = FindEmptySlotOnBar();
 
@@ -222,7 +222,7 @@ namespace PlayerUI
         {
             if (scriptableSpell)
             {
-                if (!IsSpellOnActionBar(scriptableSpell))
+                if (!FindSpellOnActionbar(scriptableSpell))
                 {
                     var actionButton = FindEmptySlotOnBar();
 
@@ -274,23 +274,31 @@ namespace PlayerUI
             return null;
         }
         /// <summary>
-        /// Checks to see if the spell is already on the Actionbar
+        /// Find the given spell on the Actionbar
         /// </summary>
-        /// <param name="spell"></param>
-        private bool IsSpellOnActionBar(ScriptableSpell spell)
+        /// <param name="spellToFind"></param>  
+        /// <returns>The found ScriptableSpell</returns>
+        public ScriptableSpell FindSpellOnActionbar(ScriptableSpell spellToFind)
         {
-            foreach (ScriptableSpell scriptableSpell in GeneralFunctions.GetPlayerState().PlayerSpells)
+            foreach(ActionButton actionButton in ActionBarButtons)
             {
-                if (scriptableSpell)
+                if (actionButton)
                 {
-                    if (scriptableSpell.GetType() == spell.GetType())
+                    if (actionButton.transform.childCount > 1)
                     {
-                        return true;
+                        var spell = actionButton.transform.GetChild(1).GetComponent<SpellIcon>();
+
+                        if (spell)
+                        {
+                            if (spell.MyScriptableSpell.GetType() == spellToFind.GetType())
+                            {
+                                return spell.MyScriptableSpell;
+                            }
+                        }
                     }
                 }
             }
-
-            return false;
+            return null;
         }
         /// <summary>
         /// Called whenever a gamepad is connected or disconnected
@@ -298,6 +306,25 @@ namespace PlayerUI
         /// <param name="connected"></param>
         private void OnGamepadUpdated(bool connected)
         {
+            // TODO Find a better to copy a list contents into another list
+            List<ScriptableSpell> tempSpellList = new List<ScriptableSpell>();
+
+            foreach (ActionButton actionButton in ActionBarButtons)
+            {
+                if (actionButton)
+                {
+                    if (actionButton.transform.childCount > 1)
+                    {
+                        var spell = actionButton.transform.GetChild(1).GetComponent<SpellIcon>();
+
+                        if (spell)
+                        {
+                            tempSpellList.Add(spell.MyScriptableSpell);
+                        }
+                    }
+                }
+            }
+
             foreach (ActionButton actionButton in ActionBarButtons)
             {
                 Destroy(actionButton.gameObject);
@@ -305,9 +332,11 @@ namespace PlayerUI
 
             ActionBarButtons.Clear();
 
+            GeneralFunctions.GetPlayerState().ClearSpellList();
+
             CreateActionbar();
 
-            AssignSpells(GeneralFunctions.GetPlayerState().PlayerSpells.ToArray());
+            AssignSpells(tempSpellList.ToArray());
         }
         #endregion
     }

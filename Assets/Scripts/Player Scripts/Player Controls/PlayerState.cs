@@ -463,6 +463,13 @@ namespace PlayerCharacter.GameSaving
         {
             savedPlayerSpells.Remove(scriptableSpell);
         }
+        /// <summary>
+        /// Remove all spells in PlayerSpells List
+        /// </summary>
+        public void ClearSpellList()
+        {
+            savedPlayerSpells.Clear();
+        }
         #endregion
     }
 }

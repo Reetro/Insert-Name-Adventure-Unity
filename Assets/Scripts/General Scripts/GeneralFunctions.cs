@@ -956,6 +956,15 @@ public class GeneralFunctions : MonoBehaviour
     {
         GameAssets.PlayerHUDManager.AssignSpells(scriptableSpells, out allSpellsAssigned);
     }
+    /// <summary>
+    /// Find the given spell on the Actionbar
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    /// <returns>A ScriptableSpell</returns>
+    public static ScriptableSpell FindSpellOnActionbar(ScriptableSpell scriptableSpell)
+    {
+        return GameAssets.PlayerHUDManager.FindSpellOnActionbar(scriptableSpell);
+    }
     #endregion
 
     #region Save Game Functions
