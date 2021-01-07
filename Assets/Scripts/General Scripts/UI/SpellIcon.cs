@@ -14,6 +14,10 @@ namespace PlayerUI
         /// The actual spell assigned to this slot
         /// </summary>
         public ScriptableSpell MyScriptableSpell { get; private set; }
+        /// <summary>
+        /// The actual button the spell is on
+        /// </summary>
+        public ActionButton ParentButton { get; private set; }
 
         [Tooltip("A reference to the cooldown image on the spell icon")]
         [SerializeField] private Image cooldownImage = null;
@@ -28,6 +32,8 @@ namespace PlayerUI
         /// <param name="index"></param>
         public void SetupIcon(ScriptableSpell spellToCast)
         {
+            ParentButton = transform.GetComponentInParent<ActionButton>();
+
             MyScriptableSpell = spellToCast;
 
             spellIcon = GetComponent<Image>();

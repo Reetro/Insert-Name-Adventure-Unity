@@ -2,6 +2,7 @@
 using PlayerUI.ToolTipUI;
 using UnityEngine.Events;
 using UnityEngine;
+using PlayerUI;
 
 namespace Spells
 {

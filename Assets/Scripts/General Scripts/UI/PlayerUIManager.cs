@@ -256,6 +256,129 @@ namespace PlayerUI
             }
         }
         /// <summary>
+        /// Finds the given ScriptableSpell on the Actionbar then removes it
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public void RemoveSpellFromSlot(ScriptableSpell scriptableSpell)
+        {
+            if (scriptableSpell)
+            {
+                var foundSpell = FindSpellIconOnActionbar(scriptableSpell);
+                
+                if (foundSpell)
+                {
+                    GeneralFunctions.GetPlayerState().RemoveSpellFromList(scriptableSpell);
+
+                    foundSpell.ParentButton.RemoveSpellIcon();
+                }
+                else
+                {
+                    Debug.LogError("Failed to RemoveSpellFromSlot failed to find spell " + scriptableSpell.name + " on Actionbar");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to RemoveSpellFromSlot scriptableSpell was not valid");
+            }
+        }
+        /// <summary>
+        /// Finds the given ScriptableSpell on the Actionbar then removes it and check to see if the spell was removed
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        /// <param name="wasSpellRemoved"></param>
+        public void RemoveSpellFromSlot(ScriptableSpell scriptableSpell, out bool wasSpellRemoved)
+        {
+            if (scriptableSpell)
+            {
+                var foundSpellIcon = FindSpellIconOnActionbar(scriptableSpell);
+
+                if (foundSpellIcon)
+                {
+                    GeneralFunctions.GetPlayerState().RemoveSpellFromList(scriptableSpell);
+
+                    foundSpellIcon.ParentButton.RemoveSpellIcon();
+
+                    wasSpellRemoved = true;
+                }
+                else
+                {
+                    Debug.LogError("Failed to RemoveSpellFromSlot scriptableSpell failed to find spell on Actionbar");
+
+                    wasSpellRemoved = false;
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to RemoveSpellFromSlot scriptableSpell was not valid");
+
+                wasSpellRemoved = false;
+            }
+        }
+        /// <summary>
+        /// Finds the given ScriptableSpells on the Actionbar then remove them
+        /// </summary>
+        /// <param name="scriptableSpells"></param>
+        public void RemoveSpellsFromSlots(ScriptableSpell[] scriptableSpells)
+        {
+            foreach (ScriptableSpell scriptableSpell in scriptableSpells)
+            {
+                if (scriptableSpell)
+                {
+                    var foundSpellIcon = FindSpellIconOnActionbar(scriptableSpell);
+
+                    if (foundSpellIcon)
+                    {
+                        GeneralFunctions.GetPlayerState().RemoveSpellFromList(scriptableSpell);
+
+                        foundSpellIcon.ParentButton.RemoveSpellIcon();
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to RemoveSpellFromSlot failed to find spell " + scriptableSpell.name + " on Actionbar");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Finds the given ScriptableSpells on the Actionbar then remove them and check to see if they where all removed
+        /// </summary>
+        /// <param name="scriptableSpells"></param>
+        /// <param name="whereAllSpellsRemoved"></param>
+        public void RemoveSpellsFromSlots(ScriptableSpell[] scriptableSpells, out bool whereAllSpellsRemoved)
+        {
+            var successCount = 0;
+
+            foreach (ScriptableSpell scriptableSpell in scriptableSpells)
+            {
+                if (scriptableSpell)
+                {
+                    var foundSpellIcon = FindSpellIconOnActionbar(scriptableSpell);
+
+                    if (foundSpellIcon)
+                    {
+                        GeneralFunctions.GetPlayerState().RemoveSpellFromList(scriptableSpell);
+
+                        foundSpellIcon.ParentButton.RemoveSpellIcon();
+
+                        successCount++;
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to RemoveSpellFromSlot failed to find spell " + scriptableSpell.name + " on Actionbar");
+                    }
+                }
+            }
+
+            if (successCount >= scriptableSpells.Length)
+            {
+                whereAllSpellsRemoved = true;
+            }
+            else
+            {
+                whereAllSpellsRemoved = false;
+            }
+        }
+        /// <summary>
         /// Tries to find a empty slot on the Actionbar
         /// </summary>
         /// <returns>The found Actionbar slot if bar is full will return null</returns>
@@ -293,6 +416,32 @@ namespace PlayerUI
                             if (spell.MyScriptableSpell.GetType() == spellToFind.GetType())
                             {
                                 return spell.MyScriptableSpell;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        /// <summary>
+        /// Finds the Spell Icon that has the given spell
+        /// </summary>
+        /// <param name="scriptableSpell"></param>
+        public SpellIcon FindSpellIconOnActionbar(ScriptableSpell scriptableSpell)
+        {
+            foreach(ActionButton actionButton in ActionBarButtons)
+            {
+                if (actionButton)
+                {
+                    if (actionButton.transform.childCount > 1)
+                    {
+                        var spell = actionButton.transform.GetChild(1).GetComponent<SpellIcon>();
+
+                        if (spell)
+                        {
+                            if (spell.MyScriptableSpell.GetType() == scriptableSpell.GetType())
+                            {
+                                return spell;
                             }
                         }
                     }

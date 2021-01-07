@@ -921,7 +921,7 @@ public class GeneralFunctions : MonoBehaviour
     }
     #endregion
 
-    #region Spell Functions
+    #region Actionbar Functions
     /// <summary>
     /// Assign a single spell to the Actionbar
     /// </summary>
@@ -964,6 +964,48 @@ public class GeneralFunctions : MonoBehaviour
     public static ScriptableSpell FindSpellOnActionbar(ScriptableSpell scriptableSpell)
     {
         return GameAssets.PlayerHUDManager.FindSpellOnActionbar(scriptableSpell);
+    }
+    /// <summary>
+    /// Finds the Spell Icon that has the given spell
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    public static SpellIcon FindSpellIconOnActionbar(ScriptableSpell scriptableSpell)
+    {
+        return GameAssets.PlayerHUDManager.FindSpellIconOnActionbar(scriptableSpell);
+    }
+    /// <summary>
+    ///  Finds the given ScriptableSpell on the Actionbar then removes it
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    public static void RemoveSpellFromActionbar(ScriptableSpell scriptableSpell)
+    {
+        GameAssets.PlayerHUDManager.RemoveSpellFromSlot(scriptableSpell);
+    }
+    /// <summary>
+    /// Finds the given ScriptableSpell on the Actionbar then removes it and check to see if the spell was removed
+    /// </summary>
+    /// <param name="scriptableSpell"></param>
+    /// <param name="wasSpellRemoved"></param>
+    public static void RemoveSpellFromActionbar(ScriptableSpell scriptableSpell, out bool wasSpellRemoved)
+    {
+        GameAssets.PlayerHUDManager.RemoveSpellFromSlot(scriptableSpell, out wasSpellRemoved);
+    }
+    /// <summary>
+    /// Finds the given ScriptableSpells on the Actionbar then remove them
+    /// </summary>
+    /// <param name="scriptableSpells"></param>
+    public static void RemoveSpellsFromSlots(ScriptableSpell[] scriptableSpells)
+    {
+        GameAssets.PlayerHUDManager.RemoveSpellsFromSlots(scriptableSpells);
+    }
+    /// <summary>
+    /// Finds the given ScriptableSpells on the Actionbar then remove them and check to see if they where all removed
+    /// </summary>
+    /// <param name="scriptableSpells"></param>
+    /// <param name="whereAllSpellsRemoved"></param>
+    public static void RemoveSpellsFromSlots(ScriptableSpell[] scriptableSpells, out bool whereAllSpellsRemoved)
+    {
+        GameAssets.PlayerHUDManager.RemoveSpellsFromSlots(scriptableSpells, out whereAllSpellsRemoved);
     }
     #endregion
 

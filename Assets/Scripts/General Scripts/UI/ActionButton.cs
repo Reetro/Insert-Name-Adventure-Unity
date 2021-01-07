@@ -10,12 +10,15 @@ namespace PlayerUI
         [SerializeField] private TextMeshProUGUI textAsset = null;
 
         private SpellIcon mySpellIcon = null;
+        private ItemTooltip itemTooltip = null;
 
         public void SetupActionSlot(string slotButton, InputAction inputAction)
         {
             textAsset.text = slotButton;
 
             HasSpellInSlot = false;
+
+            itemTooltip = GetComponent<ItemTooltip>();
 
             inputAction.started += ctx => CastSpell();
         }
@@ -41,8 +44,19 @@ namespace PlayerUI
 
             if (mySpellIcon)
             {
-                GetComponent<ItemTooltip>().SetItem(mySpellIcon.MyScriptableSpell);
+                itemTooltip.SetItem(mySpellIcon.MyScriptableSpell);
             }
+        }
+        /// <summary>
+        /// Remove the current spell from slot
+        /// </summary>
+        public void RemoveSpellIcon()
+        {
+            HasSpellInSlot = false;
+
+            itemTooltip.SetItem(null);
+
+            Destroy(mySpellIcon.gameObject);
         }
 
         #region Properties
