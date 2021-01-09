@@ -91,6 +91,7 @@ namespace EnemyCharacter.AI
         private bool wasAbove = false;
         private bool skipVisCheck = false;
         private TileDestroyer[] tileDestroyers;
+        private Boundaries boundaries = null;
         #endregion
 
         /// <summary>
@@ -110,15 +111,38 @@ namespace EnemyCharacter.AI
             /// Will match the player X coordinate
             /// </summary>
             FollowPlayer,
+            /// <summary>
+            /// Tiki Head will not move
+            /// </summary>
+            Idle
         }
         /// <summary>
-        /// Set Default Variables and start move timer
+        /// Freeze Tiki Head Movement
         /// </summary>
         public override void OnSceneCreated()
         {
             base.OnSceneCreated();
 
+            CurrentMovementState = TikiHeadMovementState.Idle;
+        }
+        /// <summary>
+        /// Set Default Variables and start move timer
+        /// </summary>
+        protected override void OnSceneLoadingDone()
+        {
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+            if (!spriteRenderer)
+            {
+                Debug.LogError("Tiki Head " + name + " failed to get spriteRenderer");
+            }
+
+            boundaries = GetComponent<Boundaries>();
+
+            if (!boundaries)
+            {
+                Debug.LogError("Tiki Head " + name + " failed to get boundaries");
+            }
 
             defaultPlayerScale = PlayerTransform.localScale;
             defaultOpacity = spriteRenderer.color.a;
@@ -133,6 +157,8 @@ namespace EnemyCharacter.AI
             {
                 skipVisCheck = true;
 
+                boundaries.DoCheck = false;
+
                 CurrentMovementState = TikiHeadMovementState.FollowPlayer;
             }
             else
@@ -140,6 +166,8 @@ namespace EnemyCharacter.AI
                 skipVisCheck = false;
 
                 SetLaunchPoint();
+
+                boundaries.DoCheck = true;
 
                 CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
             }
@@ -252,17 +280,7 @@ namespace EnemyCharacter.AI
 
                 GeneralFunctions.GetPlayerSpear().EnableSpear();
 
-                ResetSpriteOpacity();
-
-                colliderBox2D.enabled = true;
-
                 isPlayerSquished = false;
-            }
-            else
-            {
-                ResetSpriteOpacity();
-
-                colliderBox2D.enabled = true;
             }
         }
         /// <summary>
@@ -322,6 +340,8 @@ namespace EnemyCharacter.AI
         {
             bool startedMoveToGround = false;
 
+            boundaries.DoCheck = false;
+
             if (wasAbove)
             {
                 var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
@@ -350,6 +370,8 @@ namespace EnemyCharacter.AI
         {
             skipVisCheck = false;
 
+            boundaries.DoCheck = false;
+
             wasAbove = false;
 
             startedMoveToGround = true;
@@ -360,6 +382,7 @@ namespace EnemyCharacter.AI
             {
                 StartCoroutine(MoveToGroundDelay());
             }
+
             return startedMoveToGround;
         }
         /// <summary>
@@ -367,8 +390,12 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void LaunchTikiHeadIntoAir()
         {
-            if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching))
+            if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching) || IsAtMaxHeight())
             {
+                ResetSpriteOpacity();
+
+                colliderBox2D.enabled = true;
+
                 spriteRenderer.color = Color.white;
 
                 if (!moveToGroundTimerRunning)
@@ -396,6 +423,8 @@ namespace EnemyCharacter.AI
         {
             if (moveToGroundTimerRunning)
             {
+                boundaries.DoCheck = false;
+
                 if (!followTimerRunning)
                 {
                     MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
@@ -422,33 +451,13 @@ namespace EnemyCharacter.AI
                 }
                 else
                 {
-                    if (IsAbovePlayer() && isTouchingGround)
+                    DisableTileDestroyers();
+
+                    isFalling = false;
+
+                    if (!launchTimerRunning)
                     {
-                        DisableTileDestroyers();
-
-                        spriteRenderer.color = Color.white;
-
-                        isFalling = false;
-
-                        wasAbove = true;
-
-                        CurrentMovementState = TikiHeadMovementState.FollowPlayer;
-
-                        if (!followTimerRunning)
-                        {
-                            StartCoroutine(FollowTimer());
-                        }
-                    }
-                    else
-                    {
-                        DisableTileDestroyers();
-
-                        isFalling = false;
-
-                        if (!launchTimerRunning)
-                        {
-                            StartCoroutine(LaunchTimer());
-                        }
+                        StartCoroutine(LaunchTimer());
                     }
                 }
             }
@@ -493,6 +502,13 @@ namespace EnemyCharacter.AI
         {
             return transform.position.y - PlayerTransform.position.y > yDistanceTolerance;
         }
+        /// <summary>
+        /// Checks to see if the Tiki Head is at max height
+        /// </summary>
+        private bool IsAtMaxHeight()
+        {
+            return boundaries.MaxCords.y - transform.position.y <= 0.01;
+        }
 
         #region Movement Timers
         /// <summary>
@@ -503,6 +519,8 @@ namespace EnemyCharacter.AI
             launchTimerRunning = true;
 
             yield return new WaitForSeconds(launchDelay);
+
+            boundaries.DoCheck = true;
 
             SetLaunchPoint();
 

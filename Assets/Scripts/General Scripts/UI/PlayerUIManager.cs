@@ -456,23 +456,7 @@ namespace PlayerUI
         private void OnGamepadUpdated(bool connected)
         {
             // TODO Find a better to copy a list contents into another list
-            List<ScriptableSpell> tempSpellList = new List<ScriptableSpell>();
-
-            foreach (ActionButton actionButton in ActionBarButtons)
-            {
-                if (actionButton)
-                {
-                    if (actionButton.transform.childCount > 1)
-                    {
-                        var spell = actionButton.transform.GetChild(1).GetComponent<SpellIcon>();
-
-                        if (spell)
-                        {
-                            tempSpellList.Add(spell.MyScriptableSpell);
-                        }
-                    }
-                }
-            }
+            var tempSpellList = GeneralFunctions.GetPlayerState().PlayerSpells.ToArray();
 
             foreach (ActionButton actionButton in ActionBarButtons)
             {
@@ -485,7 +469,7 @@ namespace PlayerUI
 
             CreateActionbar();
 
-            AssignSpells(tempSpellList.ToArray());
+            AssignSpells(tempSpellList);
         }
         #endregion
     }
