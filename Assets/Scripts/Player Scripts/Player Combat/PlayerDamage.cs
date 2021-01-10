@@ -63,7 +63,7 @@ public class PlayerDamage : MonoBehaviour
                     }
                     else if (!leechEggRipe && !leechEggCold)
                     {
-                        GeneralFunctions.DamageTarget(colliders[index].gameObject, damage, true, gameObject);
+                        GeneralFunctions.ApplyDamageToTarget(colliders[index].gameObject, damage, true, gameObject);
                     }
                 }
             }

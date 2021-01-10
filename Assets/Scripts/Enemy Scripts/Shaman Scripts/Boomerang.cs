@@ -62,7 +62,7 @@ namespace LevelObjects.MovingObjects
             {
                 if (canDamage)
                 {
-                    GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
+                    GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damage, true, gameObject);
 
                     canDamage = false;
 

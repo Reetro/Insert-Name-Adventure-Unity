@@ -200,7 +200,7 @@ namespace PlayerCharacter.Controller
             {
                 if (GeneralFunctions.GetGameObjectHealthComponent(hit.transform))
                 {
-                    GeneralFunctions.DamageTarget(hit.transform.gameObject, spearDamage, true, gameObject);
+                    GeneralFunctions.ApplyDamageToTarget(hit.transform.gameObject, spearDamage, true, gameObject);
                 }
             }
         }
@@ -452,7 +452,7 @@ namespace PlayerCharacter.Controller
                         }*/
                         else if (!leechEggRipe && !leechEggCold)
                         {
-                            GeneralFunctions.DamageTarget(collider2.gameObject, spearDamage, true, gameObject);
+                            GeneralFunctions.ApplyDamageToTarget(collider2.gameObject, spearDamage, true, gameObject);
                         }
                     }
                 }

@@ -12,11 +12,30 @@ namespace ComponentLibrary
         /// <summary>
         /// Should this perform a boundary check
         /// </summary>
-        public bool DoCheck { get; set; } = true;
+        public bool DoBounderyCheck { get; set; } = true;
         /// <summary>
         /// Container for maximum Y and X cords
         /// </summary>
         public Vector2 MaxCords { get; set; } = Vector2.zero;
+        /// <summary>
+        /// The current state of boundary check
+        /// </summary>
+        public ConstrainStates BoundaryConstrainStates { get; set; }
+
+        /// <summary>
+        /// All Boundary Constrain States
+        /// </summary>
+        public enum ConstrainStates
+        {
+            /// <summary>
+            /// If true will constrain the X coordinate to camera
+            /// </summary>
+            ConstrainX,
+            /// <summary>
+            /// If true will constrain the Y coordinate to camera
+            /// </summary>
+            ConstrainY
+        }
 
         /// <summary>
         /// Get all needed values
@@ -34,12 +53,29 @@ namespace ComponentLibrary
         /// </summary>
         private void LateUpdate()
         {
-            if (DoCheck)
+            if (DoBounderyCheck)
             {
-                viewPos = transform.position;
-                viewPos.x = Mathf.Clamp(viewPos.x, screenBounds.x * -1 + objectWidth, screenBounds.x - objectWidth);
-                viewPos.y = Mathf.Clamp(viewPos.y, screenBounds.y * -1 + objectHeight, screenBounds.y - objectHeight);
-                transform.position = viewPos;
+                switch(BoundaryConstrainStates)
+                {
+                    default:
+                        viewPos = transform.position;
+                        viewPos.x = Mathf.Clamp(viewPos.x, screenBounds.x * -1 + objectWidth, screenBounds.x - objectWidth);
+                        viewPos.y = Mathf.Clamp(viewPos.y, screenBounds.y * -1 + objectHeight, screenBounds.y - objectHeight);
+                        transform.position = viewPos;
+                        break;
+                    case ConstrainStates.ConstrainX:
+                        viewPos = transform.position;
+                        viewPos.x = Mathf.Clamp(viewPos.x, screenBounds.x * -1 + objectWidth, screenBounds.x - objectWidth);
+                        viewPos.y = transform.position.y;
+                        transform.position = viewPos;
+                        break;
+                    case ConstrainStates.ConstrainY:
+                        viewPos = transform.position;
+                        viewPos.x = transform.position.x;
+                        viewPos.y = Mathf.Clamp(viewPos.y, screenBounds.y * -1 + objectHeight, screenBounds.y - objectHeight);
+                        transform.position = viewPos;
+                        break;
+                }
             }
         }
     }

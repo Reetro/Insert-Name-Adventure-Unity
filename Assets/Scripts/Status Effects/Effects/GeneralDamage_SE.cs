@@ -6,7 +6,7 @@
         {
             if (IsCurrentlyActive)
             {
-                GeneralFunctions.DamageTarget(Target, Value1 * StackCount, true, gameObject);
+                GeneralFunctions.ApplyDamageToTarget(Target, Value1 * StackCount, true, gameObject);
             }
         }
     }

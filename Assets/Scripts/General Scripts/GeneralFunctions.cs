@@ -507,7 +507,7 @@ public class GeneralFunctions : MonoBehaviour
     /// <param name="target"></param>
     /// <param name="amount"></param>
     /// <param name="showText"></param>
-    public static void DamageTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
+    public static void ApplyDamageToTarget(GameObject target, float amount, bool showText, GameObject damageDealer)
     {
         if (IsObjectOnLayer(GameAssets.GlobalManager.whatCanBeDamaged, target) && !target.CompareTag("Discard Damage"))
         {

@@ -153,11 +153,13 @@ namespace EnemyCharacter.AI
 
             tileDestroyers = GetComponentsInChildren<TileDestroyer>();
 
+            boundaries.BoundaryConstrainStates = Boundaries.ConstrainStates.ConstrainY;
+
+            boundaries.DoBounderyCheck = true;
+
             if (IsAbovePlayer())
             {
                 skipVisCheck = true;
-
-                boundaries.DoCheck = false;
 
                 CurrentMovementState = TikiHeadMovementState.FollowPlayer;
             }
@@ -166,8 +168,6 @@ namespace EnemyCharacter.AI
                 skipVisCheck = false;
 
                 SetLaunchPoint();
-
-                boundaries.DoCheck = true;
 
                 CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
             }
@@ -198,7 +198,7 @@ namespace EnemyCharacter.AI
                         {
                             GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
 
-                            GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
+                            GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
 
                             PlayerTransform.localScale = playerSquishScale;
 
@@ -220,21 +220,28 @@ namespace EnemyCharacter.AI
                     // Knockback player if Tiki Head is grounded
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
-                        if (!isLaunching && !GeneralFunctions.IsObjectAbove(PlayerTransform.position, transform.position))
+                        Vector2 direction = transform.position - collision.transform.position;
+
+                        direction.Normalize();
+
+                        if (!GeneralFunctions.IsObjectAbove(collision.transform.position, transform.position))
                         {
-                            if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
-                            {
-                                GeneralFunctions.ApplyKnockback(collision.gameObject, -transform.right * knockBackMultiplier, ForceMode2D.Impulse);
+                            direction.y = 0;
 
-                                GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
-                            }
-                            else
-                            {
-                                GeneralFunctions.ApplyKnockback(collision.gameObject, transform.right * knockBackMultiplier, ForceMode2D.Impulse);
-
-                                GeneralFunctions.DamageTarget(collision.gameObject, damageToApply, true, gameObject);
-                            }
+                            // Invert Knockback Direction
+                            direction.x = -direction.x;
                         }
+                        else
+                        {
+                            direction.x = 0;
+
+                            // Invert Knockback Direction
+                            direction.y = -direction.y;
+                        }
+
+                        GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackMultiplier, ForceMode2D.Impulse);
+
+                        GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
                     }
                 }
             }
@@ -340,8 +347,6 @@ namespace EnemyCharacter.AI
         {
             bool startedMoveToGround = false;
 
-            boundaries.DoCheck = false;
-
             if (wasAbove)
             {
                 var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
@@ -369,8 +374,6 @@ namespace EnemyCharacter.AI
         private bool SetupMoveToGround(bool startedMoveToGround)
         {
             skipVisCheck = false;
-
-            boundaries.DoCheck = false;
 
             wasAbove = false;
 
@@ -423,8 +426,6 @@ namespace EnemyCharacter.AI
         {
             if (moveToGroundTimerRunning)
             {
-                boundaries.DoCheck = false;
-
                 if (!followTimerRunning)
                 {
                     MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
@@ -454,6 +455,7 @@ namespace EnemyCharacter.AI
                     DisableTileDestroyers();
 
                     isFalling = false;
+
 
                     if (!launchTimerRunning)
                     {
@@ -519,8 +521,6 @@ namespace EnemyCharacter.AI
             launchTimerRunning = true;
 
             yield return new WaitForSeconds(launchDelay);
-
-            boundaries.DoCheck = true;
 
             SetLaunchPoint();
 

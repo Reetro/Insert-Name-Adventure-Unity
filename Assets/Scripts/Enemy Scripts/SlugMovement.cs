@@ -257,7 +257,7 @@ namespace EnemyCharacter.AI
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                GeneralFunctions.DamageTarget(collision.gameObject, damageToPlayer, true, gameObject);
+                GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToPlayer, true, gameObject);
 
                 Vector2 direction = GeneralFunctions.GetDirectionVectorFrom2Vectors(collision.gameObject.transform, transform);
 

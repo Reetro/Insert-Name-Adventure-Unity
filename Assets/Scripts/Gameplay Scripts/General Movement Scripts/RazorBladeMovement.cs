@@ -6,7 +6,7 @@ namespace LevelObjects.MovingObjects
     {
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            GeneralFunctions.DamageTarget(collision.gameObject, damage, true, gameObject);
+            GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damage, true, gameObject);
 
             Destroy(gameObject);
         }
