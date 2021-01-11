@@ -68,6 +68,11 @@ namespace PlayerCharacter.Controller
                 {
                     // Add a vertical force to the player.
                     myLegs.IsGrounded = false;
+
+                    // Remove all force towards player
+                    myRigidbody2D.angularVelocity = 0f;
+                    myRigidbody2D.velocity = Vector2.zero;
+
                     myRigidbody2D.AddForce(new Vector2(0f, jumpForce));
                 }
             }

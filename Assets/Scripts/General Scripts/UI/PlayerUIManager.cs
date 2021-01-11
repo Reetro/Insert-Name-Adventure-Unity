@@ -5,14 +5,15 @@ using LevelObjects.SceneLoading;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using Spells;
+using UnityEngine.EventSystems;
 
 namespace PlayerUI
 {
     public class PlayerUIManager : MonoBehaviour
     {
         [Header("GameOver UI Elements")]
-        [SerializeField] Button loadCheckpointBTN = null;
-        [SerializeField] TextMeshProUGUI gameOverText = null;
+        [SerializeField] private Button loadCheckpointBTN = null;
+        [SerializeField] private TextMeshProUGUI gameOverText = null;
 
         [SerializeField] private GridLayoutGroup actionBarLayout = null;
         [SerializeField] private ActionButton actionSlot = null;
@@ -68,6 +69,9 @@ namespace PlayerUI
         {
             loadCheckpointBTN.gameObject.SetActive(false);
             gameOverText.gameObject.SetActive(false);
+
+            // Clear selected Object
+            EventSystem.current.SetSelectedGameObject(null);
         }
         /// <summary>
         /// Show the player death UI
@@ -76,6 +80,15 @@ namespace PlayerUI
         {
             loadCheckpointBTN.gameObject.SetActive(true);
             gameOverText.gameObject.SetActive(true);
+
+            if (GeneralFunctions.GetGameplayManager()._IsGamepadActive)
+            {
+                // Clear selected Object
+                EventSystem.current.SetSelectedGameObject(null);
+
+                // Set new selected object
+                EventSystem.current.SetSelectedGameObject(loadCheckpointBTN.gameObject);
+            }
         }
         #endregion
 
@@ -455,7 +468,6 @@ namespace PlayerUI
         /// <param name="connected"></param>
         private void OnGamepadUpdated(bool connected)
         {
-            // TODO Find a better to copy a list contents into another list
             var tempSpellList = GeneralFunctions.GetPlayerState().PlayerSpells.ToArray();
 
             foreach (ActionButton actionButton in ActionBarButtons)
