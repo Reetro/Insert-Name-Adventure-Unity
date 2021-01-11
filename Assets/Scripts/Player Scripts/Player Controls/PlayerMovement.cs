@@ -26,13 +26,21 @@ namespace PlayerCharacter.Controller
         private PlayerLegs myLegs = null;
         private Vector3 currentVelocity = Vector3.zero;
 
+        /// <summary>
+        /// Set all internal values
+        /// </summary>
         private void Awake()
         {
             myRigidbody2D = GetComponent<Rigidbody2D>();
             hpComp = GetComponent<HealthComponent>();
-            myLegs = GameObject.FindGameObjectWithTag("Player Legs").GetComponent<PlayerLegs>();
+            myLegs = transform.GetComponentInChildren<PlayerLegs>();
         }
-
+        /// <summary>
+        /// Will move the player in the direction of input
+        /// </summary>
+        /// <param name="move"></param>
+        /// <param name="jump"></param>
+        /// <param name="forceFlip"></param>
         public void Move(float move, bool jump, bool forceFlip)
         {
             if (!hpComp.IsCurrentlyDead)
@@ -73,6 +81,7 @@ namespace PlayerCharacter.Controller
                     myRigidbody2D.angularVelocity = 0f;
                     myRigidbody2D.velocity = Vector2.zero;
 
+                    // Apply the actual jump force
                     myRigidbody2D.AddForce(new Vector2(0f, jumpForce));
                 }
             }
