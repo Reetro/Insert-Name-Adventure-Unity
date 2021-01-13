@@ -18,8 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Jack's Levels/Movement_and_Leeches/MnL4 (Thirteen).unity
     guid: 9e036ac9d13df4e479df89780f6a58f7
   - enabled: 1
-    path: Assets/Scenes/Testing Areas/Shaman Level.unity
-    guid: d3b3145a2701e8341ad3022fb66b76ec
+    path: Assets/Scenes/Justin's Levels/Justin 1.unity
+    guid: c9d1ade8c9bdbe2408d34cf71dc5d893
+  - enabled: 1
+    path: Assets/Scenes/Jack's Levels/Jack3.unity
+    guid: 08e131c1ae43ad948a590891ad4f9504
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 5d16b39672f39a54aa60f3bc40b1b4fb,
       type: 2}
