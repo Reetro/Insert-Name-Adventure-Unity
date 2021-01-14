@@ -73,6 +73,8 @@ namespace PlayerCharacter.Controller
             controls.Player.SaveGame.started += OnSavePressed;
             controls.Player.LoadGame.started += OnLoadPressed;
 
+            controls.Player.PauseGame.started += OnPausePressed;
+
             controls.Player.DeleteSavedGame.started += OnDeletePressed;
 
             transform.GetChild(0).GetComponent<PlayerLegs>().OnLandEvent.AddListener(OnLanding);
@@ -217,6 +219,21 @@ namespace PlayerCharacter.Controller
                 {
                     currentSpear.StartSpearPush();
                 }
+            }
+        }
+        /// <summary>
+        /// Pause Game when pause button is pressed
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnPausePressed(InputAction.CallbackContext context)
+        {
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
+            {
+                GeneralFunctions.PauseGame();
+            }
+            else
+            {
+                GeneralFunctions.ResumeGame();
             }
         }
         #endregion

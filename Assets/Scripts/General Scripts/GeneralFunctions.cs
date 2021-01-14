@@ -379,6 +379,12 @@ public class GeneralFunctions : MonoBehaviour
     /// </summary>
     public static void PauseGame()
     {
+        GameAssets.GlobalManager._IsGamePaused = true;
+
+        GameAssets.GlobalManager.onGamePause.Invoke();
+
+        GetPlayerSpear().DisableSpear();
+
         Time.timeScale = 0;
     }
     /// <summary>
@@ -387,6 +393,12 @@ public class GeneralFunctions : MonoBehaviour
     public static void ResumeGame()
     {
         Time.timeScale = 1;
+
+        GameAssets.GlobalManager._IsGamePaused = false;
+
+        GetPlayerSpear().EnableSpear();
+
+        GameAssets.GlobalManager.onGameResume.Invoke();
     }
     #endregion
 

@@ -115,6 +115,14 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Pause Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a982ca9-15ff-4c4e-878e-dbaa401af67f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -414,6 +422,28 @@ namespace PlayerControls
                     ""action"": ""Actionbar Slot 4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a016714-81cd-4708-a34d-e0ab4a3b19fe"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75027c33-0615-479b-8bca-e69fc5d1e66d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -434,6 +464,7 @@ namespace PlayerControls
             m_Player_ActionbarSlot2 = m_Player.FindAction("Actionbar Slot 2", throwIfNotFound: true);
             m_Player_ActionbarSlot3 = m_Player.FindAction("Actionbar Slot 3", throwIfNotFound: true);
             m_Player_ActionbarSlot4 = m_Player.FindAction("Actionbar Slot 4", throwIfNotFound: true);
+            m_Player_PauseGame = m_Player.FindAction("Pause Game", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -495,6 +526,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_ActionbarSlot2;
         private readonly InputAction m_Player_ActionbarSlot3;
         private readonly InputAction m_Player_ActionbarSlot4;
+        private readonly InputAction m_Player_PauseGame;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -511,6 +543,7 @@ namespace PlayerControls
             public InputAction @ActionbarSlot2 => m_Wrapper.m_Player_ActionbarSlot2;
             public InputAction @ActionbarSlot3 => m_Wrapper.m_Player_ActionbarSlot3;
             public InputAction @ActionbarSlot4 => m_Wrapper.m_Player_ActionbarSlot4;
+            public InputAction @PauseGame => m_Wrapper.m_Player_PauseGame;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -556,6 +589,9 @@ namespace PlayerControls
                     @ActionbarSlot4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
                     @ActionbarSlot4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
                     @ActionbarSlot4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActionbarSlot4;
+                    @PauseGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseGame;
+                    @PauseGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseGame;
+                    @PauseGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseGame;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -596,6 +632,9 @@ namespace PlayerControls
                     @ActionbarSlot4.started += instance.OnActionbarSlot4;
                     @ActionbarSlot4.performed += instance.OnActionbarSlot4;
                     @ActionbarSlot4.canceled += instance.OnActionbarSlot4;
+                    @PauseGame.started += instance.OnPauseGame;
+                    @PauseGame.performed += instance.OnPauseGame;
+                    @PauseGame.canceled += instance.OnPauseGame;
                 }
             }
         }
@@ -614,6 +653,7 @@ namespace PlayerControls
             void OnActionbarSlot2(InputAction.CallbackContext context);
             void OnActionbarSlot3(InputAction.CallbackContext context);
             void OnActionbarSlot4(InputAction.CallbackContext context);
+            void OnPauseGame(InputAction.CallbackContext context);
         }
     }
 }

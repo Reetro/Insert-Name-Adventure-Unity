@@ -61,10 +61,20 @@ namespace GameplayManagement
         [HideInInspector]
         public UnityEvent onSceneLoadingDone;
 
+        [HideInInspector]
+        public UnityEvent onGamePause;
+
+        [HideInInspector]
+        public UnityEvent onGameResume;
+
         /// <summary>
         /// Checks to see if a Gamepad is connected
         /// </summary>
         public bool _IsGamepadActive { get; private set; } = false;
+        /// <summary>
+        /// Check to see if the Game is paused
+        /// </summary>
+        public bool _IsGamePaused { get; set; } = false;
         /// <summary>
         /// Check to see if a Gamepad is active when game starts
         /// </summary>

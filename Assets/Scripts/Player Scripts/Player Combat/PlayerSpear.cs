@@ -99,16 +99,19 @@ namespace PlayerCharacter.Controller
         /// </summary>
         void Update()
         {
-            if (!controller.ControlDisabled)
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
             {
-                if (canRotate)
+                if (!controller.ControlDisabled)
                 {
-                    RotateSpear();
-                }
+                    if (canRotate)
+                    {
+                        RotateSpear();
+                    }
 
-                if (!gameplayManager._IsGamepadActive)
-                {
-                    RotatePlayerWithMouse();
+                    if (!gameplayManager._IsGamepadActive)
+                    {
+                        RotatePlayerWithMouse();
+                    }
                 }
             }
         }
@@ -209,17 +212,20 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void RotateSpear()
         {
-            if (!playerHealthComp.IsCurrentlyDead)
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
             {
-                if (!gameplayManager._IsGamepadActive)
+                if (!playerHealthComp.IsCurrentlyDead)
                 {
-                    RotateSpearWithMouse();
-                }
-                else
-                {
-                    UpdateJoystick();
+                    if (!gameplayManager._IsGamepadActive)
+                    {
+                        RotateSpearWithMouse();
+                    }
+                    else
+                    {
+                        UpdateJoystick();
 
-                    RotateSpearWithGamepad();
+                        RotateSpearWithGamepad();
+                    }
                 }
             }
         }
@@ -269,9 +275,12 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void RotatePlayerWithGamepad()
         {
-            facingRight = !facingRight;
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
+            {
+                facingRight = !facingRight;
 
-            GeneralFunctions.FlipObject(controller.gameObject);
+                GeneralFunctions.FlipObject(controller.gameObject);
+            }
         }
         /// <summary>
         /// If a Gamepad is active get value from right stick and calculate spear rotation
