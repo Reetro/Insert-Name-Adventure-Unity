@@ -18,16 +18,19 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void Update()
         {
-            if (!MyHealthComponent.IsCurrentlyDead)
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
             {
-                if (MyRigidBody2D.velocity.magnitude > 0)
+                if (!MyHealthComponent.IsCurrentlyDead)
                 {
-                    MyMovementComp.RotateToMovement(MyRigidBody2D);
+                    if (MyRigidBody2D.velocity.magnitude > 0)
+                    {
+                        MyMovementComp.RotateToMovement(MyRigidBody2D);
+                    }
+
+                    var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
+
+                    AddToLeechY(transform, amountToAddToY.y);
                 }
-
-                var amountToAddToY = GeneralFunctions.CreateRandomVector2OnlyY(randomYMin, randomYMax);
-
-                AddToLeechY(transform, amountToAddToY.y);
             }
         }
         /// <summary>

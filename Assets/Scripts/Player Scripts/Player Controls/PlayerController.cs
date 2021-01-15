@@ -244,27 +244,30 @@ namespace PlayerCharacter.Controller
         /// </summary>
         private void Move()
         {
-            if (!healthComponent.IsCurrentlyDead)
+            if (!GeneralFunctions.GetGameplayManager()._IsGamePaused)
             {
-                horizontalMove = controls.Player.Movement.ReadValue<Vector2>().x;
+                if (!healthComponent.IsCurrentlyDead)
+                {
+                    horizontalMove = controls.Player.Movement.ReadValue<Vector2>().x;
 
-                switch (transform.localEulerAngles.y >= 180)
-                {
-                    case true:
-                        myAnimator.SetFloat("Speed", -horizontalMove);
-                        break;
-                    case false:
-                        myAnimator.SetFloat("Speed", horizontalMove);
-                        break;
-                }
+                    switch (transform.localEulerAngles.y >= 180)
+                    {
+                        case true:
+                            myAnimator.SetFloat("Speed", -horizontalMove);
+                            break;
+                        case false:
+                            myAnimator.SetFloat("Speed", horizontalMove);
+                            break;
+                    }
 
-                if (horizontalMove == 0)
-                {
-                    myAnimator.SetBool("Idle", true);
-                }
-                else
-                {
-                    myAnimator.SetBool("Idle", false);
+                    if (horizontalMove == 0)
+                    {
+                        myAnimator.SetBool("Idle", true);
+                    }
+                    else
+                    {
+                        myAnimator.SetBool("Idle", false);
+                    }
                 }
             }
         }

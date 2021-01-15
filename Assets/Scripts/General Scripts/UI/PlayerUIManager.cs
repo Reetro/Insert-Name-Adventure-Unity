@@ -15,6 +15,11 @@ namespace PlayerUI
         [SerializeField] private Button loadCheckpointBTN = null;
         [SerializeField] private TextMeshProUGUI gameOverText = null;
 
+        [Header("Pause Menu Elements")]
+        [SerializeField] private Button resumeBTN = null;
+        [SerializeField] private TextMeshProUGUI pasueText = null;
+
+        [Header("Actionbar Elements")]
         [SerializeField] private GridLayoutGroup actionBarLayout = null;
         [SerializeField] private ActionButton actionSlot = null;
         [SerializeField] private SpellIcon spellIcon = null;
@@ -28,36 +33,74 @@ namespace PlayerUI
         public List<ActionButton> ActionBarButtons { get; private set; } = new List<ActionButton>();
         #endregion
 
-        #region Level Loading Functions
+        #region Setup Functions
+        /// <summary>
+        /// Setup UI callbacks and hide pause menu and death ui
+        /// </summary>
         private void Awake()
         {
             GeneralFunctions.GetGameplayManager().controllerUpdated.AddListener(OnGamepadUpdated);
 
             HideDeathUI();
 
+            HidePauseMenu();
+
             levelLoader = FindObjectOfType<LevelLoader>();
 
-            loadCheckpointBTN.onClick.AddListener(loadCheckpoint_onclick);
+            loadCheckpointBTN.onClick.AddListener(LoadCheckpoint);
+
+            resumeBTN.onClick.AddListener(ResumeGame);
 
             CreateActionbar();
         }
         /// <summary>
-        /// When scene is created assign spells to Actionbar
+        /// When scene is created assign spells to Actionbar then setup pause menu callbacks
         /// </summary>
         public void OnSceneCreated()
         {
+            GeneralFunctions.GetGameplayManager().onGamePause.AddListener(ShowPauseMenu);
+
+            GeneralFunctions.GetGameplayManager().onGameResume.AddListener(HidePauseMenu);
+
             AssignSpells(GeneralFunctions.GetGameplayManager().playerStartingSpells);
         }
+        #endregion
+
+        #region Pause UI Functions
         /// <summary>
-        /// Load the current checkpoint index
+        /// Hide the pause menu
         /// </summary>
-        private void loadCheckpoint_onclick()
+        public void HidePauseMenu()
         {
-            levelLoader = FindObjectOfType<LevelLoader>();
+            resumeBTN.gameObject.SetActive(false);
+            pasueText.gameObject.SetActive(false);
 
-            levelLoader.LoadCheckpoint();
+            // Clear selected Object
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        /// <summary>
+        /// Show the pause menu
+        /// </summary>
+        public void ShowPauseMenu()
+        {
+            resumeBTN.gameObject.SetActive(true);
+            pasueText.gameObject.SetActive(true);
 
-            HideDeathUI();
+            if (GeneralFunctions.GetGameplayManager()._IsGamepadActive)
+            {
+                // Clear selected Object
+                EventSystem.current.SetSelectedGameObject(null);
+
+                // Set new selected object
+                EventSystem.current.SetSelectedGameObject(resumeBTN.gameObject);
+            }
+        }
+        /// <summary>
+        /// Resume game when Resume button is clicked
+        /// </summary>
+        private void ResumeGame()
+        {
+            GeneralFunctions.ResumeGame();
         }
         #endregion
 
@@ -89,6 +132,17 @@ namespace PlayerUI
                 // Set new selected object
                 EventSystem.current.SetSelectedGameObject(loadCheckpointBTN.gameObject);
             }
+        }
+        /// <summary>
+        /// Load the current checkpoint index
+        /// </summary>
+        private void LoadCheckpoint()
+        {
+            levelLoader = FindObjectOfType<LevelLoader>();
+
+            levelLoader.LoadCheckpoint();
+
+            HideDeathUI();
         }
         #endregion
 
