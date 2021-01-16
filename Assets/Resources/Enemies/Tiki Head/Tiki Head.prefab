@@ -281,6 +281,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   traceDistance: 1
+  cameraShakeIntensity: 2.3
+  cameraShakeTime: 0.2
   sightLayers:
     serializedVersion: 2
     m_Bits: 131840

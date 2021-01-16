@@ -1225,7 +1225,6 @@ public class GeneralFunctions : MonoBehaviour
             return new RaycastHit2D();
         }
     }
-
     /// <summary>
     /// Gets the total width of the given sprite
     /// </summary>
@@ -1245,13 +1244,13 @@ public class GeneralFunctions : MonoBehaviour
         return spriteRenderer.bounds.extents.y;
     }
     /// <summary>
-    /// Gets the name of the key from the Input Actions
+    /// Shack the virtual camera with the given intensity
     /// </summary>
-    public static string GetKeyNameForKeyboard(string path)
+    /// <param name="intensity"></param>
+    /// <param name="time"></param>
+    public static void ShakeCamera(float intensity, float time)
     {
-        var localPath = path.Split('/');
-
-        return localPath[1];
+        GameAssets.CameraShakeComponent.ShakeCamera(intensity, time);
     }
     #endregion
 }

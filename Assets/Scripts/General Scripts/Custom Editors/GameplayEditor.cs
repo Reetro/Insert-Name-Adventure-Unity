@@ -286,6 +286,8 @@ namespace CustomEditors
         private SerializedProperty _TikiHeadSightRange;
         private SerializedProperty _TikiHeadDrawDebug;
         private SerializedProperty _TikiHeadWhatIsGround;
+        private SerializedProperty _TikiHeadShakeTime;
+        private SerializedProperty _TikiHeadShakeIntensity;
         #endregion
 
         #region Tiki Head Editors
@@ -688,6 +690,8 @@ namespace CustomEditors
             _TikiHeadWhatIsGround  = tikiHeadObject.FindProperty("whatIsGround");
             _TikiHeadSightLayers = tikiHeadObject.FindProperty("sightLayers");
             _TikiHeadDrawDebug = tikiHeadObject.FindProperty("drawDebug");
+            _TikiHeadShakeIntensity = tikiHeadObject.FindProperty("cameraShakeIntensity");
+            _TikiHeadShakeTime = tikiHeadObject.FindProperty("cameraShakeTime");
         }
         #endregion
 

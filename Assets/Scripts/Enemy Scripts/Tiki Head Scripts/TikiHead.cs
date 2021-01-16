@@ -62,6 +62,14 @@ namespace EnemyCharacter.AI
         [Tooltip("How far to the grounded raycast")]
         [SerializeField] private float traceDistance = 1f;
 
+        [Header("Camera Shake Settings")]
+
+        [Tooltip("Intensity of the camera shake")]
+        [SerializeField] private float cameraShakeIntensity = 1f;
+
+        [Tooltip("How long the camera shake lasts for")]
+        [SerializeField] private float cameraShakeTime = 0.5f;
+
         [Header("Sight Settings")]
 
         [Tooltip("What layers this object can see")]
@@ -92,6 +100,7 @@ namespace EnemyCharacter.AI
         private bool skipVisCheck = false;
         private TileDestroyer[] tileDestroyers;
         private Boundaries boundaries = null;
+        private bool appliedCameraShake = false;
         #endregion
 
         /// <summary>
@@ -444,6 +453,8 @@ namespace EnemyCharacter.AI
 
                 if (!isTouchingGround && canMove)
                 {
+                    appliedCameraShake = false;
+
                     EnableTileDestroyers();
 
                     isFalling = true;
@@ -456,6 +467,12 @@ namespace EnemyCharacter.AI
 
                     isFalling = false;
 
+                    if (!appliedCameraShake)
+                    {
+                        appliedCameraShake = true;
+
+                        GeneralFunctions.ShakeCamera(cameraShakeIntensity, cameraShakeTime);
+                    }
 
                     if (!launchTimerRunning)
                     {

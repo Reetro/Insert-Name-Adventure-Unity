@@ -1,4 +1,5 @@
-﻿using LevelObjects.SceneLoading;
+﻿using ComponentLibrary;
+using LevelObjects.SceneLoading;
 using PlayerCharacter.Controller;
 using PlayerCharacter.GameSaving;
 using PlayerUI;
@@ -41,6 +42,10 @@ namespace GameplayManagement.Assets
         /// A reference to the Player's Leg component currently in the world
         /// </summary>
         public static PlayerLegs PlayerObjectLegs { get; private set; }
+        /// <summary>
+        ///  A reference to the CameraShake component on the virtual camera
+        /// </summary>
+        public static CameraShake CameraShakeComponent { get; private set; }
 
         public Transform damgeText;
         #endregion
@@ -64,6 +69,8 @@ namespace GameplayManagement.Assets
             PlayerCurrentState = FindObjectOfType<PlayerState>();
 
             CurrentLevelLoader = FindObjectOfType<LevelLoader>();
+
+            CameraShakeComponent = FindObjectOfType<CameraShake>();
         }
         /// <summary>
         /// Gets the current instances of this object in the world

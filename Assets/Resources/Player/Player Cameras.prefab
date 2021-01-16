@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3730422875354482673}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4800181, y: -0.85415864, z: -10}
+  m_LocalPosition: {x: 2.4943223, y: 4.0522823, z: 6.2617188}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7536741957874867980}
@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 7536741958822217414}
   - component: {fileID: 7536741958822217433}
   - component: {fileID: 216989132}
+  - component: {fileID: 8935393594406742356}
   m_Layer: 0
   m_Name: Player VC
   m_TagString: Untagged
@@ -235,6 +236,18 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0
+--- !u!114 &8935393594406742356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536741958822217415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e767ab10459e14ba7dfe72ef0bf6b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7536741959185918993
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +259,7 @@ GameObject:
   - component: {fileID: 7536741959185918992}
   - component: {fileID: 7536741959185918994}
   - component: {fileID: 7536741959185918995}
+  - component: {fileID: 4796324491390434436}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -320,3 +334,20 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &4796324491390434436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536741959185918993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 658.5281, y: 391.5901, z: -491.77393}
