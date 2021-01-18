@@ -321,42 +321,6 @@ namespace CustomEditors
         private const float foldoutSpaceing = 10f;
         int tabs = 0;
         private const int indentLevel = 1;
-
-        #region Foldout Bools
-        [SerializeField]
-        [HideInInspector]
-        private bool showLeechSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showLeechFatherSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showLeechMotherSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showAxeThrowerSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showShamanSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showSlugSettings = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showLeechingEffect = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showPlayerSlow = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showHeal = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showPlayerDash = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool showTikiHead = false;
-        #endregion
         #endregion
 
         [MenuItem("Window/Gameplay Editor")]
@@ -1103,9 +1067,7 @@ namespace CustomEditors
         private void SetupEnemyUI()
         {
             #region Leech UI
-            showLeechSettings = EditorGUILayout.Foldout(showLeechSettings, "Leech Settings", true);
-
-            if (showLeechSettings)
+            if (Foldout("Leech Settings", leechMovementObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1173,13 +1135,10 @@ namespace CustomEditors
 
                 GUILayout.Space(foldoutSpaceing);
             }
-
             #endregion
 
             #region Leech Father UI
-            showLeechFatherSettings = EditorGUILayout.Foldout(showLeechFatherSettings, "Leech Father Settings", true);
-
-            if (showLeechFatherSettings)
+            if (Foldout("Leech Father Settings", leechFatherMovementObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1284,9 +1243,7 @@ namespace CustomEditors
             #endregion
 
             #region Leech Mother UI
-            showLeechMotherSettings = EditorGUILayout.Foldout(showLeechMotherSettings, "Leech Mother Settings", true);
-
-            if (showLeechMotherSettings)
+            if (Foldout("Leech Mother Settings", leechMotherMovementObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1382,9 +1339,7 @@ namespace CustomEditors
             #endregion
 
             #region Shaman UI
-            showShamanSettings = EditorGUILayout.Foldout(showShamanSettings, "Shaman Settings", true);
-
-            if (showShamanSettings)
+            if (Foldout("Shaman Settings", shamanObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1455,9 +1410,7 @@ namespace CustomEditors
             #endregion
 
             #region Axe Thrower UI
-            showAxeThrowerSettings = EditorGUILayout.Foldout(showAxeThrowerSettings, "Axe Thrower Settings", true);
-
-            if (showAxeThrowerSettings)
+            if (Foldout("Axe Thrower Settings", axeThrowerObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1528,9 +1481,7 @@ namespace CustomEditors
             #endregion
 
             #region Slug UI
-            showSlugSettings = EditorGUILayout.Foldout(showSlugSettings, "Slug Settings", true);
-
-            if (showSlugSettings)
+            if (Foldout("Slug Settings", slugMovementObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1598,13 +1549,10 @@ namespace CustomEditors
 
                 GUILayout.Space(foldoutSpaceing);
             }
-
             #endregion
 
             #region Tiki Head UI
-            showTikiHead = EditorGUILayout.Foldout(showTikiHead, "Tiki Head Settings", true);
-
-            if (showTikiHead)
+            if (Foldout("Tiki Head Settings", tikiHeadObject.targetObject))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1679,27 +1627,21 @@ namespace CustomEditors
         #region Status Effect UI
         private void SetupStatusEffectsUI()
         {
-            showLeechingEffect = EditorGUILayout.Foldout(showLeechingEffect, "Leeching", true);
-
-            if (showLeechingEffect)
+            if (Foldout("Leeching", leechingSEEditor.target))
             {
                 EditorGUI.indentLevel += indentLevel;
 
                 leechingSEEditor.OnInspectorGUI();
             }
 
-            showPlayerSlow = EditorGUILayout.Foldout(showPlayerSlow, "Player Slow", true);
-
-            if (showPlayerSlow)
+            if (Foldout("Player Slow", playerSlowSEEditor.target))
             {
                 EditorGUI.indentLevel += indentLevel;
 
                 playerSlowSEEditor.OnInspectorGUI();
             }
 
-            showHeal = EditorGUILayout.Foldout(showHeal, "Heal", true);
-
-            if (showHeal)
+            if (Foldout("Heal", healSEEditor.target))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1711,9 +1653,7 @@ namespace CustomEditors
         #region Spell UI
         private void SetupSpellUI()
         {
-            showPlayerDash = EditorGUILayout.Foldout(showPlayerDash, "Player Dash", true);
-
-            if (showPlayerDash)
+            if (Foldout("Player Dash", playerDashEditor.target))
             {
                 EditorGUI.indentLevel += indentLevel;
 
@@ -1721,6 +1661,18 @@ namespace CustomEditors
             }
         }
         #endregion
+
+        private bool Foldout(string name, Object @object)
+        {
+            string prefKey = @object.GetInstanceID() + ".Foldout." + name;
+            bool foldoutState = EditorPrefs.GetBool(prefKey, false);
+            bool newFoldoutState = EditorGUILayout.Foldout(foldoutState, name, true);
+            if (newFoldoutState != foldoutState)
+            {
+                EditorPrefs.SetBool(prefKey, newFoldoutState);
+            }
+            return newFoldoutState;
+        }
     }
 }
 #endif
