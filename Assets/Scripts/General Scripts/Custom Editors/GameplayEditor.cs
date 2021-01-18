@@ -323,17 +323,39 @@ namespace CustomEditors
         private const int indentLevel = 1;
 
         #region Foldout Bools
-        private static bool showLeechSettings = false;
-        private static bool showLeechFatherSettings = false;
-        private static bool showLeechMotherSettings = false;
-        private static bool showAxeThrowerSettings = false;
-        private static bool showShamanSettings = false;
-        private static bool showSlugSettings = false;
-        private static bool showLeechingEffect = false;
-        private static bool showPlayerSlow = false;
-        private static bool showHeal = false;
-        private static bool showPlayerDash = false;
-        private static bool showTikiHead = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showLeechSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showLeechFatherSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showLeechMotherSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showAxeThrowerSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showShamanSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showSlugSettings = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showLeechingEffect = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showPlayerSlow = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showHeal = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showPlayerDash = false;
+        [SerializeField]
+        [HideInInspector]
+        private bool showTikiHead = false;
         #endregion
         #endregion
 
