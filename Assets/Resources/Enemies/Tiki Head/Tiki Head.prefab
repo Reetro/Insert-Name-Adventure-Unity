@@ -280,7 +280,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  traceDistance: 1
+  traceDistance: 1.12
   cameraShakeIntensity: 2.3
   cameraShakeTime: 0.2
   sightLayers:
