@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using GameplayManagement.Assets;
+using System.Collections;
 
 namespace PlayerUI
 {
@@ -14,6 +15,7 @@ namespace PlayerUI
         private Vector3 textEndPoint;
         private bool startAnimation = false;
         private float dissapearTime = 3f;
+        private bool startedFade = false;
 
         // Time when the movement started.
         private float startTime;
@@ -26,6 +28,8 @@ namespace PlayerUI
             textMesh = transform.GetComponent<TextMeshPro>();
 
             startAnimation = false;
+
+            startedFade = false;
 
             // Keep a note of the time the movement started.
             startTime = Time.time;
@@ -51,30 +55,30 @@ namespace PlayerUI
 
                 if (upTime <= 0)
                 {
-                    textColor.a -= dissapearTime * Time.deltaTime;
-
-                    if (textColor.a <= 0)
+                    if (!startedFade)
                     {
-                        Destroy(gameObject);
+                        startedFade = true;
+
+                        StartCoroutine(GeneralFunctions.fadeInAndOut(gameObject, false, dissapearTime));
                     }
                 }
             }
         }
 
-        public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
+        public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float dissapearTime)
         {
             Transform damageTextTransform = Instantiate(GameAssets.instance.damgeText, position, Quaternion.identity);
             DamageText spawnedDamageText = damageTextTransform.GetComponent<DamageText>();
 
-            spawnedDamageText.SetupText(damage, speed, upTime, endPointMinX, endPointMaxX, endPointMinY, endPointMaxY, dissapearTime);
+            spawnedDamageText.SetupText(damage, speed, upTime, dissapearTime, position);
 
             return spawnedDamageText;
         }
 
-        private void SetupText(float damage, float speed, float currentUpTime, float endPointMinX, float endPointMaxX, float endPointMinY, float endPointMaxY, float dissapearTime)
+        private void SetupText(float damage, float speed, float currentUpTime, float dissapearTime, Vector3 position)
         {
-            textEndPoint = GeneralFunctions.CreateRandomVector2(endPointMinX, endPointMaxX, endPointMinY, endPointMaxY);
-
+            textEndPoint = GeneralFunctions.GetPoint(transform.up, position, 1f);
+            
             textMesh.SetText(damage.ToString());
             textSpeed = speed;
             upTime = currentUpTime;
