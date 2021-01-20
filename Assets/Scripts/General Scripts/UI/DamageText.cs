@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 using GameplayManagement.Assets;
-using System.Collections;
 
 namespace PlayerUI
 {
@@ -10,7 +9,6 @@ namespace PlayerUI
         private TextMeshPro textMesh = null;
         private float textSpeed = 0f;
         private float upTime = 0f;
-        private Color textColor;
         private static int sortingOrder;
         private Vector3 textEndPoint;
         private bool startAnimation = false;
@@ -86,8 +84,6 @@ namespace PlayerUI
             sortingOrder++;
             textMesh.sortingOrder = sortingOrder;
             this.dissapearTime = dissapearTime;
-
-            textColor = textMesh.color;
 
             startAnimation = true;
         }
