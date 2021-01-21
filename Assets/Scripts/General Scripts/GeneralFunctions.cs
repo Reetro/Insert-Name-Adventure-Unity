@@ -1256,13 +1256,13 @@ public class GeneralFunctions : MonoBehaviour
         GameAssets.CameraShakeComponent.ShakeCamera(intensity, time);
     }
     /// <summary>
-    /// Will Fade Out Any Gameobject
+    /// Fade out / in Any Gameobject
     /// </summary>
     /// <param name="objectToFade"></param>
     /// <param name="fadeIn"></param>
     /// <param name="duration"></param>
-    /// <returns></returns>
-    public static IEnumerator fadeInAndOut(GameObject objectToFade, bool fadeIn, float duration)
+    /// <param name="destroyOnFade"></param>
+    public static IEnumerator FadeInAndOut(GameObject objectToFade, bool fadeIn, float duration, bool destroyOnFade)
     {
         float counter = 0f;
 
@@ -1357,6 +1357,12 @@ public class GeneralFunctions : MonoBehaviour
                     tempRenderer.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
                     break;
             }
+
+            if (destroyOnFade && counter >= duration)
+            {
+                Destroy(objectToFade);
+            }
+
             yield return null;
         }
     }

@@ -57,7 +57,7 @@ namespace PlayerUI
                     {
                         startedFade = true;
 
-                        StartCoroutine(GeneralFunctions.fadeInAndOut(gameObject, false, dissapearTime));
+                        StartCoroutine(GeneralFunctions.FadeInAndOut(gameObject, false, dissapearTime, true));
                     }
                 }
             }

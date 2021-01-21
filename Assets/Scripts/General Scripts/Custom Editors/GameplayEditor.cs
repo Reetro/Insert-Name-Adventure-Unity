@@ -16,10 +16,6 @@ namespace CustomEditors
         #region Gameplay Manager Variables
         private SerializedProperty _ManagerTextSpeed;
         private SerializedProperty _ManagerTextUpTime;
-        private SerializedProperty _ManagerRandomMinX;
-        private SerializedProperty _ManagerRandomMinY;
-        private SerializedProperty _ManagerRandomMaxX;
-        private SerializedProperty _ManagerRandomMaxY;
         private SerializedProperty _ManagerTextDisappearTime;
         private SerializedProperty _ManagerNameFontSize;
         private SerializedProperty _ManagerDescriptionFontSize;
@@ -373,10 +369,6 @@ namespace CustomEditors
             _ManagerWhatCanBeDamaged = gameplayManagerObject.FindProperty("whatCanBeDamaged");
             _ManagerTextSpeed = gameplayManagerObject.FindProperty("combatTextSpeed");
             _ManagerTextUpTime = gameplayManagerObject.FindProperty("combatTextUpTime");
-            _ManagerRandomMinX = gameplayManagerObject.FindProperty("combatRandomVectorMinX");
-            _ManagerRandomMaxX = gameplayManagerObject.FindProperty("combatRandomVectorMaxX");
-            _ManagerRandomMinY = gameplayManagerObject.FindProperty("combatRandomVectorMinY");
-            _ManagerRandomMaxY = gameplayManagerObject.FindProperty("combatRandomVectorMaxY");
             _ManagerTextDisappearTime = gameplayManagerObject.FindProperty("disappearTime");
             _ManagerDefaultControllerCheckTimer = gameplayManagerObject.FindProperty("defaultControllerCheckTimer");
             _ManagerPlayerStartingSpells = gameplayManagerObject.FindProperty("startingSpells");
