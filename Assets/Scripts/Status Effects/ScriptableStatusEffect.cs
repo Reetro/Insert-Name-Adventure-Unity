@@ -44,7 +44,7 @@ namespace StatusEffects
 
         [Tooltip("Name of the status effect value")]
         [SerializeField] private string value1Name = "";
-        [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
+        [Tooltip("This kind of depends on the status effect but an example of this might be how much damage to apply to the player")]
         [SerializeField] private float value1 = 1;
 
         [Space]
@@ -54,7 +54,7 @@ namespace StatusEffects
         [SerializeField] private string value2Name = "";
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useTwoValues))]
-        [Tooltip("This kind of depends on the status effect but an example of this might be how much to damage to apply to the player")]
+        [Tooltip("This kind of depends on the status effect but an example of this might be how much damage to apply to the player")]
         [SerializeField] private float value2 = 1;
 
         [HideInInspector]
