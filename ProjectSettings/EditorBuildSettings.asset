@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Justin's Levels/Justin 1.unity
     guid: c9d1ade8c9bdbe2408d34cf71dc5d893
   - enabled: 1
+    path: Assets/Scenes/Justin's Levels/Justin 2.unity
+    guid: e8afb14d28bd9fe429278014042f5078
+  - enabled: 1
     path: Assets/Scenes/Jack's Levels/Jack3.unity
     guid: 08e131c1ae43ad948a590891ad4f9504
   m_configObjects:
