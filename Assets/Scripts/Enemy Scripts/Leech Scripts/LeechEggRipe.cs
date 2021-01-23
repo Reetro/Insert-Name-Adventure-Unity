@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using EnemyCharacter.AI;
 
 namespace EnemyCharacter.SceneObject
 {
@@ -53,7 +54,16 @@ namespace EnemyCharacter.SceneObject
 
         public void SpawnLeech()
         {
-            Instantiate(leechToSpawn, transform.position, Quaternion.identity);
+            var leech = Instantiate(leechToSpawn, transform.position, Quaternion.identity);
+
+            if (leech)
+            {
+                leech.GetComponent<EnemyBase>().OnSceneCreated();
+            }
+            else
+            {
+                Debug.LogError("Failed To Spawn Leech");
+            }
 
             Destroy(gameObject);
         }
