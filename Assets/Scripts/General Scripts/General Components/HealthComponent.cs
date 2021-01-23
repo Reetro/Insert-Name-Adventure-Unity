@@ -158,7 +158,7 @@ namespace ComponentLibrary
                     if (showDamageText)
                     {
                         DamageText.CreateDamageText(damage, transform.position, gameplayManager.combatTextSpeed, 
-                            gameplayManager.combatTextUpTime, gameplayManager.disappearTime);
+                            gameplayManager.combatTextUpTime, gameplayManager.disappearTime, gameplayManager.textDistance);
                     }
 
                     OnTakeAnyDamage.Invoke(damage);

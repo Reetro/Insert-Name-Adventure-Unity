@@ -62,20 +62,35 @@ namespace PlayerUI
                 }
             }
         }
-
-        public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float dissapearTime)
+        /// <summary>
+        /// Will spawn in damage text object
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="position"></param>
+        /// <param name="speed"></param>
+        /// <param name="upTime"></param>
+        /// <param name="dissapearTime"></param>
+        /// <returns>The created DamageText</returns>
+        public static DamageText CreateDamageText(float damage, Vector3 position, float speed, float upTime, float dissapearTime, float distance)
         {
             Transform damageTextTransform = Instantiate(GameAssets.instance.damgeText, position, Quaternion.identity);
             DamageText spawnedDamageText = damageTextTransform.GetComponent<DamageText>();
 
-            spawnedDamageText.SetupText(damage, speed, upTime, dissapearTime, position);
+            spawnedDamageText.SetupText(damage, speed, upTime, dissapearTime, position, distance);
 
             return spawnedDamageText;
         }
-
-        private void SetupText(float damage, float speed, float currentUpTime, float dissapearTime, Vector3 position)
+        /// <summary>
+        /// Setups the actual text, speed, and end location on the spawned DamageText
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="speed"></param>
+        /// <param name="currentUpTime"></param>
+        /// <param name="dissapearTime"></param>
+        /// <param name="position"></param>
+        private void SetupText(float damage, float speed, float currentUpTime, float dissapearTime, Vector3 position, float distance)
         {
-            textEndPoint = GeneralFunctions.GetPoint(transform.up, position, 1f);
+            textEndPoint = GeneralFunctions.GetPoint(transform.up, position, distance);
             
             textMesh.SetText(damage.ToString());
             textSpeed = speed;

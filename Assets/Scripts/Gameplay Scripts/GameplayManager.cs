@@ -18,6 +18,8 @@ namespace GameplayManagement
         public float combatTextUpTime = 0.5f;
         [Tooltip("How long it takes for combat text to disappear")]
         public float disappearTime = 3f;
+        [Tooltip("How far damage text travels")]
+        public float textDistance = 1f;
 
         [Header("Tooltip Settings")]
         [Tooltip("Font size for ToolTip item names")]

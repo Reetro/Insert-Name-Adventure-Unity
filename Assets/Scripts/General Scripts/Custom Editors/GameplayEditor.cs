@@ -23,6 +23,7 @@ namespace CustomEditors
         private SerializedProperty _ManagerDefaultControllerCheckTimer;
         private SerializedProperty _ManagerDebugSave;
         private SerializedProperty _ManagerPlayerStartingSpells;
+        private SerializedProperty _ManagerTextDistance;
         #endregion
 
         #region Gameplay Manager Editors
@@ -370,6 +371,7 @@ namespace CustomEditors
             _ManagerTextSpeed = gameplayManagerObject.FindProperty("combatTextSpeed");
             _ManagerTextUpTime = gameplayManagerObject.FindProperty("combatTextUpTime");
             _ManagerTextDisappearTime = gameplayManagerObject.FindProperty("disappearTime");
+            _ManagerTextDistance = gameplayManagerObject.FindProperty("textDistance");
             _ManagerDefaultControllerCheckTimer = gameplayManagerObject.FindProperty("defaultControllerCheckTimer");
             _ManagerPlayerStartingSpells = gameplayManagerObject.FindProperty("startingSpells");
             _ManagerDebugSave = gameplayManagerObject.FindProperty("debugSave");

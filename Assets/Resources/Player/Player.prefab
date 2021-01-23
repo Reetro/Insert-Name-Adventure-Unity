@@ -1829,6 +1829,11 @@ PrefabInstance:
       propertyPath: combatTextSpeed
       value: 0.08
       objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: textDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: m_Name

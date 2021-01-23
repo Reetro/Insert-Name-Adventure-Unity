@@ -1256,7 +1256,7 @@ public class GeneralFunctions : MonoBehaviour
         GameAssets.CameraShakeComponent.ShakeCamera(intensity, time);
     }
     /// <summary>
-    /// Fade out / in Any Gameobject
+    /// Fade out / in Any Gameobject must be used in StartCoroutine function
     /// </summary>
     /// <param name="objectToFade"></param>
     /// <param name="fadeIn"></param>
