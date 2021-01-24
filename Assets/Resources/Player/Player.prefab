@@ -1822,17 +1822,22 @@ PrefabInstance:
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: disappearTime
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: combatTextSpeed
-      value: 0.08
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
       propertyPath: textDistance
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 536534976185587177, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
+        type: 3}
+      propertyPath: combatTextUpTime
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1478598192501807169, guid: 2f8f0d8571b3baa4c8299d98df5bbedb,
         type: 3}
