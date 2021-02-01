@@ -1,9 +1,7 @@
 ﻿using ComponentLibrary;
 using EnemyCharacter.AI;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CustomEditors
 {
@@ -62,8 +60,6 @@ namespace CustomEditors
             {
                 // Apply values to the target
                 leechScaleObject.ApplyModifiedProperties();
-
-                EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
             }
 
             // fetch current values from the target
@@ -86,8 +82,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     leechHealthObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 
@@ -105,8 +99,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     leechMovementObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 
@@ -128,8 +120,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     leechRigidBodyObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 

@@ -459,7 +459,9 @@ namespace EnemyCharacter.AI
 
                     isFalling = true;
 
-                    transform.Translate(Vector2.down * launchSpeed * Time.deltaTime, Space.World);
+                    var endpoint = GeneralFunctions.GetPoint(Vector2.down, transform.position, 1f);
+
+                    MyMovementComp.MoveAIToPoint(endpoint, launchSpeed, 0f);
                 }
                 else
                 {

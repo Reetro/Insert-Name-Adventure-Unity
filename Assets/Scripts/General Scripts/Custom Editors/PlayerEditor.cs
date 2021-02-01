@@ -1,9 +1,7 @@
 ﻿using ComponentLibrary;
 using PlayerCharacter.Controller;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CustomEditors
 {
@@ -158,9 +156,6 @@ namespace CustomEditors
             {
                 // Apply values to the target
                 playerScaleObject.ApplyModifiedProperties();
-
-                // Save Current scene after update
-                EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
             }
 
             // fetch current values from the target
@@ -180,8 +175,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerMovementObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(CustomEditorUtilities.foldoutSpaceing);
@@ -204,8 +197,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerHealthObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
 
@@ -229,8 +220,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerSpearObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(CustomEditorUtilities.foldoutSpaceing);
@@ -253,9 +242,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerLegObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(CustomEditorUtilities.foldoutSpaceing);
@@ -279,9 +265,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     playerRigidBodyObject.Update();
-
-                    // Save Current scene after update
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
 
                 GUILayout.Space(CustomEditorUtilities.foldoutSpaceing);

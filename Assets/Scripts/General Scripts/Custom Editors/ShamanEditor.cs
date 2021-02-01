@@ -1,9 +1,7 @@
 ﻿using ComponentLibrary;
 using EnemyCharacter.AI;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CustomEditors
 {
@@ -109,8 +107,6 @@ namespace CustomEditors
             {
                 // Apply values to the target
                 shamanScaleObject.ApplyModifiedProperties();
-
-                EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
             }
 
             // fetch current values from the target
@@ -133,8 +129,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     shamanHealthObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 
@@ -152,8 +146,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     shamanHealthObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 
@@ -175,8 +167,6 @@ namespace CustomEditors
 
                     // fetch current values from the target
                     shamanRigidBodyObject.Update();
-
-                    EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
                 }
             }
 

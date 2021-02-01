@@ -6,7 +6,8 @@ namespace ComponentLibrary
     public class TileDestroyer : MonoBehaviour
     {
         private BoxCollider2D boxCollider = null;
-        private Tilemap tilemap = null;
+        private Tilemap tileMap = null;
+        private GameObject tileMapGameobject = null;
 
         [Tooltip("If true the tile destroyer will not be able destroy tiles until told to by parent object")]
         [SerializeField] private bool waitForInput = false;
@@ -31,11 +32,17 @@ namespace ComponentLibrary
                 {
                     Physics2D.IgnoreCollision(playerCollider, boxCollider);
 
-                    tilemap = GameObject.FindGameObjectWithTag("Destructible").GetComponent<Tilemap>();
+                    tileMapGameobject = GameObject.FindGameObjectWithTag("Destructible");
 
-                    if (!tilemap)
+                    if (tileMapGameobject)
                     {
-                        Debug.LogError(name + " failed to get tilemap gameobject you need to have a destructible tilemap gameobject in your tilemap grid");
+                        gameObject.SetActive(true);
+
+                        tileMap = tileMapGameobject.GetComponent<Tilemap>();
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
                     }
                 }
                 else
@@ -62,13 +69,13 @@ namespace ComponentLibrary
                     {
                         Vector3 hitPosition = Vector3.zero;
 
-                        if (tilemap)
+                        if (tileMap)
                         {
                             foreach (ContactPoint2D hit in collision.contacts)
                             {
                                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
-                                tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
+                                tileMap.SetTile(tileMap.WorldToCell(hitPosition), null);
                             }
                         }
                     }
@@ -77,13 +84,13 @@ namespace ComponentLibrary
                 {
                     Vector3 hitPosition = Vector3.zero;
 
-                    if (tilemap)
+                    if (tileMap)
                     {
                         foreach (ContactPoint2D hit in collision.contacts)
                         {
                             hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                             hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
-                            tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
+                            tileMap.SetTile(tileMap.WorldToCell(hitPosition), null);
                         }
                     }
                 }
