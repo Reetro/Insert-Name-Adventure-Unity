@@ -459,12 +459,14 @@ namespace EnemyCharacter.AI
 
                     isFalling = true;
 
-                    var endpoint = GeneralFunctions.GetPoint(Vector2.down, transform.position, 1f);
+                    boundaries.DoBounderyCheck = false;
 
-                    MyMovementComp.MoveAIToPoint(endpoint, launchSpeed, 0f);
+                    transform.Translate(-transform.up * launchSpeed * Time.deltaTime);
                 }
                 else
                 {
+                    boundaries.DoBounderyCheck = false;
+
                     DisableTileDestroyers();
 
                     isFalling = false;
