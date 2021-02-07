@@ -25,6 +25,10 @@ namespace EnemyCharacter
             idObject.ConstructID();
             MyHealthComponent.ConstructHealthComponent();
             MyHealthComponent.OnDeath.AddListener(OnDeath);
+            GeneralFunctions.GetGameplayManager().onCameraTopOverlap.AddListener(OnCameraTopCollision);
+            GeneralFunctions.GetGameplayManager().onCameraBottomOverlap.AddListener(OnCameraBottomCollision);
+            GeneralFunctions.GetGameplayManager().onCameraRightOverlap.AddListener(OnCameraRightCollision);
+            GeneralFunctions.GetGameplayManager().onCameraLeftOverlap.AddListener(OnCameraLeftCollision);
         }
         /// <summary>
         /// Setup all scene loader call backs
@@ -37,6 +41,34 @@ namespace EnemyCharacter
         /// Called after the scene transitions has finished playing
         /// </summary>
         protected virtual void OnSceneLoadingDone()
+        {
+            // For use in children
+        }
+        /// <summary>
+        /// Called when an enemy overlaps the top of the camera bounds
+        /// </summary>
+        protected virtual void OnCameraTopCollision()
+        {
+            // For use in children
+        }
+        /// <summary>
+        /// Called when an enemy overlaps the bottom of the camera bounds
+        /// </summary>
+        protected virtual void OnCameraBottomCollision()
+        {
+            // For use in children
+        }
+        /// <summary>
+        /// Called when an enemy overlaps the left of the camera bounds
+        /// </summary>
+        protected virtual void OnCameraLeftCollision()
+        {
+            // For use in children
+        }
+        /// <summary>
+        /// Called when an enemy overlaps the right of the camera bounds
+        /// </summary>
+        protected virtual void OnCameraRightCollision()
         {
             // For use in children
         }

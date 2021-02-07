@@ -93,13 +93,13 @@ namespace EnemyCharacter.AI
         private bool isPlayerSquished = false;
         private bool isFalling = false;
         private bool canMove = false;
-        private bool isLaunching = false;
         private BoxCollider2D colliderBox2D = null;
         private bool isTouchingGround = false;
         private bool wasAbove = false;
         private bool skipVisCheck = false;
         private TileDestroyer[] tileDestroyers;
         private Boundaries boundaries = null;
+        private bool hitBoundary = false;
         private bool appliedCameraShake = false;
         #endregion
 
@@ -336,6 +336,8 @@ namespace EnemyCharacter.AI
         {
             isTouchingGround = TouchingGround();
 
+            print(hitBoundary);
+
             switch (CurrentMovementState)
             {
                 case TikiHeadMovementState.LaunchTikiHead:
@@ -402,19 +404,13 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void LaunchTikiHeadIntoAir()
         {
-            if (MyMovementComp.MoveAIToPoint(launchTarget, launchSpeed, 0.01f, out isLaunching) || IsAtMaxHeight())
+            if (hitBoundary || IsAbovePlayer())
             {
-                ResetSpriteOpacity();
-
-                colliderBox2D.enabled = true;
-
-                spriteRenderer.color = Color.white;
-
                 if (!moveToGroundTimerRunning)
                 {
-                    isTouchingGround = false;
-
                     CurrentMovementState = TikiHeadMovementState.MoveToGround;
+
+                    isTouchingGround = false;
 
                     if (!moveToGroundTimerRunning)
                     {
@@ -422,11 +418,25 @@ namespace EnemyCharacter.AI
                     }
                 }
             }
-
-            if (drawDebug)
+            else
             {
-                print("Launching to point: " + launchTarget);
+                ResetSpriteOpacity();
+
+                colliderBox2D.enabled = true;
+
+                spriteRenderer.color = Color.white;
+
+                boundaries.DoBounderyCheck = true;
+
+                transform.Translate(transform.up * launchSpeed * Time.deltaTime);
             }
+        }
+        /// <summary>
+        /// On Camera collision stop moving up
+        /// </summary>
+        protected override void OnCameraTopCollision()
+        {
+            hitBoundary = true;
         }
         /// <summary>
         /// Will Launch The Tiki Head Back down the Ground
@@ -525,13 +535,6 @@ namespace EnemyCharacter.AI
         {
             return transform.position.y - PlayerTransform.position.y > yDistanceTolerance;
         }
-        /// <summary>
-        /// Checks to see if the Tiki Head is at max height
-        /// </summary>
-        private bool IsAtMaxHeight()
-        {
-            return boundaries.MaxCords.y - transform.position.y <= 0.01;
-        }
 
         #region Movement Timers
         /// <summary>
@@ -542,6 +545,8 @@ namespace EnemyCharacter.AI
             launchTimerRunning = true;
 
             yield return new WaitForSeconds(launchDelay);
+
+            hitBoundary = false;
 
             SetLaunchPoint();
 

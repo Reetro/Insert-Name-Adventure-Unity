@@ -46,8 +46,27 @@ namespace GameplayManagement
         [System.Serializable]
         public class OnControllerUpdate : UnityEvent<bool> { }
 
+        [System.Serializable]
+        public class OnCameraBoxOverlap : UnityEvent<string> { }
+
+
         [HideInInspector]
         public OnControllerUpdate controllerUpdated;
+
+        [HideInInspector]
+        public OnCameraBoxOverlap cameraBoxOverlap;
+
+        [HideInInspector]
+        public UnityEvent onCameraTopOverlap;
+
+        [HideInInspector]
+        public UnityEvent onCameraLeftOverlap;
+
+        [HideInInspector]
+        public UnityEvent onCameraRightOverlap;
+
+        [HideInInspector]
+        public UnityEvent onCameraBottomOverlap;
 
         [HideInInspector]
         public UnityEvent onLevelExitOverlap;

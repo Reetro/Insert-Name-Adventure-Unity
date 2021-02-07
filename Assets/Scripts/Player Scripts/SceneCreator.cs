@@ -197,6 +197,16 @@ namespace GameplayManagement.SceneLoading
                     tileDestroyer.OnSceneCreated();
                 }
             }
+
+            var cameraColliders = FindObjectsOfType<CameraCollider>();
+
+            foreach (CameraCollider cameraCollider in cameraColliders)
+            {
+                if (cameraCollider)
+                {
+                    cameraCollider.OnSceneCreated();
+                }
+            }
         }
     }
 }
