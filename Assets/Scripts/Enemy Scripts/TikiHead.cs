@@ -5,7 +5,7 @@ using ComponentLibrary;
 
 namespace EnemyCharacter.AI
 {
-    public class TikiHead : EnemyBase
+    public class TikiHead : AStarEnemy
     {
         [Header("Launch Settings")]
 
@@ -59,8 +59,10 @@ namespace EnemyCharacter.AI
         [Tooltip("Set's which layers the Tiki Head considers ground")]
         [SerializeField] private LayerMask whatIsGround = new LayerMask();
 
-        [Tooltip("How far to the grounded raycast")]
-        [SerializeField] private float traceDistance = 1f;
+        [Tooltip("How far to the grounded raycast goes on the Y axis")]
+        [SerializeField] private float traceYDistance = 1f;
+        [Tooltip("How far to the grounded raycast goes on the X axis")]
+        [SerializeField] private float traceXDistance = 1f;
 
         [Header("Camera Shake Settings")]
 
@@ -87,6 +89,7 @@ namespace EnemyCharacter.AI
         private bool moveToGroundTimerRunning = false;
         private bool followTimerRunning = false;
         private Vector2 launchTarget = Vector2.zero;
+        private bool hitWall = false;
         private SpriteRenderer spriteRenderer = null;
         private Vector3 defaultPlayerScale = Vector2.zero;
         private float defaultOpacity = 0f;
@@ -98,7 +101,6 @@ namespace EnemyCharacter.AI
         private bool wasAbove = false;
         private bool skipVisCheck = false;
         private TileDestroyer[] tileDestroyers;
-        private Boundaries boundaries = null;
         private bool hitBoundary = false;
         private bool appliedCameraShake = false;
         #endregion
@@ -132,6 +134,8 @@ namespace EnemyCharacter.AI
         {
             base.OnSceneCreated();
 
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
             CurrentMovementState = TikiHeadMovementState.Idle;
         }
         /// <summary>
@@ -139,18 +143,9 @@ namespace EnemyCharacter.AI
         /// </summary>
         protected override void OnSceneLoadingDone()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-
             if (!spriteRenderer)
             {
                 Debug.LogError("Tiki Head " + name + " failed to get spriteRenderer");
-            }
-
-            boundaries = GetComponent<Boundaries>();
-
-            if (!boundaries)
-            {
-                Debug.LogError("Tiki Head " + name + " failed to get boundaries");
             }
 
             defaultPlayerScale = PlayerTransform.localScale;
@@ -161,10 +156,6 @@ namespace EnemyCharacter.AI
             squishEffect.OnEffectEnd.AddListener(OnSquishEnd);
 
             tileDestroyers = GetComponentsInChildren<TileDestroyer>();
-
-            boundaries.BoundaryConstrainStates = Boundaries.ConstrainStates.ConstrainY;
-
-            boundaries.DoBounderyCheck = true;
 
             if (IsAbovePlayer())
             {
@@ -261,28 +252,58 @@ namespace EnemyCharacter.AI
         private bool TouchingGround()
         {
             Vector2 traceStart = transform.position;
-            Vector2 traceEnd = -GeneralFunctions.GetFaceingDirectionY(gameObject);
+            Vector2 traceEndBottom = -GeneralFunctions.GetFaceingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
+            Vector2 traceEndTop = GeneralFunctions.GetFaceingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
+            Vector2 traceEndRight = GeneralFunctions.GetFaceingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
+            Vector2 traceEndLeft = -GeneralFunctions.GetFaceingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
 
-            RaycastHit2D raycastHits2D = Physics2D.Raycast(traceStart, traceEnd, traceDistance, whatIsGround);
+            RaycastHit2D bottomRaycastHits2D = Physics2D.Raycast(traceStart, traceEndBottom, traceYDistance, whatIsGround);
+            RaycastHit2D topRaycastHits2D = Physics2D.Raycast(traceStart, traceEndTop, traceYDistance, whatIsGround);
+            RaycastHit2D rightRaycastHits2D = Physics2D.Raycast(traceStart, traceEndRight, traceXDistance, whatIsGround);
+            RaycastHit2D leftRaycastHits2D = Physics2D.Raycast(traceStart, traceEndLeft, traceXDistance, whatIsGround);
 
-            if (raycastHits2D)
+            if (drawDebug)
             {
-                if (drawDebug)
+                if (bottomRaycastHits2D)
                 {
-                    Debug.DrawRay(traceStart, traceEnd, Color.green);
+                    Debug.DrawRay(traceStart, traceEndBottom * traceYDistance, Color.green);
+                }
+                else
+                {
+                    Debug.DrawRay(traceStart, traceEndBottom * traceYDistance, Color.red);
                 }
 
-                return true;
-            }
-            else
-            {
-                if (drawDebug)
+                if (topRaycastHits2D)
                 {
-                    Debug.DrawRay(traceStart, traceEnd, Color.red);
+                    Debug.DrawRay(traceStart, traceEndTop * traceYDistance, Color.green);
+                }
+                else
+                {
+                    Debug.DrawRay(traceStart, traceEndTop * traceYDistance, Color.red);
                 }
 
-                return false;
+                if (rightRaycastHits2D)
+                {
+                    Debug.DrawRay(traceStart, traceEndRight * traceXDistance, Color.green);
+                }
+                else
+                {
+                    Debug.DrawRay(traceStart, traceEndRight * traceXDistance, Color.red);
+                }
+
+                if (leftRaycastHits2D)
+                {
+                    Debug.DrawRay(traceStart, traceEndLeft * traceXDistance, Color.green);
+                }
+                else
+                {
+                    Debug.DrawRay(traceStart, traceEndLeft * traceXDistance, Color.red);
+                }
             }
+
+            hitWall = rightRaycastHits2D || leftRaycastHits2D;
+
+            return bottomRaycastHits2D || topRaycastHits2D || rightRaycastHits2D || leftRaycastHits2D;
         }
         /// <summary>
         /// Called when player squish effect has ended
@@ -336,19 +357,22 @@ namespace EnemyCharacter.AI
         {
             isTouchingGround = TouchingGround();
 
-            print(hitBoundary);
-
             switch (CurrentMovementState)
             {
                 case TikiHeadMovementState.LaunchTikiHead:
-                    LaunchTikiHeadIntoAir();
+                    //LaunchTikiHeadIntoAir();
                     break;
                 case TikiHeadMovementState.FollowPlayer:
                     FollowPlayerX();
                     break;
                 case TikiHeadMovementState.MoveToGround:
-                    MoveTikiHeadToGround();
+                    //MoveTikiHeadToGround();
                     break;
+            }
+
+            if (drawDebug)
+            {
+                print("Current Movement State is " + CurrentMovementState);
             }
         }
         /// <summary>
@@ -356,27 +380,64 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void FollowPlayerX()
         {
-            bool startedMoveToGround = false;
-
-            if (wasAbove)
+            if (CurrentPath != null)
             {
-                var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
+                if (CurrentWaypoint >= CurrentPath.vectorPath.Count)
+                {
+                    ReachedEndOfPath = true;
+                    return;
+                }
+                else
+                {
+                    ReachedEndOfPath = false;
+                }
 
-                if (visible)
+                Vector2 direction = (CurrentPath.vectorPath[CurrentWaypoint] - transform.position).normalized;
+
+                MyMovementComp.MoveAITowards(new Vector2(direction.x, transform.position.y), followSpeed);
+
+                float distance = Vector2.Distance(transform.position, CurrentPath.vectorPath[CurrentWaypoint]);
+
+                if (distance < NextWaypointDistance)
+                {
+                    CurrentWaypoint++;
+                }
+            }
+            else
+            {
+                Debug.LogError(name + " Is unable to follow player current path is not valid");
+
+                return;
+            }
+
+            /*if (!isTouchingGround)
+            {
+                bool startedMoveToGround = false;
+
+                if (wasAbove)
+                {
+                    var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
+
+                    if (visible)
+                    {
+                        startedMoveToGround = SetupMoveToGround(startedMoveToGround);
+                    }
+                }
+                else if (skipVisCheck)
                 {
                     startedMoveToGround = SetupMoveToGround(startedMoveToGround);
                 }
-            }
-            else if (skipVisCheck)
-            {
-                startedMoveToGround = SetupMoveToGround(startedMoveToGround);
-            }
-            else if (!launchTimerRunning && !startedMoveToGround)
-            {
-                StartCoroutine(LaunchTimer());
-            }
+                else if (!launchTimerRunning && !startedMoveToGround)
+                {
+                    StartCoroutine(LaunchTimer());
+                }
 
-            MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
+                MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
+            }
+            else
+            {
+                SetupMoveToGround(true);
+            }*/
         }
         /// <summary>
         /// Setup Movement state Move To Ground
@@ -426,8 +487,6 @@ namespace EnemyCharacter.AI
 
                 spriteRenderer.color = Color.white;
 
-                boundaries.DoBounderyCheck = true;
-
                 transform.Translate(transform.up * launchSpeed * Time.deltaTime);
             }
         }
@@ -459,24 +518,28 @@ namespace EnemyCharacter.AI
                 if (drawDebug)
                 {
                     print("Tiki Touching Ground: " + isTouchingGround);
+
+                    print("Tiki Touching Hit Wall: " + hitWall);
                 }
 
-                if (!isTouchingGround && canMove)
+                if (!isTouchingGround && canMove || hitWall && canMove)
                 {
+                    if (hitWall)
+                    {
+                        hitWall = false;
+                    }
+
                     appliedCameraShake = false;
 
                     EnableTileDestroyers();
 
                     isFalling = true;
 
-                    boundaries.DoBounderyCheck = false;
-
                     transform.Translate(-transform.up * launchSpeed * Time.deltaTime);
                 }
-                else
+                
+                if (isTouchingGround)
                 {
-                    boundaries.DoBounderyCheck = false;
-
                     DisableTileDestroyers();
 
                     isFalling = false;

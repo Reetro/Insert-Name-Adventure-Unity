@@ -26,7 +26,8 @@ namespace CustomEditors
         private SerializedProperty _TikiHeadSquishEffect;
         private SerializedProperty _TikiHeadSpriteOpacity;
         private SerializedProperty _TikiHeadKnockBackMultiplier;
-        private SerializedProperty _TikiHeadTraceDistance;
+        private SerializedProperty _TikiHeadTraceYDistance;
+        private SerializedProperty _TikiHeadTraceXDistance;
         private SerializedProperty _TikiHeadSightLayers;
         private SerializedProperty _TikiHeadSightRange;
         private SerializedProperty _TikiHeadDrawDebug;
@@ -116,6 +117,8 @@ namespace CustomEditors
             _TikiHeadShakeIntensity = tikiHeadObject.FindProperty("cameraShakeIntensity");
             _TikiHeadShakeTime = tikiHeadObject.FindProperty("cameraShakeTime");
             _TikiHeadScale = tikiHeadScaleObject.FindProperty("m_LocalScale");
+            _TikiHeadTraceXDistance = tikiHeadObject.FindProperty("traceXDistance");
+            _TikiHeadTraceYDistance = tikiHeadObject.FindProperty("traceYDistance");
         }
         #endregion
 

@@ -154,12 +154,12 @@ GameObject:
   - component: {fileID: 8108744408832518191}
   - component: {fileID: 8108744408832518190}
   - component: {fileID: 8108744408832518178}
+  - component: {fileID: 7391718801523758799}
   - component: {fileID: 8108744408832518188}
   - component: {fileID: 8108744408832518189}
   - component: {fileID: 8108744408832518185}
   - component: {fileID: 8108744408832518179}
   - component: {fileID: 256558259}
-  - component: {fileID: 2048994777}
   m_Layer: 10
   m_Name: Tiki Head
   m_TagString: Enemy
@@ -280,14 +280,43 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  traceDistance: 1.12
+  traceYDistance: 1.12
+  traceXDistance: 3
   cameraShakeIntensity: 2.3
   cameraShakeTime: 0.2
   sightLayers:
     serializedVersion: 2
     m_Bits: 131840
   sightRange: 10
-  drawDebug: 0
+  drawDebug: 1
+--- !u!114 &7391718801523758799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8108744408832518177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!114 &8108744408832518188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,18 +405,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7527ba892a1b739479ee8889da956958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2048994777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8108744408832518177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291fac70acca1154f912b52143f8ac89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8927009215665181207
