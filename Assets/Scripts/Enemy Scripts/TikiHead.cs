@@ -404,7 +404,7 @@ namespace EnemyCharacter.AI
         /// </summary>
         private void LaunchTikiHeadIntoAir()
         {
-            if (hitBoundary || IsAbovePlayer())
+            if (hitBoundary)
             {
                 if (!moveToGroundTimerRunning)
                 {
