@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4355483388522820782
+--- !u!1 &8317280651135773101
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4355483388522820768}
-  - component: {fileID: 4355483388522820769}
+  - component: {fileID: 8388573942809800658}
+  - component: {fileID: 7307946672201689030}
   m_Layer: 0
   m_Name: A_
   m_TagString: Untagged
@@ -17,27 +17,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4355483388522820768
+--- !u!4 &8388573942809800658
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4355483388522820782}
+  m_GameObject: {fileID: 8317280651135773101}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.05, y: 1.9876, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4355483388522820769
+--- !u!114 &7307946672201689030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4355483388522820782}
+  m_GameObject: {fileID: 8317280651135773101}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78396926cbbfc4ac3b48fc5fc34a87d1, type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACIn+veKwohZwIAAA4FAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVEtzmzAQ/isenesM2CSY3lrHcXrIY+p2cuEio8VoLCRGj9hOxv+9KwGGuFwQ376+/XbFJ+HSNFBYpdeasyfFgHyfEH8m3yaD8RGOdKfkhn9A7/PGma28Ew0+v6nlCvHYhxlVg9W8+CF3wjtHCDrJS6XrFdvBUhlrEC6pMIAmrayPlgh9TsgRX9PMh5zwNEv96QNPWTQ547EAaUEPrvObKDzprIuIbrLwRMldFxnfpItFPE/TxWoapSGLk4WgdQPMtzQkS5K+7Cy4SWy28/CNFUoIbjqmxJ6aoMRvevI6ME6x60DN+1bAd5X1qcaBL2VpwHaSaHq65xrFazOSn6pVtKZm33J6p8L5GrPbu8CnTfr0n30aB3OpVf3Y140jX8NWvNgjw4IaO5J8DN9/Je7kgYo93Qp4q0A+q7VWTjI0Wu18qDMwux8+L60tKyj2A95SvQJdM2jdT7ifr+/hHLo/LgWvt2GUSQtshApah7UAjVP5hYTD0pguBaKexV8Df+huvF2d4YFrY9HUdSk9va1y2ruSVdDMd+PsUmkJAe5INyCpsKdXTGOvR3hlG5W9sjxQf4+64p2tvx5XIQEe/KPoyvSqDpdhmUodnsBUL84KLmEg7Q3PqNNSSdlu2FiTPmzjdEmLUdjOcfZ1tUgCbB6X0TZL51taZLNplpQ03ia3i5KWGaS3JOwel9gnFa8t0U4enJockkvcs/73Mllr2oRtZ5oe1vyjViPJuSzVptAA8qXNcCEOGovgjWQrxlGgDVjLZZg3+cyJUMUeWH5JlIdOV0eraT5kyUnD35X1SE6W4X+SkzM5/wNQSwMEFAAACAgAAIif6x/ScpVtAAAAeAAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw0TPSMzTVUVBKL0osyCgGihiCOKWZKSB2tJJJaoqxYZpBkqW5cVJisqWRrqVJWqJhkompRVpimmWqualSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAIif694rCiFnAgAADgUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAIif6x/ScpVtAAAAeAAAAAkAJAAAAAAAAAAAAAAAtAIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABsAwAAAAA=
+    dataString: UEsDBBQAAAgIAACIn+ufJL2kXwIAAAMFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMuSojAU/RUr67ELEbWd3Yza9ixsrbanesMmwkVShoTKo32V/z43AYR22BDu85xzb7gSJnQJiZFqqVi6kimQnz3izuRHr3W+wonupdiyCzQxnyw1uQuiPuadGibRPnBpWhZgFEt+iT13wQEarWCZVMUi3cNMaqPRnFGuAV1KGpct0HTtkRO++lOXcsZTOHGnC56mQe+GxwSEAdWGDuvA4GnqnyAa1wmDp8nz82A4WvSDiU+1IuG0KCF1PNoKUdT0Cn2YQIZ1hGOTSM6ZruERcy49/Xd6duRTRpGqx+Nic2D73LhS3cR1lmkwtQ6KnudMoWJVRfJbVjIWVB8qTF+UW9cjHI09nqro6j9/f+DdmZLFa9N3ELgeJmfJAREmVJuOzl3z/DtwK46UH+iOw2cO4k0ulbQiRadR1qVaDeG8/bxTm+WQHFp7BfXBaMtW62aszVAdh5tnf5pxVuz8IKPKsOXSa+13ARRO5Q8C9pui6xJodSj+avig++5K1Y4XprRBV81SOHg7aZULJQuvmWNjzUwqAd5cgy5BUG7OGyxjHkf44Ou0ffC8UHd56ua1r7kTDyne3MYHwYNrI4/3YelcHleg87U1nAloQTvHG+o0k0JUG9bVpEnbWpXRpJO2tyz9vlpkBHQUDndRFkZhNI0m/XAY7kbjYLgbQZQM6JD43WMCeVK+qYDW8uDURFtc4J41/5TeUtHSb3uq6HHJLoXsSM5EJreJAhDrqsIdOChsgjcyXaQMBdqCMUz4eZNrTLhMDpDG90KxZ7o4GUXjtkpMSvYljbPEZOZ/IjG5kds/UEsDBBQAAAgIAACIn+uzUh7SbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM01VFQSi9KLMgoBooYgjilmSkgdrSSaWqiqZFxkkmakYmRiaWJua6RsVGSqZmBcZJpqkmyYaKxUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACIn+ufJL2kXwIAAAMFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACIn+uzUh7SbQAAAHgAAAAJACQAAAAAAAAAAAAAAKwCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAZAMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -58,7 +58,7 @@ MonoBehaviour:
   manualDebugFloorRoof: 0
   showSearchTree: 0
   unwalkableNodeDebugSize: 0.3
-  logPathResults: 1
+  logPathResults: 0
   maxNearestNodeDistance: 100
   scanOnStartup: 1
   fullGetNearestSearch: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   heuristic: 2
   heuristicScale: 1
   threadCount: 1
-  maxFrameTime: 1
+  maxFrameTime: 10
   batchGraphUpdates: 0
   graphUpdateBatchingInterval: 0.2
   euclideanEmbedding:

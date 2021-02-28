@@ -9,13 +9,21 @@ namespace EnemyCharacter.AI
         [Tooltip("Distance to next waypoint on A* grid")]
         [SerializeField] private float nextWaypointDistance = 3f;
 
+        /// <summary>
+        /// Whether or not to use AStar path generation
+        /// </summary>
+        protected bool usePath = true;
+
         public override void OnSceneCreated()
         {
             base.OnSceneCreated();
 
             OnAStarEnemySpawn();
 
-            InvokeRepeating("UpdatePath", 0f, 0.5f);
+            if (usePath)
+            {
+                InvokeRepeating("UpdatePath", 0f, 0.5f);
+            }
         }
         /// <summary>
         /// Called every 0.5 seconds will update the current AI Path

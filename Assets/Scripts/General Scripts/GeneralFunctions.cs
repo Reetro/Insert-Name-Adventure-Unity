@@ -93,7 +93,11 @@ public class GeneralFunctions : MonoBehaviour
     {
         return (position1.normalized.y >= position2.normalized.y) ? true : false;
     }
-
+    /// <summary>
+    /// Returns true if otherTransform is left and false if right
+    /// </summary>
+    /// <param name="currentTransform"></param>
+    /// <param name="otherTransform"></param>
     public static bool IsObjectLeftOrRight(Transform currentTransform, Transform otherTransform)
     {
         var realativePoint = currentTransform.InverseTransformPoint(otherTransform.position);

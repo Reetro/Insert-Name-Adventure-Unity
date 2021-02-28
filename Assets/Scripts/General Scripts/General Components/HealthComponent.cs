@@ -11,7 +11,7 @@ namespace ComponentLibrary
     public class HealthComponent : MonoBehaviour
     {
         [System.Serializable]
-        public class TakeAnyDamge : UnityEvent<float> { }
+        public class TakeAnyDamage : UnityEvent<float> { }
 
         [Header("Health Settings")]
         [Tooltip("Maximum amount health this object can have")]
@@ -21,12 +21,12 @@ namespace ComponentLibrary
         public UnityEvent OnDeath;
 
         [HideInInspector]
-        public TakeAnyDamge OnTakeAnyDamage;
+        public TakeAnyDamage OnTakeAnyDamage;
 
         private GameplayManager gameplayManager = null;
         private HealthBar healthBar = null;
 
-        private static bool setMaxhealth = false;
+        private static bool setMaxHealth = false;
 
         /// <summary>
         /// Setup all needed health component variables and update player state if on player
@@ -39,11 +39,11 @@ namespace ComponentLibrary
 
             if (GeneralFunctions.IsObjectOnPlayer(gameObject))
             {
-                if (!setMaxhealth)
+                if (!setMaxHealth)
                 {
                     CurrentHealth = maxHealth;
 
-                    setMaxhealth = true;
+                    setMaxHealth = true;
 
                     UpdatePlayerState();
                 }
@@ -84,7 +84,7 @@ namespace ComponentLibrary
 
             if (GeneralFunctions.IsObjectOnPlayer(gameObject))
             {
-                if (!setMaxhealth)
+                if (!setMaxHealth)
                 {
                     CurrentHealth = maxHealth;
 
@@ -93,7 +93,7 @@ namespace ComponentLibrary
                         healthBar.SetMaxHealth(maxHealth);
                     }
 
-                    setMaxhealth = true;
+                    setMaxHealth = true;
 
                     UpdatePlayerState();
                 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using StatusEffects;
 using ComponentLibrary;
+using Pathfinding;
 
 namespace EnemyCharacter.AI
 {
@@ -79,6 +80,12 @@ namespace EnemyCharacter.AI
         
         [SerializeField] private float sightRange = 10f;
 
+        [Header("Follow References")]
+
+        [SerializeField] private GameObject leftTarget = null;
+
+        [SerializeField] private GameObject rightTarget = null;
+
         [Header("Debug Settings")]
 
         [Tooltip("Whether or not to draw debug info")]
@@ -98,8 +105,6 @@ namespace EnemyCharacter.AI
         private bool canMove = false;
         private BoxCollider2D colliderBox2D = null;
         private bool isTouchingGround = false;
-        private bool wasAbove = false;
-        private bool skipVisCheck = false;
         private TileDestroyer[] tileDestroyers;
         private bool hitBoundary = false;
         private bool appliedCameraShake = false;
@@ -134,6 +139,18 @@ namespace EnemyCharacter.AI
         {
             base.OnSceneCreated();
 
+            if (!leftTarget)
+            {
+                Debug.LogError("TikiHead " + name + " failed to get left target object");
+            }
+
+            if (!rightTarget)
+            {
+                Debug.LogError("TikiHead " + name + " failed to get right target object");
+            }
+
+            GetCurrentTargetTransform();
+
             spriteRenderer = GetComponent<SpriteRenderer>();
 
             CurrentMovementState = TikiHeadMovementState.Idle;
@@ -159,14 +176,10 @@ namespace EnemyCharacter.AI
 
             if (IsAbovePlayer())
             {
-                skipVisCheck = true;
-
                 CurrentMovementState = TikiHeadMovementState.FollowPlayer;
             }
             else
             {
-                skipVisCheck = false;
-
                 SetLaunchPoint();
 
                 CurrentMovementState = TikiHeadMovementState.LaunchTikiHead;
@@ -220,6 +233,8 @@ namespace EnemyCharacter.AI
                     // Knockback player if Tiki Head is grounded
                     if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
                     {
+                        MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+
                         Vector2 direction = transform.position - collision.transform.position;
 
                         direction.Normalize();
@@ -242,6 +257,8 @@ namespace EnemyCharacter.AI
                         GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackMultiplier, ForceMode2D.Impulse);
 
                         GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
+
+                        MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
                     }
                 }
             }
@@ -351,10 +368,26 @@ namespace EnemyCharacter.AI
 
         #region Movement Functions
         /// <summary>
+        /// Checks to see if the player is left or right of the TikiHead then sets the current move target accordingly
+        /// </summary>
+        private void GetCurrentTargetTransform()
+        {
+            if (GeneralFunctions.IsObjectLeftOrRight(transform, PlayerTransform))
+            {
+                Target = leftTarget.transform;
+            }
+            else
+            {
+                Target = rightTarget.transform;
+            }
+        }
+        /// <summary>
         /// Decide What Movement Type To Use
         /// </summary>
-        private void Update()
+        private void FixedUpdate()
         {
+            GetCurrentTargetTransform();
+
             isTouchingGround = TouchingGround();
 
             switch (CurrentMovementState)
@@ -392,9 +425,10 @@ namespace EnemyCharacter.AI
                     ReachedEndOfPath = false;
                 }
 
-                Vector2 direction = (CurrentPath.vectorPath[CurrentWaypoint] - transform.position).normalized;
+                Vector2 direction = ((Vector2)CurrentPath.vectorPath[CurrentWaypoint] - MyRigidBody2D.position).normalized;
+                Vector2 force = direction * followSpeed * Time.fixedDeltaTime;
 
-                MyMovementComp.MoveAITowards(new Vector2(direction.x, transform.position.y), followSpeed);
+                MyRigidBody2D.AddForce(force);
 
                 float distance = Vector2.Distance(transform.position, CurrentPath.vectorPath[CurrentWaypoint]);
 
@@ -409,35 +443,6 @@ namespace EnemyCharacter.AI
 
                 return;
             }
-
-            /*if (!isTouchingGround)
-            {
-                bool startedMoveToGround = false;
-
-                if (wasAbove)
-                {
-                    var visible = MyMovementComp.IsTransformVisible(sightLayers, transform, PlayerTransform, "Player", sightRange, drawDebug);
-
-                    if (visible)
-                    {
-                        startedMoveToGround = SetupMoveToGround(startedMoveToGround);
-                    }
-                }
-                else if (skipVisCheck)
-                {
-                    startedMoveToGround = SetupMoveToGround(startedMoveToGround);
-                }
-                else if (!launchTimerRunning && !startedMoveToGround)
-                {
-                    StartCoroutine(LaunchTimer());
-                }
-
-                MyMovementComp.MoveAITowards(new Vector2(PlayerTransform.position.x, transform.position.y), followSpeed);
-            }
-            else
-            {
-                SetupMoveToGround(true);
-            }*/
         }
         /// <summary>
         /// Setup Movement state Move To Ground
@@ -445,10 +450,6 @@ namespace EnemyCharacter.AI
         /// <param name="startedMoveToGround"></param>
         private bool SetupMoveToGround(bool startedMoveToGround)
         {
-            skipVisCheck = false;
-
-            wasAbove = false;
-
             startedMoveToGround = true;
 
             CurrentMovementState = TikiHeadMovementState.MoveToGround;
@@ -473,10 +474,10 @@ namespace EnemyCharacter.AI
 
                     isTouchingGround = false;
 
-                    if (!moveToGroundTimerRunning)
+                    /*if (!moveToGroundTimerRunning)
                     {
                         StartCoroutine(MoveToGroundDelay());
-                    }
+                    }*/
                 }
             }
             else

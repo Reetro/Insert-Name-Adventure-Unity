@@ -191,7 +191,7 @@ namespace EnemyCharacter.AI
             }
         }
         /// <summary>
-        /// Fire a raycast from the current AI to the given transform and checks to if there is ground between the transform and and the enemy
+        /// Fire a raycast from the current AI to the given transform and checks to if there is ground between the transform and and the object
         /// </summary>
         /// <returns>A bool that determines enemy sight</returns>
         public bool IsTransformVisible(LayerMask layerMask, Transform startTransform, Transform targetTransform, string tag, float sightRange, bool drawDebug)
