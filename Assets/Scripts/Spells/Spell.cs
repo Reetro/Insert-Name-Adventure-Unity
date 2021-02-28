@@ -1,22 +1,26 @@
-﻿using EnemyCharacter;
-using PlayerUI;
+﻿using EnemyScripts.BasicEnemyScripts;
+using EnemyScripts.LeechScripts;
+using GameplayScripts;
+using GeneralScripts;
+using GeneralScripts.UI;
 using UnityEngine;
-using GameplayManagement.Assets;
 
 namespace Spells
 {
     public abstract class Spell : MonoBehaviour
     {
         #region Local Vars
-        private float defaultTimer = 0f;
+        private float defaultTimer;
         /// <summary>
         /// Will start the spell cooldown timer
         /// </summary>
-        protected bool startCooldownTimer = false;
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected bool startCooldownTimer;
         /// <summary>
         /// Checks to see if the spell is currently on cooldown
         /// </summary>
-        protected bool onCooldown = false;
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected bool onCooldown;
         #endregion
 
         #region Setup Functions
@@ -94,12 +98,12 @@ namespace Spells
 
             DefaultSpellCoolDown = SpellCoolDown;
 
-            OnUpackSpellValuesDone();
+            OnUnpacksSpellValuesDone();
         }
         /// <summary>
         /// Called after spell has unpacked all need values
         /// </summary>
-        protected virtual void OnUpackSpellValuesDone()
+        protected virtual void OnUnpacksSpellValuesDone()
         {
             // for use in children
         }
@@ -124,7 +128,7 @@ namespace Spells
                 else
                 {
                     return false;
-                };
+                }
             }
             else
             {
@@ -134,7 +138,7 @@ namespace Spells
         /// <summary>
         /// Counts all enemies in the current level if count is 0 cooldown will pauses 
         /// </summary>
-        public bool CanCooldownTick()
+        private bool CanCooldownTick()
         {
             if (NeedsEnemyToCooldown)
             {
@@ -170,7 +174,7 @@ namespace Spells
         /// Gets all spells in the current scene and checks to see if the given spell exists in the world
         /// </summary>
         /// <param name="spell"></param>
-        public Spell DoesSpellOfTypeExist(Spell spell)
+        private Spell DoesSpellOfTypeExist(Spell spell)
         {
             if (spell)
             {
@@ -242,7 +246,7 @@ namespace Spells
 
                     if (SpellInfo)
                     {
-                        SpellInfo.OnSpellCooldownEnd.Invoke();
+                        SpellInfo.onSpellCooldownEnd.Invoke();
                     }
 
                     OnSpellCastEnded();
@@ -267,7 +271,7 @@ namespace Spells
                 MySpellIcon.ResetCooldownFilAmount();
             }
 
-            SpellInfo.OnSpellCastEnd.Invoke();
+            SpellInfo.onSpellCastEnd.Invoke();
 
             Destroy(gameObject);
         }
@@ -292,7 +296,7 @@ namespace Spells
         /// <summary>
         /// Resumes the spell cooldown
         /// </summary>
-        public void ResumeCooldown()
+        private void ResumeCooldown()
         {
             WasOnCooldown = false;
 
@@ -303,9 +307,7 @@ namespace Spells
         /// <summary>
         /// Upon a level being loaded check to see if was on cooldown
         /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="mode"></param>
-        void OnLevelFinishedLoading()
+        private void OnLevelFinishedLoading()
         {
             if (WasOnCooldown)
             {
@@ -325,71 +327,92 @@ namespace Spells
         /// <summary>
         /// Check to see if this status effect is using two values
         /// </summary>
-        public bool UsingTwoValues { get; private set; } = false;
+        // ReSharper disable once MemberCanBeProtected.Global
+        public bool UsingTwoValues { get; private set; }
         /// <summary>
         /// The first effect amount
         /// </summary>
-        public float Value1 { get; private set; } = 0f;
+        // ReSharper disable once MemberCanBeProtected.Global
+        public float Value1 { get; private set; }
         /// <summary>
         /// The second effect amount is only set if UsingTwoValues is true
         /// </summary>
-        public float Value2 { get; private set; } = 0f;
+        // ReSharper disable once MemberCanBeProtected.Global
+        public float Value2 { get; private set; }
         /// <summary>
         /// Gets this spell id
         /// </summary>
-        public int MyID { get; private set; } = 0;
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public int MyID { get; private set; }
         /// <summary>
         /// How long the spell cooldown lasts
         /// </summary>
-        public float SpellCoolDown { get; private set; } = 0f;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public float SpellCoolDown { get; private set; }
         /// <summary>
         /// Default value of SpellCoolDown
         /// </summary>
-        public float DefaultSpellCoolDown { get; private set; } = 0f;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public float DefaultSpellCoolDown { get; private set; }
         /// <summary>
         /// The spell to spawn into the world
         /// </summary>
-        public bool HasCoolDown { get; private set; } = false;
+        // ReSharper disable once MemberCanBeProtected.Global
+        public bool HasCoolDown { get; private set; }
         /// <summary>
         /// Gets the actual spell that is being casted
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public ScriptableSpell SpellInfo { get; private set; }
         /// <summary>
         /// The third effect amount is only set if useThreeValues is true
         /// </summary>
-        public float Value3 { get; private set; } = 0f;
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public float Value3 { get; private set; }
         /// <summary>
         /// Check to see if this status effect is using three values
         /// </summary>
-        public bool UsingThreeValues { get; private set; } = false;
+        // ReSharper disable once MemberCanBeProtected.Global
+        public bool UsingThreeValues { get; private set; }
         /// <summary>
         /// The Spell icon this spell is attached to
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public SpellIcon MySpellIcon { get; private set; }
         /// <summary>
         /// The particle system to spawn into the world
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public GameObject ParticleSystemToSpawn { get; private set; }
         /// <summary>
         /// Whether or not to spawn a particle effect on cast
         /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
         public bool SpawnParticles { get; private set; }
         /// <summary>
         /// How long the particle system is up for
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public float ParticleSystemUpTime { get; private set; }
         /// <summary>
         /// The remaining cooldown time this spell has
         /// </summary>
-        public static float RemainingCooldownTime { get; private set; } = 0f;
+        private static float RemainingCooldownTime { get; set; }
         /// <summary>
         /// Checks to see if the spell was on cooldown
         /// </summary>
-        public static bool WasOnCooldown { get; private set; } = false;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public static bool WasOnCooldown { get; private set; }
         /// <summary>
         /// Does this spell need a enemy active in the level to cooldown
         /// </summary>
-        public bool NeedsEnemyToCooldown { get; private set; } = false;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public bool NeedsEnemyToCooldown { get; private set; }
         #endregion
     }
 }

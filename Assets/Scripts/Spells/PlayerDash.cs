@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using GeneralScripts;
+using UnityEngine;
 
 namespace Spells
 {
     public class PlayerDash : Spell
     {
-        private Rigidbody2D playerRigidBody2D = null;
-        private float defaultDashTime = 0f;
-        private bool runDashTimer = false;
-        private float dashTimer = 0f;
-        private bool wasIdle = false;
+        private Rigidbody2D playerRigidBody2D;
+        private float defaultDashTime;
+        private bool runDashTimer;
+        private float dashTimer;
+        private bool wasIdle;
 
         /// <summary>
         /// Starts the dash timer when spell is cast
@@ -23,7 +24,7 @@ namespace Spells
         /// <summary>
         /// Get the Player's Rigidbody2D component and set default values
         /// </summary>
-        protected override void OnUpackSpellValuesDone()
+        protected override void OnUnpacksSpellValuesDone()
         {
             if (UsingTwoValues)
             {
@@ -77,14 +78,13 @@ namespace Spells
                 }
             }
         }
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Determines what direction the player is moving in then dashes the player
         /// </summary>
         private void ApplyPlayerDash()
         {
-            bool isIdle = false;
-
-            bool leftOrRight = GeneralFunctions.IsPlayerMovingLeftOrRight(out isIdle);
+            var leftOrRight = GeneralFunctions.IsPlayerMovingLeftOrRight(out var isIdle);
 
             if (!isIdle)
             {

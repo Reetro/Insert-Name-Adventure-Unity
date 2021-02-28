@@ -1,18 +1,19 @@
 ﻿#pragma warning disable 0414
+using GameplayScripts;
+using GeneralScripts.CustomEditors;
 using UnityEngine;
-using PlayerUI.ToolTipUI;
 
 namespace Spells
 {
     [CreateAssetMenu(fileName = "Spell Upgrade", menuName = "Create New Spell Upgrade")]
     public class ScriptableSpellUpgrade : ScriptableItem
     {
-        private bool showFloatValue2 = false;
-        private bool showFloatValue3 = false;
-        private bool showValue2 = false;
-        private bool showValue3 = false;
+        private bool showFloatValue2;
+        private bool showFloatValue3;
+        private bool showValue2;
+        private bool showValue3;
 
-        [Header("Upgrade Bools")]
+        [Header("Upgrade Booleans")]
 
         [Tooltip("Should this upgrade use float modifiers")]
         [SerializeField] private bool useFloatModifiers = true;
@@ -29,57 +30,69 @@ namespace Spells
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useFloatModifiers))]
         [Tooltip("Name of the first float modifier")]
+        // ReSharper disable once NotAccessedField.Local
         [SerializeField] private string modifier1Name = "";
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(useFloatModifiers))]
         [Tooltip("The first float spell modifier")]
+        // ReSharper disable once RedundantDefaultMemberInitializer
         [SerializeField] private float modifier1 = 0;
 
         [Space]
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showFloatValue2))]
         [Tooltip("Name of the second float modifier")]
+        // ReSharper disable once NotAccessedField.Local
         [SerializeField] private string modifier2Name = "";
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showFloatValue2))]
         [Tooltip("The second spell float modifier")]
+        // ReSharper disable once RedundantDefaultMemberInitializer
         [SerializeField] private float modifier2 = 0;
 
         [Space]
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showFloatValue3))]
         [Tooltip("Name of the third float modifier")]
+        // ReSharper disable once NotAccessedField.Local
         [SerializeField] private string modifier3Name = "";
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showFloatValue3))]
         [Tooltip("The third spell float modifier")]
-        [SerializeField] private float modifier3 = 0;
+        // ReSharper disable once RedundantDefaultMemberInitializer
+        [SerializeField] private float modifier3 = 0f;
 
         #region Properties
         /// <summary>
         /// The value of the first float modifier
         /// </summary>
-        public float SpellFloatModifier1 { get { return modifier1; } }
+        public float SpellFloatModifier1 => modifier1;
+
         /// <summary>
         /// The value of the second float modifier
         /// </summary>
-        public float SpellFloatModifier2 { get { return modifier2; } }
+        public float SpellFloatModifier2 => modifier2;
+
         /// <summary>
         /// The value of the third float modifier
         /// </summary>
-        public float SpellFloatModifier3 { get { return modifier3; } }
+        public float SpellFloatModifier3 => modifier3;
+
         /// <summary>
         /// Checks to see if this upgrade is using float modifiers
         /// </summary>
-        public bool UseFloatModifiers { get { return useFloatModifiers; } }
+        public bool UseFloatModifiers => useFloatModifiers;
+
         /// <summary>
         /// Checks to see if this upgrade is using two float modifiers
         /// </summary>
-        public bool UseFloatTwoModifiers { get { return useFloatTwoModifiers; } }
+        public bool UseFloatTwoModifiers => useFloatTwoModifiers;
+
         /// <summary>
         /// Checks to see if this upgrade is using three float modifiers
         /// </summary>
-        public bool UseFloatThreeModifiers { get { return useFloatThreeModifiers; } }
+        public bool UseFloatThreeModifiers => useFloatThreeModifiers;
+
         #endregion
 
         #region Spell Upgrade Functions

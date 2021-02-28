@@ -1,35 +1,39 @@
 ﻿#pragma warning disable 0414
-using PlayerUI.ToolTipUI;
+using GameplayScripts;
+using GeneralScripts.CustomEditors;
 using UnityEngine.Events;
 using UnityEngine;
-using PlayerUI;
+using UnityEngine.Serialization;
 
 namespace Spells
 {
     [CreateAssetMenu(fileName = "Spell", menuName = "Create New Spell")]
     public class ScriptableSpell : ScriptableItem
     {
-        private bool showUseValue3 = false;
-        private bool showUseValue2 = false;
-        private bool showValue2 = false;
-        private bool showValue3 = false;
+        private bool showUseValue3;
+        private bool showUseValue2;
+        private bool showValue2;
+        private bool showValue3;
 
-        [Header("Spell Bools")]
+        [Header("Spell Booleans")]
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue2))]
         [Tooltip("Should this spell have two values")]
+        // ReSharper disable once RedundantDefaultMemberInitializer
         [SerializeField] private bool useTwoValues = false;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(showUseValue3))]
         [Tooltip("Should this spell have two values")]
+        // ReSharper disable once RedundantDefaultMemberInitializer
         [SerializeField] private bool useThreeValues = false;
 
         [Tooltip("Whether or not the spell has a cooldown")]
         [SerializeField] private bool hasCoolDown = true;
 
+        [FormerlySerializedAs("needsEnemyToCD")]
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
         [Tooltip("Does this spell need a enemy active in the level to cooldown")]
-        [SerializeField] private bool needsEnemyToCD = true;
+        [SerializeField] private bool needsEnemyToCd = true;
 
         [Tooltip("Whether or not to spawn a particle effect on cast")]
         [SerializeField] private bool spawnParticleEffect = true;
@@ -38,6 +42,7 @@ namespace Spells
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(spawnParticleEffect))]
         [Tooltip("The particle system to spawn into the world")]
+        // ReSharper disable once RedundantDefaultMemberInitializer
         [SerializeField] private GameObject particleSystemToSpawn = null;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(spawnParticleEffect))]
@@ -47,7 +52,7 @@ namespace Spells
         [Header("Spell Object Settings")]
 
         [Tooltip("The spell to spawn into the world")]
-        [SerializeField] private GameObject spellToSpawn = null;
+        [SerializeField] private GameObject spellToSpawn;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
         [Tooltip("How long the spell cooldown lasts")]
@@ -85,89 +90,109 @@ namespace Spells
         [Header("Upgrades")]
 
         [Tooltip("The first spell Upgrade")]
-        [SerializeField] private ScriptableSpellUpgrade spellUpgrade1 = null;
+        // ReSharper disable once NotAccessedField.Local
+        [SerializeField] private ScriptableSpellUpgrade spellUpgrade1;
 
         [Tooltip("The second spell Upgrade")]
-        [SerializeField] private ScriptableSpellUpgrade spellUpgrade2 = null;
+        // ReSharper disable once NotAccessedField.Local
+        [SerializeField] private ScriptableSpellUpgrade spellUpgrade2;
 
         #region Properties
         /// <summary>
         /// This kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value1 { get { return spellValue1; } }
+        public float Value1 => spellValue1;
+
         /// <summary>
         /// This kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value2 { get { return spellValue2; } }
+        public float Value2 => spellValue2;
+
         /// <summary>
         /// his kind of depends on the spell but an example of this might is the player's health
         /// </summary>
-        public float Value3 { get { return spellValue3; } }
+        public float Value3 => spellValue3;
+
         /// <summary>
         /// Name of the spell value
         /// </summary>
-        public string Value1Name { get { return spellValue1Name; } }
+        public string Value1Name => spellValue1Name;
+
         /// <summary>
         /// Name of the spell value
         /// </summary>
-        public string Value2Name { get { return spellValue2Name; } }
+        public string Value2Name => spellValue2Name;
+
         /// <summary>
         /// Name of the spell value
         /// </summary>
-        public string Value3Name { get { return spellValue3Name; } }
+        public string Value3Name => spellValue3Name;
+
         /// <summary>
         /// Check to see if this spell is using two values
         /// </summary>
-        public bool UsingTwoValues { get { return useTwoValues; } }
+        public bool UsingTwoValues => useTwoValues;
+
         /// <summary>
         /// The spell to spawn into the world
         /// </summary>
-        public GameObject SpellToSpawn { get { return spellToSpawn; } }
+        public GameObject SpellToSpawn => spellToSpawn;
+
         /// <summary>
         /// How long the spell cooldown lasts
         /// </summary>
-        public float SpellCoolDown { get { return spellCoolDown; } }
+        public float SpellCoolDown => spellCoolDown;
+
         /// <summary>
         /// The spell to spawn into the world
         /// </summary>
-        public bool HasCoolDown { get { return hasCoolDown; } }
+        public bool HasCoolDown => hasCoolDown;
+
         /// <summary>
         /// Check to see if this spell is using three values
         /// </summary>
-        public bool UsingThreeValues { get { return useThreeValues; } }
+        public bool UsingThreeValues => useThreeValues;
+
         /// <summary>
         ///  The particle system to spawn into the world
         /// </summary>
-        public GameObject ParticleSystemToSpawn { get { return particleSystemToSpawn; } }
+        public GameObject ParticleSystemToSpawn => particleSystemToSpawn;
+
         /// <summary>
         /// Whether or not to spawn a particle effect on cast
         /// </summary>
-        public bool SpawnParticles { get { return spawnParticleEffect; } }
+        public bool SpawnParticles => spawnParticleEffect;
+
         /// <summary>
         /// How long the particle system is up for
         /// </summary>
-        public float ParticleSystemUpTime { get { return particleSystemUpTime; } }
+        public float ParticleSystemUpTime => particleSystemUpTime;
+
         /// <summary>
         /// Does this spell need a enemy active in the level to cooldown
         /// </summary>
-        public bool NeedsEnemyToCooldown { get { return needsEnemyToCD; } }
+        public bool NeedsEnemyToCooldown => needsEnemyToCd;
+
         #endregion
 
         #region Spell Events
         [System.Serializable]
         public class OnSpellWasCast : UnityEvent<GameObject> { }
 
+        [FormerlySerializedAs("OnSpellCast")]
         [HideInInspector]
         [Tooltip("Called when a spell is casted")]
-        public OnSpellWasCast OnSpellCast;
+        public OnSpellWasCast onSpellCast;
 
+        [FormerlySerializedAs("OnSpellCastEnd")]
         [HideInInspector]
         [Tooltip("Called when a spell cast has ended")]
-        public UnityEvent OnSpellCastEnd;
+        public UnityEvent onSpellCastEnd;
 
+        [FormerlySerializedAs("OnSpellCooldownEnd")]
         [HideInInspector]
         [Tooltip("Called when a spell cooldown has ended")]
-        public UnityEvent OnSpellCooldownEnd;
+        public UnityEvent onSpellCooldownEnd;
         #endregion
 
         #region Spell Functions

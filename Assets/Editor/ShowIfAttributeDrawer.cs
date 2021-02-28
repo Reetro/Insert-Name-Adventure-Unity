@@ -3,8 +3,9 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using GeneralScripts.CustomEditors;
 using UnityEngine;
-using static ShowIfAttribute;
+using static GeneralScripts.CustomEditors.ShowIfAttribute;
 
 [CustomPropertyDrawer(typeof(ShowIfAttribute), true)]
 public class ShowIfAttributeDrawer : PropertyDrawer
