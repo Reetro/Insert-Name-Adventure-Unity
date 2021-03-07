@@ -49,10 +49,8 @@ namespace Spells
         [Tooltip("How long the particle system is up for")]
         [SerializeField] private float particleSystemUpTime = 1f;
 
-        [Header("Spell Object Settings")]
-
-        [Tooltip("The spell to spawn into the world")]
-        [SerializeField] private GameObject spellToSpawn;
+        [Header("Spell Object Settings")] [Tooltip("The spell to spawn into the world")] [SerializeField]
+        private GameObject spellToSpawn = null;
 
         [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasCoolDown))]
         [Tooltip("How long the spell cooldown lasts")]
@@ -88,14 +86,15 @@ namespace Spells
         [SerializeField] private float spellValue3 = 1f;
 
         [Header("Upgrades")]
-
         [Tooltip("The first spell Upgrade")]
         // ReSharper disable once NotAccessedField.Local
-        [SerializeField] private ScriptableSpellUpgrade spellUpgrade1;
+        [SerializeField]
+        private ScriptableSpellUpgrade spellUpgrade1 = null;
 
         [Tooltip("The second spell Upgrade")]
         // ReSharper disable once NotAccessedField.Local
-        [SerializeField] private ScriptableSpellUpgrade spellUpgrade2;
+        [SerializeField]
+        private ScriptableSpellUpgrade spellUpgrade2 = null;
 
         #region Properties
         /// <summary>

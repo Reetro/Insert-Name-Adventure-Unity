@@ -9,11 +9,11 @@ namespace GeneralScripts.UI
 {
     public class TooltipPopup : MonoBehaviour
     {
-        [SerializeField] private GameObject popupCanvasObject;
-        [SerializeField] private RectTransform popupObject;
-        [SerializeField] private TextMeshProUGUI infoText;
+        [SerializeField] private GameObject popupCanvasObject = null;
+        [SerializeField] private RectTransform popupObject = null;
+        [SerializeField] private TextMeshProUGUI infoText = null;
         [SerializeField] private Vector3 offset = Vector3.zero;
-        [SerializeField] private float padding;
+        [SerializeField] private float padding = 0;
 
         private Canvas popupCanvas;
         private Controls controls;

@@ -16,8 +16,9 @@ namespace PlayerScripts.PlayerControls
         public float runSpeed = 35f;
         [Tooltip("How much to smooth out the movement")]
         [Range(0, .3f)] [SerializeField] private float movementSmoothing = 0.05f;
-        [Tooltip("Whether or not a player can steer while jumping")]
-        [SerializeField] private bool hasAirControl;
+
+        [Tooltip("Whether or not a player can steer while jumping")] [SerializeField]
+        private bool hasAirControl = false;
         [Tooltip("How fast the player accelerates")]
         [SerializeField] private float playerAcceleration = 10f;
 

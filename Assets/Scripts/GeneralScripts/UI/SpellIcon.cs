@@ -20,10 +20,10 @@ namespace GeneralScripts.UI
         public ActionButton ParentButton { get; private set; }
 
         [Tooltip("A reference to the cooldown image on the spell icon")]
-        [SerializeField] private Image cooldownImage;
+        [SerializeField] private Image cooldownImage = null;
 
-        [Tooltip("A reference to the cooldown image on the spell icon")]
-        [SerializeField] private TextMeshProUGUI coolDownText;
+        [Tooltip("A reference to the cooldown image on the spell icon")] [SerializeField]
+        private TextMeshProUGUI coolDownText = null;
 
         /// <summary>
         /// Set default values and disable button in parent object

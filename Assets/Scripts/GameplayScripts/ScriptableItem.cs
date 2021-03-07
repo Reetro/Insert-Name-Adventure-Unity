@@ -10,17 +10,18 @@ namespace GameplayScripts
     {
         protected bool hasArtwork = false;
 
-        [Tooltip("Name of the item")]
-        [SerializeField] private new string name;
+        [Tooltip("Name of the item")] [SerializeField]
+        private new string name = "";
 
-        [TextArea(10, 14)]
-        [Tooltip("Description about what the item does")]
-        [SerializeField] private string description;
+        [TextArea(10, 14)] [Tooltip("Description about what the item does")] [SerializeField]
+        private string description = "";
+
         [Space]
-
-        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And, nameof(hasArtwork))]
+        [ShowIf(ShowConditions.ActionOnConditionFail.DontDraw, ShowConditions.ConditionOperator.And,
+            nameof(hasArtwork))]
         [Tooltip("Artwork to display on the item icon")]
-        [SerializeField] private Sprite artwork;
+        [SerializeField]
+        private Sprite artwork = null;
 
         #region Properties
         /// <summary>

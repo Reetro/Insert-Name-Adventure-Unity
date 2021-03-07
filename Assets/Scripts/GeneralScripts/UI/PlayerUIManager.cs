@@ -15,13 +15,14 @@ namespace GeneralScripts.UI
     {
         [FormerlySerializedAs("loadCheckpointBTN")]
         [Header("GameOver UI Elements")]
-        [SerializeField] private Button loadCheckpointBtn;
-        [SerializeField] private TextMeshProUGUI gameOverText;
+        [SerializeField] private Button loadCheckpointBtn = null;
+        [SerializeField] private TextMeshProUGUI gameOverText = null;
 
-        [FormerlySerializedAs("resumeBTN")]
-        [Header("Pause Menu Elements")]
-        [SerializeField] private Button resumeBtn;
-        [FormerlySerializedAs("pasueText")] [SerializeField] private TextMeshProUGUI pauseText;
+        [FormerlySerializedAs("resumeBTN")] [Header("Pause Menu Elements")] [SerializeField]
+        private Button resumeBtn = null;
+
+        [FormerlySerializedAs("pasueText")] [SerializeField]
+        private TextMeshProUGUI pauseText = null;
 
         [Header("Actionbar Elements")]
         // ReSharper disable once RedundantDefaultMemberInitializer

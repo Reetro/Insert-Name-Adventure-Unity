@@ -12,13 +12,13 @@ namespace PlayerScripts
 {
     public class SceneCreator : MonoBehaviour
     {
-        [Header("Scene assets")]
-        [SerializeField] private GameObject leechCollision;
-        [SerializeField] private GameObject playerState;
-        [SerializeField] private GameObject playerHud;
-        [SerializeField] private GameObject levelLoader;
-        [SerializeField] private HealthComponent myHealthComp;
-        [SerializeField] private GameObject toolTipObject;
+        [Header("Scene assets")] [SerializeField]
+        private GameObject leechCollision = null;
+        [SerializeField] private GameObject playerState = null;
+        [SerializeField] private GameObject playerHud = null;
+        [SerializeField] private GameObject levelLoader = null;
+        [SerializeField] private HealthComponent myHealthComp = null;
+        [SerializeField] private GameObject toolTipObject = null;
         [SerializeField] private bool createUI = true;
 
         private PlayerController playerController;

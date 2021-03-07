@@ -203,65 +203,59 @@ namespace EnemyScripts.TikiHeadScripts
         {
             if (isFalling)
             {
-                if (collision.gameObject)
-                {
-                    // Squish Player if Tiki Head is moving down
-                    if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject) && !isPlayerSquished)
-                    {
-                        if (!GeneralFunctions.IsPlayerDead())
-                        {
-                            GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
+                if (!collision.gameObject) return;
+                // Squish Player if Tiki Head is moving down
+                if (!GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject) || isPlayerSquished) return;
+                
+                if (GeneralFunctions.IsPlayerDead()) return;
+                
+                GeneralFunctions.ApplyStatusEffectToTarget(collision.gameObject, squishEffect);
 
-                            GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
+                GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
 
-                            PlayerTransform.localScale = playerSquishScale;
+                PlayerTransform.localScale = playerSquishScale;
 
-                            colliderBox2D.enabled = false;
+                colliderBox2D.enabled = false;
 
-                            GeneralFunctions.GetPlayerSpear().DisableSpear();
+                GeneralFunctions.GetPlayerSpear().DisableSpear();
 
-                            SetSpriteOpacity(spriteOpacity);
+                SetSpriteOpacity(spriteOpacity);
 
-                            isPlayerSquished = true;
-                        }
-                    }
-                }
+                isPlayerSquished = true;
             }
             else
             {
-                if (collision.gameObject)
+                if (!collision.gameObject) return;
+                
+                // Knockback player if Tiki Head is grounded
+                if (!GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject)) return;
+                
+                MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+
+                Vector2 direction = transform.position - collision.transform.position;
+
+                direction.Normalize();
+
+                if (!GeneralFunctions.IsObjectAbove(collision.transform.position, transform.position))
                 {
-                    // Knockback player if Tiki Head is grounded
-                    if (GeneralFunctions.IsObjectOnLayer("Player", collision.gameObject))
-                    {
-                        MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+                    direction.y = 0;
 
-                        Vector2 direction = transform.position - collision.transform.position;
-
-                        direction.Normalize();
-
-                        if (!GeneralFunctions.IsObjectAbove(collision.transform.position, transform.position))
-                        {
-                            direction.y = 0;
-
-                            // Invert Knockback Direction
-                            direction.x = -direction.x;
-                        }
-                        else
-                        {
-                            direction.x = 0;
-
-                            // Invert Knockback Direction
-                            direction.y = -direction.y;
-                        }
-
-                        GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackMultiplier, ForceMode2D.Impulse);
-
-                        GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
-
-                        MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-                    }
+                    // Invert Knockback Direction
+                    direction.x = -direction.x;
                 }
+                else
+                {
+                    direction.x = 0;
+
+                    // Invert Knockback Direction
+                    direction.y = -direction.y;
+                }
+
+                GeneralFunctions.ApplyKnockback(collision.gameObject, direction * knockBackMultiplier, ForceMode2D.Impulse);
+
+                GeneralFunctions.ApplyDamageToTarget(collision.gameObject, damageToApply, true, gameObject);
+
+                MyRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
         }
         /// <summary>
@@ -270,53 +264,25 @@ namespace EnemyScripts.TikiHeadScripts
         private bool TouchingGround()
         {
             Vector2 traceStart = transform.position;
-            Vector2 traceEndBottom = -GeneralFunctions.GetFacingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
-            Vector2 traceEndTop = GeneralFunctions.GetFacingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
-            Vector2 traceEndRight = GeneralFunctions.GetFacingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
-            Vector2 traceEndLeft = -GeneralFunctions.GetFacingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
+            var traceEndBottom = -GeneralFunctions.GetFacingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
+            var traceEndTop = GeneralFunctions.GetFacingDirectionY(gameObject) * GeneralFunctions.GetSpriteHeight(spriteRenderer);
+            var traceEndRight = GeneralFunctions.GetFacingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
+            var traceEndLeft = -GeneralFunctions.GetFacingDirectionX(gameObject) * GeneralFunctions.GetSpriteWidth(spriteRenderer);
 
-            RaycastHit2D bottomRaycastHits2D = Physics2D.Raycast(traceStart, traceEndBottom, traceYDistance, whatIsGround);
-            RaycastHit2D topRaycastHits2D = Physics2D.Raycast(traceStart, traceEndTop, traceYDistance, whatIsGround);
-            RaycastHit2D rightRaycastHits2D = Physics2D.Raycast(traceStart, traceEndRight, traceXDistance, whatIsGround);
-            RaycastHit2D leftRaycastHits2D = Physics2D.Raycast(traceStart, traceEndLeft, traceXDistance, whatIsGround);
+            var bottomRaycastHits2D = Physics2D.Raycast(traceStart, traceEndBottom, traceYDistance, whatIsGround);
+            var topRaycastHits2D = Physics2D.Raycast(traceStart, traceEndTop, traceYDistance, whatIsGround);
+            var rightRaycastHits2D = Physics2D.Raycast(traceStart, traceEndRight, traceXDistance, whatIsGround);
+            var leftRaycastHits2D = Physics2D.Raycast(traceStart, traceEndLeft, traceXDistance, whatIsGround);
 
             if (drawDebug)
             {
-                if (bottomRaycastHits2D)
-                {
-                    Debug.DrawRay(traceStart, traceEndBottom * traceYDistance, Color.green);
-                }
-                else
-                {
-                    Debug.DrawRay(traceStart, traceEndBottom * traceYDistance, Color.red);
-                }
+                Debug.DrawRay(traceStart, traceEndBottom * traceYDistance, bottomRaycastHits2D ? Color.green : Color.red);
 
-                if (topRaycastHits2D)
-                {
-                    Debug.DrawRay(traceStart, traceEndTop * traceYDistance, Color.green);
-                }
-                else
-                {
-                    Debug.DrawRay(traceStart, traceEndTop * traceYDistance, Color.red);
-                }
+                Debug.DrawRay(traceStart, traceEndTop * traceYDistance, topRaycastHits2D ? Color.green : Color.red);
 
-                if (rightRaycastHits2D)
-                {
-                    Debug.DrawRay(traceStart, traceEndRight * traceXDistance, Color.green);
-                }
-                else
-                {
-                    Debug.DrawRay(traceStart, traceEndRight * traceXDistance, Color.red);
-                }
+                Debug.DrawRay(traceStart, traceEndRight * traceXDistance, rightRaycastHits2D ? Color.green : Color.red);
 
-                if (leftRaycastHits2D)
-                {
-                    Debug.DrawRay(traceStart, traceEndLeft * traceXDistance, Color.green);
-                }
-                else
-                {
-                    Debug.DrawRay(traceStart, traceEndLeft * traceXDistance, Color.red);
-                }
+                Debug.DrawRay(traceStart, traceEndLeft * traceXDistance, leftRaycastHits2D ? Color.green : Color.red);
             }
 
             hitWall = rightRaycastHits2D || leftRaycastHits2D;
@@ -329,22 +295,21 @@ namespace EnemyScripts.TikiHeadScripts
         /// <param name="gameObject"></param>
         private void OnSquishEnd()
         {
-            if (!GeneralFunctions.IsPlayerDead())
-            {
-                PlayerTransform.localScale = defaultPlayerScale;
+            if (GeneralFunctions.IsPlayerDead()) return;
+            
+            PlayerTransform.localScale = defaultPlayerScale;
 
-                GeneralFunctions.GetPlayerSpear().EnableSpear();
+            GeneralFunctions.GetPlayerSpear().EnableSpear();
 
-                isPlayerSquished = false;
-            }
+            isPlayerSquished = false;
         }
         /// <summary>
         /// Set the segment opacity the the given value
         /// </summary>
         /// <param name="newOpacity"></param>
-        public void SetSpriteOpacity(float newOpacity)
+        private void SetSpriteOpacity(float newOpacity)
         {
-            Color tmp = spriteRenderer.color;
+            var tmp = spriteRenderer.color;
 
             tmp.a = newOpacity;
             tmp.r = 1f;
@@ -357,9 +322,9 @@ namespace EnemyScripts.TikiHeadScripts
         /// Set the segment opacity back to the default value
         /// </summary>
         /// <param name="newOpacity"></param>
-        public void ResetSpriteOpacity()
+        private void ResetSpriteOpacity()
         {
-            Color tmp = spriteRenderer.color;
+            var tmp = spriteRenderer.color;
 
             tmp.a = defaultOpacity;
 

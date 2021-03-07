@@ -111,7 +111,7 @@ namespace GeneralScripts.GeneralComponents
 
                     if (healthBar)
                     {
-                        healthBar.SetPlayerHealth(MyPlayerState);
+                        healthBar.SetPlayerHealth();
                     }
                 }
             }

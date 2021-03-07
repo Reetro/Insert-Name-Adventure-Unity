@@ -37,13 +37,14 @@ namespace StatusEffects
         [SerializeField] private float duration = 1;
 
         [Tooltip("If a another status effect of this type is applied to the player should the status effect restart")]
-        [SerializeField] private bool refresh;
+        [SerializeField]
+        private bool refresh = false;
 
         [Tooltip("If a another status effect of this type is applied should stack count be increased")]
         [SerializeField] private bool stack = true;
 
-        [Tooltip("If true this status effect will not stack or be refreshed it will remain static")]
-        [SerializeField] private bool isStatic;
+        [Tooltip("If true this status effect will not stack or be refreshed it will remain static")] [SerializeField]
+        private bool isStatic = false;
 
         [Space]
 

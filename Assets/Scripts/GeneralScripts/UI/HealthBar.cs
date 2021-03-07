@@ -8,10 +8,10 @@ namespace GeneralScripts.UI
 {
     public class HealthBar : MonoBehaviour
     {
-        [SerializeField] private Gradient gradient;
-        [SerializeField] private Image fill;
-        [SerializeField] private TextMeshProUGUI maxHealthText;
-        [SerializeField] private TextMeshProUGUI currentHealthText;
+        [SerializeField] private Gradient gradient = null;
+        [SerializeField] private Image fill = null;
+        [SerializeField] private TextMeshProUGUI maxHealthText = null;
+        [SerializeField] private TextMeshProUGUI currentHealthText = null;
 
         public Slider slider;
         private static float lastMax;
@@ -40,7 +40,7 @@ namespace GeneralScripts.UI
             fill.color = gradient.Evaluate(slider.normalizedValue);
         }
 
-        public void SetPlayerHealth(PlayerState playerState)
+        public void SetPlayerHealth()
         {
             slider.maxValue = PlayerState.MaxHealth;
             slider.value = PlayerState.CurrentHealth;
